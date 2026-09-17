@@ -26,6 +26,8 @@ FROM node:20-alpine AS runner
 
 RUN apk update && apk upgrade --no-cache
 
+RUN apk add --no-cache openssl libc6-compat
+
 WORKDIR /app
 
 ENV NODE_ENV=production
