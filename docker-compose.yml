@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  # ----------------------------------------------------------------------------
+  # Finstaq Fastify Node.js API Service
+  # ----------------------------------------------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: finstaq-api
+    restart: always
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOST: 0.0.0.0
+      DATABASE_URL: mysql://finstaq_user:FinstaqSecurePass2026!@mysql:3306/finstaq_production
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-super-secret-jwt-signing-key-finstaq-prod-min32chars}
+      JWT_EXPIRES_IN: 7d
+      FIELD_ENCRYPTION_KEY: ${FIELD_ENCRYPTION_KEY:-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef}
+      CORS_ORIGIN: ${CORS_ORIGIN:-*}
+    ports:
+      - "3000:3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - finstaq-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  # ----------------------------------------------------------------------------
+  # MySQL 8.0 Database
+  # ----------------------------------------------------------------------------
+  mysql:
+    image: mysql:8.0
+    container_name: finstaq-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: RootSecurePassword2026!
+      MYSQL_DATABASE: finstaq_production
+      MYSQL_USER: finstaq_user
+      MYSQL_PASSWORD: FinstaqSecurePass2026!
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --max_connections=200
+      --innodb_buffer_pool_size=512M
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - finstaq-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "finstaq_user", "-pFinstaqSecurePass2026!"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # ----------------------------------------------------------------------------
+  # Redis 7 (Job Queues & Session Caching)
+  # ----------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: finstaq-redis
+    restart: always
+    command: redis-server --appendonly yes --requirepass RedisSecurePass2026!
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - finstaq-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "RedisSecurePass2026!", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  mysql-data:
+    driver: local
+  redis-data:
+    driver: local
+
+networks:
+  finstaq-network:
+    driver: bridge
