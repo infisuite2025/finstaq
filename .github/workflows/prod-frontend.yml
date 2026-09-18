@@ -1,0 +1,139 @@
+name: deploying the finstaq frontend application
+on:
+  push:
+    branches: main
+    paths:
+      - "client/**"
+      
+defaults:
+  run:
+    working-directory: client
+    
+permissions:
+  contents: read
+  actions: write
+  
+jobs:
+  code-build-test-deploy:
+    name: checkout
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+             
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+           
+      - name: building the code
+        run: npm run build
+
+      - name: Set short SHA
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: SonarQube Scan (frontend)
+        uses: SonarSource/sonarqube-scan-action@v3
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+         projectBaseDir: client
+         args: >
+          -Dsonar.projectKey=finstaq-frontend
+          -Dsonar.projectName=finstaq-frontend
+          -Dsonar.sources=src
+          -Dsonar.exclusions=sonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/coverage/**,**/*.test.ts,**/*.test.tsx,**/*.spec.ts,**/*.spec.tsx
+ 
+      - name: SonarQube Quality Gate (frontend)
+        uses: SonarSource/sonarqube-quality-gate-action@v1
+        with:
+          scanMetadataReportFile: client/.scannerwork/report-task.txt
+          pollingTimeoutSec: 300
+        timeout-minutes: 10
+        continue-on-error: false
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      - name: Free GitHub runner disk space
+        run: |
+          df -h
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/local/share/boost
+          df -h
+        
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+      
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: private
+          
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: finstaq-frontend
+        run: |
+          docker build --no-cache -t $ECR_REGISTRY/$ECR_REPOSITORY:${SHORT_SHA} .
+            
+      - name: Trivy image scan (TXT)
+        uses: aquasecurity/trivy-action@master
+        id: trivy-2
+        continue-on-error: true
+        env:
+          IMAGE_REF: ${{ steps.login-ecr.outputs.registry }}/finstaq-frontend:${{ env.SHORT_SHA }}
+        with:
+          image-ref: ${{ env.IMAGE_REF }}
+          format: table
+          output: finstaq-frontend-image.txt
+          severity: HIGH,CRITICAL,MEDIUM
+          scanners: vuln,secret
+          ignore-unfixed: true
+          exit-code: "1"
+        
+      - name: Upload Trivy TXT Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-txt-report
+          path: |
+             finstaq-frontend-image.txt
+             
+      - name: Fail workflow if Trivy found vulnerabilities
+        if: steps.trivy-2.outcome == 'failure'
+        run: exit 1
+       
+      - name: image push
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}/finstaq-frontend:${{ env.SHORT_SHA }}
+        run: |
+          docker push $ECR_REGISTRY
+          
+      - name: Deploy on EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            AWS_REGION=ap-south-1
+            ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
+            aws ecr get-login-password --region $AWS_REGION | \
+            docker login --username AWS --password-stdin $ECR_REGISTRY
+            # image tag changing
+            cd /home/ubuntu/applications/finstaq
+            sed -E -i "s/(^[[:blank:]]*image.*finstaq-frontend:)(.*)/\1${{ env.SHORT_SHA }}/" docker-compose.yml || echo 'image tag not changed'
+            docker compose pull || echo 'pull failed'
+            docker compose down && docker compose up -d && echo 'deployed successfully'  
