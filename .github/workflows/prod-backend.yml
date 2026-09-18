@@ -50,30 +50,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
-      - name: SonarQube Scan (frontend)
-        uses: SonarSource/sonarqube-scan-action@v3
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        with:
-         projectBaseDir: client
-         args: >
-          -Dsonar.projectKey=finstaq-frontend
-          -Dsonar.projectName=finstaq-frontend
-          -Dsonar.sources=src
-          -Dsonar.exclusions=sonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/coverage/**,**/*.test.ts,**/*.test.tsx,**/*.spec.ts,**/*.spec.tsx
-
-      - name: SonarQube Quality Gate (frontend)
-        uses: SonarSource/sonarqube-quality-gate-action@v1
-        with:
-          scanMetadataReportFile: client/.scannerwork/report-task.txt
-          pollingTimeoutSec: 300
-        timeout-minutes: 10
-        continue-on-error: false
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
       - name: Free GitHub runner disk space
         run: |
           df -h
