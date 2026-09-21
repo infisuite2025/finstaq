@@ -2,6 +2,8 @@ name: deploying the finstaq backend application
 on:
   push:
     branches: main
+    paths-ignore:
+      - "client/**"
     
 permissions:
   contents: read
