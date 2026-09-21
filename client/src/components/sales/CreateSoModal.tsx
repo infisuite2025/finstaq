@@ -129,7 +129,7 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
                 value={soNumber}
                 onChange={(e) => setSoNumber(e.target.value)}
                 required
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -141,7 +141,7 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
                 value={customerLedgerId}
                 onChange={(e) => setCustomerLedgerId(e.target.value)}
                 required
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 {customers.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -160,7 +160,7 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
                 value={orderDate}
                 onChange={(e) => setOrderDate(e.target.value)}
                 required
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -172,7 +172,7 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
                 type="text"
                 value={customerPoReference}
                 onChange={(e) => setCustomerPoReference(e.target.value)}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -184,7 +184,7 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
                 type="date"
                 value={deliveryDueDate}
                 onChange={(e) => setDeliveryDueDate(e.target.value)}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -196,7 +196,7 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
                 type="text"
                 value={paymentTerms}
                 onChange={(e) => setPaymentTerms(e.target.value)}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -208,7 +208,7 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
                 type="text"
                 value={shippingAddress}
                 onChange={(e) => setShippingAddress(e.target.value)}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
@@ -259,7 +259,7 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
                             onChange={(e) => handleUpdateItem(idx, 'description', e.target.value)}
                             placeholder="Product / Service description"
                             required
-                            className="w-full px-2 py-1 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-1 focus:ring-indigo-500"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                           />
                         </td>
                         <td className="p-2.5">
@@ -268,7 +268,7 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
                             value={item.hsnCode || ''}
                             onChange={(e) => handleUpdateItem(idx, 'hsnCode', e.target.value)}
                             placeholder="HSN"
-                            className="w-full px-2 py-1 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono text-center"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono text-center focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                           />
                         </td>
                         <td className="p-2.5">
@@ -277,7 +277,7 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
                             min="1"
                             value={item.quantity}
                             onChange={(e) => handleUpdateItem(idx, 'quantity', parseFloat(e.target.value) || 0)}
-                            className="w-full px-2 py-1 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-right font-mono"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs text-right font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                           />
                         </td>
                         <td className="p-2.5">
@@ -287,14 +287,14 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
                             step="0.01"
                             value={item.unitPrice}
                             onChange={(e) => handleUpdateItem(idx, 'unitPrice', parseFloat(e.target.value) || 0)}
-                            className="w-full px-2 py-1 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-right font-mono"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs text-right font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                           />
                         </td>
                         <td className="p-2.5">
                           <select
                             value={item.taxRatePercent}
                             onChange={(e) => handleUpdateItem(idx, 'taxRatePercent', parseFloat(e.target.value) || 0)}
-                            className="w-full px-1 py-1 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-right font-mono"
+                            className="w-full px-2 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs text-right font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                           >
                             <option value="0">0%</option>
                             <option value="5">5%</option>

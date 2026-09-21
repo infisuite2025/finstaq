@@ -538,13 +538,13 @@ export const ApprovalCenter: React.FC = () => {
                   placeholder="Search doc # or maker name..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm w-full focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  className="pl-9 pr-4 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl text-xs w-full bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
               <select
                 value={filterDocType}
                 onChange={(e) => setFilterDocType(e.target.value)}
-                className="px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-indigo-500"
+                className="px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl text-xs bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="ALL">All Document Types</option>
                 <option value="VENDOR_BILL">Vendor Bill (Purchase Invoice)</option>
@@ -749,13 +749,13 @@ export const ApprovalCenter: React.FC = () => {
                     </td>
                     <td className="py-3.5 px-4">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-slate-400 font-semibold text-sm">₹</span>
+                        <span className="text-slate-400 font-semibold text-xs">₹</span>
                         <input
                           type="number"
                           disabled={!rule.isEnabled}
                           value={rule.thresholdAmount}
                           onChange={(e) => handleThresholdChange(rule.docType, Number(e.target.value))}
-                          className="w-28 px-2.5 py-1 text-sm border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 font-semibold text-slate-900 disabled:bg-slate-100 disabled:text-slate-400"
+                          className="w-28 px-2.5 py-1 text-xs border border-emerald-400 dark:border-emerald-500 rounded-lg bg-white dark:bg-slate-950 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all font-semibold text-slate-900 dark:text-white disabled:bg-slate-100 dark:disabled:bg-slate-800 disabled:text-slate-400"
                         />
                       </div>
                       <div className="text-[11px] text-slate-400 mt-0.5">
@@ -901,7 +901,7 @@ export const ApprovalCenter: React.FC = () => {
               <select
                 value={simDocType}
                 onChange={(e) => setSimDocType(e.target.value)}
-                className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 text-xs border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 {rules.map(r => (
                   <option key={r.docType} value={r.docType}>
@@ -917,7 +917,7 @@ export const ApprovalCenter: React.FC = () => {
                 type="number"
                 value={simAmount}
                 onChange={(e) => setSimAmount(Number(e.target.value))}
-                className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500 font-semibold text-slate-900"
+                className="w-full px-3 py-2 text-xs border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all font-semibold text-slate-900 dark:text-white"
               />
             </div>
 
@@ -926,7 +926,7 @@ export const ApprovalCenter: React.FC = () => {
               <select
                 value={simMaker}
                 onChange={(e) => setSimMaker(e.target.value)}
-                className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 text-xs border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 {tenantUsers.map(u => (
                   <option key={u.id} value={u.id}>
@@ -1051,7 +1051,7 @@ export const ApprovalCenter: React.FC = () => {
                 value={actionRemarks}
                 onChange={(e) => setActionRemarks(e.target.value)}
                 placeholder={actionType === 'APPROVE' ? 'e.g., Verified against PO & GRN rates. Approved for posting.' : 'e.g., Rates do not match agreement with supplier.'}
-                className="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full px-3.5 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl text-xs bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 

@@ -96,7 +96,7 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Stark Logistics & Industrial Tools Ltd"
                 required
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -108,7 +108,7 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
                 type="text"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -122,7 +122,7 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
                 onChange={(e) => handleGstinChange(e.target.value)}
                 placeholder="27AABCS1429B1Z8"
                 maxLength={15}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none uppercase"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none uppercase transition-all"
               />
             </div>
 
@@ -136,7 +136,7 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
                 onChange={(e) => setPan(e.target.value.toUpperCase())}
                 placeholder="AABCS1429B"
                 maxLength={10}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none uppercase"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none uppercase transition-all"
               />
             </div>
 
@@ -149,7 +149,7 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
                 value={stateCode}
                 onChange={(e) => setStateCode(e.target.value)}
                 placeholder="27"
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -162,7 +162,7 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
                 value={contactPerson}
                 onChange={(e) => setContactPerson(e.target.value)}
                 placeholder="e.g. Anand Kulkarni"
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -175,7 +175,7 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="sales@starklogistics.com"
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -188,7 +188,7 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+91 94220 98765"
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -200,7 +200,7 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
                 type="number"
                 value={openingBalance}
                 onChange={(e) => setOpeningBalance(parseFloat(e.target.value) || 0)}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono text-right focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-right text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -213,7 +213,7 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
                 value={bankAccount}
                 onChange={(e) => setBankAccount(e.target.value)}
                 placeholder="50200012984112"
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -227,7 +227,7 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
                 onChange={(e) => setIfscCode(e.target.value.toUpperCase())}
                 placeholder="HDFC0000129"
                 maxLength={11}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none uppercase"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none uppercase transition-all"
               />
             </div>
 
@@ -240,7 +240,7 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Industrial Estate, Factory Shed #14, Bhosari, Pune"
                 rows={2}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>

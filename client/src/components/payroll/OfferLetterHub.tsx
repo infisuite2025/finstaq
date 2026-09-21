@@ -188,10 +188,10 @@ export function OfferLetterHub({
         <KPIScorecard
           label="Joined & Converted"
           value={joinedCount}
-          variant="featured"
+          variant="indigo"
           icon={UserCheck}
           badge="Active Master"
-          badgeVariant="glass"
+          badgeVariant="indigo"
           footer={{
             left: <span>Employees: <strong>{joinedCount}</strong></span>,
             right: <span>Status: <strong>Onboarded</strong></span>
@@ -208,7 +208,7 @@ export function OfferLetterHub({
             placeholder="Search candidate, role, dept..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full pl-9 pr-3 py-1.5 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
           />
         </div>
         <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto">
@@ -368,7 +368,7 @@ export function OfferLetterHub({
                     placeholder="e.g. Vikramaditya Sharma"
                     value={newOffer.candidateName}
                     onChange={(e) => setNewOffer({ ...newOffer, candidateName: e.target.value })}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -382,7 +382,7 @@ export function OfferLetterHub({
                     placeholder="vikram.sharma@example.com"
                     value={newOffer.email}
                     onChange={(e) => setNewOffer({ ...newOffer, email: e.target.value })}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -395,7 +395,7 @@ export function OfferLetterHub({
                     required
                     value={newOffer.designation}
                     onChange={(e) => setNewOffer({ ...newOffer, designation: e.target.value })}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -406,7 +406,7 @@ export function OfferLetterHub({
                   <select
                     value={newOffer.department}
                     onChange={(e) => setNewOffer({ ...newOffer, department: e.target.value })}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
                     <option value="Engineering & Product">Engineering & Product</option>
                     <option value="Finance & Accounts">Finance & Accounts</option>
@@ -426,7 +426,7 @@ export function OfferLetterHub({
                     required
                     value={newOffer.annualCtc}
                     onChange={(e) => setNewOffer({ ...newOffer, annualCtc: Number(e.target.value) })}
-                    className="w-full px-3 py-2 text-xs font-mono font-bold bg-gray-50 dark:bg-gray-900 border border-blue-400 rounded-lg text-blue-600 dark:text-blue-400"
+                    className="w-full px-3.5 py-2 text-xs font-mono font-bold bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-emerald-600 dark:text-emerald-400 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -439,7 +439,7 @@ export function OfferLetterHub({
                     required
                     value={newOffer.dateOfJoining}
                     onChange={(e) => setNewOffer({ ...newOffer, dateOfJoining: e.target.value })}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white font-mono"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -451,7 +451,7 @@ export function OfferLetterHub({
                     type="text"
                     value={newOffer.workLocation}
                     onChange={(e) => setNewOffer({ ...newOffer, workLocation: e.target.value })}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -463,7 +463,7 @@ export function OfferLetterHub({
                     type="text"
                     value={newOffer.reportingManager}
                     onChange={(e) => setNewOffer({ ...newOffer, reportingManager: e.target.value })}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>

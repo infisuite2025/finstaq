@@ -443,6 +443,45 @@ export function AccountingReportsWorkspace() {
           totalRow: { name: 'TOTAL ASSETS', group: '', amount: reportData.summary?.totalAssets || 0 },
         },
       ];
+    } else if (activeTab === 'profit_and_loss') {
+      pData.reportTitle = `PROFIT & LOSS STATEMENT (SCHEDULE III) — FY ${selectedFY}`;
+      pData.subtitle = `Statement of Profit & Loss for the Period ${startDate} to ${endDate}`;
+      pData.summaryCards = [
+        { label: 'Total Revenue', value: reportData.summary?.totalRevenue || 0, format: 'currency' },
+        { label: 'Cost of Goods Sold', value: reportData.summary?.costOfGoodsSold || 0, format: 'currency' },
+        { label: 'Gross Profit', value: reportData.summary?.grossProfit || 0, format: 'currency' },
+        { label: 'Operating Expenses', value: reportData.summary?.totalOperatingExpenses || 0, format: 'currency' },
+        { label: 'Net Profit After Tax', value: reportData.summary?.netProfitAfterTax || 0, format: 'currency' },
+      ];
+      pData.sections = [
+        {
+          title: 'I. REVENUE FROM OPERATIONS & OTHER INCOME',
+          columns: [
+            { header: 'Particulars / Revenue Category', accessor: 'category' },
+            { header: 'Amount (₹)', accessor: 'amount', align: 'right', format: 'currency' },
+          ],
+          rows: reportData.revenue || [],
+          totalRow: { category: 'TOTAL REVENUE (I)', amount: reportData.summary?.totalRevenue || 0 },
+        },
+        {
+          title: 'II. DIRECT EXPENSES & COST OF PRODUCTION',
+          columns: [
+            { header: 'Expense Classification', accessor: 'category' },
+            { header: 'Amount (₹)', accessor: 'amount', align: 'right', format: 'currency' },
+          ],
+          rows: reportData.directExpenses || [],
+          totalRow: { category: 'TOTAL DIRECT COSTS & COGS (II)', amount: reportData.summary?.costOfGoodsSold || 0 },
+        },
+        {
+          title: 'III. OPERATING, ADMINISTRATIVE & FINANCE EXPENSES',
+          columns: [
+            { header: 'Expense Head', accessor: 'category' },
+            { header: 'Amount (₹)', accessor: 'amount', align: 'right', format: 'currency' },
+          ],
+          rows: reportData.operatingExpenses || [],
+          totalRow: { category: 'TOTAL OPERATING EXPENSES (III)', amount: reportData.summary?.totalOperatingExpenses || 0 },
+        },
+      ];
     } else if (activeTab === 'trial_balance') {
       pData.reportTitle = `TRIAL BALANCE STATEMENT — FY ${selectedFY}`;
       pData.subtitle = 'Double-Entry General Ledger Balances Verification';
@@ -465,6 +504,187 @@ export function AccountingReportsWorkspace() {
         closingDr: reportData.summary?.totalClosingDr || 0,
         closingCr: reportData.summary?.totalClosingCr || 0,
       };
+    } else if (activeTab === 'cash_flow') {
+      pData.reportTitle = `CASH FLOW STATEMENT (AS-3 / IND AS 7) — FY ${selectedFY}`;
+      pData.subtitle = `Statement of Cash Flows (Indirect Method) for Period ${startDate} to ${endDate}`;
+      pData.summaryCards = [
+        { label: 'Operating Cash Flow', value: reportData.summary?.netOperatingCash || 0, format: 'currency' },
+        { label: 'Investing Cash Flow', value: reportData.summary?.netInvestingCash || 0, format: 'currency' },
+        { label: 'Financing Cash Flow', value: reportData.summary?.netFinancingCash || 0, format: 'currency' },
+        { label: 'Net Change in Cash', value: reportData.summary?.netChangeInCash || 0, format: 'currency' },
+        { label: 'Closing Cash & Bank', value: reportData.summary?.closingCashBank || 0, format: 'currency' },
+      ];
+      pData.sections = [
+        {
+          title: 'I. CASH FLOWS FROM OPERATING ACTIVITIES',
+          columns: [
+            { header: 'Activity Description', accessor: 'description' },
+            { header: 'Amount (₹)', accessor: 'amount', align: 'right', format: 'currency' },
+          ],
+          rows: reportData.operatingActivities || [],
+          totalRow: { description: 'NET CASH FLOW FROM OPERATING ACTIVITIES (A)', amount: reportData.summary?.netOperatingCash || 0 },
+        },
+        {
+          title: 'II. CASH FLOWS FROM INVESTING ACTIVITIES',
+          columns: [
+            { header: 'Activity Description', accessor: 'description' },
+            { header: 'Amount (₹)', accessor: 'amount', align: 'right', format: 'currency' },
+          ],
+          rows: reportData.investingActivities || [],
+          totalRow: { description: 'NET CASH USED IN INVESTING ACTIVITIES (B)', amount: reportData.summary?.netInvestingCash || 0 },
+        },
+        {
+          title: 'III. CASH FLOWS FROM FINANCING ACTIVITIES',
+          columns: [
+            { header: 'Activity Description', accessor: 'description' },
+            { header: 'Amount (₹)', accessor: 'amount', align: 'right', format: 'currency' },
+          ],
+          rows: reportData.financingActivities || [],
+          totalRow: { description: 'NET CASH FLOW FROM FINANCING ACTIVITIES (C)', amount: reportData.summary?.netFinancingCash || 0 },
+        },
+      ];
+    } else if (activeTab === 'ledger_statement') {
+      pData.reportTitle = `GENERAL LEDGER STATEMENT — FY ${selectedFY}`;
+      pData.subtitle = reportData.summary?.ledgerName ? `Account: ${reportData.summary.ledgerName} (${reportData.summary.accountGroup || 'Ledger'})` : 'Detailed Ledger Transactions & Running Balances';
+      pData.summaryCards = [
+        { label: 'Total Debits', value: reportData.summary?.totalDebits || 0, format: 'currency' },
+        { label: 'Total Credits', value: reportData.summary?.totalCredits || 0, format: 'currency' },
+        { label: 'Closing Balance', value: reportData.summary?.closingBalance || 0, format: 'currency' },
+        { label: 'Balance Type', value: reportData.summary?.balanceType || 'Dr', format: 'text' },
+      ];
+      pData.columns = [
+        { header: 'Date', accessor: 'date' },
+        { header: 'Voucher #', accessor: 'voucherNo' },
+        { header: 'Type', accessor: 'voucherType' },
+        { header: 'Particulars', accessor: 'particulars' },
+        { header: 'Debit (₹)', accessor: 'debit', align: 'right', format: 'currency' },
+        { header: 'Credit (₹)', accessor: 'credit', align: 'right', format: 'currency' },
+        { header: 'Running Balance (₹)', accessor: 'balance', align: 'right', format: 'currency' },
+        { header: 'Dr/Cr', accessor: 'balanceType', align: 'center' },
+      ];
+      pData.rows = reportData.entries || [];
+    } else if (activeTab === 'bank_reconciliation') {
+      pData.reportTitle = `BANK RECONCILIATION STATEMENT (BRS) — FY ${selectedFY}`;
+      pData.subtitle = reportData.summary?.bankName || 'Bank Account vs General Ledger Reconciliation';
+      pData.summaryCards = [
+        { label: 'Book Balance', value: reportData.summary?.balanceAsPerCompanyBooks || 0, format: 'currency' },
+        { label: 'Unpresented Cheques', value: reportData.summary?.unpresentedChequesTotal || 0, format: 'currency' },
+        { label: 'Uncleared Deposits', value: reportData.summary?.unclearedDepositsTotal || 0, format: 'currency' },
+        { label: 'Bank Statement Balance', value: reportData.summary?.balanceAsPerBankStatement || 0, format: 'currency' },
+      ];
+      pData.columns = [
+        { header: 'Date', accessor: 'date' },
+        { header: 'Ref / Cheque #', accessor: 'chqNo' },
+        { header: 'Transaction Particulars', accessor: 'particulars' },
+        { header: 'Book Amount (₹)', accessor: 'bookAmount', align: 'right', format: 'currency' },
+        { header: 'Item Type', accessor: 'type' },
+      ];
+      pData.rows = reportData.brsItems || [];
+    } else if (activeTab === 'ratio_analysis') {
+      pData.reportTitle = `KEY FINANCIAL RATIOS & SOLVENCY ANALYSIS — FY ${selectedFY}`;
+      pData.subtitle = 'Management Financial Health, Liquidity & Profitability Indicators';
+      pData.summaryCards = [
+        { label: 'Health Score', value: reportData.summary?.overallHealthScore || 'A+', format: 'text' },
+        { label: 'Working Capital Cycle', value: reportData.summary?.workingCapitalCycle || '10 Days', format: 'text' },
+        { label: 'Solvency Grade', value: reportData.summary?.solvencyGrade || 'Low Debt', format: 'text' },
+      ];
+      pData.columns = [
+        { header: 'Ratio Name', accessor: 'name' },
+        { header: 'Category', accessor: 'category' },
+        { header: 'Value', accessor: 'value', align: 'center' },
+        { header: 'Benchmark', accessor: 'benchmark', align: 'center' },
+        { header: 'Status', accessor: 'status' },
+        { header: 'Description / Formula', accessor: 'description' },
+      ];
+      pData.rows = reportData.ratios || [];
+    } else if (activeTab === 'group_summary') {
+      pData.reportTitle = `CHART OF ACCOUNTS GROUP SUMMARY — FY ${selectedFY}`;
+      pData.subtitle = 'Primary Ledger Groups Net Balance & Transaction Aggregates';
+      pData.summaryCards = [
+        { label: 'Total Active Groups', value: reportData.summary?.totalActiveGroups || 0, format: 'text' },
+        { label: 'Total Ledger Count', value: reportData.summary?.totalLedgerCount || 0, format: 'text' },
+      ];
+      pData.columns = [
+        { header: 'Account Group', accessor: 'groupName' },
+        { header: 'Ledger Count', accessor: 'ledgerCount', align: 'center' },
+        { header: 'Debit Total (₹)', accessor: 'debitTotal', align: 'right', format: 'currency' },
+        { header: 'Credit Total (₹)', accessor: 'creditTotal', align: 'right', format: 'currency' },
+        { header: 'Net Balance (₹)', accessor: 'netBalance', align: 'right', format: 'currency' },
+        { header: 'Nature', accessor: 'nature', align: 'center' },
+      ];
+      pData.rows = reportData.groups || [];
+    } else if (activeTab === 'gst_computation') {
+      pData.reportTitle = `GST COMPUTATION & STATUTORY TAX LIABILITY — FY ${selectedFY}`;
+      pData.subtitle = 'Output Tax Liability, ITC Offset & Net Cash Payment Statement';
+      pData.summaryCards = [
+        { label: 'Outward Turnover', value: reportData.summary?.outwardTaxableTurnover || 0, format: 'currency' },
+        { label: 'Output Tax Liability', value: reportData.summary?.totalOutputTax || 0, format: 'currency' },
+        { label: 'Input Tax Credit (ITC)', value: reportData.summary?.totalInputTaxCredit || 0, format: 'currency' },
+        { label: 'Net Cash GST Payable', value: reportData.summary?.totalNetGstPayable || 0, format: 'currency' },
+      ];
+      pData.sections = [
+        {
+          title: 'I. OUTWARD SUPPLIES & TAX LIABILITY',
+          columns: [
+            { header: 'Tax Head / Base', accessor: 'head' },
+            { header: 'Taxable Turnover (₹)', accessor: 'taxable', align: 'right', format: 'currency' },
+            { header: 'CGST (₹)', accessor: 'cgst', align: 'right', format: 'currency' },
+            { header: 'SGST (₹)', accessor: 'sgst', align: 'right', format: 'currency' },
+            { header: 'IGST (₹)', accessor: 'igst', align: 'right', format: 'currency' },
+            { header: 'Total Output (₹)', accessor: 'total', align: 'right', format: 'currency' },
+          ],
+          rows: [
+            {
+              head: 'Outward Invoices (B2B & B2C)',
+              taxable: reportData.outwardLiability?.taxableTurnover || 0,
+              cgst: reportData.outwardLiability?.cgst || 0,
+              sgst: reportData.outwardLiability?.sgst || 0,
+              igst: reportData.outwardLiability?.igst || 0,
+              total: reportData.outwardLiability?.totalOutputTax || 0,
+            },
+          ],
+        },
+        {
+          title: 'II. ELIGIBLE INPUT TAX CREDIT (ITC) FROM PURCHASES',
+          columns: [
+            { header: 'ITC Head', accessor: 'head' },
+            { header: 'Taxable Inward (₹)', accessor: 'taxable', align: 'right', format: 'currency' },
+            { header: 'CGST ITC (₹)', accessor: 'cgst', align: 'right', format: 'currency' },
+            { header: 'SGST ITC (₹)', accessor: 'sgst', align: 'right', format: 'currency' },
+            { header: 'IGST ITC (₹)', accessor: 'igst', align: 'right', format: 'currency' },
+            { header: 'Total ITC (₹)', accessor: 'total', align: 'right', format: 'currency' },
+          ],
+          rows: [
+            {
+              head: 'Inward Supplies (Raw Materials & Services)',
+              taxable: reportData.inwardItc?.taxableBase || 0,
+              cgst: reportData.inwardItc?.cgst || 0,
+              sgst: reportData.inwardItc?.sgst || 0,
+              igst: reportData.inwardItc?.igst || 0,
+              total: reportData.inwardItc?.totalInputTaxCredit || 0,
+            },
+          ],
+        },
+        {
+          title: 'III. NET GST PAYABLE (ELECTRONIC CASH LEDGER SETTLEMENT)',
+          columns: [
+            { header: 'Liability Settlement', accessor: 'head' },
+            { header: 'Net CGST (₹)', accessor: 'cgst', align: 'right', format: 'currency' },
+            { header: 'Net SGST (₹)', accessor: 'sgst', align: 'right', format: 'currency' },
+            { header: 'Net IGST (₹)', accessor: 'igst', align: 'right', format: 'currency' },
+            { header: 'Total Cash Payable (₹)', accessor: 'total', align: 'right', format: 'currency' },
+          ],
+          rows: [
+            {
+              head: 'Net Payable after ITC Set-Off',
+              cgst: reportData.netGstPayable?.cgstPayable || 0,
+              sgst: reportData.netGstPayable?.sgstPayable || 0,
+              igst: reportData.netGstPayable?.igstPayable || 0,
+              total: reportData.netGstPayable?.totalNetCashPayable || 0,
+            },
+          ],
+        },
+      ];
     }
 
     setPrintData(pData);
@@ -473,25 +693,70 @@ export function AccountingReportsWorkspace() {
 
   const exportToCSV = () => {
     let csvContent = 'data:text/csv;charset=utf-8,';
-    let rows: any[] = [];
-    if (reportData.groups) rows = reportData.groups;
-    else if (reportData.entries) rows = reportData.entries;
-    else if (reportData.ratios) rows = reportData.ratios;
-    else if (reportData.operatingActivities) rows = reportData.operatingActivities;
+    csvContent += `"APEX INDUSTRIES LIMITED"\r\n`;
+    csvContent += `"FINANCIAL & STATUTORY REPORT: ${activeTab.replace(/_/g, ' ').toUpperCase()} (FY ${selectedFY})"\r\n`;
+    csvContent += `"Period: ${startDate} to ${endDate}"\r\n\r\n`;
 
-    if (rows.length === 0) return;
-    const headers = Object.keys(rows[0]).filter((k) => typeof rows[0][k] !== 'object');
-    csvContent += headers.join(',') + '\r\n';
+    if (activeTab === 'balance_sheet') {
+      csvContent += '"I. LIABILITIES & SHAREHOLDERS FUNDS"\r\n';
+      csvContent += '"Group","Sub-Category","Amount"\r\n';
+      (reportData.liabilities || []).forEach((g: any) => {
+        (g.subGroups || []).forEach((sg: any) => {
+          csvContent += `"${g.groupName}","${sg.name}","${sg.amount}"\r\n`;
+        });
+      });
+      csvContent += `\r\n"II. ASSETS & CAPITAL DEPLOYMENT"\r\n`;
+      csvContent += '"Classification","Ledger / Category","Amount"\r\n';
+      (reportData.assets || []).forEach((g: any) => {
+        (g.subGroups || []).forEach((sg: any) => {
+          csvContent += `"${g.groupName}","${sg.name}","${sg.amount}"\r\n`;
+        });
+      });
+    } else if (activeTab === 'profit_and_loss') {
+      csvContent += '"I. REVENUE"\r\n"Category","Amount"\r\n';
+      (reportData.revenue || []).forEach((r: any) => { csvContent += `"${r.category}","${r.amount}"\r\n`; });
+      csvContent += '\r\n"II. DIRECT EXPENSES & COGS"\r\n"Category","Amount"\r\n';
+      (reportData.directExpenses || []).forEach((r: any) => { csvContent += `"${r.category}","${r.amount}"\r\n`; });
+      csvContent += '\r\n"III. OPERATING EXPENSES"\r\n"Category","Amount"\r\n';
+      (reportData.operatingExpenses || []).forEach((r: any) => { csvContent += `"${r.category}","${r.amount}"\r\n`; });
+    } else if (activeTab === 'cash_flow') {
+      csvContent += '"I. OPERATING ACTIVITIES"\r\n"Description","Amount"\r\n';
+      (reportData.operatingActivities || []).forEach((r: any) => { csvContent += `"${r.description}","${r.amount}"\r\n`; });
+      csvContent += '\r\n"II. INVESTING ACTIVITIES"\r\n"Description","Amount"\r\n';
+      (reportData.investingActivities || []).forEach((r: any) => { csvContent += `"${r.description}","${r.amount}"\r\n`; });
+      csvContent += '\r\n"III. FINANCING ACTIVITIES"\r\n"Description","Amount"\r\n';
+      (reportData.financingActivities || []).forEach((r: any) => { csvContent += `"${r.description}","${r.amount}"\r\n`; });
+    } else if (activeTab === 'gst_computation') {
+      csvContent += '"I. OUTWARD LIABILITY"\r\n"Taxable Turnover","CGST","SGST","IGST","Total Output"\r\n';
+      const out = reportData.outwardLiability || {};
+      csvContent += `"${out.taxableTurnover || 0}","${out.cgst || 0}","${out.sgst || 0}","${out.igst || 0}","${out.totalOutputTax || 0}"\r\n\r\n`;
+      csvContent += '"II. INWARD ITC"\r\n"Taxable Base","CGST ITC","SGST ITC","IGST ITC","Total ITC"\r\n';
+      const itc = reportData.inwardItc || {};
+      csvContent += `"${itc.taxableBase || 0}","${itc.cgst || 0}","${itc.sgst || 0}","${itc.igst || 0}","${itc.totalInputTaxCredit || 0}"\r\n\r\n`;
+      csvContent += '"III. NET GST PAYABLE"\r\n"CGST Payable","SGST Payable","IGST Payable","Total Cash Payable"\r\n';
+      const net = reportData.netGstPayable || {};
+      csvContent += `"${net.cgstPayable || 0}","${net.sgstPayable || 0}","${net.igstPayable || 0}","${net.totalNetCashPayable || 0}"\r\n`;
+    } else {
+      let rows: any[] = [];
+      if (reportData.groups) rows = reportData.groups;
+      else if (reportData.entries) rows = reportData.entries;
+      else if (reportData.ratios) rows = reportData.ratios;
+      else if (reportData.brsItems) rows = reportData.brsItems;
 
-    rows.forEach((row) => {
-      const line = headers
-        .map((h) => {
-          const val = row[h] !== undefined && row[h] !== null ? String(row[h]).replace(/"/g, '""') : '';
-          return `"${val}"`;
-        })
-        .join(',');
-      csvContent += line + '\r\n';
-    });
+      if (rows.length === 0) return;
+      const headers = Object.keys(rows[0]).filter((k) => typeof rows[0][k] !== 'object');
+      csvContent += headers.join(',') + '\r\n';
+
+      rows.forEach((row) => {
+        const line = headers
+          .map((h) => {
+            const val = row[h] !== undefined && row[h] !== null ? String(row[h]).replace(/"/g, '""') : '';
+            return `"${val}"`;
+          })
+          .join(',');
+        csvContent += line + '\r\n';
+      });
+    }
 
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');

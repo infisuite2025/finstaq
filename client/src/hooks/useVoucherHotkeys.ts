@@ -6,6 +6,9 @@ interface HotkeyOptions {
   onQuickCreate: () => void;
   onEscape: () => void;
   onSwitchType: (type: VoucherType) => void;
+  onAddRow?: () => void;
+  onSwitchTab?: (tab: 'entry' | 'register') => void;
+  onToggleMode?: () => void;
   isModalOpen: boolean;
 }
 
@@ -14,6 +17,9 @@ export function useVoucherHotkeys({
   onQuickCreate,
   onEscape,
   onSwitchType,
+  onAddRow,
+  onSwitchTab,
+  onToggleMode,
   isModalOpen,
 }: HotkeyOptions) {
   /**
@@ -59,15 +65,55 @@ export function useVoucherHotkeys({
         return;
       }
 
-      // 2. Ctrl + A or Alt + A: Fast Save / Accept Voucher
-      if ((e.ctrlKey || e.altKey) && (e.key === 'a' || e.key === 'A')) {
+      // 2. Alt + A: Add Row / Line
+      if (e.altKey && !e.ctrlKey && (e.key === 'a' || e.key === 'A')) {
+        if (onAddRow) {
+          e.preventDefault();
+          e.stopPropagation();
+          onAddRow();
+          return;
+        }
+      }
+
+      // 3. Ctrl + A: Save / Accept Voucher
+      if (e.ctrlKey && !e.altKey && (e.key === 'a' || e.key === 'A')) {
         e.preventDefault();
         e.stopPropagation();
         onSave();
         return;
       }
 
-      // 3. Escape: Close Modal or Exit
+      // 4. Alt + V: Switch to Voucher Entry Tab
+      if (e.altKey && (e.key === 'v' || e.key === 'V')) {
+        if (onSwitchTab) {
+          e.preventDefault();
+          e.stopPropagation();
+          onSwitchTab('entry');
+          return;
+        }
+      }
+
+      // 5. Alt + D: Switch to Day Book / Register Tab
+      if (e.altKey && (e.key === 'd' || e.key === 'D')) {
+        if (onSwitchTab) {
+          e.preventDefault();
+          e.stopPropagation();
+          onSwitchTab('register');
+          return;
+        }
+      }
+
+      // 6. Ctrl + H: Toggle Entry Mode
+      if (e.ctrlKey && (e.key === 'h' || e.key === 'H')) {
+        if (onToggleMode) {
+          e.preventDefault();
+          e.stopPropagation();
+          onToggleMode();
+          return;
+        }
+      }
+
+      // 7. Escape: Close Modal or Exit
       if (e.key === 'Escape') {
         e.preventDefault();
         onEscape();
@@ -77,7 +123,7 @@ export function useVoucherHotkeys({
       // If modal is open, don't trigger voucher type function keys
       if (isModalOpen) return;
 
-      // 4. Standard Function Key Shortcuts
+      // 8. Standard Function Key Shortcuts (F4 - F9)
       switch (e.key) {
         case 'F4':
           e.preventDefault();
@@ -105,11 +151,11 @@ export function useVoucherHotkeys({
           break;
       }
 
-      // 5. Enter field navigation
+      // 9. Enter field navigation
       handleEnterNavigation(e);
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onSave, onQuickCreate, onEscape, onSwitchType, isModalOpen, handleEnterNavigation]);
+  }, [onSave, onQuickCreate, onEscape, onSwitchType, onAddRow, onSwitchTab, onToggleMode, isModalOpen, handleEnterNavigation]);
 }

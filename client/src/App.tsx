@@ -141,7 +141,7 @@ function MainWorkspace({
 }) {
   const { theme, toggleTheme } = useTheme();
   const [activeTab, setActiveTab] = useState<TabType>(
-    session.role === 'SUPER_ADMIN' ? 'super-admin' : 'financial-periods'
+    session.role === 'SUPER_ADMIN' ? 'super-admin' : 'analytics'
   );
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [isGenieOpen, setIsGenieOpen] = useState<boolean>(false);
@@ -295,8 +295,8 @@ function MainWorkspace({
 
   const getBreadcrumb = () => {
     switch (activeTab) {
-      case 'analytics': return { section: 'Executive & BI', title: 'Owner Analytics, Financial Ratios & 360° Business Intelligence Command Center' };
-      case 'super-admin': return { section: 'Platform Owner', title: 'Global Multi-Tenant & Subscription Control Center' };
+      case 'analytics': return { section: 'Executive & BI', title: 'Executive Analytics 360°' };
+      case 'super-admin': return { section: 'Platform Owner', title: 'Platform Control Center' };
       case 'voucher': return { section: 'Financial Accounting', title: 'Voucher Matrix & Ledger Entries' };
       case 'notes': return { section: 'Financial Accounting', title: 'GST Debit Notes & Credit Notes (Sec 34)' };
       case 'cost-centers': return { section: 'Financial Accounting', title: 'Cost Center & Multi-Tier Profitability Breakup Matrix' };
@@ -468,12 +468,12 @@ function MainWorkspace({
       {/* Main Right View Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top Clean Header Bar */}
-        <header className="h-14 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 flex items-center justify-between shrink-0 shadow-xs z-10">
+        <header className="h-14 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 flex items-center justify-between shrink-0 shadow-xs z-10 gap-4">
           {/* Breadcrumbs */}
-          <div className="flex items-center space-x-2 text-xs">
-            <span className="text-slate-400 dark:text-slate-500 font-medium">{breadcrumb.section}</span>
-            <span className="text-slate-300 dark:text-slate-700">/</span>
-            <span className="font-bold text-slate-800 dark:text-slate-100 text-sm">{breadcrumb.title}</span>
+          <div className="flex items-center space-x-2 text-xs min-w-0 truncate">
+            <span className="text-slate-400 dark:text-slate-500 font-medium shrink-0">{breadcrumb.section}</span>
+            <span className="text-slate-300 dark:text-slate-700 shrink-0">/</span>
+            <span className="font-bold text-slate-800 dark:text-slate-100 text-sm truncate">{breadcrumb.title}</span>
           </div>
 
           {/* Right Utilities */}

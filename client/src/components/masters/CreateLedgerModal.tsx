@@ -99,7 +99,7 @@ export const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({ isOpen, on
               placeholder="e.g. Printing & Stationery, ICICI Bank Overdraft, Audit Fees"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 
@@ -110,7 +110,7 @@ export const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({ isOpen, on
                 required
                 value={groupId}
                 onChange={(e) => setGroupId(e.target.value)}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background font-medium"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="">-- Select Group --</option>
                 {groups.map((g) => (
@@ -125,7 +125,7 @@ export const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({ isOpen, on
                 placeholder="e.g. EXP-OFF-01"
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background uppercase font-mono"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white uppercase font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
@@ -138,7 +138,7 @@ export const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({ isOpen, on
                 step="0.01"
                 value={openingBalance}
                 onChange={(e) => setOpeningBalance(Number(e.target.value))}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background font-mono"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
             <div>
@@ -149,7 +149,7 @@ export const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({ isOpen, on
                 placeholder="27AABCF1234F1Z5"
                 value={gstIn}
                 onChange={(e) => handleGstChange(e.target.value)}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background font-mono uppercase"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono uppercase focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>

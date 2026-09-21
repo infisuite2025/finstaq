@@ -41,18 +41,294 @@ export interface SessionActivityLog {
 }
 
 
+function generateDefaultAuditLogs(tenantId: string): DataChangeLog[] {
+  const now = new Date();
+  const d = (hoursAgo: number) => new Date(now.getTime() - hoursAgo * 3600 * 1000).toISOString();
+
+  return [
+    {
+      id: 'aud-001',
+      tenantId,
+      userId: 'usr-002',
+      userName: 'Priya Deshmukh',
+      userRole: 'ACCOUNTANT',
+      action: 'UPDATE',
+      entityName: 'SALES_INVOICE',
+      entityId: 'inv-8429',
+      entityNumber: 'INV-2026-0842',
+      ipAddress: '192.168.1.45',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0',
+      narration: 'Special festive corporate discount applied post client approval (PO-4412)',
+      diffJson: {
+        changedFields: ['taxableAmount', 'cgst', 'sgst', 'totalAmount', 'discountRate'],
+        before: { taxableAmount: 120000, cgst: 10800, sgst: 10800, totalAmount: 141600, discountRate: 0 },
+        after: { taxableAmount: 115000, cgst: 10350, sgst: 10350, totalAmount: 135700, discountRate: 4.16 }
+      },
+      createdAt: d(2),
+    },
+    {
+      id: 'aud-002',
+      tenantId,
+      userId: 'usr-001',
+      userName: 'Vikram Singhania',
+      userRole: 'OWNER',
+      action: 'POST',
+      entityName: 'JOURNAL_VOUCHER',
+      entityId: 'jv-2026-004',
+      entityNumber: 'JV-2026-004',
+      ipAddress: '10.0.4.12',
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/125.0',
+      narration: 'Machinery depreciation allowance Q3 statutory adjustment post CA review',
+      diffJson: {
+        changedFields: ['status', 'totalDebit', 'totalCredit', 'postedDate'],
+        before: { status: 'DRAFT', totalDebit: 0, totalCredit: 0, postedDate: null },
+        after: { status: 'POSTED', totalDebit: 45000, totalCredit: 45000, postedDate: '2026-03-31' }
+      },
+      createdAt: d(5),
+    },
+    {
+      id: 'aud-003',
+      tenantId,
+      userId: 'usr-002',
+      userName: 'Priya Deshmukh',
+      userRole: 'ACCOUNTANT',
+      action: 'REVERSE',
+      entityName: 'PURCHASE_ORDER',
+      entityId: 'po-1120',
+      entityNumber: 'PO-2026-1120',
+      ipAddress: '192.168.1.45',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0',
+      narration: 'Duplicate PO cancelled by vendor request. Offset reversal voucher JV-089 generated.',
+      diffJson: {
+        changedFields: ['status', 'cancellationReason', 'reversedByVoucher'],
+        before: { status: 'APPROVED', cancellationReason: null, reversedByVoucher: null },
+        after: { status: 'CANCELLED_REVERSED', cancellationReason: 'Vendor duplicate order', reversedByVoucher: 'JV-2026-089' }
+      },
+      createdAt: d(8),
+    },
+    {
+      id: 'aud-004',
+      tenantId,
+      userId: 'usr-003',
+      userName: 'Ramesh Patel',
+      userRole: 'DATA_ENTRY',
+      action: 'UPDATE',
+      entityName: 'VOUCHER_ADJUSTMENT',
+      entityId: 'bnk-9021',
+      entityNumber: 'BANK-TXN-9021',
+      ipAddress: '192.168.1.52',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/123.0',
+      narration: 'HDFC Current A/c automated bank statement match & reconciliation clearance',
+      diffJson: {
+        changedFields: ['reconciledStatus', 'bankRefNo', 'reconciledAt'],
+        before: { reconciledStatus: 'UNRECONCILED', bankRefNo: null, reconciledAt: null },
+        after: { reconciledStatus: 'CLEARED_RECONCILED', bankRefNo: 'UTR-HDFC-9921448', reconciledAt: '2026-09-18T11:30:00Z' }
+      },
+      createdAt: d(12),
+    },
+    {
+      id: 'aud-005',
+      tenantId,
+      userId: 'usr-001',
+      userName: 'Vikram Singhania',
+      userRole: 'OWNER',
+      action: 'UPDATE',
+      entityName: 'LEDGER',
+      entityId: 'led-gst-18',
+      entityNumber: 'TAX-GST-18',
+      ipAddress: '10.0.4.12',
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/125.0',
+      narration: 'MCA & CBIC Notification 04/2026 compliance classification and HSN realignment',
+      diffJson: {
+        changedFields: ['hsnCode', 'taxCategory', 'effectiveDate'],
+        before: { hsnCode: '998311', taxCategory: 'MANAGEMENT_CONSULTING', effectiveDate: '2025-04-01' },
+        after: { hsnCode: '998313', taxCategory: 'TECHNICAL_IT_SERVICES', effectiveDate: '2026-04-01' }
+      },
+      createdAt: d(18),
+    },
+    {
+      id: 'aud-006',
+      tenantId,
+      userId: 'usr-002',
+      userName: 'Priya Deshmukh',
+      userRole: 'ACCOUNTANT',
+      action: 'UPDATE',
+      entityName: 'PAYROLL',
+      entityId: 'pay-2026-02',
+      entityNumber: 'EMP-SAL-2026-02',
+      ipAddress: '192.168.1.45',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0',
+      narration: 'Section 192 tax slab recalculation for bonus payout adjustment',
+      diffJson: {
+        changedFields: ['tdsDeducted', 'netPayable', 'bonusTaxable'],
+        before: { tdsDeducted: 12500, netPayable: 87500, bonusTaxable: 0 },
+        after: { tdsDeducted: 14200, netPayable: 110800, bonusTaxable: 25000 }
+      },
+      createdAt: d(24),
+    },
+    {
+      id: 'aud-007',
+      tenantId,
+      userId: 'usr-003',
+      userName: 'Ramesh Patel',
+      userRole: 'DATA_ENTRY',
+      action: 'CREATE',
+      entityName: 'INVENTORY_ITEM',
+      entityId: 'item-steel-01',
+      entityNumber: 'ITEM-STEEL-01',
+      ipAddress: '192.168.1.52',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/123.0',
+      narration: 'Raw material intake lot #8820 registered under Central Warehouse Bin-4',
+      diffJson: {
+        changedFields: ['sku', 'quantity', 'unitRate', 'valuationTotal'],
+        before: {},
+        after: { sku: 'HR-COIL-304', quantity: 150, unitRate: 3000, valuationTotal: 450000 }
+      },
+      createdAt: d(36),
+    },
+    {
+      id: 'aud-008',
+      tenantId,
+      userId: 'usr-001',
+      userName: 'Vikram Singhania',
+      userRole: 'OWNER',
+      action: 'UPDATE',
+      entityName: 'PARTY',
+      entityId: 'pty-tata-01',
+      entityNumber: 'CUST-TATA-01',
+      ipAddress: '10.0.4.12',
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/125.0',
+      narration: 'Credit limit expansion post financial solvency review and board ratification',
+      diffJson: {
+        changedFields: ['creditLimit', 'paymentTermsDays', 'rating'],
+        before: { creditLimit: 2500000, paymentTermsDays: 30, rating: 'A' },
+        after: { creditLimit: 5000000, paymentTermsDays: 45, rating: 'AAA' }
+      },
+      createdAt: d(48),
+    }
+  ];
+}
+
+function generateDefaultSessions(tenantId: string): SessionActivityLog[] {
+  const now = new Date();
+  const d = (hoursAgo: number) => new Date(now.getTime() - hoursAgo * 3600 * 1000).toISOString();
+
+  return [
+    {
+      id: 'ses-101',
+      tenantId,
+      userId: 'usr-001',
+      userEmail: 'owner@apexindustries.com',
+      userRole: 'OWNER',
+      eventType: 'LOGIN',
+      ipAddress: '10.0.4.12',
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/125.0',
+      deviceType: 'Desktop',
+      status: 'SUCCESS',
+      details: 'Two-Factor Authentication (TOTP) verified successfully.',
+      createdAt: d(1),
+    },
+    {
+      id: 'ses-102',
+      tenantId,
+      userId: 'usr-002',
+      userEmail: 'accountant@apexindustries.com',
+      userRole: 'ACCOUNTANT',
+      eventType: 'EXPORT_DATA',
+      ipAddress: '192.168.1.45',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0',
+      deviceType: 'Desktop',
+      status: 'SUCCESS',
+      details: 'Exported GSTR-3B monthly sales & purchase reconciliation Excel.',
+      createdAt: d(2.5),
+    },
+    {
+      id: 'ses-103',
+      tenantId,
+      userId: 'usr-002',
+      userEmail: 'accountant@apexindustries.com',
+      userRole: 'ACCOUNTANT',
+      eventType: 'LOGIN',
+      ipAddress: '192.168.1.45',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0',
+      deviceType: 'Desktop',
+      status: 'SUCCESS',
+      details: 'Corporate SSO session authenticated.',
+      createdAt: d(4),
+    },
+    {
+      id: 'ses-104',
+      tenantId,
+      userId: 'usr-001',
+      userEmail: 'owner@apexindustries.com',
+      userRole: 'OWNER',
+      eventType: 'PRINT_REPORT',
+      ipAddress: '10.0.4.12',
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/125.0',
+      deviceType: 'Desktop',
+      status: 'SUCCESS',
+      details: 'Generated Statutory Balance Sheet & P&L MCA Report PDF.',
+      createdAt: d(6),
+    },
+    {
+      id: 'ses-105',
+      tenantId,
+      userId: 'usr-003',
+      userEmail: 'clerk@apexindustries.com',
+      userRole: 'DATA_ENTRY',
+      eventType: 'LOGIN',
+      ipAddress: '192.168.1.52',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/123.0',
+      deviceType: 'Desktop',
+      status: 'SUCCESS',
+      details: 'Branch workstation logged in.',
+      createdAt: d(9),
+    },
+    {
+      id: 'ses-106',
+      tenantId,
+      userId: 'usr-003',
+      userEmail: 'clerk@apexindustries.com',
+      userRole: 'DATA_ENTRY',
+      eventType: 'LOGOUT',
+      ipAddress: '192.168.1.52',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/123.0',
+      deviceType: 'Desktop',
+      status: 'SUCCESS',
+      details: 'Shift concluded, session terminated normally.',
+      createdAt: d(17),
+    },
+    {
+      id: 'ses-107',
+      tenantId,
+      userId: 'usr-002',
+      userEmail: 'accountant@apexindustries.com',
+      userRole: 'ACCOUNTANT',
+      eventType: 'PASSWORD_CHANGE',
+      ipAddress: '192.168.1.45',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0',
+      deviceType: 'Desktop',
+      status: 'SUCCESS',
+      details: 'Mandatory 90-day periodic password rotation completed.',
+      createdAt: d(28),
+    }
+  ];
+}
+
 async function getTenantAuditLogs(tenantId: string): Promise<DataChangeLog[]> {
   const record = await prisma.keyValueStore.findUnique({
     where: { tenantId_key: { tenantId, key: 'AUDIT_LOGS' } }
   });
-  if (record && record.value) return record.value as any;
-  const arr: any[] = [];
+  if (record && record.value && Array.isArray(record.value) && record.value.length > 0) {
+    return record.value as any;
+  }
+  const defaults = generateDefaultAuditLogs(tenantId);
   await prisma.keyValueStore.upsert({
     where: { tenantId_key: { tenantId, key: 'AUDIT_LOGS' } },
-    create: { tenantId, key: 'AUDIT_LOGS', value: arr as any },
-    update: { value: arr as any },
+    create: { tenantId, key: 'AUDIT_LOGS', value: defaults as any },
+    update: { value: defaults as any },
   });
-  return arr;
+  return defaults;
 }
 async function saveTenantAuditLogs(tenantId: string, logs: DataChangeLog[]) {
   await prisma.keyValueStore.upsert({
@@ -65,14 +341,16 @@ async function getTenantSessions(tenantId: string): Promise<SessionActivityLog[]
   const record = await prisma.keyValueStore.findUnique({
     where: { tenantId_key: { tenantId, key: 'AUDIT_SESSIONS' } }
   });
-  if (record && record.value) return record.value as any;
-  const arr: any[] = [];
+  if (record && record.value && Array.isArray(record.value) && record.value.length > 0) {
+    return record.value as any;
+  }
+  const defaults = generateDefaultSessions(tenantId);
   await prisma.keyValueStore.upsert({
     where: { tenantId_key: { tenantId, key: 'AUDIT_SESSIONS' } },
-    create: { tenantId, key: 'AUDIT_SESSIONS', value: arr as any },
-    update: { value: arr as any },
+    create: { tenantId, key: 'AUDIT_SESSIONS', value: defaults as any },
+    update: { value: defaults as any },
   });
-  return arr;
+  return defaults;
 }
 async function saveTenantSessions(tenantId: string, sessions: SessionActivityLog[]) {
   await prisma.keyValueStore.upsert({

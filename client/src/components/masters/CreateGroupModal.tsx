@@ -82,7 +82,7 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onCl
               placeholder="e.g. Marketing & Advertising, Factory Overheads"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 
@@ -94,7 +94,7 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onCl
                 placeholder="e.g. MKT-EXP, OTH-AST"
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background uppercase font-mono"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white uppercase font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
             <div>
@@ -102,7 +102,7 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onCl
               <select
                 value={nature}
                 onChange={(e) => setNature(e.target.value as GroupNature)}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background font-semibold"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="ASSET">ASSET (Debit Balances)</option>
                 <option value="LIABILITY">LIABILITY (Credit Balances)</option>
@@ -118,7 +118,7 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onCl
             <select
               value={parentId}
               onChange={(e) => setParentId(e.target.value)}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             >
               <option value="">-- Primary Root Group --</option>
               {groups.map((g) => (

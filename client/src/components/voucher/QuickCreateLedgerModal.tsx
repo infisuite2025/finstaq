@@ -123,7 +123,7 @@ export const QuickCreateLedgerModal: React.FC<QuickCreateLedgerModalProps> = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. HDFC Bank Current A/c, Tata Motors"
-              className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 font-medium focus:border-blue-500 text-sm"
+              className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none text-sm transition-all"
             />
           </div>
 
@@ -135,7 +135,7 @@ export const QuickCreateLedgerModal: React.FC<QuickCreateLedgerModalProps> = ({
               <select
                 value={groupId}
                 onChange={(e) => setGroupId(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-slate-900 dark:text-white font-medium text-sm focus:border-blue-500"
+                className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3 py-2 text-slate-900 dark:text-white font-medium text-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 {groups.map((group) => (
                   <option key={group.id} value={group.id}>
@@ -154,7 +154,7 @@ export const QuickCreateLedgerModal: React.FC<QuickCreateLedgerModalProps> = ({
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="e.g. HDFC-01"
-                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 font-mono text-sm focus:border-blue-500"
+                className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 font-mono text-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
@@ -168,7 +168,7 @@ export const QuickCreateLedgerModal: React.FC<QuickCreateLedgerModalProps> = ({
               step="any"
               value={openingBalance}
               onChange={(e) => setOpeningBalance(e.target.value)}
-              className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-slate-900 dark:text-white font-mono text-sm focus:border-blue-500"
+              className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3 py-2 text-slate-900 dark:text-white font-mono text-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 

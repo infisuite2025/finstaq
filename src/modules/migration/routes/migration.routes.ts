@@ -1,12 +1,10 @@
 import { FastifyInstance } from 'fastify';
-import { MigrationController } from '../controllers/migration.controller';
-import { authenticate } from '../../../core/middleware/auth.middleware';
+import {
+  uploadAndAnalyzeHandler,
+  executeLiveMigrationHandler,
+} from '../controllers/migration.controller';
 
-export async function migrationRoutes(fastify: FastifyInstance) {
-  fastify.addHook('preHandler', authenticate);
-
-  fastify.post('/upload', MigrationController.uploadAndParse);
-  fastify.post('/validate', MigrationController.validate);
-  fastify.post('/execute', MigrationController.execute);
-  fastify.get('/template', MigrationController.downloadTemplate);
+export async function migrationRoutes(app: FastifyInstance) {
+  app.post('/upload', uploadAndAnalyzeHandler);
+  app.post('/execute', executeLiveMigrationHandler);
 }

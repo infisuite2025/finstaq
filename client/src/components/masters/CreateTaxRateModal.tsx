@@ -93,7 +93,7 @@ export const CreateTaxRateModal: React.FC<CreateTaxRateModalProps> = ({ isOpen, 
               placeholder="e.g. GST 18% Standard, GST 5% GTA"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 
@@ -106,7 +106,7 @@ export const CreateTaxRateModal: React.FC<CreateTaxRateModalProps> = ({ isOpen, 
               required
               value={ratePercent}
               onChange={(e) => handleRateChange(Number(e.target.value))}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background font-mono"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 
@@ -136,7 +136,7 @@ export const CreateTaxRateModal: React.FC<CreateTaxRateModalProps> = ({ isOpen, 
               min={0}
               value={cessPercent}
               onChange={(e) => setCessPercent(Number(e.target.value))}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background font-mono"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 

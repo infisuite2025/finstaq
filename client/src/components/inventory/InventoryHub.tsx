@@ -384,7 +384,7 @@ export const InventoryHub: React.FC = () => {
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-semibold"
+                className="px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="ALL">All Categories</option>
                 <option value="Raw Materials">Raw Materials</option>
@@ -401,7 +401,7 @@ export const InventoryHub: React.FC = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && fetchInventoryData()}
-                  className="pl-8 pr-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs w-56 sm:w-64"
+                  className="pl-8 pr-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs w-56 sm:w-64 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
             </div>
@@ -648,7 +648,7 @@ export const InventoryHub: React.FC = () => {
                     value={fromWhId}
                     onChange={e => setFromWhId(e.target.value)}
                     required
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
                     {warehouses.map(w => <option key={w.id} value={w.id}>{w.name} ({w.code})</option>)}
                   </select>
@@ -659,7 +659,7 @@ export const InventoryHub: React.FC = () => {
                     value={toWhId}
                     onChange={e => setToWhId(e.target.value)}
                     required
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
                     {warehouses.map(w => <option key={w.id} value={w.id}>{w.name} ({w.code})</option>)}
                   </select>
@@ -672,7 +672,7 @@ export const InventoryHub: React.FC = () => {
                   value={selectedTransferItem}
                   onChange={e => setSelectedTransferItem(e.target.value)}
                   required
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 >
                   <option value="">-- Choose Stock Item --</option>
                   {items.map(it => (
@@ -693,7 +693,7 @@ export const InventoryHub: React.FC = () => {
                     required
                     value={transferQty}
                     onChange={e => setTransferQty(parseFloat(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -703,7 +703,7 @@ export const InventoryHub: React.FC = () => {
                     placeholder="MH-04-AB-1234"
                     value={transferVehicle}
                     onChange={e => setTransferVehicle(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -715,7 +715,7 @@ export const InventoryHub: React.FC = () => {
                   placeholder="e.g. Stock replenishment for production batch"
                   value={transferRemarks}
                   onChange={e => setTransferRemarks(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -760,7 +760,7 @@ export const InventoryHub: React.FC = () => {
                   value={adjWhId}
                   onChange={e => setAdjWhId(e.target.value)}
                   required
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 >
                   {warehouses.map(w => <option key={w.id} value={w.id}>{w.name} ({w.code})</option>)}
                 </select>
@@ -776,7 +776,7 @@ export const InventoryHub: React.FC = () => {
                     if (it) setAdjPhysicalQty(it.warehouseBalances[adjWhId] || 0);
                   }}
                   required
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 >
                   <option value="">-- Choose Stock Item --</option>
                   {items.map(it => (
@@ -797,7 +797,7 @@ export const InventoryHub: React.FC = () => {
                     required
                     value={adjPhysicalQty}
                     onChange={e => setAdjPhysicalQty(parseFloat(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -805,7 +805,7 @@ export const InventoryHub: React.FC = () => {
                   <select
                     value={adjType}
                     onChange={e => setAdjType(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
                     <option value="PHYSICAL_AUDIT">Physical Stock Count Audit</option>
                     <option value="DAMAGE">Damaged in Transit / Storage</option>
@@ -823,7 +823,7 @@ export const InventoryHub: React.FC = () => {
                   placeholder="e.g. Discrepancy observed during monthly physical verification"
                   value={adjRemarks}
                   onChange={e => setAdjRemarks(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 

@@ -153,10 +153,10 @@ export function StaffLoansHub({
         <KPIScorecard
           label="Active Accounts"
           value={activeAccounts}
-          variant="featured"
+          variant="indigo"
           icon={CreditCard}
           badge="Active Borrowers"
-          badgeVariant="glass"
+          badgeVariant="indigo"
           footer={{
             left: <span>Borrowers: <strong>{activeAccounts}</strong></span>,
             right: <span>Closed: <strong>{loans.filter(l => l.status === 'CLOSED').length}</strong></span>
@@ -173,7 +173,7 @@ export function StaffLoansHub({
             placeholder="Search employee, dept..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full pl-9 pr-3 py-1.5 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
           />
         </div>
         <div className="flex items-center gap-2 w-full md:w-auto">
@@ -314,7 +314,7 @@ export function StaffLoansHub({
                 <select
                   value={selectedEmpId}
                   onChange={(e) => setSelectedEmpId(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white font-semibold"
+                  className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 >
                   {employees.map((emp) => (
                     <option key={emp.id} value={emp.id}>
@@ -331,7 +331,7 @@ export function StaffLoansHub({
                 <select
                   value={loanType}
                   onChange={(e) => setLoanType(e.target.value as any)}
-                  className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
+                  className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 >
                   <option value="SALARY_ADVANCE">Salary Advance (Interest-Free)</option>
                   <option value="PERSONAL_LOAN">Staff Personal Loan</option>
@@ -351,7 +351,7 @@ export function StaffLoansHub({
                     required
                     value={principalAmount}
                     onChange={(e) => setPrincipalAmount(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-xs font-mono font-bold bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
+                    className="w-full px-3.5 py-2 text-xs font-mono font-bold bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -366,7 +366,7 @@ export function StaffLoansHub({
                     required
                     value={tenureMonths}
                     onChange={(e) => setTenureMonths(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-xs font-mono font-bold bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
+                    className="w-full px-3.5 py-2 text-xs font-mono font-bold bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -379,7 +379,7 @@ export function StaffLoansHub({
                   type="text"
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
+                  className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 

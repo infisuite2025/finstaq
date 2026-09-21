@@ -436,6 +436,34 @@ export class StorageVaultService {
   }
 
   /**
+   * Lists all stored documents for a tenant
+   */
+  public async listTenantFiles(tenantId: string): Promise<StoredDocumentMetadata[]> {
+    return this.getTenantMetadata(tenantId);
+  }
+
+  /**
+   * Deletes a stored file from the encrypted vault
+   */
+  public async deleteFile(tenantId: string, fileId: string): Promise<boolean> {
+    const files = await this.getTenantMetadata(tenantId);
+    const index = files.findIndex(f => f.id === fileId);
+    if (index === -1) return false;
+    const record = files[index];
+    const fullDiskPath = path.join(this.vaultBasePath, record.storagePath);
+    if (fs.existsSync(fullDiskPath)) {
+      try {
+        fs.unlinkSync(fullDiskPath);
+      } catch (e) {
+        // ignore
+      }
+    }
+    files.splice(index, 1);
+    await this.saveTenantMetadata(tenantId, files);
+    return true;
+  }
+
+  /**
    * Self-Service: Purchase Storage Add-on
    */
   public async purchaseStorageAddon(

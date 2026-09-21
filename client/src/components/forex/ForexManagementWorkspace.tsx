@@ -223,7 +223,7 @@ export function ForexManagementWorkspace() {
                       step="0.01"
                       value={editedRate}
                       onChange={(e) => setEditedRate(Number(e.target.value))}
-                      className="w-24 px-2 py-1 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded font-mono font-bold"
+                      className="w-24 px-2.5 py-1 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-lg font-mono font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     />
                     <button
                       onClick={() => handleUpdateRate(curr.code)}
@@ -264,7 +264,7 @@ export function ForexManagementWorkspace() {
                 <select
                   value={calcCurrency}
                   onChange={(e) => setCalcCurrency(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-medium"
+                  className="w-full mt-1 px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 >
                   {currencies.filter(c => !c.isBaseCurrency).map(c => (
                     <option key={c.code} value={c.code}>{c.code} — {c.name}</option>
@@ -277,7 +277,7 @@ export function ForexManagementWorkspace() {
                 <select
                   value={calcTxnType}
                   onChange={(e) => setCalcTxnType(e.target.value as any)}
-                  className="w-full mt-1 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-medium"
+                  className="w-full mt-1 px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 >
                   <option value="RECEIPT_FROM_DEBTOR">Receipt from Customer / Debtor (Export Sale)</option>
                   <option value="PAYMENT_TO_CREDITOR">Payment to Vendor / Creditor (Import Purchase)</option>
@@ -290,7 +290,7 @@ export function ForexManagementWorkspace() {
                   type="number"
                   value={calcForeignAmt}
                   onChange={(e) => setCalcForeignAmt(Number(e.target.value))}
-                  className="w-full mt-1 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-mono font-bold"
+                  className="w-full mt-1 px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl font-mono font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -302,7 +302,7 @@ export function ForexManagementWorkspace() {
                     step="0.01"
                     value={calcBookingRate}
                     onChange={(e) => setCalcBookingRate(Number(e.target.value))}
-                    className="w-full mt-1 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-mono"
+                    className="w-full mt-1 px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -312,7 +312,7 @@ export function ForexManagementWorkspace() {
                     step="0.01"
                     value={calcSettlementRate}
                     onChange={(e) => setCalcSettlementRate(Number(e.target.value))}
-                    className="w-full mt-1 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-mono"
+                    className="w-full mt-1 px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -379,7 +379,7 @@ export function ForexManagementWorkspace() {
                 type="date"
                 value={revalCutoffDate}
                 onChange={(e) => setRevalCutoffDate(e.target.value)}
-                className="text-xs font-semibold bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg"
+                className="text-xs font-semibold bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 px-3.5 py-2 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>

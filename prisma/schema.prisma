@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -1493,4 +1492,147 @@ model KeyValueStore {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@unique([tenantId, key])
+}
+
+// -----------------------------------------------------------------------------
+// ONBOARDING & AI DATA MIGRATION ENGINE
+// -----------------------------------------------------------------------------
+
+model TenantOnboardingConfig {
+  id                 String   @id @default(uuid()) @db.VarChar(36)
+  tenantId           String   @unique @map("tenant_id") @db.VarChar(36)
+  industryPack       String   @default("MANUFACTURING") @map("industry_pack") @db.VarChar(50)
+  isCompleted        Boolean  @default(false) @map("is_completed")
+  usePresetup        Boolean  @default(true) @map("use_presetup")
+  inferredState      String?  @map("inferred_state") @db.VarChar(100)
+  inferredGstType    String?  @map("inferred_gst_type") @db.VarChar(50)
+  primaryBankName    String?  @map("primary_bank_name") @db.VarChar(100)
+  primaryBankAccount String?  @map("primary_bank_account") @db.VarChar(50)
+  primaryBankIfsc    String?  @map("primary_bank_ifsc") @db.VarChar(20)
+  initialOpeningBal  Decimal  @default(0) @map("initial_opening_bal") @db.Decimal(15, 2)
+  stepCompleted      Int      @default(1) @map("step_completed")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@map("tenant_onboarding_configs")
+}
+
+model MigrationJob {
+  id                 String   @id @default(uuid()) @db.VarChar(36)
+  tenantId           String   @map("tenant_id") @db.VarChar(36)
+  sourceSystem       String   @map("source_system") @db.VarChar(50) // TALLY_PRIME, BUSY, ZOHO_BOOKS, QUICKBOOKS, UNIVERSAL_EXCEL
+  fileName           String?  @map("file_name") @db.VarChar(255)
+  fileSize           Int?     @map("file_size")
+  historicalYears    Int      @default(3) @map("historical_years")
+  status             String   @default("STAGED") @db.VarChar(30) // STAGED, VALIDATED, MIGRATED, FAILED
+  totalLedgers       Int      @default(0) @map("total_ledgers")
+  totalItems         Int      @default(0) @map("total_items")
+  totalVouchers      Int      @default(0) @map("total_vouchers")
+  totalOpenBills     Int      @default(0) @map("total_open_bills")
+  totalDebitSum      Decimal  @default(0) @map("total_debit_sum") @db.Decimal(15, 2)
+  totalCreditSum     Decimal  @default(0) @map("total_credit_sum") @db.Decimal(15, 2)
+  varianceDelta      Decimal  @default(0) @map("variance_delta") @db.Decimal(15, 2)
+  passedChecksCount  Int      @default(12) @map("passed_checks_count")
+  warningsCount      Int      @default(0) @map("warnings_count")
+  certificateId      String?  @map("certificate_id") @db.VarChar(100)
+  certificateHash    String?  @map("certificate_hash") @db.VarChar(255)
+  signedAt           DateTime? @map("signed_at")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  stagedLedgers      StagedLedger[]
+  stagedItems        StagedItem[]
+  stagedVouchers     StagedVoucher[]
+  stagedBills        StagedBillAllocation[]
+
+  @@index([tenantId])
+  @@map("migration_jobs")
+}
+
+model StagedLedger {
+  id                 String       @id @default(uuid()) @db.VarChar(36)
+  migrationJobId     String       @map("migration_job_id") @db.VarChar(36)
+  tenantId           String       @map("tenant_id") @db.VarChar(36)
+  sourceName         String       @map("source_name") @db.VarChar(255)
+  sourceGroup        String       @map("source_group") @db.VarChar(100)
+  mappedGroup        String       @map("mapped_group") @db.VarChar(100)
+  nature             String       @db.VarChar(20) // ASSET, LIABILITY, INCOME, EXPENSE, EQUITY
+  openingBalanceDr   Decimal      @default(0) @map("opening_balance_dr") @db.Decimal(15, 2)
+  openingBalanceCr   Decimal      @default(0) @map("opening_balance_cr") @db.Decimal(15, 2)
+  gstIn              String?      @map("gst_in") @db.VarChar(32)
+  pan                String?      @db.VarChar(20)
+  stateCode          String?      @map("state_code") @db.VarChar(10)
+  aiConfidence       Decimal      @default(0.99) @map("ai_confidence") @db.Decimal(5, 2)
+  isResolved         Boolean      @default(true) @map("is_resolved")
+  status             String       @default("PENDING") @db.VarChar(30)
+  createdAt          DateTime     @default(now()) @map("created_at")
+
+  migrationJob       MigrationJob @relation(fields: [migrationJobId], references: [id], onDelete: Cascade)
+
+  @@index([migrationJobId])
+  @@index([tenantId])
+  @@map("staged_ledgers")
+}
+
+model StagedItem {
+  id                 String       @id @default(uuid()) @db.VarChar(36)
+  migrationJobId     String       @map("migration_job_id") @db.VarChar(36)
+  tenantId           String       @map("tenant_id") @db.VarChar(36)
+  name               String       @db.VarChar(255)
+  sku                String       @db.VarChar(100)
+  hsnCode            String       @map("hsn_code") @db.VarChar(20)
+  uom                String       @db.VarChar(20)
+  openingStockQty    Decimal      @default(0) @map("opening_stock_qty") @db.Decimal(15, 3)
+  openingStockRate   Decimal      @default(0) @map("opening_stock_rate") @db.Decimal(15, 2)
+  openingStockValue  Decimal      @default(0) @map("opening_stock_value") @db.Decimal(15, 2)
+  warehouseName      String?      @map("warehouse_name") @db.VarChar(100)
+  gstRatePercent     Decimal      @default(18) @map("gst_rate_percent") @db.Decimal(5, 2)
+  isResolved         Boolean      @default(true) @map("is_resolved")
+  createdAt          DateTime     @default(now()) @map("created_at")
+
+  migrationJob       MigrationJob @relation(fields: [migrationJobId], references: [id], onDelete: Cascade)
+
+  @@index([migrationJobId])
+  @@index([tenantId])
+  @@map("staged_items")
+}
+
+model StagedVoucher {
+  id                 String       @id @default(uuid()) @db.VarChar(36)
+  migrationJobId     String       @map("migration_job_id") @db.VarChar(36)
+  tenantId           String       @map("tenant_id") @db.VarChar(36)
+  voucherNumber      String       @map("voucher_number") @db.VarChar(100)
+  voucherType        String       @map("voucher_type") @db.VarChar(20)
+  date               String       @db.VarChar(20)
+  narration          String?      @db.Text
+  fiscalYear         String       @map("fiscal_year") @db.VarChar(20)
+  totalDebit         Decimal      @map("total_debit") @db.Decimal(15, 2)
+  totalCredit        Decimal      @map("total_credit") @db.Decimal(15, 2)
+  itemsJson          Json         @map("items_json")
+  createdAt          DateTime     @default(now()) @map("created_at")
+
+  migrationJob       MigrationJob @relation(fields: [migrationJobId], references: [id], onDelete: Cascade)
+
+  @@index([migrationJobId])
+  @@index([tenantId])
+  @@map("staged_vouchers")
+}
+
+model StagedBillAllocation {
+  id                 String       @id @default(uuid()) @db.VarChar(36)
+  migrationJobId     String       @map("migration_job_id") @db.VarChar(36)
+  tenantId           String       @map("tenant_id") @db.VarChar(36)
+  partyLedgerName    String       @map("party_ledger_name") @db.VarChar(255)
+  partyType          String       @map("party_type") @db.VarChar(20) // DEBTOR, CREDITOR
+  billNumber         String       @map("bill_number") @db.VarChar(100)
+  billDate           String       @map("bill_date") @db.VarChar(20)
+  dueDate            String?      @map("due_date") @db.VarChar(20)
+  pendingAmount      Decimal      @map("pending_amount") @db.Decimal(15, 2)
+  createdAt          DateTime     @default(now()) @map("created_at")
+
+  migrationJob       MigrationJob @relation(fields: [migrationJobId], references: [id], onDelete: Cascade)
+
+  @@index([migrationJobId])
+  @@index([tenantId])
+  @@map("staged_bill_allocations")
 }

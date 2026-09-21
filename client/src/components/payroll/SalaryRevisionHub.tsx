@@ -182,10 +182,10 @@ export function SalaryRevisionHub({
         <KPIScorecard
           label="Active Appraisal Window"
           value="Q1 FY 26-27"
-          variant="featured"
+          variant="indigo"
           icon={Calendar}
           badge="Effective Apr 2026"
-          badgeVariant="glass"
+          badgeVariant="indigo"
           footer={{
             left: <span>Cycle: <strong>Annual Review</strong></span>,
             right: <span>Status: <strong>Open</strong></span>
@@ -202,7 +202,7 @@ export function SalaryRevisionHub({
             placeholder="Search employee, dept, role..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full pl-9 pr-3 py-1.5 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
           />
         </div>
         <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto">
@@ -248,48 +248,41 @@ export function SalaryRevisionHub({
                 filteredRevisions.map((rev) => (
                   <tr key={rev.id} className={UI.table.tr}>
                     <td className={UI.table.td}>
-                      <span className="font-bold text-gray-900 dark:text-white block">{rev.employeeName}</span>
-                      <span className="text-[11px] text-gray-500 block">
-                        {rev.empCode} • {rev.newDesignation}
-                      </span>
+                      <div>
+                        <span className="font-bold text-gray-900 dark:text-white block">
+                          {rev.employeeName}
+                        </span>
+                        <span className="text-[11px] text-gray-500 block">
+                          {rev.empCode} • {rev.department}
+                        </span>
+                      </div>
                     </td>
                     <td className={UI.table.td}>
-                      <span className="px-2 py-0.5 text-[10px] font-bold uppercase rounded bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
+                      <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
                         {rev.revisionType.replace('_', ' ')}
                       </span>
                     </td>
-                    <td className={`${UI.table.td} text-right`}>
-                      <span className="font-mono text-gray-500">
-                        ₹{(rev.previousAnnualCtc || 0).toLocaleString('en-IN')}
-                      </span>
+                    <td className={`${UI.table.td} text-right font-mono text-gray-500`}>
+                      ₹{(rev.previousAnnualCtc || 0).toLocaleString('en-IN')}
                     </td>
-                    <td className={`${UI.table.td} text-right`}>
-                      <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
-                        ₹{(rev.revisedAnnualCtc || 0).toLocaleString('en-IN')}
-                      </span>
+                    <td className={`${UI.table.td} text-right font-mono font-bold text-emerald-600 dark:text-emerald-400`}>
+                      ₹{(rev.revisedAnnualCtc || 0).toLocaleString('en-IN')}
                     </td>
                     <td className={`${UI.table.td} text-center`}>
-                      <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800 text-xs">
+                      <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 rounded font-bold text-xs">
                         +{rev.hikePercentage}%
                       </span>
                     </td>
-                    <td className={UI.table.td}>
-                      <span className="font-mono text-xs text-gray-900 dark:text-white block">
-                        {rev.effectiveDate}
-                      </span>
-                      {rev.retroactiveArrearsEstimate && rev.retroactiveArrearsEstimate > 0 ? (
-                        <span className="text-[10px] text-amber-600 font-medium">
-                          Incl ₹{rev.retroactiveArrearsEstimate.toLocaleString('en-IN')} Arrears
-                        </span>
-                      ) : null}
+                    <td className={`${UI.table.td} font-mono text-xs text-gray-600 dark:text-gray-400`}>
+                      {rev.effectiveDate}
                     </td>
                     <td className={`${UI.table.td} text-center`}>
                       <button
                         onClick={() => setSelectedLetterForPreview(rev)}
-                        className="px-2.5 py-1 text-xs font-semibold bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 hover:bg-blue-100 rounded border border-blue-200 dark:border-blue-800 flex items-center gap-1 mx-auto"
+                        className="px-2.5 py-1 text-xs font-semibold bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 rounded border border-emerald-200 dark:border-emerald-800 flex items-center gap-1 mx-auto"
                       >
                         <Eye className="w-3.5 h-3.5" />
-                        Appraisal Letter
+                        View Letter
                       </button>
                     </td>
                   </tr>
@@ -300,17 +293,17 @@ export function SalaryRevisionHub({
         </div>
       </div>
 
-      {/* MODAL 1: Initiate Salary Revision Form */}
+      {/* MODAL: Initiate Salary Revision */}
       {isRevisionModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-2xl max-w-3xl w-full p-6 max-h-[90vh] overflow-y-auto space-y-6">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-2xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto space-y-6">
             <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-4">
               <div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-emerald-600" />
-                  Initiate Salary Revision / Increment
+                  Initiate Salary Revision / Appraisal
                 </h3>
-                <p className="text-xs text-gray-500">Calculate compensation hike and generate formal appraisal letter</p>
+                <p className="text-xs text-gray-500">Calculate incremental CTC, promotional upgrades & retroactive arrears</p>
               </div>
               <button
                 onClick={() => setIsRevisionModalOpen(false)}
@@ -333,7 +326,7 @@ export function SalaryRevisionHub({
                       const emp = employees.find((empItem) => empItem.id === e.target.value);
                       if (emp) setNewDesignation(emp.designation);
                     }}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white font-semibold"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
                     {employees.map((emp) => (
                       <option key={emp.id} value={emp.id}>
@@ -350,7 +343,7 @@ export function SalaryRevisionHub({
                   <select
                     value={revisionType}
                     onChange={(e) => setRevisionType(e.target.value as any)}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
                     <option value="ANNUAL_APPRAISAL">Annual Performance Appraisal</option>
                     <option value="PROMOTION">Promotion & Title Upgrade</option>
@@ -367,7 +360,7 @@ export function SalaryRevisionHub({
                     type="text"
                     disabled
                     value={`₹${currentAnnualCtc.toLocaleString('en-IN')}`}
-                    className="w-full px-3 py-2 text-xs bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg font-mono text-gray-500 font-bold"
+                    className="w-full px-3.5 py-2 text-xs bg-slate-100 dark:bg-slate-900 border border-emerald-400 dark:border-emerald-500 rounded-xl font-mono text-gray-500 font-bold"
                   />
                 </div>
 
@@ -379,7 +372,7 @@ export function SalaryRevisionHub({
                     <button
                       type="button"
                       onClick={() => setIsCustomCtcMode(!isCustomCtcMode)}
-                      className="text-[11px] text-blue-600 hover:underline font-semibold"
+                      className="text-[11px] text-emerald-600 hover:underline font-semibold"
                     >
                       {isCustomCtcMode ? 'Switch to Hike %' : 'Enter Custom CTC'}
                     </button>
@@ -391,7 +384,7 @@ export function SalaryRevisionHub({
                       step="25000"
                       value={customNewCtc || calculatedNewCtc}
                       onChange={(e) => setCustomNewCtc(Number(e.target.value))}
-                      className="w-full px-3 py-2 text-xs font-mono font-bold bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-400 rounded-lg text-emerald-700 dark:text-emerald-300"
+                      className="w-full px-3.5 py-2 text-xs font-mono font-bold bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-emerald-600 dark:text-emerald-400 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     />
                   ) : (
                     <div className="flex items-center gap-2">
@@ -400,7 +393,7 @@ export function SalaryRevisionHub({
                         step="0.5"
                         value={hikePercentage}
                         onChange={(e) => setHikePercentage(Number(e.target.value))}
-                        className="w-full px-3 py-2 text-xs font-mono font-bold bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-400 rounded-lg text-emerald-700 dark:text-emerald-300"
+                        className="w-full px-3.5 py-2 text-xs font-mono font-bold bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-emerald-600 dark:text-emerald-400 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                       />
                       <span className="text-sm font-bold text-gray-500">%</span>
                     </div>
@@ -416,7 +409,7 @@ export function SalaryRevisionHub({
                     required
                     value={effectiveDate}
                     onChange={(e) => setEffectiveDate(e.target.value)}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white font-mono"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -429,7 +422,7 @@ export function SalaryRevisionHub({
                     placeholder="Leave unchanged or enter new title"
                     value={newDesignation}
                     onChange={(e) => setNewDesignation(e.target.value)}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -442,7 +435,7 @@ export function SalaryRevisionHub({
                   rows={2}
                   value={appraisalComments}
                   onChange={(e) => setAppraisalComments(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
+                  className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 

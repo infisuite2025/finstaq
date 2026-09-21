@@ -762,10 +762,10 @@ export function HRWorkspace({ initialTab = 'directory' }: HRWorkspaceProps) {
         <KPIScorecard
           label="Exit Settlements (F&F)"
           value={settlements.length}
-          variant="featured"
+          variant="indigo"
           icon={LogOut}
           badge={`${settlements.filter(s => s.settlementStatus === 'DRAFT').length} Action`}
-          badgeVariant="glass"
+          badgeVariant="indigo"
           footer={{
             left: <span>Drafts: <strong>{settlements.filter(s => s.settlementStatus === 'DRAFT').length}</strong></span>,
             right: <span>Settled: <strong>{settlements.filter(s => s.settlementStatus === 'SETTLED').length}</strong></span>,

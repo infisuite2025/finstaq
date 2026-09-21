@@ -31,7 +31,7 @@ const sendMessageSchema = z.object({
 
 export class CommunicationController {
   public static async getTemplates(request: FastifyRequest, reply: FastifyReply) {
-    const templates = CommunicationService.getTemplates();
+    const templates = await CommunicationService.getTemplates();
     return reply.send({ success: true, data: templates });
   }
 
@@ -73,7 +73,7 @@ export class CommunicationController {
 
   public static async getLogs(request: FastifyRequest, reply: FastifyReply) {
     const query = request.query as any;
-    const logs = CommunicationService.getLogs({
+    const logs = await CommunicationService.getLogs({
       tenantId: request.user?.tenantId,
       channel: query.channel ? query.channel.toUpperCase() : undefined,
       category: query.category ? query.category.toUpperCase() : undefined,
@@ -83,13 +83,13 @@ export class CommunicationController {
   }
 
   public static async getNotifications(request: FastifyRequest, reply: FastifyReply) {
-    const result = CommunicationService.getNotifications(request.user?.tenantId);
+    const result = await CommunicationService.getNotifications(request.user?.tenantId);
     return reply.send({ success: true, data: result });
   }
 
   public static async createNotification(request: FastifyRequest, reply: FastifyReply) {
     const body = request.body as any;
-    const notification = CommunicationService.createInAppNotification({
+    const notification = await CommunicationService.createInAppNotification({
       tenantId: request.user?.tenantId,
       userId: body.userId || request.user?.userId,
       category: (body.category ? body.category.toUpperCase() : 'SYSTEM') as NotificationCategory,
@@ -102,12 +102,12 @@ export class CommunicationController {
 
   public static async markAsRead(request: FastifyRequest, reply: FastifyReply) {
     const { id } = request.params as { id: string };
-    const success = CommunicationService.markAsRead(request.user?.tenantId, id);
+    const success = await CommunicationService.markAsRead(request.user?.tenantId, id);
     return reply.send({ success, message: success ? 'Marked as read' : 'Notification not found' });
   }
 
   public static async markAllAsRead(request: FastifyRequest, reply: FastifyReply) {
-    const count = CommunicationService.markAllAsRead(request.user?.tenantId);
+    const count = await CommunicationService.markAllAsRead(request.user?.tenantId);
     return reply.send({ success: true, message: `${count} notifications marked as read` });
   }
 }

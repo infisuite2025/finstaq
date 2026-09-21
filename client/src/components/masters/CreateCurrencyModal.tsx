@@ -84,7 +84,7 @@ export const CreateCurrencyModal: React.FC<CreateCurrencyModalProps> = ({ isOpen
                 placeholder="e.g. USD, EUR, GBP, AED"
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background uppercase font-mono"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white uppercase font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
             <div>
@@ -95,7 +95,7 @@ export const CreateCurrencyModal: React.FC<CreateCurrencyModalProps> = ({ isOpen
                 placeholder="e.g. $, €, £, د.إ, ¥"
                 value={symbol}
                 onChange={(e) => setSymbol(e.target.value)}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background text-center font-bold"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-center font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
@@ -108,7 +108,7 @@ export const CreateCurrencyModal: React.FC<CreateCurrencyModalProps> = ({ isOpen
               placeholder="e.g. US Dollar, Euro, Great British Pound"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 
@@ -122,7 +122,7 @@ export const CreateCurrencyModal: React.FC<CreateCurrencyModalProps> = ({ isOpen
                 required
                 value={exchangeRate}
                 onChange={(e) => setExchangeRate(Number(e.target.value))}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background font-mono"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
             <div>
@@ -130,7 +130,7 @@ export const CreateCurrencyModal: React.FC<CreateCurrencyModalProps> = ({ isOpen
               <select
                 value={decimalPlaces}
                 onChange={(e) => setDecimalPlaces(Number(e.target.value))}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value={2}>2 (Standard: $100.50)</option>
                 <option value={3}>3 (e.g. KWD 100.250)</option>

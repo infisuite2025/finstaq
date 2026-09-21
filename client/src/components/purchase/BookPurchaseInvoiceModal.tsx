@@ -281,7 +281,7 @@ export function BookPurchaseInvoiceModal({
               <select
                 value={vendorLedgerId}
                 onChange={(e) => setVendorLedgerId(e.target.value)}
-                className="w-full text-xs font-semibold px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-hidden"
+                className="w-full text-xs font-semibold px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 {DEMO_VENDORS.map((v) => (
                   <option key={v.id} value={v.id}>
@@ -304,7 +304,7 @@ export function BookPurchaseInvoiceModal({
               <select
                 value={selectedPoId}
                 onChange={(e) => handlePoChange(e.target.value)}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-hidden"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="">-- Standalone Bill (No PO) --</option>
                 {existingPos.map((p) => (
@@ -323,7 +323,7 @@ export function BookPurchaseInvoiceModal({
               <select
                 value={selectedGrnId}
                 onChange={(e) => handleGrnChange(e.target.value)}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-hidden"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="">-- Direct Bill Booking --</option>
                 {existingGrns.map((g) => (
@@ -349,7 +349,7 @@ export function BookPurchaseInvoiceModal({
                 placeholder="e.g. STARK/2026/8921"
                 value={vendorInvoiceNumber}
                 onChange={(e) => setVendorInvoiceNumber(e.target.value)}
-                className="w-full text-xs font-mono font-bold px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-hidden"
+                className="w-full text-xs font-mono font-bold px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -362,7 +362,7 @@ export function BookPurchaseInvoiceModal({
                 required
                 value={invoiceDate}
                 onChange={(e) => setInvoiceDate(e.target.value)}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-hidden"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -374,7 +374,7 @@ export function BookPurchaseInvoiceModal({
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-hidden"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -385,7 +385,7 @@ export function BookPurchaseInvoiceModal({
               <select
                 value={tdsSection}
                 onChange={(e) => setTdsSection(e.target.value)}
-                className="w-full text-xs font-semibold px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-hidden"
+                className="w-full text-xs font-semibold px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="194Q">Sec 194Q - Goods Purchase (0.1%)</option>
                 <option value="194C">Sec 194C - Contractor (2.0%)</option>
@@ -443,7 +443,7 @@ export function BookPurchaseInvoiceModal({
                             placeholder="Description / Material SKU"
                             value={it.description}
                             onChange={(e) => handleItemChange(idx, 'description', e.target.value)}
-                            className="w-full text-xs px-2 py-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+                            className="w-full text-xs px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           />
                         </td>
                         <td className="py-2 px-2">
@@ -452,14 +452,14 @@ export function BookPurchaseInvoiceModal({
                             placeholder="HSN"
                             value={it.hsnCode}
                             onChange={(e) => handleItemChange(idx, 'hsnCode', e.target.value)}
-                            className="w-full text-xs font-mono px-2 py-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+                            className="w-full text-xs font-mono px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           />
                         </td>
                         <td className="py-2 px-2">
                           <select
                             value={it.uom}
                             onChange={(e) => handleItemChange(idx, 'uom', e.target.value)}
-                            className="w-full text-xs px-1.5 py-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+                            className="w-full text-xs px-2 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           >
                             <option value="PCS">PCS</option>
                             <option value="KGS">KGS</option>
@@ -474,7 +474,7 @@ export function BookPurchaseInvoiceModal({
                             min="1"
                             value={it.quantity}
                             onChange={(e) => handleItemChange(idx, 'quantity', Number(e.target.value))}
-                            className="w-full text-xs text-right font-mono px-2 py-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+                            className="w-full text-xs text-right font-mono px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           />
                         </td>
                         <td className="py-2 px-2">
@@ -483,7 +483,7 @@ export function BookPurchaseInvoiceModal({
                             step="0.01"
                             value={it.unitPrice}
                             onChange={(e) => handleItemChange(idx, 'unitPrice', Number(e.target.value))}
-                            className="w-full text-xs text-right font-mono px-2 py-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+                            className="w-full text-xs text-right font-mono px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           />
                         </td>
                         <td className="py-2 px-2">
@@ -493,14 +493,14 @@ export function BookPurchaseInvoiceModal({
                             max="100"
                             value={it.discountPercent}
                             onChange={(e) => handleItemChange(idx, 'discountPercent', Number(e.target.value))}
-                            className="w-full text-xs text-right font-mono px-2 py-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+                            className="w-full text-xs text-right font-mono px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           />
                         </td>
                         <td className="py-2 px-2">
                           <select
                             value={it.taxRatePercent}
                             onChange={(e) => handleItemChange(idx, 'taxRatePercent', Number(e.target.value))}
-                            className="w-full text-xs font-semibold px-1.5 py-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-center"
+                            className="w-full text-xs font-semibold px-2 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-center focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           >
                             <option value="0">0%</option>
                             <option value="5">5%</option>
@@ -541,7 +541,7 @@ export function BookPurchaseInvoiceModal({
                   placeholder="e.g. Inward raw material bill booked against GRN & verified for payment approval."
                   value={remarks}
                   onChange={(e) => setRemarks(e.target.value)}
-                  className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 outline-hidden"
+                  className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 

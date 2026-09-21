@@ -77,7 +77,7 @@ export const CreateCostCenterModal: React.FC<CreateCostCenterModalProps> = ({ is
               placeholder="e.g. CC-MANUF-01, CC-MKT-HQ"
               value={code}
               onChange={(e) => setCode(e.target.value.toUpperCase())}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background uppercase font-mono"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white uppercase font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 
@@ -89,7 +89,7 @@ export const CreateCostCenterModal: React.FC<CreateCostCenterModalProps> = ({ is
               placeholder="e.g. Heavy Machining Unit 2, Digital Marketing"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 
@@ -98,7 +98,7 @@ export const CreateCostCenterModal: React.FC<CreateCostCenterModalProps> = ({ is
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background font-medium"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             >
               <option value="Operations">Operations & Manufacturing</option>
               <option value="Sales">Sales & Distribution</option>

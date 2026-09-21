@@ -18,8 +18,11 @@ export default {
         }
       },
       fontFamily: {
-        mono: ['JetBrains Mono', 'Fira Code', 'Menlo', 'monospace'],
-        sans: ['JetBrains Mono', 'Fira Code', 'Menlo', 'monospace'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+      },
+      boxShadow: {
+        xs: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
       }
     },
   },

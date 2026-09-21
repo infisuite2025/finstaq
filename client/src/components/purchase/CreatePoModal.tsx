@@ -124,7 +124,7 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
                 value={poNumber}
                 onChange={(e) => setPoNumber(e.target.value)}
                 required
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -136,7 +136,7 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
                 value={vendorLedgerId}
                 onChange={(e) => setVendorLedgerId(e.target.value)}
                 required
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 {vendors.map((v) => (
                   <option key={v.id} value={v.id}>
@@ -155,7 +155,7 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
                 value={orderDate}
                 onChange={(e) => setOrderDate(e.target.value)}
                 required
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -167,7 +167,7 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
                 type="date"
                 value={expectedDeliveryDate}
                 onChange={(e) => setExpectedDeliveryDate(e.target.value)}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -179,7 +179,7 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
                 type="text"
                 value={terms}
                 onChange={(e) => setTerms(e.target.value)}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
@@ -230,7 +230,7 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
                             onChange={(e) => handleUpdateItem(idx, 'description', e.target.value)}
                             placeholder="Material / Service description"
                             required
-                            className="w-full px-2 py-1 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-1 focus:ring-blue-500"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           />
                         </td>
                         <td className="p-2.5">
@@ -239,7 +239,7 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
                             value={item.hsnCode || ''}
                             onChange={(e) => handleUpdateItem(idx, 'hsnCode', e.target.value)}
                             placeholder="HSN"
-                            className="w-full px-2 py-1 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono text-center"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-center text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           />
                         </td>
                         <td className="p-2.5">
@@ -248,7 +248,7 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
                             min="1"
                             value={item.quantity}
                             onChange={(e) => handleUpdateItem(idx, 'quantity', parseFloat(e.target.value) || 0)}
-                            className="w-full px-2 py-1 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-right font-mono"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-right font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           />
                         </td>
                         <td className="p-2.5">
@@ -258,14 +258,14 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
                             step="0.01"
                             value={item.unitPrice}
                             onChange={(e) => handleUpdateItem(idx, 'unitPrice', parseFloat(e.target.value) || 0)}
-                            className="w-full px-2 py-1 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-right font-mono"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-right font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           />
                         </td>
                         <td className="p-2.5">
                           <select
                             value={item.taxRatePercent}
                             onChange={(e) => handleUpdateItem(idx, 'taxRatePercent', parseFloat(e.target.value) || 0)}
-                            className="w-full px-1 py-1 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-right font-mono"
+                            className="w-full px-2 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-right font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           >
                             <option value="0">0%</option>
                             <option value="5">5%</option>

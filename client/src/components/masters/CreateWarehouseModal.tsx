@@ -90,7 +90,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
                 placeholder="e.g. WH-PUNE-01, WH-YARD-2"
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background uppercase font-mono"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white uppercase font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
             <div>
@@ -101,7 +101,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
                 placeholder="e.g. Central Raw Materials Yard"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
@@ -113,7 +113,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
               placeholder="Plot No., Industrial Area, Landmark"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 
@@ -125,7 +125,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
                 placeholder="e.g. Pune"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
             <div>
@@ -134,7 +134,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
                 type="text"
                 value={state}
                 onChange={(e) => setState(e.target.value)}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
             <div>
@@ -144,7 +144,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
                 placeholder="411026"
                 value={pincode}
                 onChange={(e) => setPincode(e.target.value)}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background font-mono"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
@@ -157,7 +157,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
                 placeholder="e.g. Suresh Patil"
                 value={contactPerson}
                 onChange={(e) => setContactPerson(e.target.value)}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
             <div>
@@ -167,7 +167,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
                 placeholder="+91 98230 11223"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>

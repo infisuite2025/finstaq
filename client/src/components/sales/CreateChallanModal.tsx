@@ -208,7 +208,7 @@ export function CreateChallanModal({
                   setErrorMessage(null);
                 }}
                 required
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-mono font-bold focus:ring-2 focus:ring-indigo-500"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -219,7 +219,7 @@ export function CreateChallanModal({
               <select
                 value={selectedSoId}
                 onChange={(e) => handleSoSelectionChange(e.target.value)}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-indigo-500"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="">Direct Dispatch (No SO Link)</option>
                 {salesOrders.map((so) => (
@@ -238,7 +238,7 @@ export function CreateChallanModal({
                 value={customerLedgerId}
                 onChange={(e) => setCustomerLedgerId(e.target.value)}
                 disabled={!!selectedSoId}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-indigo-500 disabled:opacity-70"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none disabled:opacity-70 transition-all"
               >
                 {customers.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -258,7 +258,7 @@ export function CreateChallanModal({
                 type="date"
                 value={dispatchDate}
                 onChange={(e) => setDispatchDate(e.target.value)}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-indigo-500"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -271,7 +271,7 @@ export function CreateChallanModal({
                 value={vehicleNumber}
                 onChange={(e) => setVehicleNumber(e.target.value)}
                 placeholder="e.g. MH-14-GH-4412"
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-mono"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -284,7 +284,7 @@ export function CreateChallanModal({
                 value={transporterName}
                 onChange={(e) => setTransporterName(e.target.value)}
                 placeholder="Transporter Name / eWay Bill"
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
@@ -326,7 +326,7 @@ export function CreateChallanModal({
                             value={it.description}
                             onChange={(e) => handleUpdateItem(idx, 'description', e.target.value)}
                             placeholder="Item description"
-                            className="w-full px-2 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                           />
                         </td>
                         <td className="py-2 px-2 text-right">
@@ -343,10 +343,10 @@ export function CreateChallanModal({
                             max={it.maxAllowed}
                             value={it.dispatchedQty}
                             onChange={(e) => handleUpdateItem(idx, 'dispatchedQty', Number(e.target.value))}
-                            className={'w-full px-2 py-1 rounded border text-xs text-right font-mono font-bold ' + (
+                            className={'w-full px-2.5 py-1.5 rounded-lg border text-xs text-right font-mono font-bold focus:ring-2 focus:ring-emerald-500/20 outline-none ' + (
                               isExceeded
                                 ? 'border-rose-500 text-rose-600 bg-rose-50 dark:bg-rose-950/50'
-                                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'
+                                : 'border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white'
                             )}
                           />
                           {isExceeded && (
@@ -361,7 +361,7 @@ export function CreateChallanModal({
                             value={it.batchNumber || ''}
                             onChange={(e) => handleUpdateItem(idx, 'batchNumber', e.target.value)}
                             placeholder="Batch #"
-                            className="w-full px-2 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                           />
                         </td>
                         <td className="py-2 px-2 text-center">
@@ -391,7 +391,7 @@ export function CreateChallanModal({
               rows={2}
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
-              className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500"
+              className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 

@@ -28,6 +28,7 @@ import {
 import { useToast } from '../../context/ToastContext';
 import { StandardTabs } from '../common/StandardTabs';
 import { KPIScorecard, KPIGrid } from '../common/KPIScorecard';
+import { UniversalReportPrintModal, ReportPrintData } from '../common/UniversalReportPrintModal';
 
 interface AuditDiff {
   changedFields: string[];
@@ -97,6 +98,10 @@ export const AuditTrailWorkspace: React.FC = () => {
 
   // Diff Modal State
   const [activeDiffLog, setActiveDiffLog] = useState<DataChangeLog | null>(null);
+
+  // Print Report Modal State
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
+  const [printReportData, setPrintReportData] = useState<ReportPrintData | null>(null);
 
   const { success, info } = useToast();
   const { getAuthHeaders } = useAuth();
@@ -195,7 +200,41 @@ export const AuditTrailWorkspace: React.FC = () => {
   };
 
   const handlePrint = () => {
-    window.print();
+    const reportDoc: ReportPrintData = {
+      reportTitle: 'MCA Audit Trail & Transaction Edit Log',
+      department: 'TAXATION',
+      subtitle: 'Rule 3(1) Companies (Accounts) Rules 2014 • Statutory Immutable Log',
+      asOfDate: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
+      summaryCards: [
+        { label: 'Total Recorded Changes', value: summary?.totalModifications || logs.length, format: 'text' },
+        { label: 'Modifications (24h)', value: summary?.modifications24h || 0, format: 'text' },
+        { label: 'Active Sessions / Logins', value: summary?.activeLogins24h || 0, format: 'text' },
+        { label: 'Critical Reversals / JVs', value: summary?.criticalReversals || 0, format: 'text' },
+      ],
+      columns: [
+        { header: 'Timestamp', accessor: 'formattedDate', align: 'left' },
+        { header: 'Action', accessor: 'action', align: 'center' },
+        { header: 'Entity', accessor: 'entityName', align: 'left' },
+        { header: 'Doc / Ref ID', accessor: 'docRef', align: 'left' },
+        { header: 'User & Role', accessor: 'userInfo', align: 'left' },
+        { header: 'IP Address', accessor: 'ipAddress', align: 'left' },
+        { header: 'Narration / Event Reason', accessor: 'narration', align: 'left' },
+        { header: 'Modified Fields', accessor: 'changedFields', align: 'left' },
+      ],
+      rows: logs.map((l) => ({
+        formattedDate: new Date(l.createdAt).toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' }),
+        action: l.action,
+        entityName: l.entityName,
+        docRef: l.entityNumber || l.entityId,
+        userInfo: `${l.userName || 'User'} (${l.userRole || 'N/A'})`,
+        ipAddress: l.ipAddress || '127.0.0.1',
+        narration: l.narration || '-',
+        changedFields: l.diffJson?.changedFields?.length ? l.diffJson.changedFields.join(', ') : 'Initial State',
+      })),
+      notes: 'MCA Statutory Compliance Certification: This audit log is maintained in an immutable, tamper-evident format. All modifications, adjustments, reversals, and session activities are permanently recorded in accordance with Ministry of Corporate Affairs requirements.',
+    };
+    setPrintReportData(reportDoc);
+    setIsPrintModalOpen(true);
   };
 
   const getActionBadge = (action: string) => {
@@ -282,40 +321,44 @@ export const AuditTrailWorkspace: React.FC = () => {
 
       {/* KPI Cards */}
       {summary && (
-        <KPIGrid columns={4}>
+        <KPIGrid cols={4}>
           <KPIScorecard
-            label="TOTAL RECORDED CHANGES"
+            label="Total Recorded Changes"
             value={summary.totalModifications}
-            icon={<History className="w-3.5 h-3.5" />}
+            icon={<History className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />}
             badge="MCA Compliant"
             badgeVariant="emerald"
+            variant="emerald"
             footerLeft="Audit Trail"
             footerRight="100% Preserved"
           />
           <KPIScorecard
-            label="MODIFICATIONS (LAST 24H)"
+            label="Recent Changes (24h)"
             value={summary.modifications24h}
-            icon={<Clock className="w-3.5 h-3.5" />}
-            badge="Recent Activity"
+            icon={<Clock className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />}
+            badge="Live Trail"
             badgeVariant="indigo"
+            variant="indigo"
             footerLeft="Time Window"
             footerRight="All Modules"
           />
           <KPIScorecard
-            label="ACTIVE SESSIONS / LOGINS"
+            label="Active Sessions & Logins"
             value={summary.activeLogins24h}
-            icon={<UserCheck className="w-3.5 h-3.5" />}
+            icon={<UserCheck className="w-5 h-5 text-blue-600 dark:text-blue-400" />}
             badge={`${summary.totalSessionEvents} Events`}
             badgeVariant="blue"
+            variant="default"
             footerLeft="Session Log"
             footerRight="Multi-Device"
           />
           <KPIScorecard
-            label="CRITICAL REVERSALS / DELETIONS"
+            label="Critical Reversals / JVs"
             value={summary.criticalReversals}
-            icon={<AlertTriangle className="w-3.5 h-3.5" />}
+            icon={<AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400" />}
             badge="Strict Audit"
             badgeVariant="amber"
+            variant="amber"
             footerLeft="Offsetting JVs"
             footerRight="Verified Only"
           />
@@ -351,7 +394,7 @@ export const AuditTrailWorkspace: React.FC = () => {
 
       {/* Tab 1: Data Changes Edit Log */}
       {activeTab === 'changes' && (
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-b-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden -mt-6">
           {/* Filters Header */}
           <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 bg-slate-50/50 dark:bg-slate-800/40">
             <div className="flex flex-wrap items-center gap-2.5">
@@ -359,7 +402,7 @@ export const AuditTrailWorkspace: React.FC = () => {
               <select
                 value={selectedEntity}
                 onChange={(e) => setSelectedEntity(e.target.value)}
-                className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-semibold"
+                className="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-xs font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="ALL">All Entities</option>
                 <option value="SALES_INVOICE">Sales Invoices</option>
@@ -368,6 +411,7 @@ export const AuditTrailWorkspace: React.FC = () => {
                 <option value="VOUCHER_ADJUSTMENT">Voucher Adjustments</option>
                 <option value="INVENTORY_ITEM">Inventory Items</option>
                 <option value="LEDGER">Ledger Accounts</option>
+                <option value="PAYROLL">Payroll & Salary</option>
                 <option value="PARTY">Customers & Vendors</option>
               </select>
 
@@ -375,7 +419,7 @@ export const AuditTrailWorkspace: React.FC = () => {
               <select
                 value={selectedAction}
                 onChange={(e) => setSelectedAction(e.target.value)}
-                className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-semibold"
+                className="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-xs font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="ALL">All Actions</option>
                 <option value="CREATE">CREATE</option>
@@ -394,12 +438,25 @@ export const AuditTrailWorkspace: React.FC = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && fetchAuditLogs()}
-                  className="pl-8 pr-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs w-48 sm:w-64"
+                  className="pl-8 pr-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-xs w-48 sm:w-64 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
+
+              {(selectedEntity !== 'ALL' || selectedAction !== 'ALL' || searchQuery) && (
+                <button
+                  onClick={() => {
+                    setSelectedEntity('ALL');
+                    setSelectedAction('ALL');
+                    setSearchQuery('');
+                  }}
+                  className="px-2.5 py-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                >
+                  Clear Filters
+                </button>
+              )}
             </div>
 
-            <div className="text-xs text-slate-500 font-semibold">
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold">
               Showing {logs.length} audit trail records
             </div>
           </div>
@@ -476,19 +533,20 @@ export const AuditTrailWorkspace: React.FC = () => {
 
       {/* Tab 2: Sessions Log */}
       {activeTab === 'sessions' && (
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-b-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden -mt-6">
           <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 bg-slate-50/50 dark:bg-slate-800/40">
             <div className="flex items-center gap-2.5">
               <select
                 value={sessionEventType}
                 onChange={(e) => setSessionEventType(e.target.value)}
-                className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-semibold"
+                className="px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-xs font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="ALL">All Event Types</option>
                 <option value="LOGIN">LOGIN</option>
                 <option value="LOGOUT">LOGOUT</option>
                 <option value="EXPORT_DATA">EXPORT DATA</option>
                 <option value="PRINT_REPORT">PRINT REPORT</option>
+                <option value="PASSWORD_CHANGE">PASSWORD CHANGE</option>
               </select>
 
               <div className="relative">
@@ -499,12 +557,21 @@ export const AuditTrailWorkspace: React.FC = () => {
                   value={sessionSearch}
                   onChange={(e) => setSessionSearch(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && fetchSessions()}
-                  className="pl-8 pr-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs w-48 sm:w-64"
+                  className="pl-8 pr-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-xs w-48 sm:w-64 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
+
+              {sessionSearch && (
+                <button
+                  onClick={() => { setSessionSearch(''); }}
+                  className="px-2.5 py-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                >
+                  Clear
+                </button>
+              )}
             </div>
 
-            <div className="text-xs text-slate-500 font-semibold">
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold">
               Showing {sessions.length} authentication events
             </div>
           </div>
@@ -563,7 +630,7 @@ export const AuditTrailWorkspace: React.FC = () => {
 
       {/* Tab 3: Summary Breakdown */}
       {activeTab === 'summary' && summary && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 -mt-6">
           <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
             <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
               <Database className="w-4 h-4 text-blue-600" />
@@ -684,6 +751,15 @@ export const AuditTrailWorkspace: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Universal Report Print Modal */}
+      {isPrintModalOpen && printReportData && (
+        <UniversalReportPrintModal
+          isOpen={isPrintModalOpen}
+          onClose={() => setIsPrintModalOpen(false)}
+          data={printReportData}
+        />
       )}
     </div>
   );

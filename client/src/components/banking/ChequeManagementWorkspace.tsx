@@ -572,7 +572,7 @@ export function ChequeManagementWorkspace() {
                 placeholder="Search by Cheque #, Payee, Voucher..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-white placeholder-slate-400 outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-xs font-medium text-slate-900 dark:text-white placeholder-slate-400 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
               />
             </div>
 
@@ -766,7 +766,7 @@ export function ChequeManagementWorkspace() {
                   const t = templates.find((tm) => tm.id === e.target.value);
                   if (t) setSelectedTemplate(t);
                 }}
-                className="bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-xs px-2.5 py-1.5 font-semibold text-slate-900 dark:text-white"
+                className="bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-xs px-3 py-1.5 font-semibold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 {templates.map((t) => (
                   <option key={t.id} value={t.id}>
@@ -786,7 +786,7 @@ export function ChequeManagementWorkspace() {
                     onChange={(e) =>
                       setSelectedTemplate({ ...selectedTemplate, payeeTopMm: parseFloat(e.target.value) || 0 })
                     }
-                    className="p-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white font-mono"
+                    className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     placeholder="Top mm"
                   />
                   <input
@@ -795,7 +795,7 @@ export function ChequeManagementWorkspace() {
                     onChange={(e) =>
                       setSelectedTemplate({ ...selectedTemplate, payeeLeftMm: parseFloat(e.target.value) || 0 })
                     }
-                    className="p-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white font-mono"
+                    className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     placeholder="Left mm"
                   />
                 </div>
@@ -810,7 +810,7 @@ export function ChequeManagementWorkspace() {
                     onChange={(e) =>
                       setSelectedTemplate({ ...selectedTemplate, dateTopMm: parseFloat(e.target.value) || 0 })
                     }
-                    className="p-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white font-mono"
+                    className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                   <input
                     type="number"
@@ -818,7 +818,7 @@ export function ChequeManagementWorkspace() {
                     onChange={(e) =>
                       setSelectedTemplate({ ...selectedTemplate, dateLeftMm: parseFloat(e.target.value) || 0 })
                     }
-                    className="p-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white font-mono"
+                    className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -832,7 +832,7 @@ export function ChequeManagementWorkspace() {
                     onChange={(e) =>
                       setSelectedTemplate({ ...selectedTemplate, amountWordsTopMm: parseFloat(e.target.value) || 0 })
                     }
-                    className="p-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white font-mono"
+                    className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                   <input
                     type="number"
@@ -840,7 +840,7 @@ export function ChequeManagementWorkspace() {
                     onChange={(e) =>
                       setSelectedTemplate({ ...selectedTemplate, amountWordsLeftMm: parseFloat(e.target.value) || 0 })
                     }
-                    className="p-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white font-mono"
+                    className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -854,7 +854,7 @@ export function ChequeManagementWorkspace() {
                     onChange={(e) =>
                       setSelectedTemplate({ ...selectedTemplate, amountFiguresTopMm: parseFloat(e.target.value) || 0 })
                     }
-                    className="p-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white font-mono"
+                    className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                   <input
                     type="number"
@@ -862,7 +862,7 @@ export function ChequeManagementWorkspace() {
                     onChange={(e) =>
                       setSelectedTemplate({ ...selectedTemplate, amountFiguresLeftMm: parseFloat(e.target.value) || 0 })
                     }
-                    className="p-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white font-mono"
+                    className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -988,7 +988,7 @@ export function ChequeManagementWorkspace() {
                   type="text"
                   value={newBookForm.bankName}
                   onChange={(e) => setNewBookForm({ ...newBookForm, bankName: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-medium"
+                  className="w-full px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   required
                 />
               </div>
@@ -1000,7 +1000,7 @@ export function ChequeManagementWorkspace() {
                     type="text"
                     value={newBookForm.bookSeries}
                     onChange={(e) => setNewBookForm({ ...newBookForm, bookSeries: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono"
+                    className="w-full px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     required
                   />
                 </div>
@@ -1010,7 +1010,7 @@ export function ChequeManagementWorkspace() {
                     type="text"
                     value={newBookForm.accountNumber}
                     onChange={(e) => setNewBookForm({ ...newBookForm, accountNumber: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono"
+                    className="w-full px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     required
                   />
                 </div>
@@ -1023,7 +1023,7 @@ export function ChequeManagementWorkspace() {
                     type="number"
                     value={newBookForm.fromChequeNo}
                     onChange={(e) => setNewBookForm({ ...newBookForm, fromChequeNo: parseInt(e.target.value) || 0 })}
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-white font-bold"
+                    className="w-full px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl font-mono text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     required
                   />
                 </div>
@@ -1033,7 +1033,7 @@ export function ChequeManagementWorkspace() {
                     type="number"
                     value={newBookForm.toChequeNo}
                     onChange={(e) => setNewBookForm({ ...newBookForm, toChequeNo: parseInt(e.target.value) || 0 })}
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-white font-bold"
+                    className="w-full px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl font-mono text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     required
                   />
                 </div>
@@ -1079,7 +1079,7 @@ export function ChequeManagementWorkspace() {
                 <select
                   value={issueForm.bookId}
                   onChange={(e) => setIssueForm({ ...issueForm, bookId: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-bold"
+                  className="w-full px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   required
                 >
                   {books.map((b) => (
@@ -1097,7 +1097,7 @@ export function ChequeManagementWorkspace() {
                   value={issueForm.payeeName}
                   onChange={(e) => setIssueForm({ ...issueForm, payeeName: e.target.value })}
                   placeholder="e.g. Tata Consultancy Services Ltd"
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-semibold"
+                  className="w-full px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   required
                 />
               </div>
@@ -1111,7 +1111,7 @@ export function ChequeManagementWorkspace() {
                     value={issueForm.amount}
                     onChange={(e) => setIssueForm({ ...issueForm, amount: e.target.value })}
                     placeholder="125000.00"
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono font-bold"
+                    className="w-full px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     required
                   />
                 </div>
@@ -1121,7 +1121,7 @@ export function ChequeManagementWorkspace() {
                     type="text"
                     value={issueForm.voucherNumber}
                     onChange={(e) => setIssueForm({ ...issueForm, voucherNumber: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono font-bold"
+                    className="w-full px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     required
                   />
                 </div>
@@ -1134,7 +1134,7 @@ export function ChequeManagementWorkspace() {
                     type="date"
                     value={issueForm.issueDate}
                     onChange={(e) => setIssueForm({ ...issueForm, issueDate: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono"
+                    className="w-full px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     required
                   />
                 </div>

@@ -1161,11 +1161,11 @@ export function FinancialPeriodHub() {
 
             <form onSubmit={handlePostAuditAdjustment} className="space-y-4 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Target Account / General Ledger</label>
+                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Target Account / General Ledger</label>
                 <select
                   value={adjForm.ledgerId}
                   onChange={(e) => setAdjForm({ ...adjForm, ledgerId: e.target.value })}
-                  className="w-full p-2.5 border border-slate-300 rounded-xl font-semibold text-slate-900 focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl font-semibold bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 >
                   <option value="led-depr-exp">Depreciation Expense (5300) [P&L Expense]</option>
                   <option value="led-accum-depr">Accumulated Depreciation (1590) [Balance Sheet Asset]</option>
@@ -1178,11 +1178,11 @@ export function FinancialPeriodHub() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Entry Nature</label>
+                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Entry Nature</label>
                   <select
                     value={adjForm.type}
                     onChange={(e) => setAdjForm({ ...adjForm, type: e.target.value as any })}
-                    className="w-full p-2.5 border border-slate-300 rounded-xl font-bold text-slate-900 focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3.5 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl font-bold bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
                     <option value="DEBIT">DEBIT (Increase Exp / Asset)</option>
                     <option value="CREDIT">CREDIT (Increase Inc / Liab)</option>
@@ -1190,36 +1190,36 @@ export function FinancialPeriodHub() {
                 </div>
 
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Adjustment Amount (₹)</label>
+                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Adjustment Amount (₹)</label>
                   <input
                     type="number"
                     placeholder="e.g. 75000"
                     value={adjForm.amount}
                     onChange={(e) => setAdjForm({ ...adjForm, amount: e.target.value })}
-                    className="w-full p-2.5 border border-slate-300 rounded-xl font-bold text-slate-900 focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3.5 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl font-bold bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Auditor Workpaper / Report Reference</label>
+                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Auditor Workpaper / Report Reference</label>
                 <input
                   type="text"
                   placeholder="e.g. STAT-AUDIT/2026/OBS-44"
                   value={adjForm.auditorReference}
                   onChange={(e) => setAdjForm({ ...adjForm, auditorReference: e.target.value })}
-                  className="w-full p-2.5 border border-slate-300 rounded-xl text-slate-900"
+                  className="w-full px-3.5 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Detailed Audit Justification</label>
+                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Detailed Audit Justification</label>
                 <textarea
                   rows={3}
                   placeholder="Enter specific audit observation or statutory reason for this prior-period adjustment..."
                   value={adjForm.description}
                   onChange={(e) => setAdjForm({ ...adjForm, description: e.target.value })}
-                  className="w-full p-2.5 border border-slate-300 rounded-xl text-slate-900"
+                  className="w-full px-3.5 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 

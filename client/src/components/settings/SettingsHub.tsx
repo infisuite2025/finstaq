@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { TenantConfiguration } from '../../types/masters';
+import { TenantOnboardingWizard } from '../onboarding/TenantOnboardingWizard';
+import { LegacyDataMigrationModal } from '../migration/LegacyDataMigrationModal';
 import {
   Settings,
   Building2,
@@ -23,7 +25,12 @@ import {
   Database,
   EyeOff,
   FileSpreadsheet,
-  Cpu
+  Cpu,
+  Sparkles,
+  Boxes,
+  ArrowRight,
+  RefreshCw,
+  Layers
 } from 'lucide-react';
 
 const INITIAL_CONFIG: TenantConfiguration = {
@@ -83,10 +90,12 @@ const INITIAL_CONFIG: TenantConfiguration = {
 };
 
 export function SettingsHub() {
-  const [activeTab, setActiveTab] = useState<'company' | 'numbering' | 'users' | 'statutory' | 'soc2'>('company');
+  const [activeTab, setActiveTab] = useState<'company' | 'onboarding' | 'numbering' | 'users' | 'statutory' | 'soc2'>('company');
   const { getAuthHeaders } = useAuth();
   const [config, setConfig] = useState<TenantConfiguration>(INITIAL_CONFIG);
   const [isSaved, setIsSaved] = useState(false);
+  const [isOnboardingModalOpen, setIsOnboardingModalOpen] = useState(false);
+  const [isMigrationModalOpen, setIsMigrationModalOpen] = useState(false);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,22 +109,42 @@ export function SettingsHub() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white flex items-center space-x-2">
-            <Settings className="w-5 h-5 text-blue-600" />
+            <Settings className="w-5 h-5 text-emerald-600" />
             <span>Company Settings & System Configurations</span>
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-            Configure tenant legal identity, statutory GST parameters, auto-numbering series, and user roles
+            Configure tenant legal identity, statutory GST parameters, auto-numbering series, starter packs & legacy migration
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={handleSave}
-          className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold flex items-center space-x-2 shadow-xs transition-all cursor-pointer"
-        >
-          {isSaved ? <CheckCircle className="w-4 h-4 text-emerald-300" /> : <Save className="w-4 h-4" />}
-          <span>{isSaved ? 'Settings Saved!' : 'Save Changes'}</span>
-        </button>
+        <div className="flex items-center space-x-2">
+          <button
+            type="button"
+            onClick={() => setIsOnboardingModalOpen(true)}
+            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-bold flex items-center space-x-1.5 shadow-sm transition-all cursor-pointer"
+          >
+            <Sparkles className="w-4 h-4 text-emerald-200" />
+            <span>AI Onboarding Wizard</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsMigrationModalOpen(true)}
+            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white text-xs font-bold flex items-center space-x-1.5 shadow-sm transition-all cursor-pointer"
+          >
+            <Database className="w-4 h-4 text-indigo-200" />
+            <span>Data Migration Engine</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleSave}
+            className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center space-x-2 shadow-xs transition-all cursor-pointer"
+          >
+            {isSaved ? <CheckCircle className="w-4 h-4 text-emerald-300" /> : <Save className="w-4 h-4" />}
+            <span>{isSaved ? 'Settings Saved!' : 'Save Changes'}</span>
+          </button>
+        </div>
       </div>
 
       {/* Tabs */}
@@ -125,7 +154,7 @@ export function SettingsHub() {
           onClick={() => setActiveTab('company')}
           className={`flex-1 py-2 rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all cursor-pointer ${
             activeTab === 'company'
-              ? 'bg-blue-600 text-white shadow-xs'
+              ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
         >
@@ -135,10 +164,23 @@ export function SettingsHub() {
 
         <button
           type="button"
+          onClick={() => setActiveTab('onboarding')}
+          className={`flex-1 py-2 rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all cursor-pointer ${
+            activeTab === 'onboarding'
+              ? 'bg-emerald-600 text-white shadow-xs'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+          }`}
+        >
+          <Sparkles className="w-4 h-4" />
+          <span>Onboarding & Starter Packs</span>
+        </button>
+
+        <button
+          type="button"
           onClick={() => setActiveTab('numbering')}
           className={`flex-1 py-2 rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all cursor-pointer ${
             activeTab === 'numbering'
-              ? 'bg-blue-600 text-white shadow-xs'
+              ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
         >
@@ -151,7 +193,7 @@ export function SettingsHub() {
           onClick={() => setActiveTab('users')}
           className={`flex-1 py-2 rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all cursor-pointer ${
             activeTab === 'users'
-              ? 'bg-blue-600 text-white shadow-xs'
+              ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
         >
@@ -164,7 +206,7 @@ export function SettingsHub() {
           onClick={() => setActiveTab('statutory')}
           className={`flex-1 py-2 rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all cursor-pointer ${
             activeTab === 'statutory'
-              ? 'bg-blue-600 text-white shadow-xs'
+              ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
         >
@@ -177,7 +219,7 @@ export function SettingsHub() {
           onClick={() => setActiveTab('soc2')}
           className={`flex-1 py-2 rounded-lg text-xs font-bold flex items-center justify-center space-x-2 transition-all cursor-pointer ${
             activeTab === 'soc2'
-              ? 'bg-blue-600 text-white shadow-xs'
+              ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           }`}
         >
@@ -207,7 +249,7 @@ export function SettingsHub() {
                     tenant: { ...config.tenant, name: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-semibold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -224,7 +266,7 @@ export function SettingsHub() {
                     tenant: { ...config.tenant, gstIn: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono font-bold focus:ring-2 focus:ring-blue-500 focus:outline-none uppercase"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all uppercase"
               />
             </div>
 
@@ -241,7 +283,7 @@ export function SettingsHub() {
                     tenant: { ...config.tenant, taxId: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500 focus:outline-none uppercase"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all uppercase"
               />
             </div>
 
@@ -253,7 +295,7 @@ export function SettingsHub() {
                 type="text"
                 value={`${config.tenant.stateCode} - ${config.tenant.stateName}`}
                 disabled
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-xs font-mono opacity-80"
+                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-xs font-mono opacity-80"
               />
             </div>
 
@@ -265,7 +307,7 @@ export function SettingsHub() {
                 type="text"
                 value={config.tenant.currency}
                 disabled
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-xs font-mono opacity-80"
+                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-xs font-mono opacity-80"
               />
             </div>
 
@@ -277,7 +319,7 @@ export function SettingsHub() {
                 type="text"
                 value={config.tenant.id}
                 disabled
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-xs font-mono text-blue-600 dark:text-blue-400 font-bold opacity-80"
+                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-xs font-mono text-blue-600 dark:text-blue-400 font-bold opacity-80"
               />
             </div>
           </div>
@@ -305,7 +347,7 @@ export function SettingsHub() {
                     numberingSeries: { ...config.numberingSeries, salesOrderPrefix: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -322,7 +364,7 @@ export function SettingsHub() {
                     numberingSeries: { ...config.numberingSeries, salesInvoicePrefix: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -339,7 +381,7 @@ export function SettingsHub() {
                     numberingSeries: { ...config.numberingSeries, deliveryChallanPrefix: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -356,7 +398,7 @@ export function SettingsHub() {
                     numberingSeries: { ...config.numberingSeries, purchaseOrderPrefix: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -373,7 +415,7 @@ export function SettingsHub() {
                     numberingSeries: { ...config.numberingSeries, grnPrefix: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -385,7 +427,7 @@ export function SettingsHub() {
                 type="text"
                 value={`${config.numberingSeries.receiptPrefix} / ${config.numberingSeries.paymentPrefix}`}
                 disabled
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-xs font-mono opacity-80"
+                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-xs font-mono opacity-80"
               />
             </div>
           </div>
@@ -394,54 +436,35 @@ export function SettingsHub() {
 
       {/* Tab 3: User Management */}
       {activeTab === 'users' && (
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
-          <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
-              Tenant Users & Role-Based Access Control (RBAC) Matrix
-            </span>
-            <span className="text-xs text-slate-400 font-mono">{config.users.length} Active Users</span>
-          </div>
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 space-y-5 shadow-xs">
+          <h2 className="text-sm font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-2">
+            Workspace Users & Role-Based Access Control (RBAC)
+          </h2>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
+            <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-100/50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-semibold">
-                  <th className="p-3.5">User Name</th>
-                  <th className="p-3.5">Email Address</th>
-                  <th className="p-3.5 text-center">Assigned Role</th>
-                  <th className="p-3.5">Permissions Description</th>
-                  <th className="p-3.5 text-center">Status</th>
+                <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 uppercase">
+                  <th className="py-2.5">User</th>
+                  <th className="py-2.5">Assigned Role</th>
+                  <th className="py-2.5">Permissions</th>
+                  <th className="py-2.5 text-right">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {config.users.map((u) => (
                   <tr key={u.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
-                    <td className="p-3.5 font-bold text-slate-900 dark:text-white">
-                      {u.firstName} {u.lastName}
-                    </td>
-                    <td className="p-3.5 font-mono text-slate-600 dark:text-slate-400">{u.email}</td>
-                    <td className="p-3.5 text-center">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded text-[11px] font-bold ${
-                          u.role === 'OWNER'
-                            ? 'bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-800'
-                            : u.role === 'ACCOUNTANT'
-                            ? 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-800'
-                            : 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800'
-                        }`}
-                      >
+                    <td className="py-3 font-semibold text-slate-800 dark:text-slate-200">{u.firstName} {u.lastName}</td>
+                    <td className="py-3">
+                      <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300">
                         {u.role}
                       </span>
                     </td>
-                    <td className="p-3.5 text-slate-600 dark:text-slate-400">
-                      {u.role === 'OWNER'
-                        ? 'Full administrative control, audit logs, financials, and configurations.'
-                        : u.role === 'ACCOUNTANT'
-                        ? 'Vouchers, ledger masters, 3-way matching, tax invoicing, and reports.'
-                        : 'High-speed voucher data entry, document upload, and basic order viewing.'}
+                    <td className="py-3 text-slate-500 dark:text-slate-400">
+                      Full access to vouchers, GST, inventory & books
                     </td>
-                    <td className="p-3.5 text-center">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                    <td className="py-3 text-right">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300">
                         ACTIVE
                       </span>
                     </td>
@@ -453,7 +476,170 @@ export function SettingsHub() {
         </div>
       )}
 
-      {/* Tab 4: Statutory Compliance */}
+      {/* Tab: Onboarding & Starter Packs */}
+      {activeTab === 'onboarding' && (
+        <div className="space-y-6">
+          {/* Quick Action Hero Banner */}
+          <div className="p-6 rounded-2xl bg-gradient-to-r from-emerald-950 via-slate-900 to-indigo-950 border border-emerald-500/30 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xl">
+            <div className="space-y-2 max-w-xl">
+              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-bold">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>AI Tenant Accelerator & Starter Packs</span>
+              </div>
+              <h2 className="text-xl font-black tracking-tight text-white">
+                Next-Gen Zero-Friction Onboarding & Data Migration
+              </h2>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Configure your business identity in 60 seconds with AI GSTIN inference, pick industry pre-setups, or import 2–3+ years of historical financial books from Tally, Busy, Zoho, QuickBooks, or Excel.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0">
+              <button
+                type="button"
+                onClick={() => setIsOnboardingModalOpen(true)}
+                className="px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-xs font-black flex items-center justify-center space-x-2 shadow-lg shadow-emerald-500/20 transition-all cursor-pointer transform hover:scale-[1.02]"
+              >
+                <Sparkles className="w-4 h-4 text-emerald-100" />
+                <span>Launch Onboarding Wizard</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsMigrationModalOpen(true)}
+                className="px-5 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white text-xs font-black flex items-center justify-center space-x-2 shadow-lg shadow-indigo-500/20 transition-all cursor-pointer transform hover:scale-[1.02]"
+              >
+                <Database className="w-4 h-4 text-indigo-100" />
+                <span>Import Legacy ERP Data</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Current Environment Configuration Overview */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 bg-white dark:bg-slate-900 rounded-2xl border border-emerald-400/40 dark:border-emerald-500/30 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-500 uppercase">Starter Pack Status</span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                  Active
+                </span>
+              </div>
+              <div className="text-base font-black text-slate-900 dark:text-white">Manufacturing & Discrete Assembly</div>
+              <p className="text-[11px] text-slate-500">
+                18 Schedule III ledgers, 4 stock items, 3 godowns, multi-tier BOM & Job Work ITC-04 enabled.
+              </p>
+            </div>
+
+            <div className="p-4 bg-white dark:bg-slate-900 rounded-2xl border border-emerald-400/40 dark:border-emerald-500/30 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-500 uppercase">AI GSTIN Inference</span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">
+                  Verified
+                </span>
+              </div>
+              <div className="text-base font-black text-slate-900 dark:text-white font-mono">27AAACB1234F1Z9</div>
+              <p className="text-[11px] text-slate-500">
+                Maharashtra State (27), Corporate Entity, ₹1,00,000 E-Way Threshold & B2B E-Invoicing.
+              </p>
+            </div>
+
+            <div className="p-4 bg-white dark:bg-slate-900 rounded-2xl border border-emerald-400/40 dark:border-emerald-500/30 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-500 uppercase">Data Invariance Guarantee</span>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                  Δ = ₹0.00
+                </span>
+              </div>
+              <div className="text-base font-black text-emerald-600 dark:text-emerald-400">12 Sanity Rules Active</div>
+              <p className="text-[11px] text-slate-500">
+                Multi-year historical roll guarantees zero-difference trial balances & MCA 2024 signed audit certificates.
+              </p>
+            </div>
+          </div>
+
+          {/* Industry Packs Catalog */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
+            <div>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+                Curated Industry Starter Kits (Pick & Choose Anytime)
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Switch or re-apply curated accounting starter packs tailored for your business vertical.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                {
+                  id: 'MANUFACTURING',
+                  name: 'Manufacturing & Assembly',
+                  desc: 'BOMs, WIP journals, raw materials & ITC-04 Job Work accounts.',
+                  badge: 'Industrial',
+                  count: '18 Ledgers',
+                },
+                {
+                  id: 'TRADING_WHOLESALE',
+                  name: 'Trading & Wholesale',
+                  desc: 'Multi-godown stock, debtor ageing, purchase orders & price lists.',
+                  badge: 'B2B & Distribution',
+                  count: '16 Ledgers',
+                },
+                {
+                  id: 'SOFTWARE_SAAS',
+                  name: 'Software & SaaS Tech',
+                  desc: 'MRR subscription, deferred revenue, AWS infra & AS 11 Forex.',
+                  badge: 'Tech & SaaS',
+                  count: '15 Ledgers',
+                },
+                {
+                  id: 'SERVICES_EPC',
+                  name: 'EPC & Consulting',
+                  desc: 'Cost center job costing, milestone billing, Sec 194C/194J TDS.',
+                  badge: 'Projects & EPC',
+                  count: '14 Ledgers',
+                },
+                {
+                  id: 'RETAIL_ECOMMERCE',
+                  name: 'Retail & Omnichannel',
+                  desc: 'High-speed POS, NPCI UPI QR settlements & barcode SKUs.',
+                  badge: 'Retail / D2C',
+                  count: '15 Ledgers',
+                },
+              ].map((pack) => (
+                <div
+                  key={pack.id}
+                  className="p-4 rounded-xl border border-emerald-400/40 dark:border-emerald-500/30 bg-slate-50/50 dark:bg-slate-800/30 flex flex-col justify-between space-y-3"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                        {pack.badge}
+                      </span>
+                      <span className="text-[10px] font-mono text-slate-400 font-bold">{pack.count}</span>
+                    </div>
+                    <h4 className="text-xs font-bold text-slate-900 dark:text-white">{pack.name}</h4>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                      {pack.desc}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsOnboardingModalOpen(true)}
+                    className="w-full py-2 px-3 rounded-lg border border-emerald-400 dark:border-emerald-500 text-emerald-700 dark:text-emerald-300 font-bold text-xs hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition cursor-pointer text-center"
+                  >
+                    Select & Configure Pack
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Statutory Compliance */}
       {activeTab === 'statutory' && (
         <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 space-y-5 shadow-xs">
           <h2 className="text-sm font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-2">
@@ -481,7 +667,7 @@ export function SettingsHub() {
                       },
                     })
                   }
-                  className="w-48 px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono font-bold text-right"
+                  className="w-48 px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono font-bold text-right focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
             </div>
@@ -502,6 +688,21 @@ export function SettingsHub() {
           </div>
         </div>
       )}
+
+      {/* Onboarding & Migration Modals */}
+      <TenantOnboardingWizard
+        isOpen={isOnboardingModalOpen}
+        onClose={() => setIsOnboardingModalOpen(false)}
+        onOpenMigration={() => {
+          setIsOnboardingModalOpen(false);
+          setIsMigrationModalOpen(true);
+        }}
+      />
+
+      <LegacyDataMigrationModal
+        isOpen={isMigrationModalOpen}
+        onClose={() => setIsMigrationModalOpen(false)}
+      />
     </div>
   );
 }

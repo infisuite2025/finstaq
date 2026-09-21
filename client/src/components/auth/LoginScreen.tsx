@@ -406,7 +406,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email or username"
-                    className="w-full bg-slate-50/80 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl pl-10 pr-3.5 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all outline-none"
+                    className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl pl-10 pr-3.5 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none"
                   />
                 </div>
               </div>
@@ -423,7 +423,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className="w-full bg-slate-50/80 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl pl-10 pr-10 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:bg-white dark:focus:bg-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all outline-none"
+                    className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl pl-10 pr-10 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none"
                   />
                   <button
                     type="button"

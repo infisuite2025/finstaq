@@ -36,22 +36,34 @@ import { pdcRoutes } from './modules/pdc/routes/pdc.routes';
 import { interestRoutes } from './modules/interest/routes/interest.routes';
 import { jobWorkRoutes } from './modules/jobwork/routes/jobwork.routes';
 import { storageRoutes } from './modules/storage/routes/storage.routes';
+import { onboardingRoutes } from './modules/onboarding/routes/onboarding.routes';
+import { migrationRoutes } from './modules/migration/routes/migration.routes';
 
 export function buildApp(options: FastifyServerOptions = {}): FastifyInstance {
   const app = fastify({
     logger: true,
+    ajv: {
+      customOptions: {
+        removeAdditional: true, // Strips any malicious/unexpected fields not defined in schema (Anti-Mass Assignment)
+        coerceTypes: false, // Prevents unintended type coercion attacks
+      },
+    },
     ...options,
   });
 
-  // Security Headers
+  // Security Headers (OWASP Hardening: XSS, Clickjacking, MIME-sniffing, HSTS)
   app.register(helmet, {
     contentSecurityPolicy: env.NODE_ENV === 'production',
+    frameguard: { action: 'deny' }, // Anti-Clickjacking: X-Frame-Options: DENY
+    hidePoweredBy: true, // Hides X-Powered-By: Fastify/Node
+    hsts: env.NODE_ENV === 'production' ? { maxAge: 31536000, includeSubDomains: true, preload: true } : false,
+    noSniff: true, // X-Content-Type-Options: nosniff
   });
 
-  // API Rate Limiting
+  // API Rate Limiting (Tenant-Aware)
   app.register(rateLimit, rateLimitConfig);
 
-  // Cross-Origin Resource Sharing
+  // Cross-Origin Resource Sharing (Explicit Whitelist & Restricted HTTP Verbs)
   app.register(cors, {
     origin: (origin, cb) => {
       // Allow requests with no origin (mobile apps, curl, server-to-server)
@@ -71,8 +83,11 @@ export function buildApp(options: FastifyServerOptions = {}): FastifyInstance {
       }
       return cb(new Error('Blocked by CORS policy'), false);
     },
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-tenant-id', 'x-user-id', 'x-user-role', 'Accept'],
     credentials: true,
   });
+
 
 
   // Useful Fastify utilities (HTTP errors, assertions, multipart)
@@ -122,6 +137,8 @@ export function buildApp(options: FastifyServerOptions = {}): FastifyInstance {
   app.register(interestRoutes, { prefix: '/api/v1/interest' });
   app.register(jobWorkRoutes, { prefix: '/api/v1/jobwork' });
   app.register(storageRoutes, { prefix: '/api/v1' });
+  app.register(onboardingRoutes, { prefix: '/api/v1/onboarding' });
+  app.register(migrationRoutes, { prefix: '/api/v1/migration' });
 
   // Root welcome endpoint
 

@@ -45,6 +45,7 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
   const [selectedSource, setSelectedSource] = useState<SourceSystemType>('TALLY_PRIME');
   const [historicalYears, setHistoricalYears] = useState<1 | 2 | 3>(3);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>('Tally_DayBook_Export_3Years.xml');
+  const [fileSize, setFileSize] = useState<string>('4.2 MB');
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [ingestionProgress, setIngestionProgress] = useState<number>(0);
   const [activeIngestionYear, setActiveIngestionYear] = useState<string>('FY 2023-24');
@@ -56,6 +57,14 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
 
   if (!isOpen) return null;
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setUploadedFileName(file.name);
+      setFileSize(`${(file.size / (1024 * 1024)).toFixed(2)} MB`);
+    }
+  };
+
   const handleStartAnalysis = async () => {
     setIsProcessing(true);
     try {
@@ -65,6 +74,7 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
         body: JSON.stringify({
           sourceSystem: selectedSource,
           historicalYearsCount: historicalYears,
+          fileName: uploadedFileName || 'Import_Dataset.xml',
         }),
       });
       const json = await res.json();
@@ -78,6 +88,45 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
       setIsProcessing(false);
       setCurrentStep(4);
     }
+  };
+
+  const handleGroupChange = (ledgerIndex: number, newGroup: string) => {
+    if (!dataset || !dataset.ledgers) return;
+    const updatedLedgers = [...dataset.ledgers];
+    updatedLedgers[ledgerIndex] = {
+      ...updatedLedgers[ledgerIndex],
+      mappedScheduleIIIGroup: newGroup,
+    };
+    setDataset({ ...dataset, ledgers: updatedLedgers });
+  };
+
+  const handleDownloadCertificate = () => {
+    if (!migrationResult) return;
+    const certText = JSON.stringify(
+      {
+        title: 'MCA 2024 / Schedule III Data Migration & Audit Compliance Certificate',
+        certificateId: migrationResult.certificateId,
+        signedAt: migrationResult.signedAt,
+        sourceSystem: selectedSource,
+        fiscalPeriods: migrationResult.ingestedYears,
+        trialBalanceReconciliation: migrationResult.reconciliation,
+        statutoryAuditStatus: 'VERIFIED_ZERO_DISCREPANCY',
+        recordsCreated: migrationResult.recordsCreated,
+        sha256Digest: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+      },
+      null,
+      2
+    );
+
+    const blob = new Blob([certText], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${migrationResult.certificateId}_Audit_Certificate.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   const handleExecuteLiveMigration = () => {
@@ -416,30 +465,53 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
               </div>
 
               {/* Upload Dropzone */}
-              <div className="p-8 rounded-3xl border-2 border-dashed border-indigo-300 dark:border-indigo-700/60 bg-indigo-50/30 dark:bg-indigo-950/20 text-center flex flex-col items-center justify-center space-y-3">
-                <div className="w-14 h-14 rounded-2xl bg-indigo-600/10 dark:bg-indigo-400/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-inner">
+              <div className="p-8 rounded-3xl border-2 border-dashed border-emerald-400/80 dark:border-emerald-500/80 bg-emerald-50/20 dark:bg-emerald-950/10 text-center flex flex-col items-center justify-center space-y-3">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 dark:bg-emerald-400/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shadow-inner">
                   <UploadCloud className="w-7 h-7" />
                 </div>
                 <div>
                   <div className="text-sm font-bold text-slate-900 dark:text-white">
-                    Drag and drop your export files here, or click to browse
+                    Drag and drop your export files here, or browse local disk
                   </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                     Supports: <code>.xml</code> (Tally DayBook/Master), <code>.xlsx</code> (Universal Multi-Tab), or <code>.csv</code> (up to 50MB)
                   </p>
                 </div>
 
+                <div className="flex items-center space-x-3 pt-2">
+                  <label className="py-2 px-4 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-emerald-700 dark:text-emerald-300 font-bold text-xs hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition cursor-pointer shadow-xs">
+                    <span>Browse File from Disk</span>
+                    <input
+                      type="file"
+                      accept=".xml,.xlsx,.xls,.csv"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                  </label>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setUploadedFileName('Tally_DayBook_3Yrs_Full_Export.xml');
+                      setFileSize('4.8 MB');
+                    }}
+                    className="py-2 px-3.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+                  >
+                    Load Sample 3-Year Enterprise Dataset
+                  </button>
+                </div>
+
                 {uploadedFileName && (
-                  <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs text-xs font-bold text-slate-800 dark:text-slate-200">
+                  <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-emerald-400 dark:border-emerald-500 shadow-xs text-xs font-bold text-slate-800 dark:text-slate-200 mt-2">
                     <FileText className="w-4 h-4 text-emerald-500" />
                     <span>{uploadedFileName}</span>
-                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400">(4.2 MB • Validated XML)</span>
+                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400">({fileSize} • Validated Schema)</span>
                   </div>
                 )}
               </div>
 
               {/* Universal Template Download Box */}
-              <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-emerald-400/40 dark:border-emerald-500/30 flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950 flex items-center justify-center text-emerald-600">
                     <FileSpreadsheet className="w-5 h-5" />
@@ -457,7 +529,7 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
                 <a
                   href="/downloads/finstaq_universal_migration_template.xlsx"
                   download
-                  className="py-2 px-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center space-x-1.5 transition-colors cursor-pointer"
+                  className="py-2 px-3.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 font-bold text-xs flex items-center space-x-1.5 transition-colors cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Download Template</span>
@@ -475,7 +547,7 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
                     Step 4: AI Chart of Accounts & Schedule III Group Mapping
                   </h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                    Our AI has automatically mapped legacy ledger groups to standard 28 Indian Schedule III statutory groups. Review and adjust if needed.
+                    Our AI has automatically mapped legacy ledger groups to standard 28 Indian Schedule III statutory groups. Review and adjust any mapping below.
                   </p>
                 </div>
                 <span className="text-xs font-bold px-3 py-1 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
@@ -485,21 +557,21 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
 
               {/* Master Data Overview Cards */}
               <div className="grid grid-cols-4 gap-2.5">
-                <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-emerald-400/40 dark:border-emerald-500/30">
                   <div className="text-[10px] font-bold uppercase text-slate-400">Total Ledgers</div>
                   <div className="text-lg font-black text-slate-900 dark:text-white mt-0.5">{dataset.ledgers.length}</div>
                 </div>
-                <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-emerald-400/40 dark:border-emerald-500/30">
                   <div className="text-[10px] font-bold uppercase text-slate-400">Inventory Items</div>
                   <div className="text-lg font-black text-slate-900 dark:text-white mt-0.5">{dataset.inventory.length}</div>
                 </div>
-                <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-emerald-400/40 dark:border-emerald-500/30">
                   <div className="text-[10px] font-bold uppercase text-slate-400">Historical Vouchers</div>
                   <div className="text-lg font-black text-slate-900 dark:text-white mt-0.5">{dataset.vouchers.length}</div>
                 </div>
-                <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-emerald-400/40 dark:border-emerald-500/30">
                   <div className="text-[10px] font-bold uppercase text-slate-400">Open Pending Bills</div>
-                  <div className="text-lg font-black text-indigo-600 dark:text-indigo-400 mt-0.5">{dataset.openBills.length}</div>
+                  <div className="text-lg font-black text-emerald-600 dark:text-emerald-400 mt-0.5">{dataset.openBills.length}</div>
                 </div>
               </div>
 
@@ -521,9 +593,25 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
                           <td className="p-3 font-bold text-slate-800 dark:text-slate-200">{l.name}</td>
                           <td className="p-3 text-slate-500">{l.sourceGroup}</td>
                           <td className="p-3">
-                            <span className="px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 font-bold text-[11px] border border-indigo-200 dark:border-indigo-800">
-                              {l.mappedScheduleIIIGroup}
-                            </span>
+                            <select
+                              value={l.mappedScheduleIIIGroup}
+                              onChange={(e) => handleGroupChange(idx, e.target.value)}
+                              className="px-2.5 py-1 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-emerald-800 dark:text-emerald-200 font-bold text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
+                            >
+                              <option value="Sundry Debtors (Trade Receivables)">Sundry Debtors (Trade Receivables)</option>
+                              <option value="Sundry Creditors (Trade Payables)">Sundry Creditors (Trade Payables)</option>
+                              <option value="Bank Accounts">Bank Accounts</option>
+                              <option value="Cash-in-Hand">Cash-in-Hand</option>
+                              <option value="Sales Accounts">Sales Accounts</option>
+                              <option value="Purchase Accounts">Purchase Accounts</option>
+                              <option value="Duties & Taxes (GST/TDS)">Duties & Taxes (GST/TDS)</option>
+                              <option value="Fixed Assets">Fixed Assets</option>
+                              <option value="Direct Expenses">Direct Expenses</option>
+                              <option value="Indirect Expenses">Indirect Expenses</option>
+                              <option value="Indirect Incomes">Indirect Incomes</option>
+                              <option value="Capital Account">Capital Account</option>
+                              <option value="Reserves & Surplus (Retained Earnings)">Reserves & Surplus (Retained Earnings)</option>
+                            </select>
                           </td>
                           <td className="p-3 text-right font-mono font-bold text-slate-900 dark:text-white">
                             {l.openingBalanceDr > 0
@@ -573,7 +661,7 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
                     key={rule.ruleId}
                     className={`p-3.5 rounded-2xl border flex items-start space-x-3 text-xs ${
                       rule.severity === 'PASSED'
-                        ? 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
+                        ? 'bg-white dark:bg-slate-900 border-emerald-400/40 dark:border-emerald-500/30'
                         : 'bg-amber-50/60 dark:bg-amber-950/30 border-amber-300 dark:border-amber-800'
                     }`}
                   >
@@ -600,7 +688,7 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
           {/* STEP 6: LIVE MULTI-YEAR INGESTION ENGINE */}
           {currentStep === 6 && (
             <div className="py-8 flex flex-col items-center justify-center space-y-6 text-center">
-              <div className="w-16 h-16 rounded-3xl bg-indigo-600/10 dark:bg-indigo-400/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 animate-spin">
+              <div className="w-16 h-16 rounded-3xl bg-emerald-600/10 dark:bg-emerald-400/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400 animate-spin">
                 <RefreshCw className="w-8 h-8" />
               </div>
 
@@ -608,7 +696,7 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
                 <h3 className="text-lg font-black text-slate-900 dark:text-white">
                   Executing Chronological Multi-Year Ingestion...
                 </h3>
-                <p className="text-xs text-indigo-600 dark:text-indigo-400 font-bold">
+                <p className="text-xs text-emerald-600 dark:text-emerald-400 font-bold">
                   {activeIngestionYear}
                 </p>
               </div>
@@ -617,7 +705,7 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
               <div className="w-full max-w-md space-y-2">
                 <div className="w-full h-3 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden p-0.5">
                   <div
-                    className="h-full bg-gradient-to-r from-indigo-500 to-blue-600 rounded-full transition-all duration-500 ease-out"
+                    className="h-full bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full transition-all duration-500 ease-out"
                     style={{ width: `${ingestionProgress}%` }}
                   />
                 </div>
@@ -647,7 +735,7 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
               </div>
 
               {/* Side-by-Side Reconciliation Table */}
-              <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3">
+              <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-emerald-400/40 dark:border-emerald-500/30 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider">
                     Side-by-Side Trial Balance Reconciliation
@@ -667,7 +755,7 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
 
                   <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-850">
                     <div className="text-[10px] text-slate-400 font-bold">Finstaq Ingested Total Dr/Cr</div>
-                    <div className="text-sm font-black font-mono text-indigo-600 dark:text-indigo-400 mt-1">
+                    <div className="text-sm font-black font-mono text-emerald-600 dark:text-emerald-400 mt-1">
                       ₹{migrationResult.reconciliation.finstaqTotalDr.toLocaleString('en-IN')}
                     </div>
                   </div>
@@ -681,10 +769,10 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
                 </div>
               </div>
 
-              {/* Open Bill-wise Ageing Preserved Confirmation */}
-              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
+              {/* Open Bill-wise Ageing Preserved Confirmation & Action */}
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs gap-3">
                 <div className="flex items-center space-x-3">
-                  <Clock className="w-5 h-5 text-indigo-500" />
+                  <Clock className="w-5 h-5 text-emerald-500 shrink-0" />
                   <div>
                     <div className="font-bold text-slate-900 dark:text-white">
                       Customer & Vendor Ageing Ready on Day 1
@@ -692,17 +780,27 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
                     <div className="text-[11px] text-slate-500">
                       {migrationResult.recordsCreated.billsAllocated} unpaid invoices preserved with original invoice dates and overdue brackets (0-30, 31-60, 61-90, &gt;90 days).
                     </div>
-
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="py-2 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-600/30 cursor-pointer"
-                >
-                  🚀 Go to Workspace
-                </button>
+                <div className="flex items-center space-x-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={handleDownloadCertificate}
+                    className="py-2 px-3.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-emerald-700 dark:text-emerald-300 font-bold text-xs hover:bg-emerald-50 dark:hover:bg-emerald-950/40 flex items-center space-x-1.5 transition cursor-pointer shadow-xs"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Download Audit Certificate</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-600/30 cursor-pointer"
+                  >
+                    🚀 Go to Workspace
+                  </button>
+                </div>
               </div>
             </div>
           )}

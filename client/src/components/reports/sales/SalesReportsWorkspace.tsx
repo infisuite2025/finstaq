@@ -141,62 +141,181 @@ export function SalesReportsWorkspace() {
       pData.reportTitle = 'SALES REGISTER (TAX INVOICES & DAYBOOK)';
       pData.subtitle = 'Detailed Outward Sales Daybook with Output GST Breakdown';
       pData.summaryCards = [
-        { label: 'Total Invoiced Sales', value: currentData.summary?.totalGrossRevenue || 0, format: 'currency' },
-        { label: 'Total Taxable Value', value: currentData.summary?.totalTaxableValue || 0, format: 'currency' },
-        { label: 'Output CGST + SGST', value: (currentData.summary?.totalCGST || 0) + (currentData.summary?.totalSGST || 0), format: 'currency' },
-        { label: 'Output IGST', value: currentData.summary?.totalIGST || 0, format: 'currency' },
+        { label: 'Total Invoices', value: currentData.summary?.totalInvoices || (currentData.invoices?.length || 0), format: 'text' },
+        { label: 'Total Taxable Value', value: currentData.summary?.totalTaxable || 0, format: 'currency' },
+        { label: 'Output CGST + SGST', value: (currentData.summary?.totalCgst || 0) + (currentData.summary?.totalSgst || 0), format: 'currency' },
+        { label: 'Output IGST', value: currentData.summary?.totalIgst || 0, format: 'currency' },
+        { label: 'Grand Total Revenue', value: currentData.summary?.grandTotal || 0, format: 'currency' },
       ];
       pData.columns = [
-        { header: 'Date', accessor: 'date' },
+        { header: 'Date', accessor: 'invoiceDate' },
         { header: 'Invoice #', accessor: 'invoiceNumber' },
         { header: 'Customer / Debtor', accessor: 'customerName' },
-        { header: 'Customer GSTIN', accessor: 'customerGstin' },
+        { header: 'Customer GSTIN', accessor: 'gstIn' },
+        { header: 'Place of Supply', accessor: 'placeOfSupply' },
         { header: 'Taxable (₹)', accessor: 'taxableAmount', align: 'right', format: 'currency' },
-        { header: 'CGST (₹)', accessor: 'cgst', align: 'right', format: 'currency' },
-        { header: 'SGST (₹)', accessor: 'sgst', align: 'right', format: 'currency' },
-        { header: 'IGST (₹)', accessor: 'igst', align: 'right', format: 'currency' },
-        { header: 'Total (₹)', accessor: 'totalAmount', align: 'right', format: 'currency' },
+        { header: 'CGST (₹)', accessor: 'cgstAmount', align: 'right', format: 'currency' },
+        { header: 'SGST (₹)', accessor: 'sgstAmount', align: 'right', format: 'currency' },
+        { header: 'IGST (₹)', accessor: 'igstAmount', align: 'right', format: 'currency' },
+        { header: 'Grand Total (₹)', accessor: 'grandTotal', align: 'right', format: 'currency' },
+        { header: 'Status', accessor: 'status' },
       ];
       pData.rows = currentData.invoices || [];
-    } else if (activeTab === 'customer_aging') {
-      pData.reportTitle = 'CUSTOMER OUTSTANDING & AGING ANALYSIS';
-      pData.subtitle = 'Accounts Receivable Aging Schedule by Due Date';
-      pData.summaryCards = [
-        { label: 'Total Receivables', value: currentData.summary?.totalReceivables || 0, format: 'currency' },
-        { label: '0-30 Days (Current)', value: currentData.summary?.totalCurrent || 0, format: 'currency' },
-        { label: '31-60 Days', value: currentData.summary?.total31to60 || 0, format: 'currency' },
-        { label: 'Over 90 Days (Overdue)', value: currentData.summary?.totalOver90 || 0, format: 'currency' },
-      ];
-      pData.columns = [
-        { header: 'Customer Name', accessor: 'customerName' },
-        { header: 'Total Balance (₹)', accessor: 'totalBalance', align: 'right', format: 'currency' },
-        { header: '0-30 Days (₹)', accessor: 'bucket0to30', align: 'right', format: 'currency' },
-        { header: '31-60 Days (₹)', accessor: 'bucket31to60', align: 'right', format: 'currency' },
-        { header: '61-90 Days (₹)', accessor: 'bucket61to90', align: 'right', format: 'currency' },
-        { header: '> 90 Days (₹)', accessor: 'bucketOver90', align: 'right', format: 'currency' },
-      ];
-      pData.rows = currentData.debtors || [];
     } else if (activeTab === 'so_outstanding') {
       pData.reportTitle = 'SALES ORDER (SO) FULFILLMENT & PENDING DISPATCH REGISTER';
+      pData.subtitle = 'Pending Customer Commitments & Fulfillment Backlog';
+      pData.summaryCards = [
+        { label: 'Total Active Orders', value: currentData.summary?.totalOrders || (currentData.orders?.length || 0), format: 'text' },
+        { label: 'Total Committed Value', value: currentData.summary?.totalCommittedValue || 0, format: 'currency' },
+        { label: 'Pending Dispatch Value', value: currentData.summary?.totalPendingValue || 0, format: 'currency' },
+        { label: 'Overdue Delivery Orders', value: currentData.summary?.overdueOrdersCount || 0, format: 'text' },
+      ];
       pData.columns = [
         { header: 'SO Number', accessor: 'soNumber' },
         { header: 'Order Date', accessor: 'orderDate' },
+        { header: 'Delivery Due', accessor: 'expectedDeliveryDate' },
         { header: 'Customer', accessor: 'customerName' },
-        { header: 'Item Description', accessor: 'itemDescription' },
-        { header: 'Ordered Qty', accessor: 'orderedQty', align: 'right' },
-        { header: 'Dispatched Qty', accessor: 'dispatchedQty', align: 'right' },
-        { header: 'Pending Qty', accessor: 'pendingQty', align: 'right' },
+        { header: 'Items / Particulars', accessor: 'itemSummary' },
+        { header: 'Pending Value (₹)', accessor: 'totalPendingValue', align: 'right', format: 'currency' },
         { header: 'Status', accessor: 'status' },
       ];
-      pData.rows = currentData.orders || [];
-    } else {
-      pData.columns = [
-        { header: 'Particulars', accessor: 'name' },
-        { header: 'Reference / Code', accessor: 'code' },
-        { header: 'Quantity', accessor: 'qty', align: 'right' },
-        { header: 'Amount (₹)', accessor: 'amount', align: 'right', format: 'currency' },
+      pData.rows = (currentData.orders || []).map((o: any) => ({
+        ...o,
+        itemSummary: Array.isArray(o.items) ? o.items.map((it: any) => `${it.description || it.name || 'Item'} (Bal: ${it.balanceQty ?? it.pendingQty ?? it.orderedQty})`).join('; ') : (o.itemDescription || '-'),
+        status: o.isOverdue ? 'OVERDUE' : 'ON TRACK',
+      }));
+    } else if (activeTab === 'challans') {
+      pData.reportTitle = 'DELIVERY CHALLAN & GOODS DISPATCH REGISTER';
+      pData.subtitle = 'Outward Material Movements and Transport Consignments';
+      pData.summaryCards = [
+        { label: 'Total Challans', value: currentData.summary?.totalChallans || (currentData.challans?.length || 0), format: 'text' },
+        { label: 'Total Dispatched Units', value: currentData.summary?.totalDispatchedUnits || 0, format: 'text' },
+        { label: 'Delivered', value: currentData.summary?.deliveredCount || 0, format: 'text' },
+        { label: 'In-Transit', value: currentData.summary?.inTransitCount || 0, format: 'text' },
       ];
-      pData.rows = Array.isArray(currentData) ? currentData : (currentData.customers || currentData.items || currentData.challans || []);
+      pData.columns = [
+        { header: 'Challan #', accessor: 'challanNumber' },
+        { header: 'Dispatch Date', accessor: 'dispatchDate' },
+        { header: 'Customer', accessor: 'customerName' },
+        { header: 'Transporter', accessor: 'transporterName' },
+        { header: 'Vehicle #', accessor: 'vehicleNumber' },
+        { header: 'LR / Docket #', accessor: 'lrNumber' },
+        { header: 'Items Dispatched', accessor: 'itemSummary' },
+        { header: 'Status', accessor: 'status' },
+      ];
+      pData.rows = (currentData.challans || []).map((c: any) => ({
+        ...c,
+        itemSummary: Array.isArray(c.items) ? c.items.map((it: any) => `${it.description || it.name || 'Item'} (${it.dispatchedQty} Qty)`).join('; ') : (c.itemsDescription || '-'),
+      }));
+    } else if (activeTab === 'bills_pending') {
+      pData.reportTitle = 'BILLS PENDING REGISTER (DELIVERIES AWAITING INVOICING)';
+      pData.subtitle = 'Unbilled Outward Deliveries for Working Capital Reconciliation';
+      pData.summaryCards = [
+        { label: 'Pending Challans', value: currentData.summary?.pendingChallansCount || (currentData.unbilledDeliveries?.length || 0), format: 'text' },
+        { label: 'Unbilled Revenue Value', value: currentData.summary?.totalUnbilledRevenueAmount || 0, format: 'currency' },
+      ];
+      pData.columns = [
+        { header: 'Challan #', accessor: 'challanNumber' },
+        { header: 'Dispatch Date', accessor: 'dispatchDate' },
+        { header: 'Customer', accessor: 'customerName' },
+        { header: 'Dispatched Goods Description', accessor: 'itemsDescription' },
+        { header: 'Qty', accessor: 'dispatchedQty', align: 'right' },
+        { header: 'Estimated Value (₹)', accessor: 'estimatedTotal', align: 'right', format: 'currency' },
+      ];
+      pData.rows = currentData.unbilledDeliveries || [];
+    } else if (activeTab === 'customer_sales') {
+      pData.reportTitle = 'CUSTOMER REVENUE & PARETO ANALYSIS REPORT';
+      pData.subtitle = 'Customer Revenue Concentration and Sales Distribution';
+      pData.summaryCards = [
+        { label: 'Active Customers', value: currentData.summary?.activeCustomersCount || (currentData.customers?.length || 0), format: 'text' },
+        { label: 'Total Invoiced Revenue', value: currentData.summary?.totalSalesRevenue || 0, format: 'currency' },
+        { label: 'Top Customer Share', value: `${currentData.summary?.topCustomerRevenueShare || 0}%`, format: 'text' },
+      ];
+      pData.columns = [
+        { header: 'Customer Name', accessor: 'customerName' },
+        { header: 'Customer GSTIN', accessor: 'gstIn' },
+        { header: 'Invoice Count', accessor: 'invoiceCount', align: 'right' },
+        { header: 'Taxable Revenue (₹)', accessor: 'totalTaxable', align: 'right', format: 'currency' },
+        { header: 'Gross Revenue (₹)', accessor: 'grandTotal', align: 'right', format: 'currency' },
+        { header: 'Share (%)', accessor: 'percentShare', align: 'right', format: 'percent' },
+      ];
+      pData.rows = currentData.customers || [];
+    } else if (activeTab === 'item_sales') {
+      pData.reportTitle = 'ITEM SALES VOLUME & GROSS MARGIN ANALYSIS';
+      pData.subtitle = 'Product SKU Performance, Realized Prices & Margin Contributions';
+      pData.summaryCards = [
+        { label: 'Total SKUs', value: currentData.summary?.totalUniqueSkus || (currentData.items?.length || 0), format: 'text' },
+        { label: 'Total Sales Turnover', value: currentData.summary?.totalSalesRevenue || 0, format: 'currency' },
+        { label: 'Total Gross Profit', value: currentData.summary?.totalGrossProfit || 0, format: 'currency' },
+        { label: 'Overall Gross Margin', value: `${currentData.summary?.overallMarginPercent || 0}%`, format: 'text' },
+      ];
+      pData.columns = [
+        { header: 'Item / SKU Description', accessor: 'itemName' },
+        { header: 'Units Sold', accessor: 'totalQtySold', align: 'right' },
+        { header: 'Avg Selling Price (₹)', accessor: 'avgSellingPrice', align: 'right', format: 'currency' },
+        { header: 'Avg Cost Price (₹)', accessor: 'avgCostPrice', align: 'right', format: 'currency' },
+        { header: 'Total Sales (₹)', accessor: 'totalSalesValue', align: 'right', format: 'currency' },
+        { header: 'Gross Profit (₹)', accessor: 'grossProfit', align: 'right', format: 'currency' },
+        { header: 'Margin (%)', accessor: 'grossMarginPercent', align: 'right', format: 'percent' },
+      ];
+      pData.rows = currentData.items || [];
+    } else if (activeTab === 'customer_aging') {
+      pData.reportTitle = 'CUSTOMER OUTSTANDING & RECEIVABLES AGING SCHEDULE';
+      pData.subtitle = 'Accounts Receivable Aging Analysis by Credit Due Interval';
+      pData.summaryCards = [
+        { label: 'Total Receivables', value: currentData.summary?.totalReceivable || 0, format: 'currency' },
+        { label: '0-30 Days', value: currentData.summary?.total0To30 || 0, format: 'currency' },
+        { label: '31-60 Days', value: currentData.summary?.total31To60 || 0, format: 'currency' },
+        { label: '61-90 Days', value: currentData.summary?.total61To90 || 0, format: 'currency' },
+        { label: 'Over 90 Days', value: currentData.summary?.totalOver90 || 0, format: 'currency' },
+      ];
+      pData.columns = [
+        { header: 'Customer Name', accessor: 'customerName' },
+        { header: 'Credit Days', accessor: 'creditPeriodDays', align: 'center' },
+        { header: '0-30 Days (₹)', accessor: 'bucket0To30', align: 'right', format: 'currency' },
+        { header: '31-60 Days (₹)', accessor: 'bucket31To60', align: 'right', format: 'currency' },
+        { header: '61-90 Days (₹)', accessor: 'bucket61To90', align: 'right', format: 'currency' },
+        { header: '> 90 Days (₹)', accessor: 'bucketOver90', align: 'right', format: 'currency' },
+        { header: 'Total Outstanding (₹)', accessor: 'totalReceivable', align: 'right', format: 'currency' },
+      ];
+      pData.rows = currentData.debtors || [];
+    } else if (activeTab === 'gstr1_summary') {
+      pData.reportTitle = 'GSTR-1 OUTWARD SUPPLIES & HSN SUMMARY';
+      pData.subtitle = 'Statutory GST Outward Turnover & Tax Liability by HSN Code';
+      pData.summaryCards = [
+        { label: 'Total Outward Turnover', value: currentData.summary?.totalOutwardTaxableTurnover || 0, format: 'currency' },
+        { label: 'Output CGST', value: currentData.summary?.totalOutputCgst || 0, format: 'currency' },
+        { label: 'Output SGST', value: currentData.summary?.totalOutputSgst || 0, format: 'currency' },
+        { label: 'Total Output GST Liability', value: currentData.summary?.totalOutputTaxLiability || 0, format: 'currency' },
+      ];
+      pData.columns = [
+        { header: 'HSN Code', accessor: 'hsnCode' },
+        { header: 'Description', accessor: 'description' },
+        { header: 'UQC', accessor: 'uqc', align: 'center' },
+        { header: 'Total Quantity', accessor: 'totalQuantity', align: 'right' },
+        { header: 'Taxable Value (₹)', accessor: 'totalTaxableValue', align: 'right', format: 'currency' },
+        { header: 'GST Rate (%)', accessor: 'rate', align: 'center', format: 'percent' },
+        { header: 'Total Tax (₹)', accessor: 'totalGst', align: 'right', format: 'currency' },
+      ];
+      pData.rows = currentData.hsnSummary || [];
+    } else if (activeTab === 'returns') {
+      pData.reportTitle = 'SALES RETURNS & CREDIT NOTE REGISTER';
+      pData.subtitle = 'Summary of Goods Returned, Volume Rebates & Outward Tax Adjustments';
+      pData.summaryCards = [
+        { label: 'Total Credit Notes', value: currentData.summary?.totalCreditNotesCount || (currentData.creditNotes?.length || 0), format: 'text' },
+        { label: 'Adjusted Tax Liability', value: currentData.summary?.totalAdjustedTaxLiability || 0, format: 'currency' },
+        { label: 'Total Credit Value', value: currentData.summary?.totalCreditValue || 0, format: 'currency' },
+      ];
+      pData.columns = [
+        { header: 'Credit Note #', accessor: 'creditNoteNumber' },
+        { header: 'Date', accessor: 'creditNoteDate' },
+        { header: 'Original Invoice #', accessor: 'originalInvoiceNumber' },
+        { header: 'Customer', accessor: 'customerName' },
+        { header: 'Reason / Remarks', accessor: 'reasonDescription' },
+        { header: 'Taxable (₹)', accessor: 'taxableAmount', align: 'right', format: 'currency' },
+        { header: 'Total Credit (₹)', accessor: 'totalCreditAmount', align: 'right', format: 'currency' },
+      ];
+      pData.rows = currentData.creditNotes || [];
     }
 
     setPrintData(pData);

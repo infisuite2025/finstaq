@@ -122,7 +122,45 @@ export function createTenantPrismaClient(tenantId: string, baseClient: PrismaCli
               }
             }
 
-            return query(currentArgs);
+            const result = await query(currentArgs);
+
+            // Automated Audit Logging Extension (SOC 2 / MCA 2024 Compliance)
+            // Intercept mutations on key financial & operational models and record audit trails asynchronously
+            if (
+              ['create', 'update', 'updateMany', 'delete', 'deleteMany', 'upsert'].includes(operation) &&
+              modelName !== 'auditLog' &&
+              modelName !== 'keyValueStore'
+            ) {
+              setImmediate(async () => {
+                try {
+                  let action = 'UPDATE';
+                  if (operation === 'create' || operation === 'createMany') action = 'CREATE';
+                  else if (operation === 'delete' || operation === 'deleteMany') action = 'DELETE';
+
+                  const entityId = (result && (result as any).id) || (currentArgs.where && (currentArgs.where as any).id) || 'BATCH';
+                  
+                  await defaultPrisma.auditLog.create({
+                    data: {
+                      tenantId,
+                      userId: (currentArgs.data && (currentArgs.data as any).userId) || null,
+                      action: action as any,
+                      entityName: model,
+                      entityId: String(entityId),
+                      diffJson: {
+                        operation,
+                        modelName: model,
+                        timestamp: new Date().toISOString(),
+                        changes: currentArgs.data ? Object.keys(currentArgs.data) : [],
+                      },
+                    },
+                  }).catch(() => {});
+                } catch {
+                  // Fail-safe: Audit logger should never disrupt core transaction flow
+                }
+              });
+            }
+
+            return result;
           }
 
           // Unscoped or global models (like Tenant itself)
@@ -134,3 +172,4 @@ export function createTenantPrismaClient(tenantId: string, baseClient: PrismaCli
 }
 
 export type TenantPrismaClient = ReturnType<typeof createTenantPrismaClient>;
+

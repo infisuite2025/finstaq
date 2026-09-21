@@ -82,7 +82,7 @@ export const CreatePaymentTermModal: React.FC<CreatePaymentTermModalProps> = ({ 
                 placeholder="e.g. NET30, NET45, IMM"
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background uppercase font-mono"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white uppercase font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
             <div>
@@ -93,7 +93,7 @@ export const CreatePaymentTermModal: React.FC<CreatePaymentTermModalProps> = ({ 
                 required
                 value={days}
                 onChange={(e) => setDays(Number(e.target.value))}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background font-mono"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
@@ -106,7 +106,7 @@ export const CreatePaymentTermModal: React.FC<CreatePaymentTermModalProps> = ({ 
               placeholder="e.g. Net 30 Days Standard Credit"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 
@@ -117,7 +117,7 @@ export const CreatePaymentTermModal: React.FC<CreatePaymentTermModalProps> = ({ 
               placeholder="e.g. Due within 30 calendar days from invoice date"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 

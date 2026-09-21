@@ -80,6 +80,38 @@ export class StorageController {
   }
 
   /**
+   * GET /api/v1/storage/files
+   * Returns list of encrypted documents for the tenant
+   */
+  public static async listFiles(req: FastifyRequest, rep: FastifyReply) {
+    const tenantId = (req as any).user?.tenantId || (req.headers['x-tenant-id'] as string) || '27AABCF1234F1Z5';
+    const files = await storageVaultService.listTenantFiles(tenantId);
+    return rep.send({
+      success: true,
+      data: files,
+    });
+  }
+
+  /**
+   * DELETE /api/v1/storage/files/:id
+   * Deletes a document from the encrypted vault
+   */
+  public static async deleteFile(
+    req: FastifyRequest<{ Params: { id: string } }>,
+    rep: FastifyReply
+  ) {
+    const tenantId = (req as any).user?.tenantId || (req.headers['x-tenant-id'] as string) || '27AABCF1234F1Z5';
+    const fileId = req.params.id;
+    const deleted = await storageVaultService.deleteFile(tenantId, fileId);
+    const updatedStats = await storageVaultService.getTenantStorageStats(tenantId);
+    return rep.send({
+      success: true,
+      message: deleted ? 'Document securely removed from vault.' : 'File not found.',
+      data: { stats: updatedStats },
+    });
+  }
+
+  /**
    * GET /api/v1/storage/download/:id
    * Authenticated file download streaming decrypted buffer
    */

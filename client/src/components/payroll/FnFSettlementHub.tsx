@@ -224,10 +224,10 @@ export function FnFSettlementHub({
         <KPIScorecard
           label="Avg Settlement Turnaround"
           value="3.8 Days"
-          variant="featured"
+          variant="indigo"
           icon={FileCheck}
           badge="Target: 7 Days"
-          badgeVariant="glass"
+          badgeVariant="indigo"
           footer={{
             left: <span>Turnaround: <strong>Fast (3.8d)</strong></span>,
             right: <span>Benchmark: <strong>7d</strong></span>
@@ -244,17 +244,17 @@ export function FnFSettlementHub({
             placeholder="Search employee, ID, dept..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full pl-9 pr-3 py-1.5 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
           />
         </div>
         <div className="flex items-center gap-2 w-full md:w-auto">
-          {['ALL', 'DRAFT', 'SETTLED', 'CANCELLED'].map((st) => (
+          {['ALL', 'DRAFT', 'SETTLED'].map((st) => (
             <button
               key={st}
               onClick={() => setStatusFilter(st)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 statusFilter === st
-                  ? 'bg-blue-600 text-white shadow-sm'
+                  ? 'bg-rose-600 text-white shadow-sm'
                   : 'bg-gray-100 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
@@ -270,52 +270,49 @@ export function FnFSettlementHub({
           <table className={UI.table.table}>
             <thead>
               <tr className="bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700">
-                <th className={UI.table.th}>Employee & ID</th>
+                <th className={UI.table.th}>Employee & Code</th>
+                <th className={UI.table.th}>Separation Reason</th>
                 <th className={UI.table.th}>Last Working Day</th>
-                <th className={`${UI.table.th} text-center`}>Tenure</th>
-                <th className={`${UI.table.th} text-right`}>Gross Payable</th>
-                <th className={`${UI.table.th} text-right`}>Recoveries</th>
-                <th className={`${UI.table.th} text-right`}>Net Settlement</th>
+                <th className={`${UI.table.th} text-right`}>Gratuity (1972 Act)</th>
+                <th className={`${UI.table.th} text-right`}>Leave Encashment</th>
+                <th className={`${UI.table.th} text-right`}>Net F&F Payable</th>
                 <th className={`${UI.table.th} text-center`}>Status</th>
-                <th className={`${UI.table.th} text-center`}>Documents & Actions</th>
+                <th className={`${UI.table.th} text-center`}>Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {filteredSettlements.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="p-8 text-center text-gray-500">
-                    No Full & Final settlement records found.
+                    No exit settlement records found.
                   </td>
                 </tr>
               ) : (
                 filteredSettlements.map((item) => (
                   <tr key={item.id} className={UI.table.tr}>
                     <td className={UI.table.td}>
-                      <span className="font-bold text-gray-900 dark:text-white block">{item.employeeName}</span>
-                      <span className="text-[11px] text-gray-500 block">
-                        {item.empCode} • {item.designation}
-                      </span>
+                      <div>
+                        <span className="font-bold text-gray-900 dark:text-white block">
+                          {item.employeeName}
+                        </span>
+                        <span className="text-[11px] text-gray-500 block">
+                          {item.empCode} • {item.department}
+                        </span>
+                      </div>
                     </td>
                     <td className={UI.table.td}>
-                      <span className="font-mono text-xs text-gray-900 dark:text-white block">
-                        {item.lastWorkingDay}
-                      </span>
-                      <span className="text-[10px] text-gray-400">{item.exitReason}</span>
-                    </td>
-                    <td className={`${UI.table.td} text-center`}>
-                      <span className="px-2 py-0.5 text-xs font-mono font-bold rounded bg-gray-100 dark:bg-gray-800">
-                        {item.tenureYears} Yrs
+                      <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
+                        {item.exitReason.replace('_', ' ')}
                       </span>
                     </td>
-                    <td className={`${UI.table.td} text-right`}>
-                      <span className="font-mono font-semibold text-gray-900 dark:text-white">
-                        ₹{(item.totalGrossPayable || 0).toLocaleString('en-IN')}
-                      </span>
+                    <td className={`${UI.table.td} font-mono text-xs text-gray-600 dark:text-gray-400`}>
+                      {item.lastWorkingDay}
                     </td>
-                    <td className={`${UI.table.td} text-right`}>
-                      <span className="font-mono text-rose-600 font-semibold">
-                        ₹{(item.totalDeductionsAndRecoveries || 0).toLocaleString('en-IN')}
-                      </span>
+                    <td className={`${UI.table.td} text-right font-mono text-emerald-600 dark:text-emerald-400 font-semibold`}>
+                      ₹{(item.gratuityAmount || 0).toLocaleString('en-IN')}
+                    </td>
+                    <td className={`${UI.table.td} text-right font-mono text-emerald-600 dark:text-emerald-400 font-semibold`}>
+                      ₹{(item.leaveEncashmentAmount || 0).toLocaleString('en-IN')}
                     </td>
                     <td className={`${UI.table.td} text-right`}>
                       <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-sm">
@@ -401,7 +398,7 @@ export function FnFSettlementHub({
                   <select
                     value={selectedEmpId}
                     onChange={(e) => setSelectedEmpId(e.target.value)}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white font-semibold"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
                     {employees.map((emp) => (
                       <option key={emp.id} value={emp.id}>
@@ -418,7 +415,7 @@ export function FnFSettlementHub({
                   <select
                     value={exitReason}
                     onChange={(e) => setExitReason(e.target.value as any)}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
                     <option value="RESIGNATION">Voluntary Resignation</option>
                     <option value="TERMINATION">Company Involuntary Separation</option>
@@ -436,7 +433,7 @@ export function FnFSettlementHub({
                     required
                     value={dateOfResignation}
                     onChange={(e) => setDateOfResignation(e.target.value)}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white font-mono"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -449,7 +446,7 @@ export function FnFSettlementHub({
                     required
                     value={lastWorkingDay}
                     onChange={(e) => setLastWorkingDay(e.target.value)}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white font-mono"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -463,7 +460,7 @@ export function FnFSettlementHub({
                     max="31"
                     value={exitMonthDaysWorked}
                     onChange={(e) => setExitMonthDaysWorked(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white font-mono"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -477,7 +474,7 @@ export function FnFSettlementHub({
                     step="0.5"
                     value={earnedLeavesBalance}
                     onChange={(e) => setEarnedLeavesBalance(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white font-mono"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -490,7 +487,7 @@ export function FnFSettlementHub({
                     min="0"
                     value={noticeShortfallDays}
                     onChange={(e) => setNoticeShortfallDays(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white font-mono"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -503,7 +500,7 @@ export function FnFSettlementHub({
                     min="0"
                     value={salaryAdvanceRecovery}
                     onChange={(e) => setSalaryAdvanceRecovery(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-xs bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white font-mono"
+                    className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>

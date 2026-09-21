@@ -84,7 +84,7 @@ export const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({ isOpen
               placeholder="e.g. Electrical Components, Raw Steel, Packaging"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 
@@ -96,7 +96,7 @@ export const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({ isOpen
                 placeholder="e.g. ELEC, STL, PKG"
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background uppercase font-mono"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white uppercase font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
             <div>
@@ -104,7 +104,7 @@ export const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({ isOpen
               <select
                 value={parentId}
                 onChange={(e) => setParentId(e.target.value)}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="">-- Primary (Root Category) --</option>
                 {categories.map((c) => (
@@ -122,7 +122,7 @@ export const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({ isOpen
                 placeholder="e.g. 8481, 7214"
                 value={defaultHsn}
                 onChange={(e) => setDefaultHsn(e.target.value)}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background font-mono"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
             <div>
@@ -130,7 +130,7 @@ export const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({ isOpen
               <select
                 value={defaultTaxRate}
                 onChange={(e) => setDefaultTaxRate(Number(e.target.value))}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background font-mono"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value={0}>0% (Exempt)</option>
                 <option value={5}>5%</option>
@@ -148,7 +148,7 @@ export const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({ isOpen
               placeholder="Scope, specifications or handling instructions..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-2.5 text-xs rounded-lg border bg-background resize-none"
+              className="w-full p-3 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none resize-none transition-all"
             />
           </div>
 

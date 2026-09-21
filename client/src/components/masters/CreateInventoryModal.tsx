@@ -81,7 +81,7 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Stainless Steel Precision Flange 25mm"
                 required
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -94,7 +94,7 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
                 value={sku}
                 onChange={(e) => setSku(e.target.value)}
                 required
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -107,7 +107,7 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 placeholder="e.g. Fasteners, Raw Materials"
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -120,7 +120,7 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
                 value={hsnCode}
                 onChange={(e) => setHsnCode(e.target.value)}
                 placeholder="e.g. 8481"
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -131,7 +131,7 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
               <select
                 value={taxRatePercent}
                 onChange={(e) => setTaxRatePercent(parseFloat(e.target.value) || 0)}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="0">0% (Nil / Exempt)</option>
                 <option value="5">5% GST</option>
@@ -148,7 +148,7 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
               <select
                 value={unit}
                 onChange={(e) => setUnit(e.target.value)}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="PCS">PCS (Pieces)</option>
                 <option value="NOS">NOS (Numbers)</option>
@@ -168,7 +168,7 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
                 min="0"
                 value={openingStockQty}
                 onChange={(e) => setOpeningStockQty(parseFloat(e.target.value) || 0)}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono text-right focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-right text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -181,7 +181,7 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
                 min="0"
                 value={reorderLevel}
                 onChange={(e) => setReorderLevel(parseFloat(e.target.value) || 0)}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono text-right focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-right text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -194,7 +194,7 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
                 min="0"
                 value={standardCost}
                 onChange={(e) => setStandardCost(parseFloat(e.target.value) || 0)}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono text-right focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-right text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -207,7 +207,7 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
                 min="0"
                 value={sellingPrice}
                 onChange={(e) => setSellingPrice(parseFloat(e.target.value) || 0)}
-                className="w-full px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono text-right focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-right text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>

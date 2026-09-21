@@ -81,7 +81,7 @@ export const CreateUomModal: React.FC<CreateUomModalProps> = ({ isOpen, onClose,
               placeholder="e.g. NOS, KGS, MTR, PCS, LTR, BOX"
               value={symbol}
               onChange={(e) => setSymbol(e.target.value.toUpperCase())}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background uppercase font-mono"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white uppercase font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 
@@ -93,7 +93,7 @@ export const CreateUomModal: React.FC<CreateUomModalProps> = ({ isOpen, onClose,
               placeholder="e.g. Numbers, Kilograms, Metres, Litres"
               value={formalName}
               onChange={(e) => setFormalName(e.target.value)}
-              className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+              className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 
@@ -105,7 +105,7 @@ export const CreateUomModal: React.FC<CreateUomModalProps> = ({ isOpen, onClose,
                 placeholder="e.g. NOS, KGS, MTR"
                 value={uqc}
                 onChange={(e) => setUqc(e.target.value.toUpperCase())}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background uppercase font-mono"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white uppercase font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
             <div>
@@ -113,7 +113,7 @@ export const CreateUomModal: React.FC<CreateUomModalProps> = ({ isOpen, onClose,
               <select
                 value={decimalPlaces}
                 onChange={(e) => setDecimalPlaces(Number(e.target.value))}
-                className="w-full h-9 px-3 text-sm rounded-lg border bg-background"
+                className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value={0}>0 (Integers: PCS, NOS)</option>
                 <option value={2}>2 (e.g. 10.50 MTR)</option>

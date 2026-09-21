@@ -3,11 +3,48 @@ import { bankingService, BankStatementItem, ReconcileTransactionInput } from '..
 
 export class BankingController {
   async getBankLedgers(req: FastifyRequest, reply: FastifyReply) {
-    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string;
-    if (!tenantId) return reply.status(400).send({ error: 'Tenant ID required' });
-
+    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
     const ledgers = await bankingService.getBankLedgers(tenantId);
     return reply.send({ success: true, data: ledgers });
+  }
+
+  async createBankLedger(req: FastifyRequest<{
+    Body: {
+      name: string;
+      bankName: string;
+      bankAccount: string;
+      ifscCode: string;
+      branch?: string;
+      accountType?: string;
+      openingBalance?: number;
+    }
+  }>, reply: FastifyReply) {
+    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
+    const result = await bankingService.createBankLedger(tenantId, req.body);
+    return reply.send(result);
+  }
+
+  async linkBank(req: FastifyRequest<{
+    Body: {
+      ledgerId: string;
+      provider: string;
+      credentials?: any;
+      syncFrequency?: string;
+    }
+  }>, reply: FastifyReply) {
+    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
+    const result = await bankingService.linkBankFeed(tenantId, req.body);
+    return reply.send(result);
+  }
+
+  async syncFeed(req: FastifyRequest<{
+    Body: { ledgerId: string }
+  }>, reply: FastifyReply) {
+    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
+    const { ledgerId } = req.body;
+    if (!ledgerId) return reply.status(400).send({ error: 'ledgerId is required' });
+    const result = await bankingService.syncBankFeed(tenantId, ledgerId);
+    return reply.send(result);
   }
 
   async getBankTransactions(req: FastifyRequest<{
@@ -19,7 +56,7 @@ export class BankingController {
     let targetLedgerId: string = ledgerId || '';
     if (!targetLedgerId) {
       const ledgers = await bankingService.getBankLedgers(tenantId);
-      targetLedgerId = ledgers[0]?.id || 'ledg-hdfc-01';
+      targetLedgerId = ledgers[0]?.id || 'ldg_hdfc_01';
     }
 
     const transactions = await bankingService.getBankTransactions(tenantId, targetLedgerId, startDate, endDate);
@@ -27,16 +64,16 @@ export class BankingController {
   }
 
   async uploadStatement(req: FastifyRequest<{
-    Body: { ledgerId: string; statement: BankStatementItem[] }
+    Body: { ledgerId: string; statement: BankStatementItem[]; fileName?: string }
   }>, reply: FastifyReply) {
     const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
-    const { ledgerId, statement } = req.body;
+    const { ledgerId, statement, fileName } = req.body;
 
     if (!ledgerId || !Array.isArray(statement)) {
       return reply.status(400).send({ error: 'ledgerId and statement array are required' });
     }
 
-    const result = await bankingService.uploadBankStatement(tenantId, ledgerId, statement);
+    const result = await bankingService.uploadBankStatement(tenantId, ledgerId, statement, fileName);
     return reply.send(result);
   }
 
@@ -49,10 +86,20 @@ export class BankingController {
     let targetLedgerId: string = ledgerId || '';
     if (!targetLedgerId) {
       const ledgers = await bankingService.getBankLedgers(tenantId);
-      targetLedgerId = ledgers[0]?.id || 'ledg-hdfc-01';
+      targetLedgerId = ledgers[0]?.id || 'ldg_hdfc_01';
     }
 
     const data = await bankingService.getStoredStatement(tenantId, targetLedgerId);
+    return reply.send({ success: true, data });
+  }
+
+  async getStatementBatches(req: FastifyRequest<{
+    Querystring: { ledgerId?: string }
+  }>, reply: FastifyReply) {
+    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
+    const { ledgerId } = req.query;
+    let targetLedgerId: string = ledgerId || 'ldg_hdfc_01';
+    const data = await bankingService.getStatementBatches(tenantId, targetLedgerId);
     return reply.send({ success: true, data });
   }
 
@@ -86,7 +133,7 @@ export class BankingController {
     let targetLedgerId: string = ledgerId || '';
     if (!targetLedgerId) {
       const ledgers = await bankingService.getBankLedgers(tenantId);
-      targetLedgerId = ledgers[0]?.id || 'ledg-hdfc-01';
+      targetLedgerId = ledgers[0]?.id || 'ldg_hdfc_01';
     }
     const targetAsOfDate = asOfDate || new Date().toISOString().split('T')[0];
 

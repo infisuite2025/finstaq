@@ -221,7 +221,7 @@ export function CreateGrnModal({
                   setErrorMessage(null);
                 }}
                 required
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-mono font-bold focus:ring-2 focus:ring-emerald-500"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-mono font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -232,7 +232,7 @@ export function CreateGrnModal({
               <select
                 value={selectedPoId}
                 onChange={(e) => handlePoSelectionChange(e.target.value)}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="">Direct Inward (No PO Link)</option>
                 {purchaseOrders.map((po) => (
@@ -251,7 +251,7 @@ export function CreateGrnModal({
                 value={vendorLedgerId}
                 onChange={(e) => setVendorLedgerId(e.target.value)}
                 disabled={!!selectedPoId}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500 disabled:opacity-70"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all disabled:opacity-70"
               >
                 {vendors.map((v) => (
                   <option key={v.id} value={v.id}>
@@ -271,7 +271,7 @@ export function CreateGrnModal({
                 type="date"
                 value={receivedDate}
                 onChange={(e) => setReceivedDate(e.target.value)}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -284,7 +284,7 @@ export function CreateGrnModal({
                 value={vehicleNumber}
                 onChange={(e) => setVehicleNumber(e.target.value)}
                 placeholder="e.g. MH-12-AB-9876"
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-mono"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -297,7 +297,7 @@ export function CreateGrnModal({
                 value={challanNumber}
                 onChange={(e) => setChallanNumber(e.target.value)}
                 placeholder="e.g. DC-5521"
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-mono"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
@@ -340,7 +340,7 @@ export function CreateGrnModal({
                             value={it.description}
                             onChange={(e) => handleUpdateItem(idx, 'description', e.target.value)}
                             placeholder="Item description"
-                            className="w-full px-2 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           />
                         </td>
                         <td className="py-2 px-2 text-right">
@@ -357,10 +357,10 @@ export function CreateGrnModal({
                             max={it.maxAllowed}
                             value={it.receivedQty}
                             onChange={(e) => handleUpdateItem(idx, 'receivedQty', Number(e.target.value))}
-                            className={'w-full px-2 py-1 rounded border text-xs text-right font-mono font-bold ' + (
+                            className={'w-full px-2.5 py-1.5 rounded-lg border text-xs text-right font-mono font-bold outline-none transition-all ' + (
                               isExceeded
-                                ? 'border-rose-500 text-rose-600 bg-rose-50 dark:bg-rose-950/50'
-                                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'
+                                ? 'border-rose-500 text-rose-600 bg-rose-50 dark:bg-rose-950/50 focus:ring-2 focus:ring-rose-500/20'
+                                : 'border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500'
                             )}
                           />
                           {isExceeded && (
@@ -375,7 +375,7 @@ export function CreateGrnModal({
                             min="0"
                             value={it.rejectedQty}
                             onChange={(e) => handleUpdateItem(idx, 'rejectedQty', Number(e.target.value))}
-                            className="w-full px-2 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-right font-mono text-rose-600 font-bold"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-right font-mono text-rose-600 font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           />
                         </td>
                         <td className="py-2 px-3">
@@ -384,7 +384,7 @@ export function CreateGrnModal({
                             value={it.batchNumber || ''}
                             onChange={(e) => handleUpdateItem(idx, 'batchNumber', e.target.value)}
                             placeholder="Lot / Heat #"
-                            className="w-full px-2 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           />
                         </td>
                         <td className="py-2 px-2 text-center">
@@ -414,7 +414,7 @@ export function CreateGrnModal({
               rows={2}
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
-              className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500"
+              className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 

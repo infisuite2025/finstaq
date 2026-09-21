@@ -1183,11 +1183,11 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
 
           <KPIScorecard
             label="Net Salary Disbursement"
-            value={`₹${(previewData.summary.totalNetPay || 0).toLocaleString('en-IN')}`}
-            variant="featured"
+            value={`₹ ${(previewData.summary.totalNetPay || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+            variant="indigo"
             icon={TrendingUp}
             badge="Bank Batch Ready"
-            badgeVariant="glass"
+            badgeVariant="indigo"
             footer={{
               left: <span>Payout: <strong>NEFT / IMPS</strong></span>,
               right: <span>Status: <strong>Ready</strong></span>
@@ -1323,7 +1323,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                 placeholder="Search by name, emp code, PAN, manager, email..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-3 pr-3 py-2 text-xs border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white"
+                className="w-full pl-3 pr-3 py-2 text-xs border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -1331,7 +1331,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
               <select
                 value={deptFilter}
                 onChange={(e) => setDeptFilter(e.target.value)}
-                className="p-2 text-xs border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white"
+                className="p-2 text-xs border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="ALL">All Departments</option>
                 <option value="Engineering & Product">Engineering & Product</option>
@@ -1528,7 +1528,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                           max="30"
                           value={att.lopDays}
                           onChange={(e) => handleUpdateLop(emp.id, parseInt(e.target.value) || 0)}
-                          className="w-16 p-1 border rounded text-center font-mono font-bold bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-rose-600"
+                          className="w-16 p-1 border border-emerald-400 dark:border-emerald-500 rounded-lg text-center font-mono font-bold bg-white dark:bg-slate-950 text-rose-600 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         />
                       </td>
                       <td className="p-3 text-center font-mono font-bold text-emerald-600">
@@ -2061,7 +2061,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="text"
                         value={newEmpForm.firstName}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, firstName: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         required
                         placeholder="e.g. Ramesh"
                       />
@@ -2072,7 +2072,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="text"
                         value={newEmpForm.lastName}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, lastName: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         required
                         placeholder="e.g. Kulkarni"
                       />
@@ -2085,7 +2085,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       <select
                         value={newEmpForm.gender}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, gender: e.target.value as any })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                       >
                         <option value="MALE">Male</option>
                         <option value="FEMALE">Female</option>
@@ -2098,7 +2098,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="date"
                         value={newEmpForm.dateOfBirth}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, dateOfBirth: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         required
                       />
                     </div>
@@ -2107,7 +2107,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       <select
                         value={newEmpForm.maritalStatus}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, maritalStatus: e.target.value as any })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                       >
                         <option value="SINGLE">Single</option>
                         <option value="MARRIED">Married</option>
@@ -2123,7 +2123,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       <select
                         value={newEmpForm.bloodGroup}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, bloodGroup: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                       >
                         <option value="O+">O+</option>
                         <option value="A+">A+</option>
@@ -2141,7 +2141,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="text"
                         value={newEmpForm.fatherOrSpouseName}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, fatherOrSpouseName: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         placeholder="e.g. Suresh Kulkarni"
                       />
                     </div>
@@ -2154,7 +2154,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="email"
                         value={newEmpForm.officialEmail}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, officialEmail: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         required
                         placeholder="ramesh@finstaq.com"
                       />
@@ -2165,7 +2165,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="email"
                         value={newEmpForm.personalEmail}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, personalEmail: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         placeholder="ramesh.personal@gmail.com"
                       />
                     </div>
@@ -2175,7 +2175,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="text"
                         value={newEmpForm.phone}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, phone: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700 font-mono"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         placeholder="+91 98200 00000"
                         required
                       />
@@ -2193,7 +2193,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       <select
                         value={newEmpForm.department}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, department: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                       >
                         <option value="Engineering & Product">Engineering & Product</option>
                         <option value="Marketing & Growth">Marketing & Growth</option>
@@ -2207,7 +2207,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="text"
                         value={newEmpForm.designation}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, designation: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         required
                         placeholder="e.g. Lead Backend Engineer"
                       />
@@ -2221,7 +2221,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="text"
                         value={newEmpForm.reportingManagerName}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, reportingManagerName: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         placeholder="e.g. Rajesh Nair (VP Engineering)"
                       />
                     </div>
@@ -2231,7 +2231,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="date"
                         value={newEmpForm.dateOfJoining}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, dateOfJoining: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700 font-mono"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         required
                       />
                     </div>
@@ -2243,7 +2243,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       <select
                         value={newEmpForm.employmentType}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, employmentType: e.target.value as any })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                       >
                         <option value="FULL_TIME">Full Time</option>
                         <option value="PART_TIME">Part Time</option>
@@ -2257,7 +2257,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="text"
                         value={newEmpForm.workLocation}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, workLocation: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                       />
                     </div>
                     <div>
@@ -2266,7 +2266,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="number"
                         value={newEmpForm.noticePeriodDays}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, noticePeriodDays: parseInt(e.target.value) || 60 })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700 font-mono"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -2288,7 +2288,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                           type="text"
                           value={newEmpForm.qualification}
                           onChange={(e) => setNewEmpForm({ ...newEmpForm, qualification: e.target.value })}
-                          className="w-full p-2 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
+                          className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           placeholder="e.g. B.Tech Computer Science / MBA"
                         />
                       </div>
@@ -2298,7 +2298,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                           type="text"
                           value={newEmpForm.institution}
                           onChange={(e) => setNewEmpForm({ ...newEmpForm, institution: e.target.value })}
-                          className="w-full p-2 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
+                          className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           placeholder="e.g. IIT Bombay / Delhi University"
                         />
                       </div>
@@ -2310,7 +2310,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                           type="number"
                           value={newEmpForm.yearOfPassing}
                           onChange={(e) => setNewEmpForm({ ...newEmpForm, yearOfPassing: parseInt(e.target.value) || 2020 })}
-                          className="w-full p-2 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 font-mono"
+                          className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         />
                       </div>
                       <div>
@@ -2319,7 +2319,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                           type="text"
                           value={newEmpForm.certifications}
                           onChange={(e) => setNewEmpForm({ ...newEmpForm, certifications: e.target.value })}
-                          className="w-full p-2 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
+                          className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           placeholder="e.g. AWS Certified, PMP, CA"
                         />
                       </div>
@@ -2339,7 +2339,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                           step="0.5"
                           value={newEmpForm.totalExperienceYears}
                           onChange={(e) => setNewEmpForm({ ...newEmpForm, totalExperienceYears: parseFloat(e.target.value) || 0 })}
-                          className="w-full p-2 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 font-mono"
+                          className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         />
                       </div>
                       <div>
@@ -2348,7 +2348,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                           type="text"
                           value={newEmpForm.previousEmployer}
                           onChange={(e) => setNewEmpForm({ ...newEmpForm, previousEmployer: e.target.value })}
-                          className="w-full p-2 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
+                          className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           placeholder="e.g. Infosys Ltd"
                         />
                       </div>
@@ -2358,7 +2358,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                           type="number"
                           value={newEmpForm.previousLastDrawnCtc}
                           onChange={(e) => setNewEmpForm({ ...newEmpForm, previousLastDrawnCtc: parseFloat(e.target.value) || 0 })}
-                          className="w-full p-2 border rounded-lg bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 font-mono"
+                          className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         />
                       </div>
                     </div>
@@ -2377,7 +2377,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         placeholder="ABCDE1234F"
                         value={newEmpForm.pan}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, pan: e.target.value.toUpperCase() })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700 font-mono uppercase"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono uppercase focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         required
                       />
                     </div>
@@ -2388,7 +2388,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         placeholder="4532 8901 2345"
                         value={newEmpForm.aadhaar}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, aadhaar: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700 font-mono"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                       />
                     </div>
                     <div>
@@ -2398,7 +2398,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         placeholder="100902345678"
                         value={newEmpForm.uan}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, uan: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700 font-mono"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -2410,7 +2410,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="number"
                         value={newEmpForm.monthlyCtc}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, monthlyCtc: parseFloat(e.target.value) || 0 })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700 font-mono font-bold text-indigo-600"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 font-mono font-bold text-emerald-600 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         required
                       />
                     </div>
@@ -2420,7 +2420,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="text"
                         value={newEmpForm.bankName}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, bankName: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         required
                       />
                     </div>
@@ -2430,7 +2430,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         type="text"
                         value={newEmpForm.bankAccountNumber}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, bankAccountNumber: e.target.value })}
-                        className="w-full p-2 border rounded-lg bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700 font-mono"
+                        className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         required
                       />
                     </div>
@@ -2451,7 +2451,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         <select
                           value={newEmpForm.pfCappingOption}
                           onChange={(e) => setNewEmpForm({ ...newEmpForm, pfCappingOption: e.target.value as any })}
-                          className="w-full p-1 border rounded bg-white dark:bg-gray-800 text-[11px]"
+                          className="w-full px-2 py-1 border border-emerald-400 dark:border-emerald-500 rounded-lg bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-[11px] focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         >
                           <option value="CAPPED_15000">₹15,000 Wage Ceiling Cap (₹1,800/mo)</option>
                           <option value="ACTUAL_BASIC">Actual Basic Wage (12% uncapped)</option>

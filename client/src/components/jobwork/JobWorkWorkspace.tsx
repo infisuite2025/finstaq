@@ -493,7 +493,7 @@ export function JobWorkWorkspace() {
                   required
                   value={newChallanForm.jobWorkerName}
                   onChange={(e) => setNewChallanForm({ ...newChallanForm, jobWorkerName: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -505,7 +505,7 @@ export function JobWorkWorkspace() {
                     required
                     value={newChallanForm.jobWorkerGstin}
                     onChange={(e) => setNewChallanForm({ ...newChallanForm, jobWorkerGstin: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -515,7 +515,7 @@ export function JobWorkWorkspace() {
                     required
                     value={newChallanForm.expectedReturnDate}
                     onChange={(e) => setNewChallanForm({ ...newChallanForm, expectedReturnDate: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -527,7 +527,7 @@ export function JobWorkWorkspace() {
                   required
                   value={newChallanForm.natureOfProcessing}
                   onChange={(e) => setNewChallanForm({ ...newChallanForm, natureOfProcessing: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -538,7 +538,7 @@ export function JobWorkWorkspace() {
                   required
                   value={newChallanForm.description}
                   onChange={(e) => setNewChallanForm({ ...newChallanForm, description: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -550,7 +550,7 @@ export function JobWorkWorkspace() {
                     required
                     value={newChallanForm.dispatchQuantity}
                     onChange={(e) => setNewChallanForm({ ...newChallanForm, dispatchQuantity: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -560,7 +560,7 @@ export function JobWorkWorkspace() {
                     required
                     value={newChallanForm.uom}
                     onChange={(e) => setNewChallanForm({ ...newChallanForm, uom: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -570,7 +570,7 @@ export function JobWorkWorkspace() {
                     required
                     value={newChallanForm.ratePerUnit}
                     onChange={(e) => setNewChallanForm({ ...newChallanForm, ratePerUnit: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -610,7 +610,7 @@ export function JobWorkWorkspace() {
                 <select
                   value={newReceiptForm.challanNumber}
                   onChange={(e) => setNewReceiptForm({ ...newReceiptForm, challanNumber: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 >
                   {challans.map((c) => (
                     <option key={c.id} value={c.challanNumber}>
@@ -627,7 +627,7 @@ export function JobWorkWorkspace() {
                   required
                   value={newReceiptForm.finishedItemName}
                   onChange={(e) => setNewReceiptForm({ ...newReceiptForm, finishedItemName: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -639,7 +639,7 @@ export function JobWorkWorkspace() {
                     required
                     value={newReceiptForm.quantityReceived}
                     onChange={(e) => setNewReceiptForm({ ...newReceiptForm, quantityReceived: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -649,7 +649,7 @@ export function JobWorkWorkspace() {
                     required
                     value={newReceiptForm.rawMaterialConsumedQty}
                     onChange={(e) => setNewReceiptForm({ ...newReceiptForm, rawMaterialConsumedQty: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -662,7 +662,7 @@ export function JobWorkWorkspace() {
                     required
                     value={newReceiptForm.scrapPercentage}
                     onChange={(e) => setNewReceiptForm({ ...newReceiptForm, scrapPercentage: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -672,7 +672,7 @@ export function JobWorkWorkspace() {
                     required
                     value={newReceiptForm.jobWorkChargesInr}
                     onChange={(e) => setNewReceiptForm({ ...newReceiptForm, jobWorkChargesInr: Number(e.target.value) })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>

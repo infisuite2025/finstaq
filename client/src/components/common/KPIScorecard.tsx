@@ -65,13 +65,13 @@ export function KPIScorecard({
 
   // Base container styles
   const containerClass = isFeatured
-    ? 'p-5 rounded-3xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/20 space-y-3 font-mono transition-all duration-150'
-    : 'p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3 font-mono transition-all duration-150 hover:border-slate-300 dark:hover:border-slate-700';
+    ? 'p-4 rounded-xl bg-slate-900 dark:bg-slate-950 border border-slate-800 text-white shadow-sm space-y-2 font-sans transition-all duration-150 hover:border-slate-700'
+    : 'p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2 font-sans transition-all duration-150 hover:border-slate-300 dark:hover:border-slate-700';
 
   // Header label styles
   const labelClass = isFeatured
-    ? 'text-xs font-bold text-blue-100 uppercase tracking-wider'
-    : 'text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider';
+    ? 'text-[11px] font-bold text-slate-300 uppercase tracking-wider leading-tight truncate'
+    : 'text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider leading-tight truncate';
 
   // Value text color styles
   const getValueColor = () => {
@@ -93,25 +93,25 @@ export function KPIScorecard({
   // Badge styles
   const getBadgeClass = () => {
     if (isFeatured || badgeVariant === 'glass') {
-      return 'bg-white/20 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase text-white';
+      return 'bg-white/10 text-white border border-white/20 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider shrink-0 whitespace-nowrap';
     }
     switch (badgeVariant) {
       case 'success':
       case 'emerald':
-        return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase';
+        return 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider shrink-0 whitespace-nowrap';
       case 'warning':
       case 'amber':
-        return 'bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase';
+        return 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider shrink-0 whitespace-nowrap';
       case 'danger':
       case 'rose':
-        return 'bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase';
+        return 'bg-rose-50 text-rose-700 border border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider shrink-0 whitespace-nowrap';
       case 'info':
       case 'blue':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-950/80 dark:text-blue-300 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase';
+        return 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider shrink-0 whitespace-nowrap';
       case 'indigo':
-        return 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950/80 dark:text-indigo-300 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase';
+        return 'bg-indigo-50 text-indigo-700 border border-indigo-200 dark:bg-indigo-950/60 dark:text-indigo-300 dark:border-indigo-800 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider shrink-0 whitespace-nowrap';
       default:
-        return 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase';
+        return 'bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider shrink-0 whitespace-nowrap';
     }
   };
 
@@ -124,9 +124,9 @@ export function KPIScorecard({
     const IconComp = icon as LucideIcon;
     return (
       <IconComp
-        className={`w-4 h-4 ${
+        className={`w-3.5 h-3.5 shrink-0 ${
           isFeatured
-            ? 'text-blue-200'
+            ? 'text-slate-400'
             : 'text-slate-400 dark:text-slate-500'
         }`}
       />
@@ -142,28 +142,28 @@ export function KPIScorecard({
       className={`${containerClass} ${onClick ? 'cursor-pointer hover:shadow-md' : ''} ${className}`}
     >
       {/* Top Header */}
-      <div className="flex justify-between items-center">
-        <span className={labelClass}>{label}</span>
+      <div className="flex justify-between items-center gap-1.5 min-w-0">
+        <span className={labelClass} title={typeof label === 'string' ? label : undefined}>{label}</span>
 
         {/* Right Header Element: Trend, Badge, or Icon */}
-        <div className="flex items-center space-x-1.5">
+        <div className="flex items-center space-x-1 shrink-0">
           {trend && (
             <span
-              className={`flex items-center text-xs font-black ${
+              className={`flex items-center text-[11px] font-bold ${
                 isFeatured
-                  ? 'text-white'
+                  ? 'text-emerald-400'
                   : trend.direction === 'down'
                   ? 'text-rose-600 dark:text-rose-400'
                   : 'text-emerald-600 dark:text-emerald-400'
               }`}
             >
               {trend.direction === 'down' ? (
-                <ArrowDownRight className="w-3.5 h-3.5 mr-0.5 shrink-0" />
+                <ArrowDownRight className="w-3 h-3 mr-0.5 shrink-0" />
               ) : (
-                <ArrowUpRight className="w-3.5 h-3.5 mr-0.5 shrink-0" />
+                <ArrowUpRight className="w-3 h-3 mr-0.5 shrink-0" />
               )}
               <span>{trend.value}</span>
-              {trend.label && <span className="ml-1 text-[10px] opacity-80">{trend.label}</span>}
+              {trend.label && <span className="ml-0.5 text-[9px] opacity-80">{trend.label}</span>}
             </span>
           )}
 
@@ -174,33 +174,31 @@ export function KPIScorecard({
       </div>
 
       {/* Metric Primary Value */}
-      <div className={`text-2xl font-black tracking-tight ${getValueColor()}`}>
+      <div className={`text-xl sm:text-2xl font-bold font-mono tracking-tight leading-none py-0.5 ${getValueColor()}`}>
         {value}
       </div>
 
       {/* Progress Bar (if provided) */}
       {progress && (
-        <div className="space-y-1.5 pt-0.5">
+        <div className="space-y-1 pt-0.5">
           <div className="flex justify-between text-[11px] font-medium">
-            <span className={isFeatured ? 'text-blue-100' : 'text-slate-400 dark:text-slate-500'}>
+            <span className={isFeatured ? 'text-slate-400' : 'text-slate-500 dark:text-slate-400'}>
               {progress.targetLabel || 'Target'}: {progress.targetValue || progress.target || `${progress.percentage}%`}
             </span>
-            <span className={`font-bold ${isFeatured ? 'text-white' : 'text-blue-600 dark:text-blue-400'}`}>
+            <span className={`font-bold font-mono ${isFeatured ? 'text-indigo-400' : 'text-indigo-600 dark:text-indigo-400'}`}>
               {progress.percentage}%
             </span>
           </div>
           <div
-            className={`w-full h-2 rounded-full overflow-hidden ${
-              isFeatured ? 'bg-blue-900/50' : 'bg-slate-100 dark:bg-slate-800'
+            className={`w-full h-1.5 rounded-full overflow-hidden ${
+              isFeatured ? 'bg-slate-800' : 'bg-slate-100 dark:bg-slate-800'
             }`}
           >
             <div
               className={`h-full rounded-full transition-all duration-300 ${
                 progress.barColor ||
                 progress.color ||
-                (isFeatured
-                  ? 'bg-white'
-                  : 'bg-gradient-to-r from-blue-600 to-indigo-600')
+                'bg-indigo-600'
               }`}
               style={{ width: `${Math.min(100, Math.max(0, progress.percentage))}%` }}
             />
@@ -211,21 +209,21 @@ export function KPIScorecard({
       {/* Footer Sub-metrics / Comparison info */}
       {hasFooter && !progress && (
         <div
-          className={`flex justify-between items-center text-xs pt-2 border-t font-medium ${
+          className={`flex items-center justify-between text-[11px] pt-1.5 border-t font-medium gap-1 ${
             isFeatured
-              ? 'border-white/20 text-blue-100'
+              ? 'border-slate-800 text-slate-400'
               : 'border-slate-100 dark:border-slate-800 text-slate-500 dark:text-slate-400'
           }`}
         >
           {footerLeft !== undefined || footerRight !== undefined ? (
             <>
-              <div>{footerLeft}</div>
-              <div>{footerRight}</div>
+              <div className="truncate shrink min-w-0">{footerLeft}</div>
+              <div className="truncate text-right shrink-0">{footerRight}</div>
             </>
           ) : footer && typeof footer === 'object' && 'left' in (footer as any) ? (
             <>
-              <div>{(footer as any).left}</div>
-              <div>{(footer as any).right}</div>
+              <div className="truncate shrink min-w-0">{(footer as any).left}</div>
+              <div className="truncate text-right shrink-0">{(footer as any).right}</div>
             </>
           ) : (
             (footer as React.ReactNode)
@@ -257,5 +255,5 @@ export function KPIGrid({
     5: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5',
   };
 
-  return <div className={`${colClasses[columnCount] || colClasses[4]} gap-4 ${className}`}>{children}</div>;
+  return <div className={`${colClasses[columnCount] || colClasses[4]} gap-3 ${className}`}>{children}</div>;
 }

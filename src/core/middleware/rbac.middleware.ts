@@ -4,12 +4,10 @@ import { ForbiddenError, UnauthorizedError } from '../errors/app-error';
 
 /**
  * Higher-order middleware factory to enforce Role-Based Access Control (RBAC)
- * Supported Roles:
- * - OWNER: Full administrative and organizational rights
- * - ACCOUNTANT: Full financial operations, ledger setup, reporting, and voucher entry
- * - DATA_ENTRY: Standard transactional voucher entry and document draft uploads
+ * Supports both array syntax `requireRole(['OWNER', 'ACCOUNTANT'])`
+ * and variadic syntax `requireRoles(UserRole.OWNER, UserRole.ACCOUNTANT)`
  */
-export function requireRoles(...allowedRoles: UserRole[]) {
+export function requireRole(allowedRoles: (UserRole | string)[]) {
   return async (request: FastifyRequest, _reply: FastifyReply) => {
     if (!request.user) {
       throw new UnauthorizedError('Authentication required');
@@ -17,7 +15,7 @@ export function requireRoles(...allowedRoles: UserRole[]) {
 
     const userRole = request.user.role;
 
-    if (!allowedRoles.includes(userRole)) {
+    if (!allowedRoles.includes(userRole) && !allowedRoles.includes(String(userRole))) {
       throw new ForbiddenError(
         `Access denied. Role '${userRole}' is not permitted to perform this action. Required: [${allowedRoles.join(
           ', '
@@ -25,6 +23,10 @@ export function requireRoles(...allowedRoles: UserRole[]) {
       );
     }
   };
+}
+
+export function requireRoles(...allowedRoles: UserRole[]) {
+  return requireRole(allowedRoles);
 }
 
 // Convenience Pre-Handlers
@@ -35,3 +37,4 @@ export const requireAnyRole = requireRoles(
   UserRole.ACCOUNTANT,
   UserRole.DATA_ENTRY
 );
+

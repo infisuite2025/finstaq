@@ -550,10 +550,10 @@ export function SalesDashboard() {
         <KPIScorecard
           label="Posted Tax Invoices"
           value={`${invoices.length} Invoices`}
-          variant="featured"
+          variant="indigo"
           icon={Receipt}
           badge="Ledger Synced"
-          badgeVariant="glass"
+          badgeVariant="indigo"
           footer={{
             left: <span>Double-Entry Synced</span>,
             right: <span>GSTR-1 Ready</span>

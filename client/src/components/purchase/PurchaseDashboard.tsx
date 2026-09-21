@@ -297,6 +297,9 @@ const INITIAL_PURCHASE_RETURNS = [
     vendorLedgerId: 'v-101',
     vendorLedger: { id: 'v-101', name: 'Stark Logistics & Supplies (Creditor)', gstin: '27AABCS1429B1Z8', state: 'Maharashtra (27)' },
     originalInvoiceNumber: 'STARK/26-27/9912',
+    linkMode: 'GRN',
+    linkedGrnNumbers: ['GRN-2026-0031'],
+    linkedPoNumbers: ['PO-2026-0045'],
     returnDate: '2026-09-12',
     reason: 'DEFECTIVE_QC_REJECT',
     warehouseId: 'wh-01',
@@ -324,6 +327,9 @@ const INITIAL_PURCHASE_RETURNS = [
         igstAmount: 0,
         totalAmount: 10620,
         reason: 'Tensile defect',
+        poNumber: 'PO-2026-0045',
+        grnNumber: 'GRN-2026-0031',
+        batchNumber: 'BATCH-2026-09A',
       },
     ],
     createdAt: '2026-09-12T15:30:00Z',
@@ -547,17 +553,23 @@ export function PurchaseDashboard() {
 
   
   const handlePrintPurchaseReturn = (ret: any) => {
+    const docLinks = [
+      ret.originalInvoiceNumber ? `Bill: ${ret.originalInvoiceNumber}` : '',
+      ret.linkedGrnNumbers?.length ? `GRN(s): ${ret.linkedGrnNumbers.join(', ')}` : '',
+      ret.linkedPoNumbers?.length ? `PO(s): ${ret.linkedPoNumbers.join(', ')}` : '',
+    ].filter(Boolean).join(' | ');
+
     setPrintData({
       type: 'PURCHASE_RETURN',
       documentNumber: ret.returnNumber,
       date: ret.returnDate,
-      referenceNumber: ret.originalInvoiceNumber,
+      referenceNumber: docLinks || ret.originalInvoiceNumber,
       partyName: ret.vendorLedger?.name || 'Vendor Creditor',
       partyGstin: ret.vendorLedger?.gstin || '27AABCS1429B1Z8',
       partyAddress: 'Vendor Works, Industrial Phase II, Pune',
       partyState: ret.vendorLedger?.state || 'Maharashtra (27)',
       items: ret.items.map((it: any) => ({
-        description: it.description,
+        description: `${it.description}${it.poNumber ? ` [PO: ${it.poNumber}]` : ''}${it.grnNumber ? ` [GRN: ${it.grnNumber}]` : ''}`,
         hsnCode: it.hsnCode || '7318',
         uom: 'PCS',
         quantity: it.quantity,
@@ -575,7 +587,7 @@ export function PurchaseDashboard() {
       igstAmount: ret.igstAmount,
       totalTax: ret.totalTax,
       grandTotal: ret.totalAmount,
-      narration: `Reason: ${ret.reason}. Warehouse: ${ret.warehouseName}. Debit Note: ${ret.debitNoteNumber || 'Issued'}. Remarks: ${ret.remarks}`,
+      narration: `Reason: ${ret.reason}. Warehouse: ${ret.warehouseName}. Debit Note: ${ret.debitNoteNumber || 'Issued'}. Links: ${docLinks || 'Direct'}. Remarks: ${ret.remarks}`,
     });
     setIsPrintModalOpen(true);
   };
@@ -597,6 +609,9 @@ export function PurchaseDashboard() {
         state: formData.vendorState || 'Maharashtra (27)',
       },
       originalInvoiceNumber: formData.originalInvoiceNumber,
+      linkMode: formData.linkMode,
+      linkedGrnNumbers: formData.linkedGrnNumbers,
+      linkedPoNumbers: formData.linkedPoNumbers,
       returnDate: formData.returnDate,
       reason: formData.reason,
       warehouseId: formData.warehouseId,
@@ -682,6 +697,17 @@ export function PurchaseDashboard() {
       (inv.vendorLedger?.name || '').toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'ALL' || inv.status === statusFilter;
     return matchesSearch && matchesStatus;
+  });
+
+  const filteredReturns = purchaseReturns.filter((ret) => {
+    const matchesSearch =
+      ret.returnNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ret.originalInvoiceNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (ret.vendorLedger?.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (ret.debitNoteNumber || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ret.linkedGrnNumbers?.some((g: string) => g.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      ret.linkedPoNumbers?.some((p: string) => p.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesSearch;
   });
 
   return (
@@ -1154,6 +1180,167 @@ export function PurchaseDashboard() {
             onExecuteMatch={handleExecuteMatch}
           />
         )}
+
+        {activeTab === 'returns' && (
+          <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+              <div className="relative w-full sm:w-80">
+                <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Search by Return #, GRN #, PO #, Vendor..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full text-xs pl-9 pr-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-hidden focus:ring-2 focus:ring-rose-500"
+                />
+              </div>
+
+              <div className="flex items-center space-x-3 w-full sm:w-auto justify-end">
+                <button
+                  type="button"
+                  onClick={() => setIsReturnModalOpen(true)}
+                  className="px-3.5 py-1.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-lg shadow-sm shadow-rose-600/30 flex items-center space-x-1.5 cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>+ Issue Purchase Return</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-xs">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 font-semibold border-b border-slate-200 dark:border-slate-800">
+                    <tr>
+                      <th className="py-3 px-4">Return # & Date</th>
+                      <th className="py-3 px-4">Vendor / Creditor</th>
+                      <th className="py-3 px-3">Orig. Bill Ref</th>
+                      <th className="py-3 px-3">Linked Docs (GRN / PO)</th>
+                      <th className="py-3 px-3">Warehouse / Reason</th>
+                      <th className="py-3 px-3 text-right">Taxable (₹)</th>
+                      <th className="py-3 px-3 text-right">GST (₹)</th>
+                      <th className="py-3 px-4 text-right">Total (₹)</th>
+                      <th className="py-3 px-3 text-center">Debit Note #</th>
+                      <th className="py-3 px-3 text-center">Status</th>
+                      <th className="py-3 px-4 text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+                    {filteredReturns.length === 0 ? (
+                      <tr>
+                        <td colSpan={11} className="py-8 text-center text-slate-400">
+                          No purchase returns matching your search criteria.
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredReturns.map((ret) => (
+                        <tr key={ret.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors">
+                          <td className="py-3 px-4">
+                            <div className="font-bold text-rose-600 dark:text-rose-400 font-mono">
+                              {ret.returnNumber}
+                            </div>
+                            <div className="text-[10px] text-slate-400">
+                              {ret.returnDate} ({ret.items.length} item{ret.items.length > 1 ? 's' : ''})
+                            </div>
+                          </td>
+
+                          <td className="py-3 px-4">
+                            <div className="font-semibold text-slate-900 dark:text-slate-100">
+                              {ret.vendorLedger?.name || 'Vendor Creditor'}
+                            </div>
+                            <div className="text-[10px] text-slate-400 font-mono">
+                              GSTIN: {ret.vendorLedger?.gstin || 'N/A'}
+                            </div>
+                          </td>
+
+                          <td className="py-3 px-3 font-mono font-medium text-slate-700 dark:text-slate-300">
+                            {ret.originalInvoiceNumber}
+                          </td>
+
+                          <td className="py-3 px-3">
+                            <div className="flex flex-wrap gap-1 max-w-xs">
+                              {ret.linkedGrnNumbers && ret.linkedGrnNumbers.length > 0 ? (
+                                ret.linkedGrnNumbers.map((grn: string) => (
+                                  <span
+                                    key={grn}
+                                    className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
+                                  >
+                                    GRN: {grn}
+                                  </span>
+                                ))
+                              ) : null}
+                              {ret.linkedPoNumbers && ret.linkedPoNumbers.length > 0 ? (
+                                ret.linkedPoNumbers.map((po: string) => (
+                                  <span
+                                    key={po}
+                                    className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-purple-50 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800"
+                                  >
+                                    PO: {po}
+                                  </span>
+                                ))
+                              ) : null}
+                              {!ret.linkedGrnNumbers?.length && !ret.linkedPoNumbers?.length && (
+                                <span className="text-[10px] text-slate-400 italic">Direct Bill</span>
+                              )}
+                            </div>
+                          </td>
+
+                          <td className="py-3 px-3">
+                            <div className="text-slate-800 dark:text-slate-200 font-medium truncate max-w-[140px]" title={ret.warehouseName}>
+                              {ret.warehouseName}
+                            </div>
+                            <div className="text-[10px] text-rose-600 dark:text-rose-400 font-semibold">
+                              {ret.reason.replace(/_/g, ' ')}
+                            </div>
+                          </td>
+
+                          <td className="py-3 px-3 text-right font-mono text-slate-700 dark:text-slate-300">
+                            ₹{ret.subtotal.toLocaleString('en-IN')}
+                          </td>
+
+                          <td className="py-3 px-3 text-right font-mono text-rose-600 dark:text-rose-400">
+                            ₹{ret.totalTax.toLocaleString('en-IN')}
+                          </td>
+
+                          <td className="py-3 px-4 text-right font-mono font-bold text-slate-900 dark:text-slate-100">
+                            ₹{ret.totalAmount.toLocaleString('en-IN')}
+                          </td>
+
+                          <td className="py-3 px-3 text-center">
+                            {ret.debitNoteNumber ? (
+                              <span className="font-mono text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded">
+                                {ret.debitNoteNumber}
+                              </span>
+                            ) : (
+                              <span className="text-slate-400 text-[10px]">-</span>
+                            )}
+                          </td>
+
+                          <td className="py-3 px-3 text-center">
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 uppercase">
+                              {ret.status || 'APPROVED'}
+                            </span>
+                          </td>
+
+                          <td className="py-3 px-4 text-center">
+                            <button
+                              type="button"
+                              onClick={() => handlePrintPurchaseReturn(ret)}
+                              title="Print Purchase Return / Debit Note Delivery Document"
+                              className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-rose-600 cursor-pointer"
+                            >
+                              <Printer className="w-4 h-4" />
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {selectedInvoiceForModal && (
@@ -1260,23 +1447,23 @@ export function PurchaseDashboard() {
                           <td className="py-2 px-3 text-right font-mono text-slate-400">-</td>
                         </tr>
                       )}
-                      {selectedInvoiceForModal.tdsAmount && selectedInvoiceForModal.tdsAmount > 0 && (
+                      {selectedInvoiceForModal.tdsAmount && selectedInvoiceForModal.tdsAmount > 0 ? (
                         <tr>
-                          <td className="py-2 px-3 font-medium text-amber-600 dark:text-amber-400">
-                            TDS Payable u/s {selectedInvoiceForModal.tdsSection || '194Q'}
+                          <td className="py-2 px-3 font-medium text-slate-800 dark:text-slate-200">
+                            TDS Payable ({selectedInvoiceForModal.tdsSection})
                           </td>
                           <td className="py-2 px-3 text-right font-mono text-slate-400">-</td>
-                          <td className="py-2 px-3 text-right font-mono font-bold text-amber-600 dark:text-amber-400">
+                          <td className="py-2 px-3 text-right font-mono font-bold text-amber-600">
                             ₹{selectedInvoiceForModal.tdsAmount.toLocaleString('en-IN')}
                           </td>
                         </tr>
-                      )}
+                      ) : null}
                       <tr>
                         <td className="py-2 px-3 font-medium text-slate-800 dark:text-slate-200">
-                          {selectedInvoiceForModal.vendorLedger?.name || 'Trade Vendor'} (Sundry Creditor)
+                          Sundry Creditor - {selectedInvoiceForModal.vendorLedger?.name}
                         </td>
                         <td className="py-2 px-3 text-right font-mono text-slate-400">-</td>
-                        <td className="py-2 px-3 text-right font-mono font-black text-slate-900 dark:text-slate-100">
+                        <td className="py-2 px-3 text-right font-mono font-bold text-rose-600">
                           ₹{selectedInvoiceForModal.totalAmount.toLocaleString('en-IN')}
                         </td>
                       </tr>
@@ -1284,16 +1471,16 @@ export function PurchaseDashboard() {
                   </table>
                 </div>
               </div>
-            </div>
 
-            <div className="px-6 py-3 bg-slate-50 dark:bg-slate-800/60 border-t border-slate-200 dark:border-slate-800 flex justify-end">
-              <button
-                type="button"
-                onClick={() => setSelectedInvoiceForModal(null)}
-                className="px-4 py-1.5 text-xs font-semibold bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-slate-800 dark:text-slate-200 rounded-lg cursor-pointer"
-              >
-                Close
-              </button>
+              <div className="text-right pt-2 border-t border-slate-200 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setSelectedInvoiceForModal(null)}
+                  className="px-4 py-1.5 text-xs font-semibold bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-slate-800 dark:text-slate-200 rounded-lg cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1330,6 +1517,8 @@ export function PurchaseDashboard() {
         onSubmit={handleCreatePurchaseReturn}
         invoices={invoices}
         vendors={INITIAL_VENDORS}
+        purchaseOrders={pos}
+        goodsReceiptNotes={grns}
       />
 
       <UniversalDocumentPrintModal

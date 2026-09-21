@@ -21,36 +21,201 @@ export interface ReconcileTransactionInput {
   bankStatementRef?: string;
 }
 
+export interface StatementBatchMetadata {
+  id: string;
+  fileName: string;
+  uploadDate: string;
+  period: string;
+  rowCount: number;
+  totalDebits: number;
+  totalCredits: number;
+  openingBalance: number;
+  closingBalance: number;
+  status: 'PARSED' | 'RECONCILED' | 'PARTIALLY_MATCHED';
+}
+
 function getDefaultBankLedgers(tenantId: string) {
   return [
     {
       id: 'ldg_hdfc_01',
       tenantId,
-      name: 'HDFC Current Account (A/c No: 50200012345678)',
+      name: 'HDFC Bank Current Account (A/c No: 50200012345678)',
       code: 'BANK_HDFC_01',
       bankAccount: '50200012345678',
+      bankName: 'HDFC Bank Ltd',
+      accountType: 'CURRENT',
       ifscCode: 'HDFC0000240',
+      branch: 'Koregaon Park Branch, Pune',
       openingBalance: 350000.0,
       currentBalance: 525000.0,
       isActive: true,
+      isLinked: true,
+      linkProvider: 'HDFC Direct Corporate API',
+      lastSyncedAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
       group: { id: 'grp_bank', name: 'Bank Accounts' },
     },
     {
       id: 'ldg_icici_02',
       tenantId,
-      name: 'ICICI Bank Escrow Account (A/c No: 000405012345)',
+      name: 'ICICI Bank Escrow / Operating (A/c No: 000405012345)',
       code: 'BANK_ICICI_02',
       bankAccount: '000405012345',
+      bankName: 'ICICI Bank Ltd',
+      accountType: 'ESCROW',
       ifscCode: 'ICIC0000004',
+      branch: 'Bund Garden Branch, Pune',
       openingBalance: 150000.0,
       currentBalance: 220000.0,
       isActive: true,
+      isLinked: true,
+      linkProvider: 'ICICI CIB Corporate NetBanking',
+      lastSyncedAt: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
+      group: { id: 'grp_bank', name: 'Bank Accounts' },
+    },
+    {
+      id: 'ldg_sbi_03',
+      tenantId,
+      name: 'SBI Cash Credit & OD Facility (A/c No: 33458921004)',
+      code: 'BANK_SBI_03',
+      bankAccount: '33458921004',
+      bankName: 'State Bank of India',
+      accountType: 'OVERDRAFT',
+      ifscCode: 'SBIN0001234',
+      branch: 'MIDC Chakan SME Branch, Pune',
+      openingBalance: 500000.0,
+      currentBalance: 680000.0,
+      isActive: true,
+      isLinked: false,
+      linkProvider: null,
+      lastSyncedAt: null,
+      group: { id: 'grp_bank', name: 'Bank Accounts' },
+    },
+    {
+      id: 'ldg_axis_04',
+      tenantId,
+      name: 'Axis Bank Trade & Forex Account (A/c No: 918020054321)',
+      code: 'BANK_AXIS_04',
+      bankAccount: '918020054321',
+      bankName: 'Axis Bank Ltd',
+      accountType: 'CURRENT_FOREX',
+      ifscCode: 'UTIB0000123',
+      branch: 'Shivajinagar Branch, Pune',
+      openingBalance: 280000.0,
+      currentBalance: 345000.0,
+      isActive: true,
+      isLinked: true,
+      linkProvider: 'Axis Corporate Connect',
+      lastSyncedAt: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
+      group: { id: 'grp_bank', name: 'Bank Accounts' },
+    },
+    {
+      id: 'ldg_kotak_05',
+      tenantId,
+      name: 'Kotak Mahindra Customer Collections (A/c No: 7711223344)',
+      code: 'BANK_KOTAK_05',
+      bankAccount: '7711223344',
+      bankName: 'Kotak Mahindra Bank',
+      accountType: 'COLLECTIONS',
+      ifscCode: 'KKBK0000999',
+      branch: 'Baner High Street, Pune',
+      openingBalance: 120000.0,
+      currentBalance: 195000.0,
+      isActive: true,
+      isLinked: false,
+      linkProvider: null,
+      lastSyncedAt: null,
       group: { id: 'grp_bank', name: 'Bank Accounts' },
     },
   ];
 }
 
-function getDefaultBankTxns() {
+function getDefaultBankTxns(ledgerId: string = 'ldg_hdfc_01') {
+  if (ledgerId === 'ldg_icici_02') {
+    return [
+      {
+        id: 'v_item_ici_001',
+        voucherId: 'v_ici_001',
+        voucherType: 'RECEIPT',
+        voucherNumber: 'RCT/2025-26/0201',
+        date: '2026-03-05',
+        narration: 'Escrow Release from Alpha Ventures UTR778899001',
+        referenceNumber: 'UTR778899001',
+        debitAmount: 200000.0,
+        creditAmount: 0.0,
+        clearedDate: null,
+        isReconciled: false,
+        bankRef: null,
+      },
+      {
+        id: 'v_item_ici_002',
+        voucherId: 'v_ici_002',
+        voucherType: 'PAYMENT',
+        voucherNumber: 'PMT/2025-26/0188',
+        date: '2026-03-14',
+        narration: 'Statutory Stamp Duty & Escrow Fee Chq 445566',
+        referenceNumber: '445566',
+        debitAmount: 0.0,
+        creditAmount: 30000.0,
+        clearedDate: null,
+        isReconciled: false,
+        bankRef: null,
+      },
+    ];
+  }
+
+  if (ledgerId === 'ldg_sbi_03') {
+    return [
+      {
+        id: 'v_item_sbi_001',
+        voucherId: 'v_sbi_001',
+        voucherType: 'PAYMENT',
+        voucherNumber: 'PMT/2025-26/0301',
+        date: '2026-03-10',
+        narration: 'Factory Machining Raw Material Vendor Chq 998877',
+        referenceNumber: '998877',
+        debitAmount: 0.0,
+        creditAmount: 180000.0,
+        clearedDate: null,
+        isReconciled: false,
+        bankRef: null,
+      },
+      {
+        id: 'v_item_sbi_002',
+        voucherId: 'v_sbi_002',
+        voucherType: 'RECEIPT',
+        voucherNumber: 'RCT/2025-26/0312',
+        date: '2026-03-22',
+        narration: 'Customer Inward Wire Transfer UTR554433221',
+        referenceNumber: 'UTR554433221',
+        debitAmount: 360000.0,
+        creditAmount: 0.0,
+        clearedDate: null,
+        isReconciled: false,
+        bankRef: null,
+      },
+    ];
+  }
+
+  if (ledgerId === 'ldg_axis_04') {
+    return [
+      {
+        id: 'v_item_axis_001',
+        voucherId: 'v_axis_001',
+        voucherType: 'RECEIPT',
+        voucherNumber: 'RCT/2025-26/0401',
+        date: '2026-03-12',
+        narration: 'Export Remittance USD 4,000 via SWIFT AXIS992288',
+        referenceNumber: 'AXIS992288',
+        debitAmount: 332000.0,
+        creditAmount: 0.0,
+        clearedDate: null,
+        isReconciled: false,
+        bankRef: null,
+      },
+    ];
+  }
+
+  // Default HDFC transactions
   return [
     {
       id: 'v_item_001',
@@ -131,6 +296,39 @@ async function saveBankStatementStore(tenantId: string, ledgerId: string, list: 
   });
 }
 
+async function getStatementBatchesStore(tenantId: string, ledgerId: string): Promise<StatementBatchMetadata[]> {
+  const key = `bank_batches_${ledgerId}`;
+  const row = await prisma.keyValueStore.findUnique({
+    where: { tenantId_key: { tenantId, key } },
+  });
+  if (row && row.value) {
+    return row.value as unknown as StatementBatchMetadata[];
+  }
+  return [
+    {
+      id: `batch_${ledgerId}_01`,
+      fileName: 'Bank_Statement_March_2026.csv',
+      uploadDate: '2026-03-30 11:30:00',
+      period: '01-Mar-2026 to 31-Mar-2026',
+      rowCount: 4,
+      totalDebits: 46500,
+      totalCredits: 125000,
+      openingBalance: 350000,
+      closingBalance: 428500,
+      status: 'PARSED',
+    },
+  ];
+}
+
+async function saveStatementBatchesStore(tenantId: string, ledgerId: string, list: StatementBatchMetadata[]): Promise<void> {
+  const key = `bank_batches_${ledgerId}`;
+  await prisma.keyValueStore.upsert({
+    where: { tenantId_key: { tenantId, key } },
+    create: { tenantId, key, value: list as any },
+    update: { value: list as any },
+  });
+}
+
 async function getReconciliationStore(tenantId: string): Promise<Record<string, { clearedDate: string; bankRef?: string }>> {
   const key = 'bank_reconciliations';
   const row = await prisma.keyValueStore.findUnique({
@@ -181,7 +379,7 @@ async function getMockTxnsStore(tenantId: string, ledgerId: string): Promise<any
   if (row && row.value) {
     return row.value as unknown as any[];
   }
-  const defaultList = getDefaultBankTxns();
+  const defaultList = getDefaultBankTxns(ledgerId);
   await saveMockTxnsStore(tenantId, ledgerId, defaultList);
   return defaultList;
 }
@@ -230,6 +428,100 @@ export class BankingService {
     return await getMockLedgersStore(tenantId);
   }
 
+  async createBankLedger(tenantId: string, data: {
+    name: string;
+    bankName: string;
+    bankAccount: string;
+    ifscCode: string;
+    branch?: string;
+    accountType?: string;
+    openingBalance?: number;
+  }) {
+    const list = await getMockLedgersStore(tenantId);
+    const newLedger = {
+      id: `ldg_${Date.now()}`,
+      tenantId,
+      name: `${data.bankName} (${data.bankAccount.slice(-4)}) - ${data.name}`,
+      code: `BANK_${data.bankName.toUpperCase().replace(/\s+/g, '_')}_${Date.now().toString().slice(-4)}`,
+      bankAccount: data.bankAccount,
+      bankName: data.bankName,
+      accountType: data.accountType || 'CURRENT',
+      ifscCode: data.ifscCode,
+      branch: data.branch || 'Main Branch',
+      openingBalance: Number(data.openingBalance || 0),
+      currentBalance: Number(data.openingBalance || 0),
+      isActive: true,
+      isLinked: false,
+      linkProvider: null,
+      lastSyncedAt: null,
+      group: { id: 'grp_bank', name: 'Bank Accounts' },
+    };
+
+    list.push(newLedger);
+    await saveMockLedgersStore(tenantId, list);
+    return { success: true, data: newLedger, message: 'Bank account added successfully.' };
+  }
+
+  async linkBankFeed(tenantId: string, data: {
+    ledgerId: string;
+    provider: string;
+    credentials?: any;
+    syncFrequency?: string;
+  }) {
+    const list = await getMockLedgersStore(tenantId);
+    const idx = list.findIndex(l => l.id === data.ledgerId);
+    if (idx !== -1) {
+      list[idx].isLinked = true;
+      list[idx].linkProvider = data.provider;
+      list[idx].lastSyncedAt = new Date().toISOString();
+      await saveMockLedgersStore(tenantId, list);
+      return {
+        success: true,
+        message: `Successfully connected ${list[idx].name} to ${data.provider} Open Banking feed.`,
+        data: list[idx],
+      };
+    }
+    return { success: false, message: 'Bank ledger not found' };
+  }
+
+  async syncBankFeed(tenantId: string, ledgerId: string) {
+    const list = await getMockLedgersStore(tenantId);
+    const ledger = list.find(l => l.id === ledgerId);
+    if (!ledger) return { success: false, message: 'Bank ledger not found' };
+
+    // Update last sync time
+    ledger.lastSyncedAt = new Date().toISOString();
+    await saveMockLedgersStore(tenantId, list);
+
+    // Auto-generate fresh feeds for reconciliation
+    const simulatedFeed: BankStatementItem[] = [
+      {
+        id: `feed_${Date.now()}_1`,
+        date: new Date().toISOString().split('T')[0],
+        narration: `Direct API Feed - Payment Clearing UTR${Math.floor(100000000 + Math.random() * 900000000)}`,
+        refNumber: `UTR${Math.floor(100000000 + Math.random() * 900000000)}`,
+        debit: 0,
+        credit: 45000,
+        balance: (ledger.currentBalance || 350000) + 45000,
+        isReconciled: false,
+      },
+    ];
+
+    const currentStatement = await getBankStatementStore(tenantId, ledgerId);
+    const updated = [...currentStatement, ...simulatedFeed];
+    await saveBankStatementStore(tenantId, ledgerId, updated);
+
+    // Auto-reconcile
+    const reconcileRes = await this.autoReconcile(tenantId, ledgerId);
+
+    return {
+      success: true,
+      message: `Direct feed synced successfully! Fetched 1 live transaction and reconciled against company books.`,
+      matchedCount: reconcileRes.matchedCount,
+      lastSyncedAt: ledger.lastSyncedAt,
+    };
+  }
+
   async getBankTransactions(tenantId: string, ledgerId: string, startDate?: string, endDate?: string) {
     await this.initMockData(tenantId);
     let items: any[] = [];
@@ -272,8 +564,7 @@ export class BankingService {
     }
 
     if (items.length === 0) {
-      const mockTxns = await getMockTxnsStore(tenantId, ledgerId);
-      items = mockTxns.length > 0 ? mockTxns : await getMockTxnsStore(tenantId, 'ldg_hdfc_01');
+      items = await getMockTxnsStore(tenantId, ledgerId);
     }
 
     const recStore = await getReconciliationStore(tenantId);
@@ -289,7 +580,7 @@ export class BankingService {
     });
   }
 
-  async uploadBankStatement(tenantId: string, ledgerId: string, statementLines: BankStatementItem[]) {
+  async uploadBankStatement(tenantId: string, ledgerId: string, statementLines: BankStatementItem[], fileName: string = 'Uploaded_Statement.csv') {
     const formatted = statementLines.map((l, index) => ({
       id: l.id || `stmt_${Date.now()}_${index}`,
       date: l.date,
@@ -303,16 +594,41 @@ export class BankingService {
     }));
 
     await saveBankStatementStore(tenantId, ledgerId, formatted);
+
+    // Save batch metadata
+    const batches = await getStatementBatchesStore(tenantId, ledgerId);
+    const totalDebits = formatted.reduce((acc, it) => acc + (it.debit || 0), 0);
+    const totalCredits = formatted.reduce((acc, it) => acc + (it.credit || 0), 0);
+    const newBatch: StatementBatchMetadata = {
+      id: `batch_${Date.now()}`,
+      fileName,
+      uploadDate: new Date().toISOString().replace('T', ' ').slice(0, 19),
+      period: formatted.length > 0 ? `${formatted[0].date} to ${formatted[formatted.length - 1].date}` : 'Current Month',
+      rowCount: formatted.length,
+      totalDebits,
+      totalCredits,
+      openingBalance: formatted[0]?.balance ? (formatted[0].balance - formatted[0].credit + formatted[0].debit) : 350000,
+      closingBalance: formatted[formatted.length - 1]?.balance || 428500,
+      status: 'PARSED',
+    };
+    batches.unshift(newBatch);
+    await saveStatementBatchesStore(tenantId, ledgerId, batches);
+
     return {
       success: true,
-      message: `Loaded ${formatted.length} bank statement rows successfully.`,
+      message: `Loaded ${formatted.length} bank statement rows from '${fileName}' successfully.`,
       totalRows: formatted.length,
       rows: formatted,
+      batch: newBatch,
     };
   }
 
   async getStoredStatement(tenantId: string, ledgerId: string) {
     return await getBankStatementStore(tenantId, ledgerId);
+  }
+
+  async getStatementBatches(tenantId: string, ledgerId: string) {
+    return await getStatementBatchesStore(tenantId, ledgerId);
   }
 
   async autoReconcile(tenantId: string, ledgerId: string) {
@@ -431,7 +747,7 @@ export class BankingService {
     const ledgers = await this.getBankLedgers(tenantId);
     const ledger = ledgers.find((l: any) => l.id === ledgerId) || ledgers[0] || {
       id: ledgerId,
-      name: 'HDFC Bank Primary A/c',
+      name: 'HDFC Bank Current Account (A/c No: 50200012345678)',
       code: 'BANK_HDFC',
       bankAccount: '50200012345678',
       ifscCode: 'HDFC0000240',
@@ -494,6 +810,9 @@ export class BankingService {
         code: ledger.code,
         bankAccount: ledger.bankAccount,
         ifscCode: ledger.ifscCode,
+        bankName: ledger.bankName,
+        branch: ledger.branch,
+        accountType: ledger.accountType,
       },
       summary: {
         balanceAsPerBooks: bookBalance,

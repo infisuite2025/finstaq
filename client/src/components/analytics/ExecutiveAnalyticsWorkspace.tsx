@@ -28,15 +28,17 @@ import {
   ChevronRight,
   Package,
   Truck,
-  Eye
+  Eye,
+  Printer,
+  FileSpreadsheet
 } from 'lucide-react';
 import { StandardTabs, TabItem } from '../common/StandardTabs';
 import { KPIScorecard, KPIGrid } from '../common/KPIScorecard';
 
 export function ExecutiveAnalyticsWorkspace() {
   const [activeTab, setActiveTab] = useState<'overview' | 'cashflow' | 'profitability' | 'sales' | 'inventory'>('overview');
-  const [timeRange, setTimeRange] = useState<'fy' | 'quarter' | 'month' | 'last30'>('fy');
-  const [selectedCustomerRisk, setSelectedCustomerRisk] = useState<string | null>(null);
+  const [timeRange, setTimeRange] = useState<'fy' | 'quarter' | 'month'>('fy');
+  const [isExporting, setIsExporting] = useState(false);
 
   const tabs: TabItem<'overview' | 'cashflow' | 'profitability' | 'sales' | 'inventory'>[] = [
     { id: 'overview', label: '360° Executive Pulse', icon: Activity, badge: 'Live' },
@@ -46,121 +48,108 @@ export function ExecutiveAnalyticsWorkspace() {
     { id: 'inventory', label: 'Inventory Velocity & Supply', icon: Package },
   ];
 
-  const [liveKpis, setLiveKpis] = useState<any>(null);
-
-  useEffect(() => {
-    let isMounted = true;
-    const fetchAnalytics = async () => {
-      try {
-        const res = await fetch('/api/v1/accounting/reports/profit-and-loss?fromDate=2026-04-01&toDate=2026-09-30', {
-          headers: { 'x-tenant-id': 'tenant-default-01' }
-        });
-        if (res.ok) {
-          const json = await res.json();
-          if (isMounted && json.summary) {
-            setLiveKpis({
-              revenue: {
-                current: `₹ ${(json.summary.totalRevenue || 84520000).toLocaleString('en-IN')}.00`,
-                previous: '₹ 7,12,00,000.00',
-                change: '+18.7%',
-                trend: 'up',
-                target: '₹ 10,00,00,000.00',
-                progress: 84.5
-              },
-              grossMargin: {
-                current: `${json.summary.grossMarginPercent || 32.4}%`,
-                previous: '28.9%',
-                change: '+3.5%',
-                trend: 'up',
-                benchmark: '30.0%'
-              },
-              netProfit: {
-                current: `₹ ${(json.summary.netProfitAfterTax || 14860000).toLocaleString('en-IN')}.00`,
-                previous: '₹ 1,18,00,000.00',
-                change: '+25.9%',
-                trend: 'up',
-                margin: `${json.summary.netMarginPercent || 17.6}%`
-              },
-              liquidCash: {
-                current: '₹ 5,23,00,000.00',
-                burnRate: '₹ 32,50,000 / mo',
-                runwayMonths: '16.1 Months',
-                status: 'HEALTHY'
-              },
-              dso: {
-                current: '38 Days',
-                target: '30 Days',
-                change: '-4 Days (Faster collections)',
-                trend: 'up'
-              },
-              ccc: {
-                current: '42 Days',
-                change: 'Cash Conversion Cycle',
-                trend: 'neutral'
-              }
-            });
-          }
-        }
-      } catch (err) {
-        console.warn('Analytics live load fallback:', err);
-      }
-    };
-    fetchAnalytics();
-    return () => { isMounted = false; };
-  }, [timeRange]);
-
-  // Executive KPI Data
-  const kpis = liveKpis || {
-    revenue: {
-      current: '₹ 8,45,20,000.00',
-      previous: '₹ 7,12,00,000.00',
-      change: '+18.7%',
-      trend: 'up',
-      target: '₹ 10,00,00,000.00',
-      progress: 84.5
+  // Dynamic Time-Range Datasets
+  const datasetByRange = {
+    fy: {
+      revenue: {
+        current: '₹ 8,45,20,000.00',
+        change: '+18.7% YoY',
+        target: '₹ 10,00,00,000.00',
+        progress: 84.5,
+      },
+      netProfit: {
+        current: '₹ 1,48,60,000.00',
+        change: '+25.9%',
+        margin: '17.6%',
+        grossMargin: '32.4%',
+      },
+      liquidCash: {
+        current: '₹ 1,42,85,400.00',
+        burnRate: '₹32.5L / mo',
+        runwayMonths: '4.4 Mos',
+        status: 'HEALTHY',
+      },
+      dso: {
+        current: '38 Days',
+        target: '30d',
+        change: '-4 Days (Faster collections)',
+        ccc: '42 Days',
+      },
+      monthlyTrajectory: [
+        { month: 'Apr 26', revenue: 62.5, expenses: 48.0, netProfit: 14.5 },
+        { month: 'May 26', revenue: 68.0, expenses: 51.5, netProfit: 16.5 },
+        { month: 'Jun 26', revenue: 74.5, expenses: 56.0, netProfit: 18.5 },
+        { month: 'Jul 26', revenue: 82.0, expenses: 61.2, netProfit: 20.8 },
+        { month: 'Aug 26', revenue: 91.5, expenses: 67.8, netProfit: 23.7 },
+        { month: 'Sep 26 (Est)', revenue: 98.0, expenses: 71.5, netProfit: 26.5 },
+      ],
     },
-    grossMargin: {
-      current: '32.4%',
-      previous: '28.9%',
-      change: '+3.5%',
-      trend: 'up',
-      benchmark: '30.0%'
+    quarter: {
+      revenue: {
+        current: '₹ 2,71,50,000.00',
+        change: '+21.4% QoQ',
+        target: '₹ 3,20,00,000.00',
+        progress: 84.8,
+      },
+      netProfit: {
+        current: '₹ 71,00,000.00',
+        change: '+29.2%',
+        margin: '26.1%',
+        grossMargin: '34.8%',
+      },
+      liquidCash: {
+        current: '₹ 1,42,85,400.00',
+        burnRate: '₹31.2L / mo',
+        runwayMonths: '4.6 Mos',
+        status: 'HEALTHY',
+      },
+      dso: {
+        current: '35 Days',
+        target: '30d',
+        change: '-7 Days (Q2 acceleration)',
+        ccc: '39 Days',
+      },
+      monthlyTrajectory: [
+        { month: 'Jul 26', revenue: 82.0, expenses: 61.2, netProfit: 20.8 },
+        { month: 'Aug 26', revenue: 91.5, expenses: 67.8, netProfit: 23.7 },
+        { month: 'Sep 26 (Est)', revenue: 98.0, expenses: 71.5, netProfit: 26.5 },
+      ],
     },
-    netProfit: {
-      current: '₹ 1,48,60,000.00',
-      previous: '₹ 1,18,00,000.00',
-      change: '+25.9%',
-      trend: 'up',
-      margin: '17.6%'
+    month: {
+      revenue: {
+        current: '₹ 91,50,000.00',
+        change: '+11.6% MoM',
+        target: '₹ 1,00,00,000.00',
+        progress: 91.5,
+      },
+      netProfit: {
+        current: '₹ 23,70,000.00',
+        change: '+13.9%',
+        margin: '25.9%',
+        grossMargin: '33.2%',
+      },
+      liquidCash: {
+        current: '₹ 1,42,85,400.00',
+        burnRate: '₹32.5L / mo',
+        runwayMonths: '4.4 Mos',
+        status: 'HEALTHY',
+      },
+      dso: {
+        current: '38 Days',
+        target: '30d',
+        change: '-2 Days',
+        ccc: '42 Days',
+      },
+      monthlyTrajectory: [
+        { month: 'Week 1', revenue: 21.0, expenses: 15.5, netProfit: 5.5 },
+        { month: 'Week 2', revenue: 22.5, expenses: 16.8, netProfit: 5.7 },
+        { month: 'Week 3', revenue: 23.8, expenses: 17.5, netProfit: 6.3 },
+        { month: 'Week 4', revenue: 24.2, expenses: 18.0, netProfit: 6.2 },
+      ],
     },
-    liquidCash: {
-      current: '₹ 1,42,85,400.00',
-      burnRate: '₹ 32,50,000 / mo',
-      runwayMonths: '4.4 Months',
-      status: 'HEALTHY'
-    },
-    dso: {
-      current: '38 Days',
-      target: '30 Days',
-      change: '-4 Days (Faster collections)',
-      trend: 'up'
-    },
-    ccc: {
-      current: '42 Days',
-      change: 'Cash Conversion Cycle',
-      trend: 'neutral'
-    }
   };
 
-  // Monthly Revenue & Profit Trajectory Data
-  const monthlyTrajectory = [
-    { month: 'Apr 26', revenue: 62.5, expenses: 48.0, netProfit: 14.5, margin: 23.2 },
-    { month: 'May 26', revenue: 68.0, expenses: 51.5, netProfit: 16.5, margin: 24.3 },
-    { month: 'Jun 26', revenue: 74.5, expenses: 56.0, netProfit: 18.5, margin: 24.8 },
-    { month: 'Jul 26', revenue: 82.0, expenses: 61.2, netProfit: 20.8, margin: 25.4 },
-    { month: 'Aug 26', revenue: 91.5, expenses: 67.8, netProfit: 23.7, margin: 25.9 },
-    { month: 'Sep 26 (Est)', revenue: 98.0, expenses: 71.5, netProfit: 26.5, margin: 27.0 },
-  ];
+  const currentData = datasetByRange[timeRange];
 
   // Top Customer Revenue Contribution & Credit Risk
   const topCustomers = [
@@ -204,6 +193,14 @@ export function ExecutiveAnalyticsWorkspace() {
       impact: '100% Tax compliance'
     }
   ];
+
+  const handleExportPdf = () => {
+    setIsExporting(true);
+    setTimeout(() => {
+      window.print();
+      setIsExporting(false);
+    }, 400);
+  };
 
   return (
     <div className="space-y-6">
@@ -259,10 +256,11 @@ export function ExecutiveAnalyticsWorkspace() {
 
           <button
             type="button"
+            onClick={handleExportPdf}
             className="px-3.5 py-2 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 text-xs font-bold flex items-center space-x-1.5 cursor-pointer shadow-xs"
           >
-            <Download className="w-3.5 h-3.5" />
-            <span>Export Executive PDF</span>
+            {isExporting ? <Printer className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+            <span>{isExporting ? 'Generating...' : 'Export Executive PDF'}</span>
           </button>
         </div>
       </div>
@@ -275,6 +273,7 @@ export function ExecutiveAnalyticsWorkspace() {
         size="md"
       />
 
+
       {/* ================= TAB 1: 360° EXECUTIVE PULSE ================= */}
       {activeTab === 'overview' && (
         <div className="space-y-6">
@@ -283,40 +282,40 @@ export function ExecutiveAnalyticsWorkspace() {
           <KPIGrid columns={4}>
             {/* Total Turnover Run Rate */}
             <KPIScorecard
-              label="NET REVENUE (YTD)"
-              value={kpis.revenue.current}
-              trend={{ direction: 'up', value: `${kpis.revenue.change} YoY` }}
-              progress={{ target: kpis.revenue.target, percentage: kpis.revenue.progress, color: 'bg-gradient-to-r from-blue-600 to-indigo-600' }}
+              label={timeRange === 'fy' ? 'NET REVENUE (YTD)' : timeRange === 'quarter' ? 'NET REVENUE (Q2)' : 'NET REVENUE (MTD)'}
+              value={currentData.revenue.current}
+              trend={{ direction: 'up', value: currentData.revenue.change }}
+              progress={{ target: currentData.revenue.target, percentage: currentData.revenue.progress, color: 'bg-gradient-to-r from-blue-600 to-indigo-600' }}
             />
 
             {/* Net Profit & Margins */}
             <KPIScorecard
               label="NET PROFIT (EAT)"
-              value={kpis.netProfit.current}
+              value={currentData.netProfit.current}
               variant="emerald"
-              trend={{ direction: 'up', value: kpis.netProfit.change }}
-              footerLeft={`Net Margin: ${kpis.netProfit.margin}`}
-              footerRight={`Gross: ${kpis.grossMargin.current}`}
+              trend={{ direction: 'up', value: currentData.netProfit.change }}
+              footerLeft={<span>Net: <strong>{currentData.netProfit.margin}</strong></span>}
+              footerRight={<span>Gross: <strong>{currentData.netProfit.grossMargin}</strong></span>}
             />
 
             {/* Liquid Cash & Bank Runway */}
             <KPIScorecard
               label="LIQUID CASH & BANK"
-              value={kpis.liquidCash.current}
-              variant="featured"
-              badge={kpis.liquidCash.status}
-              badgeVariant="blue"
-              footerLeft={`Burn: ${kpis.liquidCash.burnRate}`}
-              footerRight={`Runway: ${kpis.liquidCash.runwayMonths}`}
+              value={currentData.liquidCash.current}
+              variant="indigo"
+              badge={currentData.liquidCash.status}
+              badgeVariant="indigo"
+              footerLeft={<span>Burn: <strong>{currentData.liquidCash.burnRate}</strong></span>}
+              footerRight={<span>Runway: <strong>{currentData.liquidCash.runwayMonths}</strong></span>}
             />
 
             {/* DSO & Working Capital Speed */}
             <KPIScorecard
               label="DAYS SALES OUTSTANDING"
-              value={kpis.dso.current}
-              trend={{ direction: 'up', value: kpis.dso.change }}
-              footerLeft="Target: 30 Days"
-              footerRight={`CCC: ${kpis.ccc.current}`}
+              value={currentData.dso.current}
+              trend={{ direction: 'up', value: currentData.dso.change }}
+              footerLeft={<span>Target: <strong>{currentData.dso.target}</strong></span>}
+              footerRight={<span>CCC: <strong>{currentData.dso.ccc}</strong></span>}
             />
           </KPIGrid>
 
@@ -328,9 +327,9 @@ export function ExecutiveAnalyticsWorkspace() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
                   <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">
-                    Monthly Revenue vs Expenses vs Net Profit (₹ Lakhs)
+                    {timeRange === 'month' ? 'Weekly Revenue vs Expenses (₹ Lakhs)' : 'Monthly Revenue vs Expenses vs Net Profit (₹ Lakhs)'}
                   </h3>
-                  <p className="text-xs text-slate-400">Monthly fiscal progression & operating leverage</p>
+                  <p className="text-xs text-slate-400">Fiscal progression & operating leverage ({timeRange.toUpperCase()})</p>
                 </div>
                 <div className="flex items-center space-x-3 text-xs font-bold">
                   <div className="flex items-center space-x-1.5">
@@ -348,40 +347,40 @@ export function ExecutiveAnalyticsWorkspace() {
                 </div>
               </div>
 
-              {/* Visual Simulated Bar Chart */}
-              <div className="h-64 flex items-end justify-between gap-3 pt-6 pb-2 border-b border-slate-200 dark:border-slate-800">
-                {monthlyTrajectory.map((item, idx) => (
-                  <div key={idx} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group">
-                    <div className="text-[10px] font-bold text-slate-400 group-hover:text-blue-600">
+              {/* Visual Simulated Bar Chart with ample top clearance */}
+              <div className="h-64 flex items-end justify-between gap-3 pt-8 pb-2 border-b border-slate-200 dark:border-slate-800">
+                {currentData.monthlyTrajectory.map((item, idx) => (
+                  <div key={idx} className="flex-1 flex flex-col items-center gap-1 h-full justify-end group">
+                    <div className="text-[11px] font-bold text-slate-600 dark:text-slate-300 group-hover:text-blue-600 font-sans">
                       ₹{item.revenue}L
                     </div>
-                    <div className="w-full flex items-end justify-center gap-1 h-44">
+                    <div className="w-full flex items-end justify-center gap-1.5 h-44">
                       {/* Revenue Bar */}
                       <div
-                        className="w-1/3 bg-blue-600 rounded-t-lg transition-all duration-300 hover:brightness-110"
-                        style={{ height: `${(item.revenue / 100) * 100}%` }}
+                        className="w-1/3 bg-blue-600 rounded-t-md transition-all duration-300 hover:brightness-110 shadow-xs"
+                        style={{ height: `${(item.revenue / (timeRange === 'month' ? 30 : 100)) * 100}%` }}
                         title={`Revenue: ₹${item.revenue} Lakhs`}
                       ></div>
                       {/* Expenses Bar */}
                       <div
-                        className="w-1/3 bg-rose-500/80 rounded-t-lg transition-all duration-300 hover:brightness-110"
-                        style={{ height: `${(item.expenses / 100) * 100}%` }}
+                        className="w-1/3 bg-rose-500/85 rounded-t-md transition-all duration-300 hover:brightness-110 shadow-xs"
+                        style={{ height: `${(item.expenses / (timeRange === 'month' ? 30 : 100)) * 100}%` }}
                         title={`Expenses: ₹${item.expenses} Lakhs`}
                       ></div>
                       {/* Net Profit Bar */}
                       <div
-                        className="w-1/3 bg-emerald-500 rounded-t-lg transition-all duration-300 hover:brightness-110"
-                        style={{ height: `${(item.netProfit / 100) * 100}%` }}
+                        className="w-1/3 bg-emerald-500 rounded-t-md transition-all duration-300 hover:brightness-110 shadow-xs"
+                        style={{ height: `${(item.netProfit / (timeRange === 'month' ? 30 : 100)) * 100}%` }}
                         title={`Net Profit: ₹${item.netProfit} Lakhs`}
                       ></div>
                     </div>
-                    <span className="text-[10px] font-bold text-slate-500 mt-1">{item.month}</span>
+                    <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 mt-1 font-sans">{item.month}</span>
                   </div>
                 ))}
               </div>
 
               <div className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400 pt-1">
-                <span>Average Monthly Run Rate: <strong>₹ 79.4 Lakhs</strong></span>
+                <span>Average Period Run Rate: <strong>₹ {timeRange === 'month' ? '22.8 Lakhs / wk' : '79.4 Lakhs / mo'}</strong></span>
                 <span>Operating Margin Expansion: <strong className="text-emerald-600">+3.8% in Q2</strong></span>
               </div>
             </div>

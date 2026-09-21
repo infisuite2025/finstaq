@@ -2614,7 +2614,7 @@ export const SuperAdminHub: React.FC = () => {
                 placeholder="Search knowledge base across all modules..."
                 value={cmsSearchTerm}
                 onChange={(e) => setCmsSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-white placeholder-slate-400 outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-xs font-medium text-slate-900 dark:text-white placeholder-slate-400 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
               />
             </div>
 
@@ -3113,7 +3113,7 @@ export const SuperAdminHub: React.FC = () => {
                   required
                   value={topicFormData.title}
                   onChange={(e) => setTopicFormData({ ...topicFormData, title: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-semibold"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -3123,7 +3123,7 @@ export const SuperAdminHub: React.FC = () => {
                   <select
                     value={topicFormData.category}
                     onChange={(e) => setTopicFormData({ ...topicFormData, category: e.target.value as any })}
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-bold"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
                     <option value="Vouchers & Accounting">Vouchers & Accounting</option>
                     <option value="Masters & Structure">Masters & Structure</option>
@@ -3145,7 +3145,7 @@ export const SuperAdminHub: React.FC = () => {
                   <select
                     value={topicFormData.tabTarget}
                     onChange={(e) => setTopicFormData({ ...topicFormData, tabTarget: e.target.value })}
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-bold"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
                     <option value="voucher">Voucher Matrix</option>
                     <option value="masters">Master Data Hub</option>
@@ -3170,7 +3170,7 @@ export const SuperAdminHub: React.FC = () => {
                   required
                   value={topicFormData.summary}
                   onChange={(e) => setTopicFormData({ ...topicFormData, summary: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -3181,7 +3181,7 @@ export const SuperAdminHub: React.FC = () => {
                   required
                   value={topicFormData.stepsText}
                   onChange={(e) => setTopicFormData({ ...topicFormData, stepsText: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -3195,7 +3195,7 @@ export const SuperAdminHub: React.FC = () => {
                   placeholder="e.g. Updated steps to reflect 2026 GST E-Way Bill threshold changes"
                   value={topicFormData.changeNotes}
                   onChange={(e) => setTopicFormData({ ...topicFormData, changeNotes: e.target.value })}
-                  className="w-full p-2.5 bg-amber-50/50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-700 rounded-xl text-slate-900 dark:text-white font-medium"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-amber-50/50 dark:bg-amber-950/30 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -3426,7 +3426,7 @@ export const SuperAdminHub: React.FC = () => {
                   placeholder="e.g. Bharat Dynamics Technologies Pvt Ltd"
                   value={newTenant.name}
                   onChange={(e) => setNewTenant({ ...newTenant, name: e.target.value })}
-                  className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -3439,9 +3439,9 @@ export const SuperAdminHub: React.FC = () => {
                     placeholder="bharatdyn"
                     value={newTenant.subdomain}
                     onChange={(e) => setNewTenant({ ...newTenant, subdomain: e.target.value.toLowerCase() })}
-                    className="flex-1 p-2.5 rounded-l-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 font-mono text-slate-900 dark:text-white"
+                    className="flex-1 px-3.5 py-2.5 rounded-l-xl bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
-                  <span className="p-2.5 bg-slate-100 dark:bg-slate-800 border-y border-r border-slate-300 dark:border-slate-700 rounded-r-xl text-slate-500 font-mono text-xs">
+                  <span className="py-2.5 px-3 bg-slate-100 dark:bg-slate-800 border-y border-r border-emerald-400 dark:border-emerald-500 rounded-r-xl text-slate-500 font-mono text-xs">
                     .finstaq.com
                   </span>
                 </div>
@@ -3456,7 +3456,7 @@ export const SuperAdminHub: React.FC = () => {
                     placeholder="27AAACB1234F1Z9"
                     value={newTenant.gstin}
                     onChange={(e) => setNewTenant({ ...newTenant, gstin: e.target.value.toUpperCase() })}
-                    className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 font-mono uppercase text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 font-mono uppercase text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -3465,7 +3465,7 @@ export const SuperAdminHub: React.FC = () => {
                   <select
                     value={newTenant.subscriptionTier}
                     onChange={(e) => setNewTenant({ ...newTenant, subscriptionTier: e.target.value as any })}
-                    className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-bold"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   >
                     <option value="STARTER">STARTER (₹5,000/mo)</option>
                     <option value="PROFESSIONAL">PROFESSIONAL (₹12,000/mo)</option>
@@ -3505,7 +3505,7 @@ export const SuperAdminHub: React.FC = () => {
                 <select
                   value={newInvoice.tenantId}
                   onChange={(e) => setNewInvoice({ ...newInvoice, tenantId: e.target.value })}
-                  className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-bold"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 >
                   {tenants.map((t) => (
                     <option key={t.id} value={t.id}>
@@ -3522,7 +3522,7 @@ export const SuperAdminHub: React.FC = () => {
                   required
                   value={newInvoice.amount}
                   onChange={(e) => setNewInvoice({ ...newInvoice, amount: Number(e.target.value) })}
-                  className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 font-mono font-bold text-slate-900 dark:text-white"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 font-mono font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -3535,7 +3535,7 @@ export const SuperAdminHub: React.FC = () => {
                     value={newInvoice.billingPeriod}
                     onChange={(e) => setNewInvoice({ ...newInvoice, billingPeriod: e.target.value })}
                     placeholder="October 2026"
-                    className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -3546,7 +3546,7 @@ export const SuperAdminHub: React.FC = () => {
                     required
                     value={newInvoice.dueDate}
                     onChange={(e) => setNewInvoice({ ...newInvoice, dueDate: e.target.value })}
-                    className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -3626,7 +3626,7 @@ export const SuperAdminHub: React.FC = () => {
                         storageAllocatedGB: Number(e.target.value),
                       })
                     }
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono font-bold text-sm"
+                    className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono font-bold text-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                   <span className="font-mono text-slate-400 font-bold text-xs">GB</span>
                 </div>
@@ -3650,7 +3650,7 @@ export const SuperAdminHub: React.FC = () => {
                         maxFileSizeMB: Number(e.target.value),
                       })
                     }
-                    className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono font-bold text-sm"
+                    className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-mono font-bold text-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                   <span className="font-mono text-slate-400 font-bold text-xs">MB</span>
                 </div>
@@ -3669,7 +3669,7 @@ export const SuperAdminHub: React.FC = () => {
                       storageDriver: e.target.value as any,
                     })
                   }
-                  className="w-full p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-bold"
+                  className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 >
                   <option value="local">📁 Local Encrypted Disk Vault (Dev / On-Premise / Localhost)</option>
                   <option value="s3">☁️ AWS S3 Encrypted Bucket (SSE-KMS / IAM Isolated)</option>

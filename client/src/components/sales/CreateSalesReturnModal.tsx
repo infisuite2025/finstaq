@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, RotateCcw, Building2, PackagePlus, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { X, RotateCcw, Building2, Package, PackagePlus, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { SalesOrder } from '../../types/sales';
 
 export interface SalesReturnItemData {
@@ -224,7 +224,7 @@ export function CreateSalesReturnModal({
               <select
                 value={customerLedgerId}
                 onChange={(e) => setCustomerLedgerId(e.target.value)}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-amber-500"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 {customers.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -244,7 +244,7 @@ export function CreateSalesReturnModal({
                 onChange={(e) => setOriginalInvoiceNumber(e.target.value)}
                 placeholder="e.g. INV-2026-081"
                 required
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-mono font-bold focus:ring-2 focus:ring-amber-500"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
           </div>
@@ -258,7 +258,7 @@ export function CreateSalesReturnModal({
                 type="date"
                 value={returnDate}
                 onChange={(e) => setReturnDate(e.target.value)}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-amber-500"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
@@ -269,7 +269,7 @@ export function CreateSalesReturnModal({
               <select
                 value={qcDisposition}
                 onChange={(e) => setQcDisposition(e.target.value as any)}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-bold focus:ring-2 focus:ring-amber-500"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="RESTOCK_GOOD">Restock to Saleable Finished Goods</option>
                 <option value="UNDER_REPAIR">Under Re-work / Quarantine</option>
@@ -284,7 +284,7 @@ export function CreateSalesReturnModal({
               <select
                 value={destinationWarehouseId}
                 onChange={(e) => setDestinationWarehouseId(e.target.value)}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-amber-500"
+                className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 {GODOWNS.map((w) => (
                   <option key={w.id} value={w.id}>
@@ -299,8 +299,8 @@ export function CreateSalesReturnModal({
           <div className="space-y-3 pt-2">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider flex items-center space-x-1.5">
-                <PackagePlus className="w-4 h-4 text-amber-600" />
-                <span>Returned Products & Inward Inspection</span>
+                <Package className="w-4 h-4 text-indigo-600" />
+                <span>Returned Inventory Line Items</span>
               </h3>
               <button
                 type="button"
@@ -315,11 +315,11 @@ export function CreateSalesReturnModal({
               <table className="w-full text-left text-xs border-collapse">
                 <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-500 font-semibold border-b border-slate-200 dark:border-slate-800">
                   <tr>
-                    <th className="py-2.5 px-3">Description / Product</th>
-                    <th className="py-2.5 px-2 w-20">HSN</th>
-                    <th className="py-2.5 px-2 w-20 text-right">Ret Qty</th>
-                    <th className="py-2.5 px-2 w-20 text-right">Acc Qty</th>
-                    <th className="py-2.5 px-2 w-24 text-right">Rate (₹)</th>
+                    <th className="py-2.5 px-3">Item Description</th>
+                    <th className="py-2.5 px-2 w-24">HSN</th>
+                    <th className="py-2.5 px-2 w-24 text-right">Return Qty</th>
+                    <th className="py-2.5 px-2 w-24 text-right">Accepted Qty</th>
+                    <th className="py-2.5 px-2 w-28 text-right">Rate (₹)</th>
                     <th className="py-2.5 px-3 w-28 text-right">Total (₹)</th>
                     <th className="py-2.5 px-2 w-10 text-center"></th>
                   </tr>
@@ -332,7 +332,7 @@ export function CreateSalesReturnModal({
                           type="text"
                           value={it.description}
                           onChange={(e) => updateItem(idx, 'description', e.target.value)}
-                          className="w-full px-2 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs"
+                          className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                           placeholder="Product Description"
                         />
                       </td>
@@ -341,7 +341,7 @@ export function CreateSalesReturnModal({
                           type="text"
                           value={it.hsnCode || ''}
                           onChange={(e) => updateItem(idx, 'hsnCode', e.target.value)}
-                          className="w-full px-1.5 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono"
+                          className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                         />
                       </td>
                       <td className="py-2 px-2">
@@ -353,7 +353,7 @@ export function CreateSalesReturnModal({
                             const val = Number(e.target.value);
                             updateItem(idx, 'returnedQty', val);
                           }}
-                          className="w-full px-1.5 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-right font-mono"
+                          className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs text-right font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                         />
                       </td>
                       <td className="py-2 px-2">
@@ -362,7 +362,7 @@ export function CreateSalesReturnModal({
                           min="0"
                           value={it.acceptedQty}
                           onChange={(e) => updateItem(idx, 'acceptedQty', Number(e.target.value))}
-                          className="w-full px-1.5 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-right font-mono font-bold text-emerald-600"
+                          className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-right font-mono font-bold text-emerald-600 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                         />
                       </td>
                       <td className="py-2 px-2">
@@ -371,7 +371,7 @@ export function CreateSalesReturnModal({
                           min="0"
                           value={it.unitPrice}
                           onChange={(e) => updateItem(idx, 'unitPrice', Number(e.target.value))}
-                          className="w-full px-1.5 py-1 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-right font-mono"
+                          className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs text-right font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                         />
                       </td>
                       <td className="py-2 px-3 text-right font-mono font-bold text-slate-900 dark:text-slate-100">
@@ -434,7 +434,7 @@ export function CreateSalesReturnModal({
               rows={2}
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
-              className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-amber-500"
+              className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
             />
           </div>
 

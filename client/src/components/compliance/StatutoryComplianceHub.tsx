@@ -302,7 +302,7 @@ export function StatutoryComplianceHub() {
                   type="text"
                   value={einvDocNo}
                   onChange={(e) => setEinvDocNo(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white"
+                  className="w-full mt-1 px-3 py-2 text-xs border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -312,7 +312,7 @@ export function StatutoryComplianceHub() {
                   type="text"
                   value={einvDocDate}
                   onChange={(e) => setEinvDocDate(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white"
+                  className="w-full mt-1 px-3 py-2 text-xs border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -381,7 +381,7 @@ export function StatutoryComplianceHub() {
                     type="text"
                     value={ewbDocNo}
                     onChange={(e) => setEwbDocNo(e.target.value)}
-                    className="w-full mt-1 px-3 py-2 border rounded-xl bg-slate-50 dark:bg-slate-800"
+                    className="w-full mt-1 px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -390,7 +390,7 @@ export function StatutoryComplianceHub() {
                     type="text"
                     value={ewbVehicleNo}
                     onChange={(e) => setEwbVehicleNo(e.target.value)}
-                    className="w-full mt-1 px-3 py-2 border rounded-xl bg-slate-50 dark:bg-slate-800 font-mono"
+                    className="w-full mt-1 px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -401,7 +401,7 @@ export function StatutoryComplianceHub() {
                   type="text"
                   value={ewbTransporterName}
                   onChange={(e) => setEwbTransporterName(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 border rounded-xl bg-slate-50 dark:bg-slate-800"
+                  className="w-full mt-1 px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
 
@@ -507,7 +507,7 @@ export function StatutoryComplianceHub() {
                     type="text"
                     value={tcsBuyerName}
                     onChange={(e) => setTcsBuyerName(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border bg-slate-50 dark:bg-slate-800"
+                    className="w-full px-3.5 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -517,7 +517,7 @@ export function StatutoryComplianceHub() {
                     type="text"
                     value={tcsBuyerPan}
                     onChange={(e) => setTcsBuyerPan(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border bg-slate-50 dark:bg-slate-800 font-mono uppercase"
+                    className="w-full px-3.5 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white font-mono uppercase focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 
@@ -527,7 +527,7 @@ export function StatutoryComplianceHub() {
                     type="number"
                     value={tcsCurrentSale}
                     onChange={(e) => setTcsCurrentSale(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl border bg-slate-50 dark:bg-slate-800 font-mono font-bold text-base"
+                    className="w-full px-3.5 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 font-mono font-bold text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
 

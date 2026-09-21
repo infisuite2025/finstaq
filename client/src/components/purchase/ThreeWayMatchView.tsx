@@ -113,7 +113,7 @@ export function ThreeWayMatchView({
           <select
             value={selectedPoId}
             onChange={(e) => setSelectedPoId(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
           >
             {purchaseOrders.map((po) => (
               <option key={po.id} value={po.id}>
@@ -130,7 +130,7 @@ export function ThreeWayMatchView({
           <select
             value={selectedGrnId}
             onChange={(e) => setSelectedGrnId(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-mono focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
           >
             {goodsReceiptNotes.map((grn) => (
               <option key={grn.id} value={grn.id}>
@@ -234,7 +234,7 @@ export function ThreeWayMatchView({
                   type="number"
                   value={invoicedTotal}
                   onChange={(e) => setInvoicedTotal(parseFloat(e.target.value) || 0)}
-                  className="w-28 px-2 py-0.5 text-right font-mono font-bold border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-800 text-xs"
+                  className="w-28 px-2 py-1 text-right font-mono font-bold border border-emerald-400 dark:border-emerald-500 rounded-lg bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
               <div className="flex items-center justify-between">
@@ -243,7 +243,7 @@ export function ThreeWayMatchView({
                   type="number"
                   value={invoicedQty}
                   onChange={(e) => setInvoicedQty(parseFloat(e.target.value) || 0)}
-                  className="w-20 px-2 py-0.5 text-right font-mono font-bold border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-800 text-xs"
+                  className="w-20 px-2 py-1 text-right font-mono font-bold border border-emerald-400 dark:border-emerald-500 rounded-lg bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
               <div className="flex justify-between text-slate-600 dark:text-slate-400">
