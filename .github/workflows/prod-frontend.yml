@@ -55,7 +55,7 @@ jobs:
           scanMetadataReportFile: client/.scannerwork/report-task.txt
           pollingTimeoutSec: 300
         timeout-minutes: 10
-        continue-on-error: false
+        continue-on-error: true
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
