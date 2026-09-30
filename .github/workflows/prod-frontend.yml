@@ -47,7 +47,7 @@ jobs:
           -Dsonar.projectKey=finstaq-frontend
           -Dsonar.projectName=finstaq-frontend
           -Dsonar.sources=src
-          -Dsonar.exclusions=sonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/coverage/**,**/*.test.ts,**/*.test.tsx,**/*.spec.ts,**/*.spec.tsx
+          -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/coverage/**,**/*.test.ts,**/*.test.tsx,**/*.spec.ts,**/*.spec.tsx
  
       - name: SonarQube Quality Gate (frontend)
         uses: SonarSource/sonarqube-quality-gate-action@v1
