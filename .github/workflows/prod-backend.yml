@@ -42,7 +42,7 @@ jobs:
           -Dsonar.projectKey=finstaq-backend
           -Dsonar.projectName=finstaq-backend
           -Dsonar.sources=src
-          -Dsonar.exclusions=sonar.exclusions=**/*-e2e-qa-test.ts,**/*-e2e-test.ts,**/*-sanity-test.ts,**/master-audit-suite.ts,**/test-verify.ts
+          -Dsonar.exclusions=**/*-e2e-qa-test.ts,**/*-e2e-test.ts,**/*-sanity-test.ts,**/master-audit-suite.ts,**/test-verify.ts
 
       - name: SonarQube Quality Gate (backend)
         uses: SonarSource/sonarqube-quality-gate-action@v1
