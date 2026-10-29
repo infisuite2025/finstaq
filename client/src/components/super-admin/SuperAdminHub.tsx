@@ -2296,9 +2296,21 @@ export const SuperAdminHub: React.FC = () => {
     gstin: '',
     contactEmail: '',
     contactPhone: '',
+    ownerPassword: '',
     subscriptionTier: 'ENTERPRISE' as 'STARTER' | 'PROFESSIONAL' | 'ENTERPRISE',
     monthlyAmount: 25000,
   });
+
+  useEffect(() => {
+    fetch('/api/v1/super-admin/tenants')
+      .then((res) => res.json())
+      .then((json) => {
+        if (json?.success && Array.isArray(json.data) && json.data.length > 0) {
+          setTenants(json.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const [newInvoice, setNewInvoice] = useState({
     tenantId: 't-3',
@@ -3417,7 +3429,31 @@ export const SuperAdminHub: React.FC = () => {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl space-y-4">
             <h3 className="text-base font-bold text-slate-900 dark:text-white">Provision New SaaS Tenant Organization</h3>
-            <form onSubmit={(e) => { e.preventDefault(); setShowAddTenantModal(false); alert('Tenant provisioned successfully.'); }} className="space-y-3 text-xs">
+            <form onSubmit={async (e) => {
+              e.preventDefault();
+              const res = await fetch('/api/v1/super-admin/tenants', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newTenant),
+              });
+              const json = await res.json();
+              if (!res.ok || !json?.success) {
+                alert(json?.error || 'Could not save the company');
+                return;
+              }
+              setTenants((prev) => [json.data, ...prev.filter((t) => t.id !== json.data.id)]);
+              setNewTenant({
+                name: '',
+                subdomain: '',
+                gstin: '',
+                contactEmail: '',
+                contactPhone: '',
+                ownerPassword: '',
+                subscriptionTier: 'ENTERPRISE',
+                monthlyAmount: 25000,
+              });
+              setShowAddTenantModal(false);
+            }} className="space-y-3 text-xs">
               <div>
                 <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Company Legal Name</label>
                 <input
@@ -3471,6 +3507,32 @@ export const SuperAdminHub: React.FC = () => {
                     <option value="PROFESSIONAL">PROFESSIONAL (₹12,000/mo)</option>
                     <option value="ENTERPRISE">ENTERPRISE (₹25,000/mo)</option>
                   </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Owner email</label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="owner@company.com"
+                    value={newTenant.contactEmail}
+                    onChange={(e) => setNewTenant({ ...newTenant, contactEmail: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Owner password</label>
+                  <input
+                    type="password"
+                    required
+                    minLength={8}
+                    placeholder="At least 8 characters"
+                    value={newTenant.ownerPassword}
+                    onChange={(e) => setNewTenant({ ...newTenant, ownerPassword: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
+                  />
                 </div>
               </div>
 

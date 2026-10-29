@@ -32,6 +32,8 @@ export interface AuthSessionUser {
   subdomain?: string;
   tenantStatus?: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED' | 'TRIAL';
   suspendedReason?: string;
+  token?: string;
+  userId?: string;
 }
 
 interface LoginScreenProps {
@@ -74,10 +76,10 @@ const getDetectedSubdomain = (): string | null => {
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessionExpiryNotice }) => {
   const { theme, toggleTheme } = useTheme();
-  const [subdomain, setSubdomain] = useState('apex');
-  const [tenantGstin, setTenantGstin] = useState('27AABCF1234F1Z5');
-  const [email, setEmail] = useState('owner@apexindustries.com');
-  const [password, setPassword] = useState('Password@2026');
+  const [subdomain, setSubdomain] = useState('');
+  const [tenantGstin, setTenantGstin] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [keepSignedIn, setKeepSignedIn] = useState(true);
   const [selectedRole, setSelectedRole] = useState<'SUPER_ADMIN' | 'OWNER' | 'ACCOUNTANT' | 'DATA_ENTRY'>('OWNER');
@@ -126,10 +128,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
     e.preventDefault();
     setError(null);
 
-    if (selectedRole !== 'SUPER_ADMIN' && !tenantGstin.trim()) {
-      setError('Company GSTIN / Tenant ID is required');
-      return;
-    }
     if (!email.trim() || !email.includes('@')) {
       setError('Please enter a valid business email address');
       return;
@@ -142,52 +140,39 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
     setIsLoading(true);
 
     try {
-      if (selectedRole === 'SUPER_ADMIN') {
-        setTimeout(() => {
-          setIsLoading(false);
-          onLoginSuccess({
-            email: email.trim(),
-            role: 'SUPER_ADMIN',
-            tenantId: 'PLATFORM_SUPER_ADMIN',
-            tenantName: 'Finstaq Platform Management',
-            subdomain: 'admin',
-            tenantStatus: 'ACTIVE',
-          });
-        }, 300);
+      const res = await fetch('/api/v1/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email.trim(),
+          password,
+          subdomain: selectedRole === 'SUPER_ADMIN' ? 'admin' : subdomain.trim(),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data?.success) {
+        const message = data?.error?.message || data?.error || 'Email or password is incorrect';
+        setError(typeof message === 'string' ? message : 'Email or password is incorrect');
+        setIsLoading(false);
         return;
       }
-
-      // Resolve tenant by subdomain or gstin
-      const res = await fetch(`/api/v1/tenants/resolve/${subdomain.trim().toLowerCase()}`);
-      const data = await res.json();
-      
-      let tenantData: any = data?.data;
-      if (!tenantData && tenantGstin) {
-        const tListRes = await fetch('/api/v1/super-admin/tenants');
-        const tListData = await tListRes.json();
-        tenantData = tListData?.data?.find((t: any) => t.id === tenantGstin || t.gstin === tenantGstin);
-      }
-
+      const session = data.data;
+      if (session.token) localStorage.setItem('token', session.token);
       setIsLoading(false);
       onLoginSuccess({
-        email: email.trim(),
-        role: selectedRole,
-        tenantId: tenantData ? tenantData.id : tenantGstin.trim(),
-        tenantName: tenantData ? tenantData.name : (resolvedTenant?.name || 'Apex Industries Ltd.'),
-        subdomain: tenantData ? tenantData.subdomain : subdomain,
-        tenantStatus: tenantData ? tenantData.status : 'ACTIVE',
-        suspendedReason: tenantData?.suspendedReason,
+        email: session.email,
+        role: session.role,
+        tenantId: session.tenantId,
+        tenantName: session.tenantName,
+        subdomain: session.subdomain,
+        tenantStatus: session.tenantStatus,
+        suspendedReason: session.suspendedReason,
+        token: session.token,
+        userId: session.userId,
       });
-    } catch (err) {
+    } catch {
       setIsLoading(false);
-      onLoginSuccess({
-        email: email.trim(),
-        role: selectedRole,
-        tenantId: tenantGstin.trim(),
-        tenantName: resolvedTenant?.name || 'Apex Industries Ltd.',
-        subdomain: subdomain,
-        tenantStatus: 'ACTIVE',
-      });
+      setError('Could not reach the login service. Check that the API is running.');
     }
   };
 
@@ -393,7 +378,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
             )}
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
               {/* Email / Username */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
@@ -403,6 +388,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
                   <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
                   <input
                     type="email"
+                    autoComplete="off"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email or username"
@@ -420,6 +406,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
                   <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
                   <input
                     type={showPassword ? 'text' : 'password'}
+                    autoComplete="new-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
@@ -523,13 +510,15 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
                   />
                   <span>Keep me signed in</span>
                 </label>
+                {/* Forgot password is hidden until email reset is connected.
                 <a
                   href="#forgot"
-                  onClick={(e) => { e.preventDefault(); alert('Password recovery instructions sent to registered administrator email.'); }}
+                  onClick={(e) => { e.preventDefault(); setError('Ask your company owner to reset the password from Settings → Users. Self-service email reset is not enabled.'); }}
                   className="text-blue-600 dark:text-blue-400 font-bold hover:underline"
                 >
                   Forgot password?
                 </a>
+                */}
               </div>
 
               {/* Primary Sign In Button */}
@@ -549,7 +538,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
               </button>
             </form>
 
-            {/* Divider */}
+            {/* Microsoft sign-in is hidden until an app registration exists.
             <div className="relative my-6 text-center">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-slate-200 dark:border-slate-800" />
@@ -558,24 +547,16 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
                 or
               </span>
             </div>
-
-            {/* Microsoft Single Sign-On Button */}
             <button
               type="button"
               onClick={() => {
-                handleFillDemo('OWNER', 'owner@apexindustries.com', 'apex', '27AABCF1234F1Z5');
-                handleSubmit({ preventDefault: () => {} } as any);
+                setError('Microsoft sign-in is not enabled. Use your Finstaq email and password.');
               }}
               className="w-full bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-200 font-semibold py-2.5 px-4 rounded-xl text-xs border border-slate-200 dark:border-slate-700 transition-all flex items-center justify-center space-x-2.5 shadow-2xs cursor-pointer"
             >
-              <svg className="w-4 h-4" viewBox="0 0 21 21">
-                <path fill="#f25022" d="M1 1h9v9H1z"/>
-                <path fill="#00a4ef" d="M1 11h9v9H1z"/>
-                <path fill="#7fba00" d="M1 11h9v9H11z"/>
-                <path fill="#ffb900" d="M11 11h9v9H11z"/>
-              </svg>
               <span>Sign in with Microsoft</span>
             </button>
+            */}
 
             {/* Bottom Slogan */}
             <div className="mt-8 pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-center space-x-2 text-[11px] text-slate-400">

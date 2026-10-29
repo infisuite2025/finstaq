@@ -11,10 +11,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController(text: 'owner@apexindustries.com');
-  final _passwordController = TextEditingController(text: 'Password@2026');
-  final _tenantController = TextEditingController(text: '27AABCF1234F1Z5');
-  final _subdomainController = TextEditingController(text: 'apex');
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _tenantController = TextEditingController();
+  final _subdomainController = TextEditingController();
 
   bool _isLoading = false;
   bool _obscurePassword = true;
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } catch (e) {
       setState(() {
-        _errorMessage = 'Authentication failed. Please verify credentials.';
+        _errorMessage = e is ApiException ? e.message : 'Authentication failed. Please verify credentials.';
       });
     } finally {
       if (mounted) {
@@ -146,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    validator: (v) => v == null || v.trim().isEmpty ? 'Company code is required' : null,
+                    validator: (v) => null,
                   ),
                   const SizedBox(height: 16),
 
@@ -165,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    validator: (v) => v!.isEmpty ? 'Tenant ID is required' : null,
+                    validator: (v) => null,
                   ),
                   const SizedBox(height: 16),
 

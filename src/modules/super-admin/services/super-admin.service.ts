@@ -329,6 +329,44 @@ class SuperAdminService {
 
     state.tenants.push(newTenant);
     await saveSuperAdminState(state);
+
+    try {
+      await prisma.tenant.upsert({
+        where: { id: newTenant.id },
+        update: { name: newTenant.name, gstIn: newTenant.gstin },
+        create: {
+          id: newTenant.id,
+          name: newTenant.name,
+          gstIn: newTenant.gstin,
+          currency: 'INR',
+        },
+      });
+
+      const ownerEmail = data.contactEmail?.trim().toLowerCase();
+      const ownerPassword = (data as { ownerPassword?: string }).ownerPassword;
+      if (ownerEmail && ownerPassword) {
+        if (ownerPassword.length < 8) {
+          throw new Error('Owner password must be at least 8 characters');
+        }
+        const existingUser = await prisma.user.findFirst({ where: { email: ownerEmail } });
+        if (!existingUser) {
+          const { PasswordService } = await import('../../core/security/password');
+          await prisma.user.create({
+            data: {
+              tenantId: newTenant.id,
+              email: ownerEmail,
+              passwordHash: await PasswordService.hash(ownerPassword),
+              role: 'OWNER',
+              firstName: newTenant.name.split(' ')[0] || 'Owner',
+              lastName: 'Admin',
+            },
+          });
+        }
+      }
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('password')) throw error;
+    }
+
     return newTenant;
   }
 

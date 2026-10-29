@@ -629,6 +629,7 @@ export function App() {
       } catch (e) {}
     }
     setSession(null);
+    localStorage.removeItem('token');
   };
 
   const handleSessionExpired = (reason: 'INACTIVITY' | 'MAX_SESSION_REACHED' | 'MANUAL_LOGOUT' | 'REMOTE_LOGOUT') => {

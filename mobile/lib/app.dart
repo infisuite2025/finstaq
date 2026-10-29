@@ -127,6 +127,7 @@ class _MainMobileNavigationState extends State<MainMobileNavigation> {
         foregroundColor: Colors.white,
         elevation: 4,
         shape: const CircleBorder(),
+        tooltip: 'Quick actions',
         child: const Icon(Icons.add, size: 28),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -137,19 +138,23 @@ class _MainMobileNavigationState extends State<MainMobileNavigation> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
+              tooltip: 'Pulse',
               icon: Icon(Icons.dashboard_outlined, color: _currentIndex == 0 ? const Color(0xFF2563EB) : Colors.grey),
               onPressed: () => setState(() => _currentIndex = 0),
             ),
             IconButton(
+              tooltip: 'Books',
               icon: Icon(Icons.receipt_long_outlined, color: _currentIndex == 1 ? const Color(0xFF2563EB) : Colors.grey),
               onPressed: () => setState(() => _currentIndex = 1),
             ),
             const SizedBox(width: 48), // Space for central FAB
             IconButton(
+              tooltip: 'UPI',
               icon: Icon(Icons.qr_code_scanner, color: _currentIndex == 2 ? const Color(0xFF2563EB) : Colors.grey),
               onPressed: () => setState(() => _currentIndex = 2),
             ),
             IconButton(
+              tooltip: 'More',
               icon: Icon(Icons.widgets_outlined, color: _currentIndex == 3 ? const Color(0xFF2563EB) : Colors.grey),
               onPressed: () => setState(() => _currentIndex = 3),
             ),

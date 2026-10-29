@@ -22,9 +22,10 @@ export const NotificationCenterDrawer: React.FC = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const { success, info } = useToast();
-  const { getAuthHeaders } = useAuth();
+  const { getAuthHeaders, session } = useAuth();
 
   const fetchNotifications = async () => {
+    if (session?.role === 'SUPER_ADMIN') return;
     try {
       setLoading(true);
       const res = await fetch('/api/v1/communication/notifications?limit=50', {

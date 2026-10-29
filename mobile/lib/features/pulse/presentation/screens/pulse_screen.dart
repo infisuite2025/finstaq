@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/widgets/amount_display.dart';
+import '../../../../screens/login_screen.dart';
+import '../../../../services/api_service.dart';
 import '../../../more/presentation/screens/api_module_screen.dart';
 
 class PulseScreen extends StatelessWidget {
@@ -42,8 +44,33 @@ class PulseScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
+            tooltip: 'Notifications',
             icon: const Icon(Icons.notifications_outlined),
             onPressed: () {},
+          ),
+          IconButton(
+            tooltip: 'Log out',
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              final leave = await showDialog<bool>(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: const Text('Log out'),
+                  content: const Text('Sign out of this phone?'),
+                  actions: [
+                    TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+                    TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Log out')),
+                  ],
+                ),
+              );
+              if (leave != true || !context.mounted) return;
+              await ApiService.logout();
+              if (!context.mounted) return;
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
+                (_) => false,
+              );
+            },
           ),
         ],
       ),
@@ -216,7 +243,7 @@ class PulseScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       const AmountDisplay(amount: 182000, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
-                      Text('6 Vendor Payouts', style: TextStyle(fontSize: 11, color: Colors.grey.shade500)),
+                      Text('4 Supplier Payouts', style: TextStyle(fontSize: 11, color: Colors.grey.shade500)),
                     ],
                   ),
                 ),

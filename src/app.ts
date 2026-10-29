@@ -38,6 +38,7 @@ import { jobWorkRoutes } from './modules/jobwork/routes/jobwork.routes';
 import { storageRoutes } from './modules/storage/routes/storage.routes';
 import { onboardingRoutes } from './modules/onboarding/routes/onboarding.routes';
 import { migrationRoutes } from './modules/migration/routes/migration.routes';
+import { authRoutes } from './modules/auth/auth.routes';
 
 export function buildApp(options: FastifyServerOptions = {}): FastifyInstance {
   const app = fastify({
@@ -123,6 +124,7 @@ export function buildApp(options: FastifyServerOptions = {}): FastifyInstance {
   app.register(approvalRoutes, { prefix: '/api/v1/approvals' });
   app.register(periodLockRoutes, { prefix: '/api/v1/period-lock' });
   app.register(periodClosingRoutes, { prefix: '/api/v1/period-closing' });
+  app.register(authRoutes, { prefix: '/api/v1' });
   app.register(superAdminRoutes, { prefix: '/api/v1' });
   app.register(bankingRoutes, { prefix: '/api/v1/banking' });
   app.register(tdsTcsRoutes, { prefix: '/api/v1/tax' });

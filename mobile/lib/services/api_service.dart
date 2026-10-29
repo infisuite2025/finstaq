@@ -82,7 +82,8 @@ class ApiService {
       body = null;
     }
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      final message = body is Map ? (body['error'] ?? body['message']) : null;
+      final raw = body is Map ? (body['error'] ?? body['message']) : null;
+      final message = raw is Map ? (raw['message'] ?? raw['code']) : raw;
       throw ApiException(message?.toString() ?? 'API ${response.statusCode}');
     }
     if (body is Map && body['success'] == false) {
@@ -92,7 +93,7 @@ class ApiService {
     return body;
   }
 
-  /// Same flow as the web login screen: resolve the company, then match GSTIN.
+  /// Verifies email and password on the API. A wrong password does not open the app.
   static Future<Map<String, dynamic>> login(
     String email,
     String password,
@@ -100,51 +101,37 @@ class ApiService {
     String subdomain = 'apex',
     String role = 'OWNER',
   }) async {
-    if (password.length < 6) {
-      throw ApiException('Password must be at least 6 characters');
+    final response = await http
+        .post(
+          Uri.parse('$baseUrl/auth/login'),
+          headers: const {'Content-Type': 'application/json'},
+          body: jsonEncode({
+            'email': email.trim(),
+            'password': password,
+            'subdomain': subdomain.trim(),
+          }),
+        )
+        .timeout(const Duration(seconds: 20));
+    final data = Map<String, dynamic>.from(_decode(response) as Map);
+
+    if (data['tenantStatus'] == 'SUSPENDED' || data['tenantStatus'] == 'INACTIVE') {
+      throw ApiException((data['suspendedReason'] ?? 'This workspace is suspended').toString());
     }
 
-    Map<String, dynamic>? tenant;
-    try {
-      final resolved = await getData('/tenants/resolve/${Uri.encodeComponent(subdomain.trim().toLowerCase())}');
-      if (resolved is Map) tenant = Map<String, dynamic>.from(resolved);
-    } catch (_) {}
-
-    if (tenant == null && tenantId.trim().isNotEmpty) {
-      try {
-        final list = await getData('/super-admin/tenants');
-        if (list is List) {
-          for (final item in list.whereType<Map>()) {
-            final row = Map<String, dynamic>.from(item);
-            if (row['id'] == tenantId || row['gstin'] == tenantId) {
-              tenant = row;
-              break;
-            }
-          }
-        }
-      } catch (_) {}
-    }
-
-    final resolvedId = tenant?['id']?.toString().trim();
-    _tenantId = (resolvedId != null && resolvedId.isNotEmpty) ? resolvedId : tenantId.trim();
-    _userId = email.trim();
-    _role = role;
+    _authToken = data['token']?.toString();
+    _tenantId = data['tenantId']?.toString() ?? tenantId.trim();
+    _userId = data['userId']?.toString() ?? email.trim();
+    _role = data['role']?.toString() ?? role;
     _loggedIn = true;
-    _authToken = null;
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('logged_in', true);
     await prefs.setString('tenant_id', _tenantId!);
-    await prefs.setString('user_email', _userId!);
+    await prefs.setString('user_email', email.trim());
     await prefs.setString('user_role', _role);
-    await prefs.remove('auth_token');
+    if (_authToken != null) await prefs.setString('auth_token', _authToken!);
 
-    return {
-      'success': true,
-      'tenantId': _tenantId,
-      'tenantName': tenant?['name'],
-      'role': _role,
-    };
+    return data;
   }
 
   /// Logs out and clears stored session

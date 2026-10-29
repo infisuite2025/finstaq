@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { TenantConfiguration } from '../../types/masters';
 import { TenantOnboardingWizard } from '../onboarding/TenantOnboardingWizard';
@@ -96,6 +96,38 @@ export function SettingsHub() {
   const [isSaved, setIsSaved] = useState(false);
   const [isOnboardingModalOpen, setIsOnboardingModalOpen] = useState(false);
   const [isMigrationModalOpen, setIsMigrationModalOpen] = useState(false);
+  const [newUser, setNewUser] = useState({ firstName: '', lastName: '', email: '', password: '', role: 'DATA_ENTRY' });
+  const [userMessage, setUserMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (activeTab !== 'users') return;
+    fetch('/api/v1/auth/users', { headers: getAuthHeaders() })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json?.success && Array.isArray(json.data) && json.data.length > 0) {
+          setConfig((prev) => ({ ...prev, users: json.data }));
+        }
+      })
+      .catch(() => {});
+  }, [activeTab]);
+
+  const handleCreateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setUserMessage(null);
+    const res = await fetch('/api/v1/auth/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+      body: JSON.stringify(newUser),
+    });
+    const json = await res.json();
+    if (!res.ok || !json?.success) {
+      setUserMessage(json?.error?.message || 'Could not create the user');
+      return;
+    }
+    setConfig((prev) => ({ ...prev, users: [...prev.users, json.data] }));
+    setNewUser({ firstName: '', lastName: '', email: '', password: '', role: 'DATA_ENTRY' });
+    setUserMessage(`Created ${json.data.email}. Share this email and the password you just set.`);
+  };
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -441,6 +473,22 @@ export function SettingsHub() {
             Workspace Users & Role-Based Access Control (RBAC)
           </h2>
 
+          <form onSubmit={handleCreateUser} className="grid grid-cols-1 md:grid-cols-5 gap-2">
+            <input required placeholder="First name" value={newUser.firstName} onChange={(e) => setNewUser({ ...newUser, firstName: e.target.value })} className="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs" />
+            <input required placeholder="Last name" value={newUser.lastName} onChange={(e) => setNewUser({ ...newUser, lastName: e.target.value })} className="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs" />
+            <input required type="email" placeholder="Email" value={newUser.email} onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} className="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs" />
+            <input required type="password" minLength={8} placeholder="Password (8+)" value={newUser.password} onChange={(e) => setNewUser({ ...newUser, password: e.target.value })} className="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs" />
+            <div className="flex gap-2">
+              <select value={newUser.role} onChange={(e) => setNewUser({ ...newUser, role: e.target.value })} className="flex-1 px-2 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-xs">
+                <option value="DATA_ENTRY">Data entry</option>
+                <option value="ACCOUNTANT">Accountant</option>
+                <option value="OWNER">Owner</option>
+              </select>
+              <button type="submit" className="px-3 py-2 rounded-lg bg-blue-600 text-white text-xs font-bold">Add</button>
+            </div>
+          </form>
+          {userMessage && <p className="text-xs text-slate-600 dark:text-slate-300">{userMessage}</p>}
+
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
@@ -454,7 +502,10 @@ export function SettingsHub() {
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {config.users.map((u) => (
                   <tr key={u.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
-                    <td className="py-3 font-semibold text-slate-800 dark:text-slate-200">{u.firstName} {u.lastName}</td>
+                    <td className="py-3 font-semibold text-slate-800 dark:text-slate-200">
+                      {u.firstName} {u.lastName}
+                      <div className="text-[10px] font-normal text-slate-400">{u.email}</div>
+                    </td>
                     <td className="py-3">
                       <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300">
                         {u.role}

@@ -8,6 +8,8 @@ export interface AuthSession {
   subdomain?: string;
   tenantStatus?: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED' | 'TRIAL';
   suspendedReason?: string;
+  token?: string;
+  userId?: string;
 }
 
 interface AuthContextType {
@@ -35,8 +37,9 @@ export function AuthProvider({ children, session = null, setSession = () => {} }
     if (!session) return DEFAULT_HEADERS;
     return {
       'x-tenant-id': session.tenantId,
-      'x-user-id': session.email,
+      'x-user-id': session.userId || session.email,
       'x-user-role': session.role,
+      ...(session.token ? { Authorization: `Bearer ${session.token}` } : {}),
     };
   };
 
