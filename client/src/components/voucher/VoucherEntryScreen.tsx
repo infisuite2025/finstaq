@@ -348,6 +348,37 @@ export const VoucherEntryScreen: React.FC = () => {
   const [ledgers, setLedgers] = useState<LedgerOption[]>(INITIAL_LEDGERS);
   const [groups] = useState<LedgerGroupOption[]>(INITIAL_GROUPS);
   const [vouchersRegister, setVouchersRegister] = useState<VoucherRecord[]>(INITIAL_VOUCHERS_REGISTER);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        const res = await fetch('/api/v1/accounting/vouchers?limit=50', { headers: getAuthHeaders() });
+        if (!res.ok) return;
+        const json = await res.json();
+        const rows = json?.data?.vouchers;
+        if (!alive || !Array.isArray(rows) || rows.length === 0) return;
+        setVouchersRegister(rows.map((v: any) => ({
+          id: v.id,
+          voucherNumber: v.voucherNumber,
+          type: v.type,
+          date: String(v.date).slice(0, 10),
+          narration: v.narration || '',
+          isSystemGenerated: !!v.isSystemGenerated,
+          sourceModule: v.sourceModule || 'MANUAL_ENTRY',
+          totalDebit: Number(v.totalDebit || 0),
+          totalCredit: Number(v.totalCredit || 0),
+          isBalanced: v.isBalanced !== false,
+          itemCount: v.itemCount || (v.items?.length ?? 0),
+          items: [],
+          createdAt: v.createdAt,
+        })));
+      } catch {
+        /* keep the local register if the API is down */
+      }
+    })();
+    return () => { alive = false; };
+  }, [getAuthHeaders]);
   const [isQuickCreateOpen, setIsQuickCreateOpen] = useState(false);
 
   // Filtered Ledger Helper Lists
@@ -396,17 +427,19 @@ export const VoucherEntryScreen: React.FC = () => {
         if (res.ok) {
           const json = await res.json();
           if (isMounted && json.data && json.data.ledgers && json.data.ledgers.length > 0) {
+            const groups = Array.isArray(json.data.groups) ? json.data.groups : [];
+            const groupById = new Map(groups.map((g: any) => [g.id, g]));
             const mappedLedgers: LedgerOption[] = json.data.ledgers.map((l: any) => ({
               id: l.id,
               name: l.name,
               currentBalance: Number(l.currentBalance || 0),
-              groupName: l.group?.name || 'General Ledger',
-              nature: l.group?.nature || 'ASSET',
+              groupName: groupById.get(l.groupId)?.name || l.group?.name || 'General Ledger',
+              nature: groupById.get(l.groupId)?.nature || l.group?.nature || 'ASSET',
             }));
             setLedgers(mappedLedgers);
 
             // Auto-align active selected ledgers if default IDs aren't in fetched list
-            const bankCash = mappedLedgers.find(l => l.groupName?.toLowerCase().includes('bank') || l.groupName?.toLowerCase().includes('cash'));
+            const bankCash = mappedLedgers.find(l => /bank|cash/i.test(l.groupName || '') || /bank|cash/i.test(l.name || ''));
             if (bankCash) {
               setBankingAccountLedgerId(prev => (mappedLedgers.some(l => l.id === prev) ? prev : bankCash.id));
             }
@@ -936,21 +969,41 @@ export const VoucherEntryScreen: React.FC = () => {
 
     if (voucherType === 'SALES' || voucherType === 'PURCHASE') {
       if (entryMode === 'ITEM_INVOICE') {
-        if (voucherType === 'SALES') {
-          recordedItems = [
-            { id: '1', type: 'Dr', ledgerId: partyLedgerId, amount: itemInvoiceTotals.grandTotal },
-            { id: '2', type: 'Cr', ledgerId: '3', amount: itemInvoiceTotals.taxable },
-            { id: '3', type: 'Cr', ledgerId: '8', amount: itemInvoiceTotals.cgst },
-            { id: '4', type: 'Cr', ledgerId: '9', amount: itemInvoiceTotals.sgst },
-          ];
-        } else {
-          recordedItems = [
-            { id: '1', type: 'Dr', ledgerId: '4', amount: itemInvoiceTotals.taxable },
-            { id: '2', type: 'Dr', ledgerId: '11', amount: itemInvoiceTotals.cgst },
-            { id: '3', type: 'Dr', ledgerId: '12', amount: itemInvoiceTotals.sgst },
-            { id: '4', type: 'Cr', ledgerId: partyLedgerId, amount: itemInvoiceTotals.grandTotal },
-          ];
+        const known = (id: string) => ledgers.find(l => l.id === id);
+        const named = (...hints: string[]) => ledgers.find(l => hints.some(h => l.name.toLowerCase().includes(h)));
+        const party = known(partyLedgerId);
+        if (!party) {
+          throw new Error('Select the vendor again. The current vendor is not a saved ledger.');
         }
+        const account = known(salesLedgerId) || named(voucherType === 'PURCHASE' ? 'purchase' : 'sales');
+        if (!account) {
+          throw new Error(voucherType === 'PURCHASE'
+            ? 'Purchase ledger was not found in Chart of Accounts.'
+            : 'Sales ledger was not found in Chart of Accounts.');
+        }
+        const taxSide = voucherType === 'PURCHASE' ? 'input' : 'output';
+        const cgstLedger = named(`${taxSide} cgst`);
+        const sgstLedger = named(`${taxSide} sgst`);
+        const igstLedger = named(`${taxSide} igst`);
+        if (itemInvoiceTotals.cgst > 0 && !cgstLedger) throw new Error(`${taxSide} CGST ledger is missing in Chart of Accounts.`);
+        if (itemInvoiceTotals.sgst > 0 && !sgstLedger) throw new Error(`${taxSide} SGST ledger is missing in Chart of Accounts.`);
+        if (itemInvoiceTotals.igst > 0 && !igstLedger) throw new Error(`${taxSide} IGST ledger is missing in Chart of Accounts.`);
+        const lines = voucherType === 'SALES'
+          ? [
+              { id: '1', type: 'Dr' as EntryType, ledgerId: party.id, amount: itemInvoiceTotals.grandTotal },
+              { id: '2', type: 'Cr' as EntryType, ledgerId: account.id, amount: itemInvoiceTotals.taxable },
+              { id: '3', type: 'Cr' as EntryType, ledgerId: cgstLedger?.id || '', amount: itemInvoiceTotals.cgst },
+              { id: '4', type: 'Cr' as EntryType, ledgerId: sgstLedger?.id || '', amount: itemInvoiceTotals.sgst },
+              { id: '5', type: 'Cr' as EntryType, ledgerId: igstLedger?.id || '', amount: itemInvoiceTotals.igst },
+            ]
+          : [
+              { id: '1', type: 'Dr' as EntryType, ledgerId: account.id, amount: itemInvoiceTotals.taxable },
+              { id: '2', type: 'Dr' as EntryType, ledgerId: cgstLedger?.id || '', amount: itemInvoiceTotals.cgst },
+              { id: '3', type: 'Dr' as EntryType, ledgerId: sgstLedger?.id || '', amount: itemInvoiceTotals.sgst },
+              { id: '4', type: 'Dr' as EntryType, ledgerId: igstLedger?.id || '', amount: itemInvoiceTotals.igst },
+              { id: '5', type: 'Cr' as EntryType, ledgerId: party.id, amount: itemInvoiceTotals.grandTotal },
+            ];
+        recordedItems = lines.filter(line => line.amount > 0 && line.ledgerId);
       } else {
         recordedItems = drCrItems;
       }
@@ -1018,7 +1071,14 @@ export const VoucherEntryScreen: React.FC = () => {
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      
+      if (!res.ok) {
+        const apiError = data?.error;
+        const text = typeof apiError === 'string'
+          ? apiError
+          : apiError?.message || data?.message || 'Voucher was not saved';
+        throw new Error(typeof text === 'string' ? text : 'Voucher was not saved');
+      }
+
       const newRecord: VoucherRecord = {
         id: data?.data?.id || `vch-${Date.now()}`,
         voucherNumber,
@@ -1040,29 +1100,11 @@ export const VoucherEntryScreen: React.FC = () => {
       setSaveSuccessMsg(`Voucher ${voucherNumber} saved & posted to General Ledger successfully via API.`);
       setTimeout(() => setSaveSuccessMsg(null), 4000);
       handleVoucherTypeChange(voucherType);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to post voucher to backend', error);
-      const newRecord: VoucherRecord = {
-        id: `vch-${Date.now()}`,
-        voucherNumber,
-        type: voucherType,
-        date,
-        narration,
-        isSystemGenerated: false,
-        sourceModule: 'MANUAL_ENTRY',
-        totalDebit,
-        totalCredit,
-        isBalanced: true,
-        itemCount: recordedItems.length,
-        items: recordedItems,
-        createdAt: new Date().toISOString(),
-      };
-
-      setVouchersRegister((prev) => [newRecord, ...prev]);
       setIsSubmitting(false);
-      setSaveSuccessMsg(`[Fallback] Voucher ${voucherNumber} saved locally.`);
-      setTimeout(() => setSaveSuccessMsg(null), 4000);
-      handleVoucherTypeChange(voucherType);
+      setSaveSuccessMsg(error?.message || 'Voucher was not saved. Mobile will not show it.');
+      setTimeout(() => setSaveSuccessMsg(null), 5000);
     }
   };
 

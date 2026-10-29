@@ -15,36 +15,69 @@ class _QuickVoucherScreenState extends State<QuickVoucherScreen> {
   final _partyController = TextEditingController(text: 'Acme Enterprises');
   final _amountController = TextEditingController();
   final _narrationController = TextEditingController();
-  String _paymentMode = 'HDFC Bank';
+  String? _debitLedgerId;
+  String? _creditLedgerId;
+  List<Map<String, dynamic>> _ledgers = [];
+  String? _ledgerError;
   bool _isSubmitting = false;
 
   @override
   void initState() {
     super.initState();
-    _voucherType = widget.defaultType;
+    _voucherType = widget.defaultType == 'PAYMENT' ? 'PAYMENT' : 'SALES';
+    _loadLedgers();
+  }
+
+  Future<void> _loadLedgers() async {
+    try {
+      final data = await ApiService.getData('/accounting/ledgers');
+      final rows = data is List
+          ? data.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList()
+          : <Map<String, dynamic>>[];
+      if (!mounted) return;
+      setState(() {
+        _ledgers = rows;
+        if (rows.length >= 2) {
+          _debitLedgerId = rows[0]['id']?.toString();
+          _creditLedgerId = rows[1]['id']?.toString();
+        } else {
+          _ledgerError = 'This company has no ledgers yet, so a voucher cannot be posted.';
+        }
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _ledgerError = e.toString());
+    }
   }
 
   Future<void> _submitVoucher() async {
     if (!_formKey.currentState!.validate()) return;
+    if (_debitLedgerId == null || _creditLedgerId == null || _debitLedgerId == _creditLedgerId) {
+      setState(() => _ledgerError = 'Choose two different ledgers.');
+      return;
+    }
 
     setState(() => _isSubmitting = true);
 
     try {
-      await ApiService.postQuickVoucher({
+      final amount = double.parse(_amountController.text);
+      await ApiService.postData('/accounting/vouchers', {
         'type': _voucherType,
-        'voucherNumber': 'MOB-${DateTime.now().millisecondsSinceEpoch % 10000}',
+        'voucherNumber': 'MOB-${DateTime.now().millisecondsSinceEpoch}',
         'date': DateTime.now().toIso8601String().split('T')[0],
-        'narration': _narrationController.text.trim(),
+        'narration': _narrationController.text.trim().isEmpty
+            ? '${_partyController.text.trim()} via mobile'
+            : _narrationController.text.trim(),
         'items': [
           {
-            'ledgerId': '11111111-1111-1111-1111-111111111111',
-            'debitAmount': double.parse(_amountController.text),
+            'ledgerId': _debitLedgerId,
+            'debitAmount': amount,
             'creditAmount': 0,
           },
           {
-            'ledgerId': '22222222-2222-2222-2222-222222222222',
+            'ledgerId': _creditLedgerId,
             'debitAmount': 0,
-            'creditAmount': double.parse(_amountController.text),
+            'creditAmount': amount,
           }
         ]
       });
@@ -112,17 +145,17 @@ class _QuickVoucherScreenState extends State<QuickVoucherScreen> {
                     ),
                     Expanded(
                       child: GestureDetector(
-                        onTap: () => setState(() => _voucherType = 'SALES'),
+                        onTap: () => setState(() => _voucherType = widget.defaultType == 'PAYMENT' ? 'PAYMENT' : 'SALES'),
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           decoration: BoxDecoration(
                             color: _voucherType == 'SALES' ? const Color(0xFF2563EB) : Colors.transparent,
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: const Text(
-                            'Quick Sales Order',
+                          child: Text(
+                            widget.defaultType == 'PAYMENT' ? 'Expense (Payment)' : 'Sales Invoice',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
                           ),
                         ),
                       ),
@@ -166,23 +199,45 @@ class _QuickVoucherScreenState extends State<QuickVoucherScreen> {
               const SizedBox(height: 16),
 
               // Payment Mode / Account
+              if (_ledgerError != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Text(_ledgerError!, style: const TextStyle(color: Color(0xFFFCA5A5))),
+                ),
               DropdownButtonFormField<String>(
-                value: _paymentMode,
+                value: _debitLedgerId,
                 dropdownColor: const Color(0xFF1E293B),
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  labelText: 'Account / Mode',
+                  labelText: 'Debit ledger',
                   labelStyle: const TextStyle(color: Color(0xFF94A3B8)),
                   filled: true,
                   fillColor: const Color(0xFF1E293B),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                 ),
-                items: const [
-                  DropdownMenuItem(value: 'HDFC Bank', child: Text('HDFC Bank Current A/c')),
-                  DropdownMenuItem(value: 'Cash', child: Text('Cash in Hand')),
-                  DropdownMenuItem(value: 'UPI / QR', child: Text('Instant UPI / QR')),
+                items: [
+                  for (final ledger in _ledgers)
+                    DropdownMenuItem(value: ledger['id']?.toString(), child: Text(ledger['name']?.toString() ?? 'Ledger')),
                 ],
-                onChanged: (v) => setState(() => _paymentMode = v!),
+                onChanged: (v) => setState(() => _debitLedgerId = v),
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<String>(
+                value: _creditLedgerId,
+                dropdownColor: const Color(0xFF1E293B),
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Credit ledger',
+                  labelStyle: const TextStyle(color: Color(0xFF94A3B8)),
+                  filled: true,
+                  fillColor: const Color(0xFF1E293B),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                ),
+                items: [
+                  for (final ledger in _ledgers)
+                    DropdownMenuItem(value: ledger['id']?.toString(), child: Text(ledger['name']?.toString() ?? 'Ledger')),
+                ],
+                onChanged: (v) => setState(() => _creditLedgerId = v),
               ),
               const SizedBox(height: 16),
 
@@ -203,7 +258,7 @@ class _QuickVoucherScreenState extends State<QuickVoucherScreen> {
 
               // Save Button
               ElevatedButton(
-                onPressed: _isSubmitting ? null : _submitVoucher,
+                onPressed: _isSubmitting || _ledgers.length < 2 ? null : _submitVoucher,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF059669),
                   padding: const EdgeInsets.symmetric(vertical: 16),

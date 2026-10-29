@@ -6,7 +6,9 @@ import {
   PrismaClient,
   VoucherType,
 } from '@prisma/client';
+import { randomUUID } from 'crypto';
 import { prisma as defaultPrisma } from '../../../core/database/prisma';
+import { MastersService } from '../../masters/services/masters.service';
 import { AppError, NotFoundError, UnbalancedVoucherError } from '../../../core/errors/app-error';
 import { AuditLoggerService } from '../../../core/audit/audit-logger';
 
@@ -187,12 +189,119 @@ export class AccountingService {
   }
 
   /**
+   * Masters ledgers use ids like led-03. Copy them into the accounting tables
+   * so a posted voucher is a real row the mobile Books list can read.
+   */
+  private static async ensureMasterLedgersInBooks(
+    tenantId: string,
+    userId: string,
+    items: CreateVoucherItemDto[]
+  ) {
+    const safeUserId = userId && userId.length <= 36 ? userId : randomUUID();
+    await defaultPrisma.tenant.upsert({
+      where: { id: tenantId },
+      update: {},
+      create: { id: tenantId, name: 'Apex Industries Ltd.', gstIn: tenantId, currency: 'INR' },
+    });
+    await defaultPrisma.user.upsert({
+      where: { id: safeUserId },
+      update: {},
+      create: {
+        id: safeUserId,
+        tenantId,
+        email: safeUserId.includes('@') ? safeUserId : `${safeUserId}@finstaq.local`,
+        passwordHash: 'dev-not-used',
+        role: 'OWNER',
+      },
+    });
+
+    const masterLedgers = await MastersService.getLedgers(tenantId);
+    const masterGroups = await MastersService.getLedgerGroups(tenantId);
+    const groupUuid = new Map<string, string>();
+    const pending = [...masterGroups];
+    for (let guard = 0; pending.length > 0 && guard < 20; guard++) {
+      for (let i = pending.length - 1; i >= 0; i--) {
+        const group = pending[i] as any;
+        if (group.parentId && !groupUuid.has(group.parentId)) continue;
+        const existing = await defaultPrisma.ledgerGroup.findFirst({
+          where: { tenantId, name: group.name },
+        });
+        const id = existing?.id || randomUUID();
+        if (!existing) {
+          await defaultPrisma.ledgerGroup.create({
+            data: {
+              id,
+              tenantId,
+              name: group.name,
+              nature: group.nature || GroupNature.ASSET,
+              parentId: group.parentId ? groupUuid.get(group.parentId) || null : null,
+              affectsGrossProfit: !!group.affectsGrossProfit,
+              isSystem: !!group.isSystem,
+            },
+          });
+        }
+        groupUuid.set(group.id, existing?.id || id);
+        pending.splice(i, 1);
+      }
+    }
+
+    const fallbackGroupId =
+      groupUuid.get('grp-11') || groupUuid.get('grp-09') || groupUuid.values().next().value;
+    const ledgerUuid = new Map<string, string>();
+    for (const raw of masterLedgers as any[]) {
+      const found = await defaultPrisma.ledger.findFirst({ where: { tenantId, name: raw.name } });
+      if (found) {
+        ledgerUuid.set(raw.id, found.id);
+        continue;
+      }
+      const groupId = groupUuid.get(raw.groupId) || fallbackGroupId;
+      if (!groupId) continue;
+      const id = randomUUID();
+      try {
+        await defaultPrisma.ledger.create({
+          data: {
+            id,
+            tenantId,
+            groupId,
+            name: raw.name,
+            code: raw.code || null,
+            openingBalance: raw.openingBalance || 0,
+            currentBalance: raw.currentBalance || raw.openingBalance || 0,
+            gstIn: raw.gstIn || null,
+            stateCode: raw.stateCode || null,
+          },
+        });
+      } catch {
+        await defaultPrisma.ledger.create({
+          data: {
+            id,
+            tenantId,
+            groupId,
+            name: raw.name,
+            openingBalance: raw.openingBalance || 0,
+            currentBalance: raw.currentBalance || raw.openingBalance || 0,
+          },
+        });
+      }
+      ledgerUuid.set(raw.id, id);
+    }
+
+    for (const item of items) {
+      const mapped = ledgerUuid.get(item.ledgerId);
+      if (mapped) item.ledgerId = mapped;
+    }
+    return safeUserId;
+  }
+
+  /**
    * Creates a transaction-safe Voucher and updates affected Ledgers inside atomic prisma.$transaction
    */
   public static async createVoucher(
     dto: CreateVoucherDto,
     prismaClient: PrismaClient = defaultPrisma
   ) {
+    dto.userId = await this.ensureMasterLedgersInBooks(dto.tenantId, dto.userId, dto.items);
+
     const { totalDebit, totalCredit } = this.validateDoubleEntry(dto.items);
 
     const voucherDate = new Date(dto.date);

@@ -7,7 +7,7 @@ import { ValidationError } from '../../../core/errors/app-error';
 
 // Zod Validation Schemas
 const voucherItemSchema = z.object({
-  ledgerId: z.string().uuid(),
+  ledgerId: z.string().min(1).max(64),
   debitAmount: z.coerce.number().min(0).default(0),
   creditAmount: z.coerce.number().min(0).default(0),
   billReferenceType: z.nativeEnum(BillReferenceType).optional(),

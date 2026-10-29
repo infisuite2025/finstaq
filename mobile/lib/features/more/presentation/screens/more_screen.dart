@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/colors.dart';
+import 'api_module_screen.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({Key? key}) : super(key: key);
@@ -9,12 +10,12 @@ class MoreScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final modules = [
-      {'title': 'Statutory Tax Hub', 'desc': 'TCS 206C(1H), Form 27EQ, TDS 26Q, E-Way', 'icon': Icons.shield, 'color': FinstaqColors.primaryBlue},
-      {'title': 'Post-Dated Cheques (PDC)', 'desc': 'Maturity radar & 1-click active voucher promotion', 'icon': Icons.schedule, 'color': FinstaqColors.indigoAccent},
-      {'title': 'Overdue Interest Engine', 'desc': '18% p.a. automated calculation & Debit Notes', 'icon': Icons.percent, 'color': FinstaqColors.warningAmber},
-      {'title': 'Job Work & Subcontracting', 'desc': 'Section 143 challans & GST Form ITC-04 return', 'icon': Icons.local_shipping, 'color': FinstaqColors.creditGreen},
-      {'title': 'HR & Indian Statutory Payroll', 'desc': 'CTC breakdown, EPF/ESIC opt-out, Attendance', 'icon': Icons.people, 'color': FinstaqColors.violetAccent},
-      {'title': 'Bank Reconciliation (BRS)', 'desc': 'Auto-matching engine with bank Calibrated print', 'icon': Icons.account_balance, 'color': FinstaqColors.primaryBlue},
+      {'title': 'Statutory Tax Hub', 'desc': 'TCS 206C(1H), Form 27EQ, TDS 26Q, E-Way', 'icon': Icons.shield, 'color': FinstaqColors.primaryBlue, 'path': '/tax/tds-sections'},
+      {'title': 'Post-Dated Cheques (PDC)', 'desc': 'Maturity radar & 1-click active voucher promotion', 'icon': Icons.schedule, 'color': FinstaqColors.indigoAccent, 'path': '/pdc'},
+      {'title': 'Overdue Interest Engine', 'desc': '18% p.a. automated calculation & Debit Notes', 'icon': Icons.percent, 'color': FinstaqColors.warningAmber, 'path': '/interest/overdue'},
+      {'title': 'Job Work & Subcontracting', 'desc': 'Section 143 challans & GST Form ITC-04 return', 'icon': Icons.local_shipping, 'color': FinstaqColors.creditGreen, 'path': '/jobwork/challans'},
+      {'title': 'HR & Indian Statutory Payroll', 'desc': 'CTC breakdown, EPF/ESIC opt-out, Attendance', 'icon': Icons.people, 'color': FinstaqColors.violetAccent, 'path': '/payroll/employees'},
+      {'title': 'Bank Reconciliation (BRS)', 'desc': 'Auto-matching engine with bank Calibrated print', 'icon': Icons.account_balance, 'color': FinstaqColors.primaryBlue, 'path': '/banking/bank-ledgers'},
     ];
 
     return Scaffold(
@@ -28,7 +29,20 @@ class MoreScreen extends StatelessWidget {
           final m = modules[index];
           final color = m['color'] as Color;
 
-          return Container(
+          return InkWell(
+            borderRadius: BorderRadius.circular(18),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ApiModuleScreen(
+                    title: m['title'] as String,
+                    path: m['path'] as String,
+                  ),
+                ),
+              );
+            },
+            child: Container(
             margin: const EdgeInsets.only(bottom: 12),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -59,6 +73,7 @@ class MoreScreen extends StatelessWidget {
                 ),
                 const Icon(Icons.chevron_right, color: Colors.grey, size: 20),
               ],
+            ),
             ),
           );
         },

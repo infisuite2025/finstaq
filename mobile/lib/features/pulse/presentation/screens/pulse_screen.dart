@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/widgets/amount_display.dart';
+import '../../../more/presentation/screens/api_module_screen.dart';
 
 class PulseScreen extends StatelessWidget {
-  const PulseScreen({Key? key}) : super(key: key);
+  final void Function(String tab)? onOpenUpi;
+
+  const PulseScreen({Key? key, this.onOpenUpi}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +115,19 @@ class PulseScreen extends StatelessWidget {
           const SizedBox(height: 18),
 
           // Overdue Radar & Interest Alert
-          Container(
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const ApiModuleScreen(
+                    title: 'Overdue Interest Engine',
+                    path: '/interest/overdue',
+                  ),
+                ),
+              );
+            },
+            child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: isDark ? FinstaqColors.darkCard : Colors.white,
@@ -144,13 +159,16 @@ class PulseScreen extends StatelessWidget {
               ],
             ),
           ),
+          ),
           const SizedBox(height: 18),
 
           // Today's UPI Inflow / Outflow
           Row(
             children: [
               Expanded(
-                child: Container(
+                child: GestureDetector(
+                  onTap: () => onOpenUpi?.call('collect'),
+                  child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: isDark ? FinstaqColors.darkCard : Colors.white,
@@ -173,10 +191,13 @@ class PulseScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: Container(
+                child: GestureDetector(
+                  onTap: () => onOpenUpi?.call('payout'),
+                  child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: isDark ? FinstaqColors.darkCard : Colors.white,
@@ -198,6 +219,7 @@ class PulseScreen extends StatelessWidget {
                       Text('6 Vendor Payouts', style: TextStyle(fontSize: 11, color: Colors.grey.shade500)),
                     ],
                   ),
+                ),
                 ),
               ),
             ],

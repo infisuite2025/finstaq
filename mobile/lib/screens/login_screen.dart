@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../app.dart';
 import '../services/api_service.dart';
-import 'dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,6 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController(text: 'owner@apexindustries.com');
   final _passwordController = TextEditingController(text: 'Password@2026');
   final _tenantController = TextEditingController(text: '27AABCF1234F1Z5');
+  final _subdomainController = TextEditingController(text: 'apex');
 
   bool _isLoading = false;
   bool _obscurePassword = true;
@@ -32,13 +33,14 @@ class _LoginScreenState extends State<LoginScreen> {
         _emailController.text.trim(),
         _passwordController.text,
         _tenantController.text.trim(),
+        subdomain: _subdomainController.text.trim(),
       );
 
       if (!mounted) return;
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const DashboardScreen()),
+        MaterialPageRoute(builder: (_) => const MainMobileNavigation()),
       );
     } catch (e) {
       setState(() {
@@ -130,6 +132,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
 
+                  TextFormField(
+                    controller: _subdomainController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      labelText: 'Company code',
+                      labelStyle: const TextStyle(color: Color(0xFF94A3B8)),
+                      prefixIcon: const Icon(Icons.language, color: Color(0xFF3B82F6)),
+                      filled: true,
+                      fillColor: const Color(0xFF1E293B),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    validator: (v) => v == null || v.trim().isEmpty ? 'Company code is required' : null,
+                  ),
+                  const SizedBox(height: 16),
+
                   // Tenant GSTIN Input
                   TextFormField(
                     controller: _tenantController,
@@ -192,7 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    validator: (v) => v!.isEmpty ? 'Password is required' : null,
+                    validator: (v) => v == null || v.length < 6 ? 'Password must be at least 6 characters' : null,
                   ),
                   const SizedBox(height: 28),
 
