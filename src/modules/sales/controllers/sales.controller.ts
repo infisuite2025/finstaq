@@ -73,6 +73,16 @@ export class SalesController {
     });
   }
 
+  public static async getOperationsState(request: FastifyRequest, reply: FastifyReply) {
+    const data = await SalesService.getOperationsState(request.tenantId);
+    return reply.send({ success: true, data });
+  }
+
+  public static async saveOperationsState(request: FastifyRequest, reply: FastifyReply) {
+    const data = await SalesService.saveOperationsState(request.tenantId, request.body);
+    return reply.send({ success: true, data });
+  }
+
   public static async getSalesOrders(request: FastifyRequest, reply: FastifyReply) {
     const sos = await SalesService.getSalesOrders(request.tenantId);
     return reply.send({ success: true, data: sos });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import {
   PurchaseOrder,
@@ -338,7 +338,7 @@ const INITIAL_PURCHASE_RETURNS = [
 
 export function PurchaseDashboard() {
   const [activeTab, setActiveTab] = useState<'pos' | 'grns' | 'invoices' | 'matching' | 'returns'>('invoices');
-  const { getAuthHeaders } = useAuth();
+  const { getAuthHeaders, session } = useAuth();
   const [purchaseReturns, setPurchaseReturns] = useState<any[]>(INITIAL_PURCHASE_RETURNS);
   const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
   const [pos, setPos] = useState<PurchaseOrder[]>(INITIAL_POS);
@@ -357,6 +357,45 @@ export function PurchaseDashboard() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
+  const [operationsReady, setOperationsReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/v1/purchase/operations-state', { headers: getAuthHeaders() })
+      .then((res) => res.json())
+      .then((json) => {
+        if (cancelled || !json?.success || !json.data) return;
+        const saved = json.data as {
+          pos?: PurchaseOrder[];
+          grns?: GoodsReceiptNote[];
+          invoices?: PurchaseInvoice[];
+          purchaseReturns?: any[];
+        };
+        if (Array.isArray(saved.pos)) setPos(saved.pos);
+        if (Array.isArray(saved.grns)) setGrns(saved.grns);
+        if (Array.isArray(saved.invoices)) setInvoices(saved.invoices);
+        if (Array.isArray(saved.purchaseReturns)) setPurchaseReturns(saved.purchaseReturns);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setOperationsReady(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [session?.tenantId, session?.token]);
+
+  useEffect(() => {
+    if (!operationsReady) return;
+    const timer = window.setTimeout(() => {
+      fetch('/api/v1/purchase/operations-state', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+        body: JSON.stringify({ pos, grns, invoices, purchaseReturns }),
+      }).catch(() => {});
+    }, 400);
+    return () => window.clearTimeout(timer);
+  }, [operationsReady, pos, grns, invoices, purchaseReturns]);
 
   // Computed metrics
   const totalPoValue = pos.reduce((acc, p) => acc + (Number(p.totalAmount) || 0), 0);

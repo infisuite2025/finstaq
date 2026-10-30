@@ -44,7 +44,9 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } catch (e) {
       setState(() {
-        _errorMessage = e is ApiException ? e.message : 'Authentication failed. Please verify credentials.';
+        _errorMessage = e is ApiException
+            ? e.message
+            : 'Cannot reach the Finstaq server. Check Wi-Fi or USB debugging, then try again.';
       });
     } finally {
       if (mounted) {

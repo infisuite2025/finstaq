@@ -2866,7 +2866,24 @@ export const SuperAdminHub: React.FC = () => {
                             Storage
                           </button>
                           <button
-                            onClick={() => alert(`Tenant ${t.name} status updated.`)}
+                            type="button"
+                            onClick={async () => {
+                              const next = t.status === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE';
+                              const res = await fetch(`/api/v1/super-admin/tenants/${encodeURIComponent(t.id)}/status`, {
+                                method: 'PATCH',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                  status: next,
+                                  suspendedReason: next === 'SUSPENDED' ? 'Suspended by Platform Administrator' : undefined,
+                                }),
+                              });
+                              const json = await res.json();
+                              if (!res.ok || !json?.success) {
+                                alert(json?.error || 'Could not update tenant status');
+                                return;
+                              }
+                              setTenants((prev) => prev.map((row) => (row.id === t.id ? { ...row, ...json.data } : row)));
+                            }}
                             className="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer"
                           >
                             {t.status === 'ACTIVE' ? 'Suspend' : 'Reactivate'}

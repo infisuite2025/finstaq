@@ -12,6 +12,8 @@ export async function salesRoutes(fastify: FastifyInstance, _opts: FastifyPlugin
 
   // Summary & KPIs
   fastify.get('/summary', { preHandler: [requireAnyRole] }, SalesController.getSalesSummary);
+  fastify.get('/operations-state', { preHandler: [requireAnyRole] }, SalesController.getOperationsState);
+  fastify.put('/operations-state', { preHandler: [requireAnyRole] }, SalesController.saveOperationsState);
 
   // Sales Orders (SO)
   fastify.get('/orders', { preHandler: [requireAnyRole] }, SalesController.getSalesOrders);

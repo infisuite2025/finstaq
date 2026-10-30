@@ -12,7 +12,7 @@ class QuickVoucherScreen extends StatefulWidget {
 class _QuickVoucherScreenState extends State<QuickVoucherScreen> {
   final _formKey = GlobalKey<FormState>();
   late String _voucherType;
-  final _partyController = TextEditingController(text: 'Acme Enterprises');
+  final _partyController = TextEditingController();
   final _amountController = TextEditingController();
   final _narrationController = TextEditingController();
   String? _debitLedgerId;

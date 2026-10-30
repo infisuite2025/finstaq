@@ -139,7 +139,7 @@ class _MainMobileNavigationState extends State<MainMobileNavigation> {
           children: [
             IconButton(
               tooltip: 'Pulse',
-              icon: Icon(Icons.dashboard_outlined, color: _currentIndex == 0 ? const Color(0xFF2563EB) : Colors.grey),
+              icon: Icon(Icons.home_outlined, color: _currentIndex == 0 ? const Color(0xFF2563EB) : Colors.grey),
               onPressed: () => setState(() => _currentIndex = 0),
             ),
             IconButton(

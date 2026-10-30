@@ -44,6 +44,17 @@ class ApiService {
     }
   }
 
+  static Future<bool> _serverReachable() async {
+    try {
+      final response = await http
+          .get(Uri.parse(baseUrl.replaceFirst('/api/v1', '/health/live')))
+          .timeout(const Duration(seconds: 2));
+      return response.statusCode > 0;
+    } catch (_) {
+      return false;
+    }
+  }
+
   static bool get isAuthenticated => _loggedIn && _tenantId != null;
 
   /// Same dev headers the web app sends in AuthContext.
@@ -70,6 +81,13 @@ class ApiService {
           headers: _headers,
           body: jsonEncode(body),
         )
+        .timeout(const Duration(seconds: 15));
+    return _decode(response);
+  }
+
+  static Future<dynamic> patchData(String path) async {
+    final response = await http
+        .patch(Uri.parse('$baseUrl$path'), headers: _headers, body: '{}')
         .timeout(const Duration(seconds: 15));
     return _decode(response);
   }
@@ -101,6 +119,13 @@ class ApiService {
     String subdomain = 'apex',
     String role = 'OWNER',
   }) async {
+    await _findServer();
+    if (!await _serverReachable()) {
+      throw ApiException(
+        'Cannot reach the Finstaq server. The phone must be on the same Wi-Fi as this PC, or use USB with adb reverse.',
+      );
+    }
+
     final response = await http
         .post(
           Uri.parse('$baseUrl/auth/login'),

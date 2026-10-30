@@ -282,7 +282,13 @@ export function ChequeManagementWorkspace() {
         }
       }
       if (chequesData.success && chequesData.data && chequesData.data.length > 0) {
-        setCheques(Array.isArray(chequesData.data) ? chequesData.data : []);
+        const list = Array.isArray(chequesData.data) ? chequesData.data : [];
+        setCheques(list);
+        const first = list[0];
+        if (first?.payeeName) setSamplePayee(String(first.payeeName));
+        if (first?.amount != null) setSampleAmount(String(first.amount));
+        if (first?.issueDate) setSampleDate(String(first.issueDate).slice(0, 10));
+        if (typeof first?.isCrossed === 'boolean') setSampleCrossed(first.isCrossed);
       }
       if (tmplData.success && tmplData.data && tmplData.data.length > 0) {
         setTemplates(Array.isArray(tmplData.data) ? tmplData.data : []);

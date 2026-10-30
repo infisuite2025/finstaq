@@ -293,6 +293,28 @@ function MainWorkspace({
     },
   ];
 
+  const dataEntryBlocked = new Set<TabType>([
+    'payroll-run',
+    'payroll-loans',
+    'payroll-compliance',
+    'payroll',
+    'financial-periods',
+  ]);
+  const visibleNavSections = session.role === 'DATA_ENTRY'
+    ? navSections
+        .map((section) => ({
+          ...section,
+          items: section.items.filter((item) => !dataEntryBlocked.has(item.id)),
+        }))
+        .filter((section) => section.items.length > 0)
+    : navSections;
+
+  React.useEffect(() => {
+    if (session.role === 'DATA_ENTRY' && dataEntryBlocked.has(activeTab)) {
+      setActiveTab('analytics');
+    }
+  }, [session.role, activeTab]);
+
   const getBreadcrumb = () => {
     switch (activeTab) {
       case 'analytics': return { section: 'Executive & BI', title: 'Executive Analytics 360°' };
@@ -377,7 +399,7 @@ function MainWorkspace({
 
         {/* Navigation Sections */}
         <div className="flex-1 overflow-y-auto py-3 px-2 space-y-4 no-scrollbar">
-          {navSections.map((sec, sIdx) => (
+          {visibleNavSections.map((sec, sIdx) => (
             <div key={sIdx} className="space-y-1">
               {!isSidebarCollapsed && (
                 <div className="px-2.5 text-[10px] font-bold tracking-wider text-slate-400 dark:text-slate-500 uppercase">
@@ -550,7 +572,7 @@ function MainWorkspace({
           {activeTab === 'compliance' && <StatutoryComplianceHub />}
           {activeTab === 'notes' && <DebitCreditNotesWorkspace />}
           {activeTab === 'financial-reports' && <AccountingReportsWorkspace />}
-          {activeTab === 'financial-periods' && <FinancialPeriodHub />}
+          {activeTab === 'financial-periods' && session.role !== 'DATA_ENTRY' && <FinancialPeriodHub />}
           {activeTab === 'procurement' && <PurchaseDashboard />}
           {activeTab === 'jobwork' && <JobWorkWorkspace />}
           {activeTab === 'manufacturing' && <ManufacturingBOMWorkspace />}
@@ -559,10 +581,10 @@ function MainWorkspace({
           {activeTab === 'hr-directory' && <HRWorkspace initialTab="directory" />}
           {activeTab === 'hr-offers' && <HRWorkspace initialTab="offers" />}
           {activeTab === 'hr-lifecycle' && <HRWorkspace initialTab="revisions" />}
-          {activeTab === 'payroll-run' && <PayrollWorkspace initialTab="overview" />}
-          {activeTab === 'payroll-loans' && <PayrollWorkspace initialTab="loans" />}
-          {activeTab === 'payroll-compliance' && <PayrollWorkspace initialTab="compliance" />}
-          {activeTab === 'payroll' && <PayrollWorkspace initialTab="overview" />}
+          {activeTab === 'payroll-run' && session.role !== 'DATA_ENTRY' && <PayrollWorkspace initialTab="overview" />}
+          {activeTab === 'payroll-loans' && session.role !== 'DATA_ENTRY' && <PayrollWorkspace initialTab="loans" />}
+          {activeTab === 'payroll-compliance' && session.role !== 'DATA_ENTRY' && <PayrollWorkspace initialTab="compliance" />}
+          {activeTab === 'payroll' && session.role !== 'DATA_ENTRY' && <PayrollWorkspace initialTab="overview" />}
           {activeTab === 'sales' && <SalesDashboard />}
           {activeTab === 'sales-reports' && <SalesReportsWorkspace />}
           {activeTab === 'approvals' && <ApprovalCenter />}

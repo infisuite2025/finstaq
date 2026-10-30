@@ -1,11 +1,13 @@
 import { authenticate } from '../../../core/middleware/auth.middleware';
 import { enforceTenantIsolation } from '../../../core/middleware/tenant.middleware';
+import { requireAccountantOrOwner } from '../../../core/middleware/rbac.middleware';
 import { FastifyInstance, FastifyPluginOptions } from 'fastify';
 import { PeriodClosingController } from '../controllers/period-closing.controller';
 
 export async function periodClosingRoutes(fastify: FastifyInstance, _opts: FastifyPluginOptions) {
   fastify.addHook('preHandler', authenticate);
   fastify.addHook('preHandler', enforceTenantIsolation);
+  fastify.addHook('preHandler', requireAccountantOrOwner);
 
   // Financial Years
   fastify.get('/financial-years', PeriodClosingController.getFinancialYears);

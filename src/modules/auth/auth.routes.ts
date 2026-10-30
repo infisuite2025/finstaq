@@ -16,8 +16,8 @@ export async function authRoutes(fastify: FastifyInstance) {
     return reply.send({ success: true, data: { ...session, token } });
   });
 
-  fastify.get('/auth/users', { preHandler: authenticate }, async (_request, reply) => {
-    const users = await listWorkspaceUsers();
+  fastify.get('/auth/users', { preHandler: authenticate }, async (request, reply) => {
+    const users = await listWorkspaceUsers(request.user.tenantId);
     return reply.send({ success: true, data: users });
   });
 
@@ -30,7 +30,7 @@ export async function authRoutes(fastify: FastifyInstance) {
       lastName?: string;
     };
     const actorRole = String(request.user?.role || request.headers['x-user-role'] || '');
-    const user = await createWorkspaceUser(actorRole, {
+    const user = await createWorkspaceUser(actorRole, request.user.tenantId, {
       email: body.email || '',
       password: body.password || '',
       role: body.role || 'DATA_ENTRY',

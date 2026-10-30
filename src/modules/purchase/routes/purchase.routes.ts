@@ -12,6 +12,8 @@ export async function purchaseRoutes(fastify: FastifyInstance, _opts: FastifyPlu
 
   // Summary and KPIs
   fastify.get('/summary', { preHandler: [requireAnyRole] }, PurchaseController.getProcurementSummary);
+  fastify.get('/operations-state', { preHandler: [requireAnyRole] }, PurchaseController.getOperationsState);
+  fastify.put('/operations-state', { preHandler: [requireAnyRole] }, PurchaseController.saveOperationsState);
 
   // Purchase Orders
   fastify.get('/orders', { preHandler: [requireAnyRole] }, PurchaseController.getPurchaseOrders);

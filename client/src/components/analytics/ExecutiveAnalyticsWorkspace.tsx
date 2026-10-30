@@ -34,9 +34,43 @@ import {
 } from 'lucide-react';
 import { StandardTabs, TabItem } from '../common/StandardTabs';
 import { KPIScorecard, KPIGrid } from '../common/KPIScorecard';
+import { useAuth } from '../../context/AuthContext';
 
 export function ExecutiveAnalyticsWorkspace() {
+  const { getAuthHeaders } = useAuth();
   const [activeTab, setActiveTab] = useState<'overview' | 'cashflow' | 'profitability' | 'sales' | 'inventory'>('overview');
+  const [fromBooks, setFromBooks] = useState<{ revenue: string; net: string; netMargin: string; grossMargin: string; cash: string; banks: number } | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        const headers = getAuthHeaders();
+        const [plRes, bankRes] = await Promise.all([
+          fetch('/api/v1/accounting/reports/profit-and-loss', { headers }),
+          fetch('/api/v1/banking/bank-ledgers', { headers }),
+        ]);
+        const pl = await plRes.json();
+        const banks = await bankRes.json();
+        const summary = pl?.data?.summary;
+        const rows = Array.isArray(banks?.data) ? banks.data : [];
+        const cash = rows.reduce((sum: number, row: any) => sum + Number(row.currentBalance ?? row.balance ?? 0), 0);
+        const money = (n: number) => `₹ ${n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        if (!alive || !summary) return;
+        setFromBooks({
+          revenue: money(Number(summary.totalRevenue || 0)),
+          net: money(Number(summary.netProfitAfterTax || 0)),
+          netMargin: `${summary.netMarginPercent ?? 0}%`,
+          grossMargin: `${summary.grossMarginPercent ?? 0}%`,
+          cash: money(cash),
+          banks: rows.length,
+        });
+      } catch {
+        /* leave the screen usable if a report call fails */
+      }
+    })();
+    return () => { alive = false; };
+  }, [getAuthHeaders]);
   const [timeRange, setTimeRange] = useState<'fy' | 'quarter' | 'month'>('fy');
   const [isExporting, setIsExporting] = useState(false);
 
@@ -283,30 +317,30 @@ export function ExecutiveAnalyticsWorkspace() {
             {/* Total Turnover Run Rate */}
             <KPIScorecard
               label={timeRange === 'fy' ? 'NET REVENUE (YTD)' : timeRange === 'quarter' ? 'NET REVENUE (Q2)' : 'NET REVENUE (MTD)'}
-              value={currentData.revenue.current}
-              trend={{ direction: 'up', value: currentData.revenue.change }}
-              progress={{ target: currentData.revenue.target, percentage: currentData.revenue.progress, color: 'bg-gradient-to-r from-blue-600 to-indigo-600' }}
+              value={fromBooks?.revenue ?? currentData.revenue.current}
+              trend={fromBooks ? undefined : { direction: 'up', value: currentData.revenue.change }}
+              progress={fromBooks ? undefined : { target: currentData.revenue.target, percentage: currentData.revenue.progress, color: 'bg-gradient-to-r from-blue-600 to-indigo-600' }}
             />
 
             {/* Net Profit & Margins */}
             <KPIScorecard
               label="NET PROFIT (EAT)"
-              value={currentData.netProfit.current}
+              value={fromBooks?.net ?? currentData.netProfit.current}
               variant="emerald"
-              trend={{ direction: 'up', value: currentData.netProfit.change }}
-              footerLeft={<span>Net: <strong>{currentData.netProfit.margin}</strong></span>}
-              footerRight={<span>Gross: <strong>{currentData.netProfit.grossMargin}</strong></span>}
+              trend={fromBooks ? undefined : { direction: 'up', value: currentData.netProfit.change }}
+              footerLeft={<span>Net: <strong>{fromBooks?.netMargin ?? currentData.netProfit.margin}</strong></span>}
+              footerRight={<span>Gross: <strong>{fromBooks?.grossMargin ?? currentData.netProfit.grossMargin}</strong></span>}
             />
 
             {/* Liquid Cash & Bank Runway */}
             <KPIScorecard
               label="LIQUID CASH & BANK"
-              value={currentData.liquidCash.current}
+              value={fromBooks?.cash ?? currentData.liquidCash.current}
               variant="indigo"
-              badge={currentData.liquidCash.status}
+              badge={fromBooks ? `${fromBooks.banks} banks` : currentData.liquidCash.status}
               badgeVariant="indigo"
-              footerLeft={<span>Burn: <strong>{currentData.liquidCash.burnRate}</strong></span>}
-              footerRight={<span>Runway: <strong>{currentData.liquidCash.runwayMonths}</strong></span>}
+              footerLeft={fromBooks ? <span>Accounts: <strong>{fromBooks.banks}</strong></span> : <span>Burn: <strong>{currentData.liquidCash.burnRate}</strong></span>}
+              footerRight={fromBooks ? <span>From <strong>bank ledgers</strong></span> : <span>Runway: <strong>{currentData.liquidCash.runwayMonths}</strong></span>}
             />
 
             {/* DSO & Working Capital Speed */}

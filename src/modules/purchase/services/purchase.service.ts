@@ -929,4 +929,20 @@ export class PurchaseService {
       },
     ];
   }
+
+  public static async getOperationsState(tenantId: string, prismaClient: PrismaClient = defaultPrisma) {
+    const row = await prismaClient.keyValueStore.findUnique({
+      where: { tenantId_key: { tenantId, key: 'purchase_operations' } },
+    });
+    return row?.value ?? null;
+  }
+
+  public static async saveOperationsState(tenantId: string, value: unknown, prismaClient: PrismaClient = defaultPrisma) {
+    await prismaClient.keyValueStore.upsert({
+      where: { tenantId_key: { tenantId, key: 'purchase_operations' } },
+      create: { tenantId, key: 'purchase_operations', value: value as object },
+      update: { value: value as object },
+    });
+    return { saved: true };
+  }
 }

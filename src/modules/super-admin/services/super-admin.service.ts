@@ -350,7 +350,7 @@ class SuperAdminService {
         }
         const existingUser = await prisma.user.findFirst({ where: { email: ownerEmail } });
         if (!existingUser) {
-          const { PasswordService } = await import('../../core/security/password');
+          const { PasswordService } = await import('../../../core/security/password');
           await prisma.user.create({
             data: {
               tenantId: newTenant.id,

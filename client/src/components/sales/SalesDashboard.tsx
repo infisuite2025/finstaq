@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { SalesOrder, DeliveryChallan, SalesSummary } from '../../types/sales';
 import { CreateSoModal } from './CreateSoModal';
@@ -165,7 +165,7 @@ const INITIAL_SALES_RETURNS = [
 
 export function SalesDashboard() {
   const [activeTab, setActiveTab] = useState<'sos' | 'challans' | 'invoices' | 'returns'>('sos');
-  const { getAuthHeaders } = useAuth();
+  const { getAuthHeaders, session } = useAuth();
   const [salesReturns, setSalesReturns] = useState<any[]>(INITIAL_SALES_RETURNS);
   const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
   const [sos, setSos] = useState<SalesOrder[]>(INITIAL_SOS);
@@ -183,6 +183,46 @@ export function SalesDashboard() {
       status: 'POSTED',
     },
   ]);
+
+  const [operationsReady, setOperationsReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/v1/sales/operations-state', { headers: getAuthHeaders() })
+      .then((res) => res.json())
+      .then((json) => {
+        if (cancelled || !json?.success || !json.data) return;
+        const saved = json.data as {
+          sos?: SalesOrder[];
+          challans?: DeliveryChallan[];
+          invoices?: any[];
+          salesReturns?: any[];
+        };
+        if (Array.isArray(saved.sos)) setSos(saved.sos);
+        if (Array.isArray(saved.challans)) setChallans(saved.challans);
+        if (Array.isArray(saved.invoices)) setInvoices(saved.invoices);
+        if (Array.isArray(saved.salesReturns)) setSalesReturns(saved.salesReturns);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setOperationsReady(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [session?.tenantId, session?.token]);
+
+  useEffect(() => {
+    if (!operationsReady) return;
+    const timer = window.setTimeout(() => {
+      fetch('/api/v1/sales/operations-state', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+        body: JSON.stringify({ sos, challans, invoices, salesReturns }),
+      }).catch(() => {});
+    }, 400);
+    return () => window.clearTimeout(timer);
+  }, [operationsReady, sos, challans, invoices, salesReturns]);
 
   const [isSoModalOpen, setIsSoModalOpen] = useState(false);
   const [isChallanModalOpen, setIsChallanModalOpen] = useState(false);

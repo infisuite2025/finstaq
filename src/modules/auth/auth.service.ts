@@ -143,10 +143,10 @@ export async function loginWithPassword(emailRaw: string, password: string, subd
   };
 }
 
-export async function listWorkspaceUsers() {
+export async function listWorkspaceUsers(tenantId: string) {
   await ensureDemoUsers();
   const users = await prisma.user.findMany({
-    where: { tenantId: TENANT_ID },
+    where: { tenantId },
     orderBy: { createdAt: 'asc' },
     select: { id: true, email: true, role: true, firstName: true, lastName: true, isActive: true, createdAt: true },
   });
@@ -155,6 +155,7 @@ export async function listWorkspaceUsers() {
 
 export async function createWorkspaceUser(
   actorRole: string,
+  tenantId: string,
   input: { email: string; password: string; role: UserRole; firstName: string; lastName: string },
 ) {
   if (actorRole !== 'OWNER' && actorRole !== 'SUPER_ADMIN') {
@@ -165,13 +166,19 @@ export async function createWorkspaceUser(
   if (!input.password || input.password.length < 8) throw new ValidationError('Password must be at least 8 characters');
   if (!['OWNER', 'ACCOUNTANT', 'DATA_ENTRY'].includes(input.role)) throw new ValidationError('Choose a valid role');
 
+  if (!tenantId || tenantId === 'PLATFORM_SUPER_ADMIN') {
+    throw new ValidationError('Sign in as the company owner before adding a user');
+  }
+  const tenant = await prisma.tenant.findUnique({ where: { id: tenantId } });
+  if (!tenant) throw new ValidationError('This workspace has no company record yet');
+
   await ensureDemoUsers();
-  const existing = await prisma.user.findFirst({ where: { tenantId: TENANT_ID, email } });
+  const existing = await prisma.user.findFirst({ where: { tenantId, email } });
   if (existing) throw new ValidationError('A user with this email already exists');
 
   return prisma.user.create({
     data: {
-      tenantId: TENANT_ID,
+      tenantId,
       email,
       passwordHash: await PasswordService.hash(input.password),
       role: input.role,

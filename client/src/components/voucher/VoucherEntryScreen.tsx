@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+﻿import React, { useState, useMemo, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import {
   VoucherType,
@@ -160,89 +160,7 @@ const SAMPLE_WAREHOUSES = [
   { id: 'wh-3', name: 'Bhosari Finished Goods Store' },
 ];
 
-const INITIAL_VOUCHERS_REGISTER: VoucherRecord[] = [
-  {
-    id: 'vch-001',
-    voucherNumber: 'PUR-2026-0081',
-    type: 'PURCHASE',
-    date: '2026-09-12',
-    narration: 'Auto-posted AP Bill for Raw Materials purchase against PO-2026-0891 and GRN-2026-0411',
-    isSystemGenerated: true,
-    sourceModule: 'PURCHASE_BILL',
-    sourceDocumentId: 'pinv-001',
-    sourceDocumentNumber: 'STARK-INV-8891',
-    totalDebit: 177000,
-    totalCredit: 177000,
-    isBalanced: true,
-    itemCount: 4,
-    items: [
-      { id: 'i1', type: 'Dr', ledgerId: '4', ledgerName: 'Purchase Account', amount: 150000 },
-      { id: 'i2', type: 'Dr', ledgerId: '11', ledgerName: 'Input CGST @ 9%', amount: 13500 },
-      { id: 'i3', type: 'Dr', ledgerId: '12', ledgerName: 'Input SGST @ 9%', amount: 13500 },
-      { id: 'i4', type: 'Cr', ledgerId: '6', ledgerName: 'Acme Heavy Engineering Corp (Creditor)', amount: 177000 },
-    ],
-    createdAt: '2026-09-12T10:00:00Z',
-  },
-  {
-    id: 'vch-002',
-    voucherNumber: 'INV-2026-081',
-    type: 'SALES',
-    date: '2026-09-13',
-    narration: 'Auto-posted Tax Invoice for customer dispatch against SO-2026-1045 and DC-OUT-2026-0312',
-    isSystemGenerated: true,
-    sourceModule: 'SALES_INVOICE',
-    sourceDocumentId: 'inv-001',
-    sourceDocumentNumber: 'SO-2026-1045',
-    totalDebit: 100300,
-    totalCredit: 100300,
-    isBalanced: true,
-    itemCount: 4,
-    items: [
-      { id: 'i5', type: 'Dr', ledgerId: '5', ledgerName: 'Tata Motors Precision Division (Debtor)', amount: 100300 },
-      { id: 'i6', type: 'Cr', ledgerId: '3', ledgerName: 'Sales Account (Domestic)', amount: 85000 },
-      { id: 'i7', type: 'Cr', ledgerId: '8', ledgerName: 'Output CGST @ 9%', amount: 7650 },
-      { id: 'i8', type: 'Cr', ledgerId: '9', ledgerName: 'Output SGST @ 9%', amount: 7650 },
-    ],
-    createdAt: '2026-09-13T11:00:00Z',
-  },
-  {
-    id: 'vch-003',
-    voucherNumber: 'JV-2026-0019',
-    type: 'JOURNAL',
-    date: '2026-09-13',
-    narration: 'Quarterly office rent expense accrual adjustment entry',
-    isSystemGenerated: false,
-    sourceModule: 'MANUAL_ENTRY',
-    totalDebit: 60000,
-    totalCredit: 60000,
-    isBalanced: true,
-    itemCount: 2,
-    items: [
-      { id: 'i9', type: 'Dr', ledgerId: '7', ledgerName: 'Office Rent Expense', amount: 60000 },
-      { id: 'i10', type: 'Cr', ledgerId: '2', ledgerName: 'HDFC Bank Current A/c', amount: 60000 },
-    ],
-    createdAt: '2026-09-13T14:30:00Z',
-  },
-  {
-    id: 'vch-004',
-    voucherNumber: 'RCPT-2026-0045',
-    type: 'RECEIPT',
-    date: '2026-09-14',
-    narration: 'Settlement received against Invoice INV-2026-081 via HDFC NEFT UTR-9941028',
-    isSystemGenerated: false,
-    sourceModule: 'MANUAL_ENTRY',
-    totalDebit: 100300,
-    totalCredit: 100300,
-    isBalanced: true,
-    itemCount: 2,
-    items: [
-      { id: 'i11', type: 'Dr', ledgerId: '2', ledgerName: 'HDFC Bank Current A/c', amount: 100300 },
-      { id: 'i12', type: 'Cr', ledgerId: '5', ledgerName: 'Tata Motors Precision Division (Debtor)', amount: 100300 },
-    ],
-    createdAt: '2026-09-14T09:15:00Z',
-  },
-];
-
+const INITIAL_VOUCHERS_REGISTER: VoucherRecord[] = [];
 const VOUCHER_TYPE_BUTTONS: { type: VoucherType; fKey: string; label: string; color: string }[] = [
   { type: 'CONTRA', fKey: 'F4', label: 'Contra', color: 'bg-amber-600 text-white' },
   { type: 'PAYMENT', fKey: 'F5', label: 'Payment', color: 'bg-rose-600 text-white' },
@@ -357,7 +275,11 @@ export const VoucherEntryScreen: React.FC = () => {
         if (!res.ok) return;
         const json = await res.json();
         const rows = json?.data?.vouchers;
-        if (!alive || !Array.isArray(rows) || rows.length === 0) return;
+        if (!alive) return;
+        if (!Array.isArray(rows)) {
+          setVouchersRegister([]);
+          return;
+        }
         setVouchersRegister(rows.map((v: any) => ({
           id: v.id,
           voucherNumber: v.voucherNumber,
@@ -374,7 +296,7 @@ export const VoucherEntryScreen: React.FC = () => {
           createdAt: v.createdAt,
         })));
       } catch {
-        /* keep the local register if the API is down */
+        if (alive) setVouchersRegister([]);
       }
     })();
     return () => { alive = false; };

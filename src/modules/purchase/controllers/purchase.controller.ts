@@ -115,6 +115,16 @@ export class PurchaseController {
     });
   }
 
+  public static async getOperationsState(request: FastifyRequest, reply: FastifyReply) {
+    const data = await PurchaseService.getOperationsState(request.tenantId);
+    return reply.send({ success: true, data });
+  }
+
+  public static async saveOperationsState(request: FastifyRequest, reply: FastifyReply) {
+    const data = await PurchaseService.saveOperationsState(request.tenantId, request.body);
+    return reply.send({ success: true, data });
+  }
+
   public static async getPurchaseOrders(request: FastifyRequest, reply: FastifyReply) {
     const pos = await PurchaseService.getPurchaseOrders(request.tenantId);
     return reply.send({ success: true, data: pos });
