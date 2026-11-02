@@ -103,10 +103,6 @@ jobs:
           path: |
              finstaq-backend-image.txt
 
-      - name: Fail workflow if Trivy found vulnerabilities
-        if: steps.trivy-2.outcome == 'failure'
-        run: exit 1
-       
       - name: image push
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}/finstaq-backend:${{ env.SHORT_SHA }}

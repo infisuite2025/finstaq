@@ -350,14 +350,19 @@ export const VoucherEntryScreen: React.FC = () => {
           const json = await res.json();
           if (isMounted && json.data && json.data.ledgers && json.data.ledgers.length > 0) {
             const groups = Array.isArray(json.data.groups) ? json.data.groups : [];
-            const groupById = new Map(groups.map((g: any) => [g.id, g]));
-            const mappedLedgers: LedgerOption[] = json.data.ledgers.map((l: any) => ({
-              id: l.id,
-              name: l.name,
-              currentBalance: Number(l.currentBalance || 0),
-              groupName: groupById.get(l.groupId)?.name || l.group?.name || 'General Ledger',
-              nature: groupById.get(l.groupId)?.nature || l.group?.nature || 'ASSET',
-            }));
+            const groupById = new Map<string, { name?: string; nature?: string }>(
+              groups.map((g: { id: string; name?: string; nature?: string }) => [g.id, g]),
+            );
+            const mappedLedgers: LedgerOption[] = json.data.ledgers.map((l: { id: string; name: string; currentBalance?: number; groupId?: string; group?: { name?: string; nature?: string } }) => {
+              const group = l.groupId ? groupById.get(l.groupId) : undefined;
+              return {
+                id: l.id,
+                name: l.name,
+                currentBalance: Number(l.currentBalance || 0),
+                groupName: group?.name || l.group?.name || 'General Ledger',
+                nature: group?.nature || l.group?.nature || 'ASSET',
+              };
+            });
             setLedgers(mappedLedgers);
 
             // Auto-align active selected ledgers if default IDs aren't in fetched list
