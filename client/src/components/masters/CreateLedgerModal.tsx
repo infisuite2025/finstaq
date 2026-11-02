@@ -45,7 +45,7 @@ export const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({ isOpen, on
       const token = localStorage.getItem('token');
       const tenantId = localStorage.getItem('tenantId') || '27AABCF1234F1Z5';
 
-      const res = await fetch('http://localhost:3000/api/v1/masters/ledgers', {
+      const res = await fetch('https://finstaq.digixlabs.io/api/v1/masters/ledgers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

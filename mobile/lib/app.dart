@@ -17,7 +17,7 @@ class FinstaqApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'FINSTAQ Mobile ERP',
+      title: 'Infisuite Finance',
       debugShowCheckedModeBanner: false,
       theme: FinstaqTheme.lightTheme,
       darkTheme: FinstaqTheme.darkTheme,

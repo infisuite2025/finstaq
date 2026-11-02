@@ -42,7 +42,7 @@ export const CreateTaxRateModal: React.FC<CreateTaxRateModalProps> = ({ isOpen, 
       const token = localStorage.getItem('token');
       const tenantId = localStorage.getItem('tenantId') || '27AABCF1234F1Z5';
 
-      const res = await fetch('http://localhost:3000/api/v1/masters/tax-rates', {
+      const res = await fetch('https://finstaq.digixlabs.io/api/v1/masters/tax-rates', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

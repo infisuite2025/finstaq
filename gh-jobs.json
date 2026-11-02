@@ -1,0 +1,241 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 124071979786,
+      "run_id": 41058502738,
+      "workflow_name": "deploying the finstaq backend application",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/infisuite2025/finstaq/actions/runs/41058502738",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUeWXzM8AAAAc40QrCg",
+      "head_sha": "7a8668d6428345e29235abe709c657f6e13d0383",
+      "url": "https://api.github.com/repos/infisuite2025/finstaq/actions/jobs/124071979786",
+      "html_url": "https://github.com/infisuite2025/finstaq/actions/runs/41058502738/job/124071979786",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-30T12:51:15Z",
+      "started_at": "2026-10-30T12:51:17Z",
+      "completed_at": "2026-10-30T12:55:55Z",
+      "name": "checkout",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-30T12:51:18Z",
+          "completed_at": "2026-10-30T12:51:22Z"
+        },
+        {
+          "name": "Build SonarSource/sonarqube-scan-action@v3",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-30T12:51:22Z",
+          "completed_at": "2026-10-30T12:51:40Z"
+        },
+        {
+          "name": "Build appleboy/ssh-action@v1.0.3",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-30T12:51:40Z",
+          "completed_at": "2026-10-30T12:51:42Z"
+        },
+        {
+          "name": "Checkout code",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-30T12:51:42Z",
+          "completed_at": "2026-10-30T12:51:43Z"
+        },
+        {
+          "name": "Setup Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-30T12:51:43Z",
+          "completed_at": "2026-10-30T12:51:47Z"
+        },
+        {
+          "name": "Install dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-30T12:51:47Z",
+          "completed_at": "2026-10-30T12:51:53Z"
+        },
+        {
+          "name": "building the code",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-30T12:51:53Z",
+          "completed_at": "2026-10-30T12:51:59Z"
+        },
+        {
+          "name": "Set short SHA",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-30T12:51:59Z",
+          "completed_at": "2026-10-30T12:51:59Z"
+        },
+        {
+          "name": "SonarQube Scan (backend)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-30T12:51:59Z",
+          "completed_at": "2026-10-30T12:52:59Z"
+        },
+        {
+          "name": "SonarQube Quality Gate (backend)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-30T12:52:59Z",
+          "completed_at": "2026-10-30T12:53:11Z"
+        },
+        {
+          "name": "Free GitHub runner disk space",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-30T12:53:11Z",
+          "completed_at": "2026-10-30T12:55:02Z"
+        },
+        {
+          "name": "Configure AWS credentials",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-30T12:55:02Z",
+          "completed_at": "2026-10-30T12:55:03Z"
+        },
+        {
+          "name": "Login to Amazon ECR",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-30T12:55:03Z",
+          "completed_at": "2026-10-30T12:55:06Z"
+        },
+        {
+          "name": "Build, tag, and push image to Amazon ECR",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-30T12:55:06Z",
+          "completed_at": "2026-10-30T12:55:27Z"
+        },
+        {
+          "name": "Trivy image scan (TXT)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-30T12:55:27Z",
+          "completed_at": "2026-10-30T12:55:50Z"
+        },
+        {
+          "name": "Upload Trivy TXT Report",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-30T12:55:50Z",
+          "completed_at": "2026-10-30T12:55:51Z"
+        },
+        {
+          "name": "Fail workflow if Trivy found vulnerabilities",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 17,
+          "started_at": "2026-10-30T12:55:51Z",
+          "completed_at": "2026-10-30T12:55:51Z"
+        },
+        {
+          "name": "image push",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-10-30T12:55:51Z",
+          "completed_at": "2026-10-30T12:55:51Z"
+        },
+        {
+          "name": "Deploy on EC2",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19,
+          "started_at": "2026-10-30T12:55:51Z",
+          "completed_at": "2026-10-30T12:55:51Z"
+        },
+        {
+          "name": "Post Trivy image scan (TXT)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 33,
+          "started_at": "2026-10-30T12:55:51Z",
+          "completed_at": "2026-10-30T12:55:51Z"
+        },
+        {
+          "name": "Post Login to Amazon ECR",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 34,
+          "started_at": "2026-10-30T12:55:51Z",
+          "completed_at": "2026-10-30T12:55:51Z"
+        },
+        {
+          "name": "Post Configure AWS credentials",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 35,
+          "started_at": "2026-10-30T12:55:51Z",
+          "completed_at": "2026-10-30T12:55:51Z"
+        },
+        {
+          "name": "Post SonarQube Scan (backend)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 36,
+          "started_at": "2026-10-30T12:55:51Z",
+          "completed_at": "2026-10-30T12:55:51Z"
+        },
+        {
+          "name": "Post Setup Node.js",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 37,
+          "started_at": "2026-10-30T12:55:51Z",
+          "completed_at": "2026-10-30T12:55:51Z"
+        },
+        {
+          "name": "Post Checkout code",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 38,
+          "started_at": "2026-10-30T12:55:51Z",
+          "completed_at": "2026-10-30T12:55:52Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 39,
+          "started_at": "2026-10-30T12:55:52Z",
+          "completed_at": "2026-10-30T12:55:52Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/infisuite2025/finstaq/check-runs/124071979786",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000000775,
+      "runner_name": "GitHub Actions 1000000775",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

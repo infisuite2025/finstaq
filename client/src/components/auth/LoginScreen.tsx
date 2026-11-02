@@ -236,11 +236,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
           {/* Logo & Brand Header */}
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center font-black text-white text-xl shadow-md shadow-blue-500/20">
-              F
+              I
             </div>
             <div>
               <span className="text-xl font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
-                FINSTAQ <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 uppercase tracking-wider">ERP</span>
+                Infisuite Finance
               </span>
             </div>
           </div>
@@ -550,7 +550,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
             <button
               type="button"
               onClick={() => {
-                setError('Microsoft sign-in is not enabled. Use your Finstaq email and password.');
+                setError('Microsoft sign-in is not enabled. Use your Infisuite Finance email and password.');
               }}
               className="w-full bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-200 font-semibold py-2.5 px-4 rounded-xl text-xs border border-slate-200 dark:border-slate-700 transition-all flex items-center justify-center space-x-2.5 shadow-2xs cursor-pointer"
             >

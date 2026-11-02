@@ -1949,7 +1949,7 @@ const INITIAL_HELP_TOPICS: EnterpriseHelpTopic[] = [
       "title": "Flutter Mobile App & Executive Smartphone Companion",
       "summary": "Access executive KPIs, approve maker-checker vouchers, record on-the-go receipts, and view live ledger balances on iOS and Android.",
       "steps": [
-        "Navigate to Intelligence & Admin > Flutter Mobile App (or open Finstaq on any mobile browser).",
+        "Navigate to Intelligence & Admin > Flutter Mobile App (or open Infisuite Finance on any mobile browser).",
         "On mobile viewports (< 768px), the app automatically switches to the native Flutter mobile UI.",
         "Executive Tab: View live Bank Balance, Today’s Collections, Pending Invoices, and Net Margin %.",
         "Approvals Tab: Authorize or reject pending maker-checker payment vouchers with 1 tap.",
@@ -1972,7 +1972,7 @@ const INITIAL_HELP_TOPICS: EnterpriseHelpTopic[] = [
         "title": "Flutter Mobile App & Executive Smartphone Companion",
         "summary": "Access executive KPIs, approve maker-checker vouchers, record on-the-go receipts, and view live ledger balances on iOS and Android.",
         "steps": [
-          "Navigate to Intelligence & Admin > Flutter Mobile App (or open Finstaq on any mobile browser).",
+          "Navigate to Intelligence & Admin > Flutter Mobile App (or open Infisuite Finance on any mobile browser).",
           "On mobile viewports (< 768px), the app automatically switches to the native Flutter mobile UI.",
           "Executive Tab: View live Bank Balance, Today’s Collections, Pending Invoices, and Net Margin %.",
           "Approvals Tab: Authorize or reject pending maker-checker payment vouchers with 1 tap.",

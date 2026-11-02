@@ -112,7 +112,7 @@ export const MastersHub: React.FC = () => {
       const token = localStorage.getItem('token');
       const tenantId = localStorage.getItem('tenantId') || '27AABCF1234F1Z5';
 
-      const res = await fetch('http://localhost:3000/api/v1/masters/all', {
+      const res = await fetch('https://finstaq.digixlabs.io/api/v1/masters/all', {
         headers: {
           Authorization: 'Bearer ' + token,
           'x-tenant-id': tenantId,

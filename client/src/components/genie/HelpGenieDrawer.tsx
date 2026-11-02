@@ -1025,7 +1025,7 @@ export const ERP_KNOWLEDGE_BASE: HelpTopic[] = [
       "mobile view"
     ],
     "steps": [
-      "Navigate to Intelligence & Admin > Flutter Mobile App (or open Finstaq on any mobile browser).",
+      "Navigate to Intelligence & Admin > Flutter Mobile App (or open Infisuite Finance on any mobile browser).",
       "On mobile viewports (< 768px), the app automatically switches to the native Flutter mobile UI.",
       "Executive Tab: View live Bank Balance, Today’s Collections, Pending Invoices, and Net Margin %.",
       "Approvals Tab: Authorize or reject pending maker-checker payment vouchers with 1 tap.",
@@ -1132,7 +1132,7 @@ export function HelpGenieDrawer({
   >([
     {
       sender: 'genie',
-      text: 'Namaste! I am your Finstaq ERP Genie & Interactive AI Trainer. I can guide you through every feature in the application—including Bank Reconciliation (BRS), HR & Indian Statutory Payroll (EPF/ESIC/PT), Customer Debtors Ageing, Voucher Matrix, UPI QR, Manufacturing BOM, Year-End Closing, and Maker-Checker governance. Ask me anything or click any quick topic below!',
+      text: 'Namaste! I am your Infisuite Finance Genie & Interactive AI Trainer. I can guide you through every feature in the application—including Bank Reconciliation (BRS), HR & Indian Statutory Payroll (EPF/ESIC/PT), Customer Debtors Ageing, Voucher Matrix, UPI QR, Manufacturing BOM, Year-End Closing, and Maker-Checker governance. Ask me anything or click any quick topic below!',
       timestamp: new Date().toLocaleTimeString(),
     },
   ]);
@@ -1297,7 +1297,7 @@ export function HelpGenieDrawer({
       setSelectedTopic(bestMatch);
     } else {
       bestMatch = allTopics[0];
-      answerText = `I understand you are asking about "${q}". In Finstaq ERP, you can perform this by navigating through our Financial Core or Operations modules. Here is a helpful guide from our knowledge base:`;
+      answerText = `I understand you are asking about "${q}". In Infisuite Finance, you can perform this by navigating through our Financial Core or Operations modules. Here is a helpful guide from our knowledge base:`;
       setSelectedTopic(bestMatch);
     }
 
@@ -1330,7 +1330,7 @@ export function HelpGenieDrawer({
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h2 className="text-base font-black tracking-tight text-white">Finstaq ERP Help Genie</h2>
+                <h2 className="text-base font-black tracking-tight text-white">Infisuite Finance Help Genie</h2>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30">
                   AI Trainer & 30-Module Guide
                 </span>

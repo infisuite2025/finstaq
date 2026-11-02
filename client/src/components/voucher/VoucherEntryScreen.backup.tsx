@@ -338,7 +338,7 @@ export const VoucherEntryScreen: React.FC = () => {
     let isMounted = true;
     const fetchMasters = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/v1/masters/all', {
+        const res = await fetch('https://finstaq.digixlabs.io/api/v1/masters/all', {
           headers: { 'x-tenant-id': 'tenant-default-01' }
         });
         if (res.ok) {

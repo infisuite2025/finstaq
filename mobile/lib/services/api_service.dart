@@ -6,12 +6,10 @@ import '../models/dashboard_summary.dart';
 
 class ApiService {
   /// Filled by [initialize] after a host actually answers.
-  static String baseUrl = 'http://127.0.0.1:3000/api/v1';
+  static String baseUrl = 'https://finstaq.digixlabs.io/api/v1';
 
   static const List<String> _origins = [
-    'http://127.0.0.1:3000', // USB / wireless adb reverse
-    'http://192.168.1.12:3000', // this PC on the same Wi-Fi as the phone
-    'http://10.0.2.2:3000', // Android emulator
+    'https://finstaq.digixlabs.io',
   ];
 
   static String? _authToken;
@@ -35,7 +33,7 @@ class ApiService {
       try {
         final response = await http
             .get(Uri.parse('$origin/health/live'))
-            .timeout(const Duration(seconds: 2));
+            .timeout(const Duration(seconds: 8));
         if (response.statusCode > 0) {
           baseUrl = '$origin/api/v1';
           return;
@@ -48,7 +46,7 @@ class ApiService {
     try {
       final response = await http
           .get(Uri.parse(baseUrl.replaceFirst('/api/v1', '/health/live')))
-          .timeout(const Duration(seconds: 2));
+          .timeout(const Duration(seconds: 8));
       return response.statusCode > 0;
     } catch (_) {
       return false;
@@ -122,7 +120,7 @@ class ApiService {
     await _findServer();
     if (!await _serverReachable()) {
       throw ApiException(
-        'Cannot reach the Finstaq server. The phone must be on the same Wi-Fi as this PC, or use USB with adb reverse.',
+        'Cannot reach the Infisuite Finance server. The phone must be on the same Wi-Fi as this PC, or use USB with adb reverse.',
       );
     }
 

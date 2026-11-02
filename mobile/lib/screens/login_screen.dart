@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _errorMessage = e is ApiException
             ? e.message
-            : 'Cannot reach the Finstaq server. Check Wi-Fi or USB debugging, then try again.';
+            : 'Cannot reach the Infisuite Finance server. Check Wi-Fi or USB debugging, then try again.';
       });
     } finally {
       if (mounted) {
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       child: const Center(
                         child: Text(
-                          'F',
+                          'I',
                           style: TextStyle(
                             fontSize: 38,
                             fontWeight: FontWeight.bold,
@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 20),
                   const Text(
-                    'FINSTAQ',
+                    'Infisuite Finance',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 24,
@@ -236,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                         )
                       : const Text(
-                          'Sign In to Finstaq',
+                          'Sign In to Infisuite Finance',
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,

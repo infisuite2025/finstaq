@@ -352,7 +352,7 @@ function MainWorkspace({
       case 'communication': return { section: 'Governance & Admin', title: 'Communication Engine & Multi-Channel Alerts' };
       case 'document': return { section: 'Governance & Admin', title: 'AI Document OCR & Review' };
       case 'storage': return { section: 'Governance & Admin', title: 'Zero-Trust Encrypted Document Storage Vault & Quota Manager' };
-      case 'mobile': return { section: 'Governance & Admin', title: 'FINSTAQ Mobile Flutter Application Experience & Interactive Simulator' };
+      case 'mobile': return { section: 'Governance & Admin', title: 'Infisuite Finance Mobile Application Experience & Interactive Simulator' };
       case 'settings': return { section: 'Governance & Admin', title: 'Organization Settings, Security & SOC 2 Type II Trust Matrix' };
       default: return { section: 'Overview', title: 'Financial Dashboard' };
     }
@@ -373,15 +373,12 @@ function MainWorkspace({
         <div className="h-14 border-b border-slate-200 dark:border-slate-800 px-4 flex items-center justify-between">
           <div className="flex items-center space-x-2.5 overflow-hidden">
             <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-black text-white shadow-sm shadow-blue-600/30 text-base shrink-0">
-              F
+              I
             </div>
             {!isSidebarCollapsed && (
               <div className="flex flex-col">
                 <span className="text-sm font-black tracking-tight text-slate-900 dark:text-white leading-none">
-                  FINSTAQ
-                </span>
-                <span className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 tracking-wide uppercase mt-0.5">
-                  Cloud Enterprise ERP
+                  Infisuite Finance
                 </span>
               </div>
             )}

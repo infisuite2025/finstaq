@@ -33,7 +33,7 @@ export const CreateGroupModal: React.FC<CreateGroupModalProps> = ({ isOpen, onCl
       const token = localStorage.getItem('token');
       const tenantId = localStorage.getItem('tenantId') || '27AABCF1234F1Z5';
 
-      const res = await fetch('http://localhost:3000/api/v1/masters/groups', {
+      const res = await fetch('https://finstaq.digixlabs.io/api/v1/masters/groups', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
