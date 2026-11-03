@@ -1,3 +1,4 @@
+import { randomInt } from 'node:crypto';
 import { prisma } from '../../../core/database/prisma';
 
 export interface BankStatementItem {
@@ -281,7 +282,7 @@ async function getBankStatementStore(tenantId: string, ledgerId: string): Promis
   const row = await prisma.keyValueStore.findUnique({
     where: { tenantId_key: { tenantId, key } },
   });
-  if (row && row.value) {
+  if (row?.value) {
     return row.value as unknown as BankStatementItem[];
   }
   return [];
@@ -301,7 +302,7 @@ async function getStatementBatchesStore(tenantId: string, ledgerId: string): Pro
   const row = await prisma.keyValueStore.findUnique({
     where: { tenantId_key: { tenantId, key } },
   });
-  if (row && row.value) {
+  if (row?.value) {
     return row.value as unknown as StatementBatchMetadata[];
   }
   return [
@@ -334,7 +335,7 @@ async function getReconciliationStore(tenantId: string): Promise<Record<string, 
   const row = await prisma.keyValueStore.findUnique({
     where: { tenantId_key: { tenantId, key } },
   });
-  if (row && row.value) {
+  if (row?.value) {
     return row.value as unknown as Record<string, { clearedDate: string; bankRef?: string }>;
   }
   return {};
@@ -354,7 +355,7 @@ async function getMockLedgersStore(tenantId: string): Promise<any[]> {
   const row = await prisma.keyValueStore.findUnique({
     where: { tenantId_key: { tenantId, key } },
   });
-  if (row && row.value) {
+  if (row?.value) {
     return row.value as unknown as any[];
   }
   const defaultList = getDefaultBankLedgers(tenantId);
@@ -376,7 +377,7 @@ async function getMockTxnsStore(tenantId: string, ledgerId: string): Promise<any
   const row = await prisma.keyValueStore.findUnique({
     where: { tenantId_key: { tenantId, key } },
   });
-  if (row && row.value) {
+  if (row?.value) {
     return row.value as unknown as any[];
   }
   const defaultList = getDefaultBankTxns(ledgerId);
@@ -498,8 +499,8 @@ export class BankingService {
       {
         id: `feed_${Date.now()}_1`,
         date: new Date().toISOString().split('T')[0],
-        narration: `Direct API Feed - Payment Clearing UTR${Math.floor(100000000 + Math.random() * 900000000)}`,
-        refNumber: `UTR${Math.floor(100000000 + Math.random() * 900000000)}`,
+        narration: `Direct API Feed - Payment Clearing UTR${randomInt(100000000, 1000000000)}`,
+        refNumber: `UTR${randomInt(100000000, 1000000000)}`,
         debit: 0,
         credit: 45000,
         balance: (ledger.currentBalance || 350000) + 45000,
@@ -603,12 +604,12 @@ export class BankingService {
       id: `batch_${Date.now()}`,
       fileName,
       uploadDate: new Date().toISOString().replace('T', ' ').slice(0, 19),
-      period: formatted.length > 0 ? `${formatted[0].date} to ${formatted[formatted.length - 1].date}` : 'Current Month',
+      period: formatted.length > 0 ? `${formatted[0].date} to ${formatted.at(-1)?.date}` : 'Current Month',
       rowCount: formatted.length,
       totalDebits,
       totalCredits,
       openingBalance: formatted[0]?.balance ? (formatted[0].balance - formatted[0].credit + formatted[0].debit) : 350000,
-      closingBalance: formatted[formatted.length - 1]?.balance || 428500,
+      closingBalance: formatted.at(-1)?.balance || 428500,
       status: 'PARSED',
     };
     batches.unshift(newBatch);

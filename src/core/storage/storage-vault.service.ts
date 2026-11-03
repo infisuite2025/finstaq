@@ -454,8 +454,9 @@ export class StorageVaultService {
     if (fs.existsSync(fullDiskPath)) {
       try {
         fs.unlinkSync(fullDiskPath);
-      } catch (e) {
-        // ignore
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error);
+        console.error(`Vault file delete failed for ${record.id}: ${reason}`);
       }
     }
     files.splice(index, 1);

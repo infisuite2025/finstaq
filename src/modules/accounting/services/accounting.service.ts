@@ -6,7 +6,7 @@ import {
   PrismaClient,
   VoucherType,
 } from '@prisma/client';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import { prisma as defaultPrisma } from '../../../core/database/prisma';
 import { MastersService } from '../../masters/services/masters.service';
 import { AppError, NotFoundError, UnbalancedVoucherError } from '../../../core/errors/app-error';
@@ -197,7 +197,20 @@ export class AccountingService {
     userId: string,
     items: CreateVoucherItemDto[]
   ) {
-    const safeUserId = userId && userId.length <= 36 ? userId : randomUUID();
+    const safeUserId = await this.ensureTenantAndActor(tenantId, userId);
+    const groupUuid = await this.syncMasterGroups(tenantId);
+    const ledgerUuid = await this.syncMasterLedgers(tenantId, groupUuid);
+    this.remapItemLedgers(items, ledgerUuid);
+    return safeUserId;
+  }
+
+  private static resolveActorId(userId: string) {
+    if (userId && userId.length <= 36) return userId;
+    return randomUUID();
+  }
+
+  private static async ensureTenantAndActor(tenantId: string, userId: string) {
+    const safeUserId = this.resolveActorId(userId);
     await defaultPrisma.tenant.upsert({
       where: { id: tenantId },
       update: {},
@@ -210,87 +223,141 @@ export class AccountingService {
         id: safeUserId,
         tenantId,
         email: safeUserId.includes('@') ? safeUserId : `${safeUserId}@finstaq.local`,
-        passwordHash: 'dev-not-used',
+        passwordHash: randomUUID(),
         role: 'OWNER',
       },
     });
+    return safeUserId;
+  }
 
-    const masterLedgers = await MastersService.getLedgers(tenantId);
+  private static async syncMasterGroups(tenantId: string) {
     const masterGroups = await MastersService.getLedgerGroups(tenantId);
     const groupUuid = new Map<string, string>();
     const pending = [...masterGroups];
     for (let guard = 0; pending.length > 0 && guard < 20; guard++) {
-      for (let i = pending.length - 1; i >= 0; i--) {
-        const group = pending[i] as any;
-        if (group.parentId && !groupUuid.has(group.parentId)) continue;
-        const existing = await defaultPrisma.ledgerGroup.findFirst({
-          where: { tenantId, name: group.name },
-        });
-        const id = existing?.id || randomUUID();
-        if (!existing) {
-          await defaultPrisma.ledgerGroup.create({
-            data: {
-              id,
-              tenantId,
-              name: group.name,
-              nature: group.nature || GroupNature.ASSET,
-              parentId: group.parentId ? groupUuid.get(group.parentId) || null : null,
-              affectsGrossProfit: !!group.affectsGrossProfit,
-              isSystem: !!group.isSystem,
-            },
-          });
-        }
-        groupUuid.set(group.id, existing?.id || id);
-        pending.splice(i, 1);
-      }
+      await this.insertReadyGroups(tenantId, pending, groupUuid);
     }
+    return groupUuid;
+  }
 
-    const fallbackGroupId =
-      groupUuid.get('grp-11') || groupUuid.get('grp-09') || groupUuid.values().next().value;
+  private static async insertReadyGroups(
+    tenantId: string,
+    pending: any[],
+    groupUuid: Map<string, string>
+  ) {
+    for (let i = pending.length - 1; i >= 0; i--) {
+      const group = pending[i];
+      if (group.parentId && !groupUuid.has(group.parentId)) continue;
+      await this.upsertLedgerGroup(tenantId, group, groupUuid);
+      pending.splice(i, 1);
+    }
+  }
+
+  private static parentGroupId(group: { parentId?: string | null }, groupUuid: Map<string, string>) {
+    if (!group.parentId) return null;
+    return groupUuid.get(group.parentId) || null;
+  }
+
+  private static async upsertLedgerGroup(
+    tenantId: string,
+    group: any,
+    groupUuid: Map<string, string>
+  ) {
+    const existing = await defaultPrisma.ledgerGroup.findFirst({
+      where: { tenantId, name: group.name },
+    });
+    const id = existing?.id || randomUUID();
+    if (!existing) {
+      await defaultPrisma.ledgerGroup.create({
+        data: {
+          id,
+          tenantId,
+          name: group.name,
+          nature: group.nature || GroupNature.ASSET,
+          parentId: this.parentGroupId(group, groupUuid),
+          affectsGrossProfit: !!group.affectsGrossProfit,
+          isSystem: !!group.isSystem,
+        },
+      });
+    }
+    groupUuid.set(group.id, existing?.id || id);
+  }
+
+  private static fallbackGroupId(groupUuid: Map<string, string>) {
+    return groupUuid.get('grp-11') || groupUuid.get('grp-09') || groupUuid.values().next().value;
+  }
+
+  private static async syncMasterLedgers(tenantId: string, groupUuid: Map<string, string>) {
+    const masterLedgers = await MastersService.getLedgers(tenantId);
+    const fallbackGroupId = this.fallbackGroupId(groupUuid);
     const ledgerUuid = new Map<string, string>();
     for (const raw of masterLedgers as any[]) {
-      const found = await defaultPrisma.ledger.findFirst({ where: { tenantId, name: raw.name } });
-      if (found) {
-        ledgerUuid.set(raw.id, found.id);
-        continue;
-      }
-      const groupId = groupUuid.get(raw.groupId) || fallbackGroupId;
-      if (!groupId) continue;
-      const id = randomUUID();
-      try {
-        await defaultPrisma.ledger.create({
-          data: {
-            id,
-            tenantId,
-            groupId,
-            name: raw.name,
-            code: raw.code || null,
-            openingBalance: raw.openingBalance || 0,
-            currentBalance: raw.currentBalance || raw.openingBalance || 0,
-            gstIn: raw.gstIn || null,
-            stateCode: raw.stateCode || null,
-          },
-        });
-      } catch {
-        await defaultPrisma.ledger.create({
-          data: {
-            id,
-            tenantId,
-            groupId,
-            name: raw.name,
-            openingBalance: raw.openingBalance || 0,
-            currentBalance: raw.currentBalance || raw.openingBalance || 0,
-          },
-        });
-      }
-      ledgerUuid.set(raw.id, id);
+      await this.copyMasterLedger(tenantId, raw, groupUuid, fallbackGroupId, ledgerUuid);
     }
+    return ledgerUuid;
+  }
 
+  private static async copyMasterLedger(
+    tenantId: string,
+    raw: any,
+    groupUuid: Map<string, string>,
+    fallbackGroupId: string | undefined,
+    ledgerUuid: Map<string, string>
+  ) {
+    const found = await defaultPrisma.ledger.findFirst({ where: { tenantId, name: raw.name } });
+    if (found) {
+      ledgerUuid.set(raw.id, found.id);
+      return;
+    }
+    const groupId = groupUuid.get(raw.groupId) || fallbackGroupId;
+    if (!groupId) return;
+    const id = randomUUID();
+    await this.createCopiedLedger(tenantId, id, groupId, raw);
+    ledgerUuid.set(raw.id, id);
+  }
+
+  private static ledgerAmounts(raw: any) {
+    const openingBalance = raw.openingBalance || 0;
+    return {
+      openingBalance,
+      currentBalance: raw.currentBalance || openingBalance,
+    };
+  }
+
+  private static async createCopiedLedger(tenantId: string, id: string, groupId: string, raw: any) {
+    const amounts = this.ledgerAmounts(raw);
+    try {
+      await defaultPrisma.ledger.create({
+        data: {
+          id,
+          tenantId,
+          groupId,
+          name: raw.name,
+          code: raw.code || null,
+          ...amounts,
+          gstIn: raw.gstIn || null,
+          stateCode: raw.stateCode || null,
+        },
+      });
+    } catch (error) {
+      if (!(error instanceof Error)) throw error;
+      await defaultPrisma.ledger.create({
+        data: {
+          id,
+          tenantId,
+          groupId,
+          name: raw.name,
+          ...amounts,
+        },
+      });
+    }
+  }
+
+  private static remapItemLedgers(items: CreateVoucherItemDto[], ledgerUuid: Map<string, string>) {
     for (const item of items) {
       const mapped = ledgerUuid.get(item.ledgerId);
       if (mapped) item.ledgerId = mapped;
     }
-    return safeUserId;
   }
 
   /**

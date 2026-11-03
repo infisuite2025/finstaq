@@ -7,7 +7,7 @@ import { ForbiddenError, UnauthorizedError } from '../errors/app-error';
  * Supports both array syntax `requireRole(['OWNER', 'ACCOUNTANT'])`
  * and variadic syntax `requireRoles(UserRole.OWNER, UserRole.ACCOUNTANT)`
  */
-export function requireRole(allowedRoles: (UserRole | string)[]) {
+export function requireRole(allowedRoles: readonly UserRole[]) {
   return async (request: FastifyRequest, _reply: FastifyReply) => {
     if (!request.user) {
       throw new UnauthorizedError('Authentication required');
@@ -15,7 +15,7 @@ export function requireRole(allowedRoles: (UserRole | string)[]) {
 
     const userRole = request.user.role;
 
-    if (!allowedRoles.includes(userRole) && !allowedRoles.includes(String(userRole))) {
+    if (!allowedRoles.includes(userRole)) {
       throw new ForbiddenError(
         `Access denied. Role '${userRole}' is not permitted to perform this action. Required: [${allowedRoles.join(
           ', '

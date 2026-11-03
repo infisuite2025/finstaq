@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 import { prisma } from '../../../core/database/prisma';
 
 export interface SanityRuleResult {

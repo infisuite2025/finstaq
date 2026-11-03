@@ -57,7 +57,7 @@ export class UnbalancedVoucherError extends AppError {
 }
 
 export function globalErrorHandler(
-  error: FastifyError | AppError | Error | any,
+  error: FastifyError,
   request: FastifyRequest,
   reply: FastifyReply
 ) {

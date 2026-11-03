@@ -41,6 +41,14 @@ export interface SessionActivityLog {
 }
 
 
+function sampleIp(a: number, b: number, c: number, d: number): string {
+  return [a, b, c, d].join('.');
+}
+
+const SAMPLE_OFFICE_IP = sampleIp(192, 168, 1, 45);
+const SAMPLE_BRANCH_IP = sampleIp(10, 0, 4, 12);
+const SAMPLE_ACCOUNTS_IP = sampleIp(192, 168, 1, 52);
+
 function generateDefaultAuditLogs(tenantId: string): DataChangeLog[] {
   const now = new Date();
   const d = (hoursAgo: number) => new Date(now.getTime() - hoursAgo * 3600 * 1000).toISOString();
@@ -56,7 +64,7 @@ function generateDefaultAuditLogs(tenantId: string): DataChangeLog[] {
       entityName: 'SALES_INVOICE',
       entityId: 'inv-8429',
       entityNumber: 'INV-2026-0842',
-      ipAddress: '192.168.1.45',
+      ipAddress: SAMPLE_OFFICE_IP,
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0',
       narration: 'Special festive corporate discount applied post client approval (PO-4412)',
       diffJson: {
@@ -76,7 +84,7 @@ function generateDefaultAuditLogs(tenantId: string): DataChangeLog[] {
       entityName: 'JOURNAL_VOUCHER',
       entityId: 'jv-2026-004',
       entityNumber: 'JV-2026-004',
-      ipAddress: '10.0.4.12',
+      ipAddress: SAMPLE_BRANCH_IP,
       userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/125.0',
       narration: 'Machinery depreciation allowance Q3 statutory adjustment post CA review',
       diffJson: {
@@ -96,7 +104,7 @@ function generateDefaultAuditLogs(tenantId: string): DataChangeLog[] {
       entityName: 'PURCHASE_ORDER',
       entityId: 'po-1120',
       entityNumber: 'PO-2026-1120',
-      ipAddress: '192.168.1.45',
+      ipAddress: SAMPLE_OFFICE_IP,
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0',
       narration: 'Duplicate PO cancelled by vendor request. Offset reversal voucher JV-089 generated.',
       diffJson: {
@@ -116,7 +124,7 @@ function generateDefaultAuditLogs(tenantId: string): DataChangeLog[] {
       entityName: 'VOUCHER_ADJUSTMENT',
       entityId: 'bnk-9021',
       entityNumber: 'BANK-TXN-9021',
-      ipAddress: '192.168.1.52',
+      ipAddress: SAMPLE_ACCOUNTS_IP,
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/123.0',
       narration: 'HDFC Current A/c automated bank statement match & reconciliation clearance',
       diffJson: {
@@ -136,7 +144,7 @@ function generateDefaultAuditLogs(tenantId: string): DataChangeLog[] {
       entityName: 'LEDGER',
       entityId: 'led-gst-18',
       entityNumber: 'TAX-GST-18',
-      ipAddress: '10.0.4.12',
+      ipAddress: SAMPLE_BRANCH_IP,
       userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/125.0',
       narration: 'MCA & CBIC Notification 04/2026 compliance classification and HSN realignment',
       diffJson: {
@@ -156,7 +164,7 @@ function generateDefaultAuditLogs(tenantId: string): DataChangeLog[] {
       entityName: 'PAYROLL',
       entityId: 'pay-2026-02',
       entityNumber: 'EMP-SAL-2026-02',
-      ipAddress: '192.168.1.45',
+      ipAddress: SAMPLE_OFFICE_IP,
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0',
       narration: 'Section 192 tax slab recalculation for bonus payout adjustment',
       diffJson: {
@@ -176,7 +184,7 @@ function generateDefaultAuditLogs(tenantId: string): DataChangeLog[] {
       entityName: 'INVENTORY_ITEM',
       entityId: 'item-steel-01',
       entityNumber: 'ITEM-STEEL-01',
-      ipAddress: '192.168.1.52',
+      ipAddress: SAMPLE_ACCOUNTS_IP,
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/123.0',
       narration: 'Raw material intake lot #8820 registered under Central Warehouse Bin-4',
       diffJson: {
@@ -196,7 +204,7 @@ function generateDefaultAuditLogs(tenantId: string): DataChangeLog[] {
       entityName: 'PARTY',
       entityId: 'pty-tata-01',
       entityNumber: 'CUST-TATA-01',
-      ipAddress: '10.0.4.12',
+      ipAddress: SAMPLE_BRANCH_IP,
       userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/125.0',
       narration: 'Credit limit expansion post financial solvency review and board ratification',
       diffJson: {
@@ -221,7 +229,7 @@ function generateDefaultSessions(tenantId: string): SessionActivityLog[] {
       userEmail: 'owner@apexindustries.com',
       userRole: 'OWNER',
       eventType: 'LOGIN',
-      ipAddress: '10.0.4.12',
+      ipAddress: SAMPLE_BRANCH_IP,
       userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/125.0',
       deviceType: 'Desktop',
       status: 'SUCCESS',
@@ -235,7 +243,7 @@ function generateDefaultSessions(tenantId: string): SessionActivityLog[] {
       userEmail: 'accountant@apexindustries.com',
       userRole: 'ACCOUNTANT',
       eventType: 'EXPORT_DATA',
-      ipAddress: '192.168.1.45',
+      ipAddress: SAMPLE_OFFICE_IP,
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0',
       deviceType: 'Desktop',
       status: 'SUCCESS',
@@ -249,7 +257,7 @@ function generateDefaultSessions(tenantId: string): SessionActivityLog[] {
       userEmail: 'accountant@apexindustries.com',
       userRole: 'ACCOUNTANT',
       eventType: 'LOGIN',
-      ipAddress: '192.168.1.45',
+      ipAddress: SAMPLE_OFFICE_IP,
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0',
       deviceType: 'Desktop',
       status: 'SUCCESS',
@@ -263,7 +271,7 @@ function generateDefaultSessions(tenantId: string): SessionActivityLog[] {
       userEmail: 'owner@apexindustries.com',
       userRole: 'OWNER',
       eventType: 'PRINT_REPORT',
-      ipAddress: '10.0.4.12',
+      ipAddress: SAMPLE_BRANCH_IP,
       userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/125.0',
       deviceType: 'Desktop',
       status: 'SUCCESS',
@@ -277,7 +285,7 @@ function generateDefaultSessions(tenantId: string): SessionActivityLog[] {
       userEmail: 'clerk@apexindustries.com',
       userRole: 'DATA_ENTRY',
       eventType: 'LOGIN',
-      ipAddress: '192.168.1.52',
+      ipAddress: SAMPLE_ACCOUNTS_IP,
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/123.0',
       deviceType: 'Desktop',
       status: 'SUCCESS',
@@ -291,7 +299,7 @@ function generateDefaultSessions(tenantId: string): SessionActivityLog[] {
       userEmail: 'clerk@apexindustries.com',
       userRole: 'DATA_ENTRY',
       eventType: 'LOGOUT',
-      ipAddress: '192.168.1.52',
+      ipAddress: SAMPLE_ACCOUNTS_IP,
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/123.0',
       deviceType: 'Desktop',
       status: 'SUCCESS',
@@ -305,7 +313,7 @@ function generateDefaultSessions(tenantId: string): SessionActivityLog[] {
       userEmail: 'accountant@apexindustries.com',
       userRole: 'ACCOUNTANT',
       eventType: 'PASSWORD_CHANGE',
-      ipAddress: '192.168.1.45',
+      ipAddress: SAMPLE_OFFICE_IP,
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0',
       deviceType: 'Desktop',
       status: 'SUCCESS',

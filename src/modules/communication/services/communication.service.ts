@@ -194,8 +194,9 @@ async function getTenantLogs(tenantId: string): Promise<CommunicationLog[]> {
       update: { value: seed as any },
       create: { tenantId, key: 'COMM_LOGS', value: seed as any },
     });
-  } catch (e) {
-    // Ignore race
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : String(error);
+    console.error(`Communication log seed skipped: ${reason}`);
   }
   return seed;
 }
@@ -218,8 +219,9 @@ async function getTenantNotifs(tenantId: string): Promise<InAppNotification[]> {
   const arr: InAppNotification[] = [];
   try {
     await prisma.keyValueStore.create({ data: { tenantId, key: 'COMM_NOTIFS', value: arr as any } });
-  } catch (e) {
-    // Ignore race
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : String(error);
+    console.error(`Notification seed skipped: ${reason}`);
   }
   return arr;
 }
