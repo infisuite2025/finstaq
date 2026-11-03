@@ -57,6 +57,11 @@ const getDetectedSubdomain = (): string | null => {
   if (hostname === 'localhost' || hostname === '127.0.0.1' || /^(\d{1,3}\.){3}\d{1,3}$/.test(hostname)) {
     return null;
   }
+
+  // The live site itself is not a company. finstaq.digixlabs.io must not become company code "finstaq".
+  if (hostname === 'finstaq.digixlabs.io' || hostname === 'www.finstaq.digixlabs.io') {
+    return null;
+  }
   
   const parts = hostname.split('.');
   const reserved = ['www', 'app', 'api', 'admin', 'superadmin', 'login', 'auth', 'billing', 'status', 'portal', 'mail'];

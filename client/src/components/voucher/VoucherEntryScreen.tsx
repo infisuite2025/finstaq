@@ -991,9 +991,6 @@ export const VoucherEntryScreen: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
           ...getAuthHeaders(),
-          'x-user-id': 'usr-admin',
-          'x-user-role': 'OWNER',
-          'Authorization': 'Bearer test-token'
         },
         body: JSON.stringify(payload),
       });
