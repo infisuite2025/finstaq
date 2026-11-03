@@ -1,5 +1,6 @@
 import { randomInt } from 'node:crypto';
 import { prisma } from '../../../core/database/prisma';
+import { readTenantValue, writeTenantValue } from '../../../core/database/tenant-kv';
 
 export interface BankStatementItem {
   id?: string;
@@ -35,11 +36,26 @@ export interface StatementBatchMetadata {
   status: 'PARSED' | 'RECONCILED' | 'PARTIALLY_MATCHED';
 }
 
+function bankLedger(tenantId: string, row: Record<string, unknown>) {
+  return {
+    tenantId,
+    isActive: true,
+    isLinked: false,
+    linkProvider: null,
+    lastSyncedAt: null,
+    group: { id: 'grp_bank', name: 'Bank Accounts' },
+    ...row,
+  };
+}
+
+function bankTxn(row: Record<string, unknown>) {
+  return { debitAmount: 0, creditAmount: 0, clearedDate: null, isReconciled: false, bankRef: null, ...row };
+}
+
 function getDefaultBankLedgers(tenantId: string) {
   return [
-    {
+    bankLedger(tenantId, {
       id: 'ldg_hdfc_01',
-      tenantId,
       name: 'HDFC Bank Current Account (A/c No: 50200012345678)',
       code: 'BANK_HDFC_01',
       bankAccount: '50200012345678',
@@ -49,15 +65,12 @@ function getDefaultBankLedgers(tenantId: string) {
       branch: 'Koregaon Park Branch, Pune',
       openingBalance: 350000.0,
       currentBalance: 525000.0,
-      isActive: true,
       isLinked: true,
       linkProvider: 'HDFC Direct Corporate API',
       lastSyncedAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-      group: { id: 'grp_bank', name: 'Bank Accounts' },
-    },
-    {
+    }),
+    bankLedger(tenantId, {
       id: 'ldg_icici_02',
-      tenantId,
       name: 'ICICI Bank Escrow / Operating (A/c No: 000405012345)',
       code: 'BANK_ICICI_02',
       bankAccount: '000405012345',
@@ -67,15 +80,12 @@ function getDefaultBankLedgers(tenantId: string) {
       branch: 'Bund Garden Branch, Pune',
       openingBalance: 150000.0,
       currentBalance: 220000.0,
-      isActive: true,
       isLinked: true,
       linkProvider: 'ICICI CIB Corporate NetBanking',
       lastSyncedAt: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
-      group: { id: 'grp_bank', name: 'Bank Accounts' },
-    },
-    {
+    }),
+    bankLedger(tenantId, {
       id: 'ldg_sbi_03',
-      tenantId,
       name: 'SBI Cash Credit & OD Facility (A/c No: 33458921004)',
       code: 'BANK_SBI_03',
       bankAccount: '33458921004',
@@ -85,15 +95,9 @@ function getDefaultBankLedgers(tenantId: string) {
       branch: 'MIDC Chakan SME Branch, Pune',
       openingBalance: 500000.0,
       currentBalance: 680000.0,
-      isActive: true,
-      isLinked: false,
-      linkProvider: null,
-      lastSyncedAt: null,
-      group: { id: 'grp_bank', name: 'Bank Accounts' },
-    },
-    {
+    }),
+    bankLedger(tenantId, {
       id: 'ldg_axis_04',
-      tenantId,
       name: 'Axis Bank Trade & Forex Account (A/c No: 918020054321)',
       code: 'BANK_AXIS_04',
       bankAccount: '918020054321',
@@ -103,15 +107,12 @@ function getDefaultBankLedgers(tenantId: string) {
       branch: 'Shivajinagar Branch, Pune',
       openingBalance: 280000.0,
       currentBalance: 345000.0,
-      isActive: true,
       isLinked: true,
       linkProvider: 'Axis Corporate Connect',
       lastSyncedAt: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
-      group: { id: 'grp_bank', name: 'Bank Accounts' },
-    },
-    {
+    }),
+    bankLedger(tenantId, {
       id: 'ldg_kotak_05',
-      tenantId,
       name: 'Kotak Mahindra Customer Collections (A/c No: 7711223344)',
       code: 'BANK_KOTAK_05',
       bankAccount: '7711223344',
@@ -121,12 +122,7 @@ function getDefaultBankLedgers(tenantId: string) {
       branch: 'Baner High Street, Pune',
       openingBalance: 120000.0,
       currentBalance: 195000.0,
-      isActive: true,
-      isLinked: false,
-      linkProvider: null,
-      lastSyncedAt: null,
-      group: { id: 'grp_bank', name: 'Bank Accounts' },
-    },
+    }),
   ];
 }
 
@@ -143,9 +139,6 @@ function getDefaultBankTxns(ledgerId: string = 'ldg_hdfc_01') {
         referenceNumber: 'UTR778899001',
         debitAmount: 200000.0,
         creditAmount: 0.0,
-        clearedDate: null,
-        isReconciled: false,
-        bankRef: null,
       },
       {
         id: 'v_item_ici_002',
@@ -157,11 +150,8 @@ function getDefaultBankTxns(ledgerId: string = 'ldg_hdfc_01') {
         referenceNumber: '445566',
         debitAmount: 0.0,
         creditAmount: 30000.0,
-        clearedDate: null,
-        isReconciled: false,
-        bankRef: null,
       },
-    ];
+    ].map(bankTxn);
   }
 
   if (ledgerId === 'ldg_sbi_03') {
@@ -176,9 +166,6 @@ function getDefaultBankTxns(ledgerId: string = 'ldg_hdfc_01') {
         referenceNumber: '998877',
         debitAmount: 0.0,
         creditAmount: 180000.0,
-        clearedDate: null,
-        isReconciled: false,
-        bankRef: null,
       },
       {
         id: 'v_item_sbi_002',
@@ -190,11 +177,8 @@ function getDefaultBankTxns(ledgerId: string = 'ldg_hdfc_01') {
         referenceNumber: 'UTR554433221',
         debitAmount: 360000.0,
         creditAmount: 0.0,
-        clearedDate: null,
-        isReconciled: false,
-        bankRef: null,
       },
-    ];
+    ].map(bankTxn);
   }
 
   if (ledgerId === 'ldg_axis_04') {
@@ -209,11 +193,8 @@ function getDefaultBankTxns(ledgerId: string = 'ldg_hdfc_01') {
         referenceNumber: 'AXIS992288',
         debitAmount: 332000.0,
         creditAmount: 0.0,
-        clearedDate: null,
-        isReconciled: false,
-        bankRef: null,
       },
-    ];
+    ].map(bankTxn);
   }
 
   // Default HDFC transactions
@@ -228,9 +209,6 @@ function getDefaultBankTxns(ledgerId: string = 'ldg_hdfc_01') {
       referenceNumber: 'UTR987654321',
       debitAmount: 125000.0,
       creditAmount: 0.0,
-      clearedDate: null,
-      isReconciled: false,
-      bankRef: null,
     },
     {
       id: 'v_item_002',
@@ -242,9 +220,6 @@ function getDefaultBankTxns(ledgerId: string = 'ldg_hdfc_01') {
       referenceNumber: '554432',
       debitAmount: 0.0,
       creditAmount: 45000.0,
-      clearedDate: null,
-      isReconciled: false,
-      bankRef: null,
     },
     {
       id: 'v_item_003',
@@ -256,9 +231,6 @@ function getDefaultBankTxns(ledgerId: string = 'ldg_hdfc_01') {
       referenceNumber: '889901',
       debitAmount: 0.0,
       creditAmount: 85000.0,
-      clearedDate: null,
-      isReconciled: false,
-      bankRef: null,
     },
     {
       id: 'v_item_004',
@@ -270,40 +242,22 @@ function getDefaultBankTxns(ledgerId: string = 'ldg_hdfc_01') {
       referenceNumber: '112233',
       debitAmount: 60000.0,
       creditAmount: 0.0,
-      clearedDate: null,
-      isReconciled: false,
-      bankRef: null,
     },
-  ];
+  ].map(bankTxn);
 }
 
 async function getBankStatementStore(tenantId: string, ledgerId: string): Promise<BankStatementItem[]> {
-  const key = `bank_stmt_${ledgerId}`;
-  const row = await prisma.keyValueStore.findUnique({
-    where: { tenantId_key: { tenantId, key } },
-  });
-  if (row?.value) {
-    return row.value as unknown as BankStatementItem[];
-  }
-  return [];
+  return ((await readTenantValue(tenantId, `bank_stmt_${ledgerId}`)) as BankStatementItem[] | null) || [];
 }
 
 async function saveBankStatementStore(tenantId: string, ledgerId: string, list: BankStatementItem[]): Promise<void> {
-  const key = `bank_stmt_${ledgerId}`;
-  await prisma.keyValueStore.upsert({
-    where: { tenantId_key: { tenantId, key } },
-    create: { tenantId, key, value: list as any },
-    update: { value: list as any },
-  });
+  await writeTenantValue(tenantId, `bank_stmt_${ledgerId}`, list);
 }
 
 async function getStatementBatchesStore(tenantId: string, ledgerId: string): Promise<StatementBatchMetadata[]> {
-  const key = `bank_batches_${ledgerId}`;
-  const row = await prisma.keyValueStore.findUnique({
-    where: { tenantId_key: { tenantId, key } },
-  });
-  if (row?.value) {
-    return row.value as unknown as StatementBatchMetadata[];
+  const stored = (await readTenantValue(tenantId, `bank_batches_${ledgerId}`)) as StatementBatchMetadata[] | null;
+  if (stored) {
+    return stored;
   }
   return [
     {
@@ -322,76 +276,39 @@ async function getStatementBatchesStore(tenantId: string, ledgerId: string): Pro
 }
 
 async function saveStatementBatchesStore(tenantId: string, ledgerId: string, list: StatementBatchMetadata[]): Promise<void> {
-  const key = `bank_batches_${ledgerId}`;
-  await prisma.keyValueStore.upsert({
-    where: { tenantId_key: { tenantId, key } },
-    create: { tenantId, key, value: list as any },
-    update: { value: list as any },
-  });
+  await writeTenantValue(tenantId, `bank_batches_${ledgerId}`, list);
 }
 
 async function getReconciliationStore(tenantId: string): Promise<Record<string, { clearedDate: string; bankRef?: string }>> {
-  const key = 'bank_reconciliations';
-  const row = await prisma.keyValueStore.findUnique({
-    where: { tenantId_key: { tenantId, key } },
-  });
-  if (row?.value) {
-    return row.value as unknown as Record<string, { clearedDate: string; bankRef?: string }>;
-  }
-  return {};
+  return ((await readTenantValue(tenantId, 'bank_reconciliations')) as Record<string, { clearedDate: string; bankRef?: string }> | null) || {};
 }
 
 async function saveReconciliationStore(tenantId: string, store: Record<string, { clearedDate: string; bankRef?: string }>): Promise<void> {
-  const key = 'bank_reconciliations';
-  await prisma.keyValueStore.upsert({
-    where: { tenantId_key: { tenantId, key } },
-    create: { tenantId, key, value: store as any },
-    update: { value: store as any },
-  });
+  await writeTenantValue(tenantId, 'bank_reconciliations', store);
 }
 
 async function getMockLedgersStore(tenantId: string): Promise<any[]> {
-  const key = 'bank_mock_ledgers';
-  const row = await prisma.keyValueStore.findUnique({
-    where: { tenantId_key: { tenantId, key } },
-  });
-  if (row?.value) {
-    return row.value as unknown as any[];
-  }
+  const stored = (await readTenantValue(tenantId, 'bank_mock_ledgers')) as any[] | null;
+  if (stored) return stored;
   const defaultList = getDefaultBankLedgers(tenantId);
   await saveMockLedgersStore(tenantId, defaultList);
   return defaultList;
 }
 
 async function saveMockLedgersStore(tenantId: string, list: any[]): Promise<void> {
-  const key = 'bank_mock_ledgers';
-  await prisma.keyValueStore.upsert({
-    where: { tenantId_key: { tenantId, key } },
-    create: { tenantId, key, value: list as any },
-    update: { value: list as any },
-  });
+  await writeTenantValue(tenantId, 'bank_mock_ledgers', list);
 }
 
 async function getMockTxnsStore(tenantId: string, ledgerId: string): Promise<any[]> {
-  const key = `bank_mock_txns_${ledgerId}`;
-  const row = await prisma.keyValueStore.findUnique({
-    where: { tenantId_key: { tenantId, key } },
-  });
-  if (row?.value) {
-    return row.value as unknown as any[];
-  }
+  const stored = (await readTenantValue(tenantId, `bank_mock_txns_${ledgerId}`)) as any[] | null;
+  if (stored) return stored;
   const defaultList = getDefaultBankTxns(ledgerId);
   await saveMockTxnsStore(tenantId, ledgerId, defaultList);
   return defaultList;
 }
 
 async function saveMockTxnsStore(tenantId: string, ledgerId: string, list: any[]): Promise<void> {
-  const key = `bank_mock_txns_${ledgerId}`;
-  await prisma.keyValueStore.upsert({
-    where: { tenantId_key: { tenantId, key } },
-    create: { tenantId, key, value: list as any },
-    update: { value: list as any },
-  });
+  await writeTenantValue(tenantId, `bank_mock_txns_${ledgerId}`, list);
 }
 
 export class BankingService {

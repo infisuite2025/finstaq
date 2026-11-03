@@ -174,8 +174,17 @@ export const INDUSTRY_STARTER_PACKS: IndustryStarterPack[] = [
   },
 ];
 
-export async function inferGstinHandler(req: FastifyRequest<{ Body: { gstin: string } }>, reply: FastifyReply) {
-  try {
+function serverError(reply: FastifyReply, err: unknown) {
+  const message = err instanceof Error ? err.message : 'Request failed';
+  return reply.status(500).send({ success: false, error: message });
+}
+
+function runHandler(reply: FastifyReply, work: () => Promise<unknown>) {
+  return work().catch((err) => serverError(reply, err));
+}
+
+export function inferGstinHandler(req: FastifyRequest<{ Body: { gstin: string } }>, reply: FastifyReply) {
+  return runHandler(reply, async () => {
     const { gstin } = req.body || {};
     if (!gstin || typeof gstin !== 'string' || gstin.trim().length < 2) {
       return reply.status(400).send({ success: false, error: 'Valid GSTIN is required' });
@@ -247,9 +256,7 @@ export async function inferGstinHandler(req: FastifyRequest<{ Body: { gstin: str
         financialYearCycle: 'April 1 to March 31',
       },
     });
-  } catch (err: any) {
-    return reply.status(500).send({ success: false, error: err.message });
-  }
+  });
 }
 
 export async function getIndustryTemplatesHandler(_req: FastifyRequest, reply: FastifyReply) {
@@ -259,7 +266,7 @@ export async function getIndustryTemplatesHandler(_req: FastifyRequest, reply: F
   });
 }
 
-export async function applyStarterKitHandler(
+export function applyStarterKitHandler(
   req: FastifyRequest<{
     Body: {
       tenantId: string;
@@ -273,7 +280,7 @@ export async function applyStarterKitHandler(
   }>,
   reply: FastifyReply
 ) {
-  try {
+  return runHandler(reply, async () => {
     const {
       tenantId = 'tenant-default-01',
       industryPack = 'MANUFACTURING',
@@ -287,29 +294,20 @@ export async function applyStarterKitHandler(
     const selectedPack = INDUSTRY_STARTER_PACKS.find((p) => p.id === industryPack) || INDUSTRY_STARTER_PACKS[0];
 
     // Save or update tenant onboarding config
+    const savedConfig = {
+      industryPack,
+      usePresetup,
+      primaryBankName,
+      primaryBankAccount,
+      primaryBankIfsc,
+      initialOpeningBal,
+      isCompleted: true,
+      stepCompleted: 4,
+    };
     const config = await prisma.tenantOnboardingConfig.upsert({
       where: { tenantId },
-      update: {
-        industryPack,
-        usePresetup,
-        primaryBankName,
-        primaryBankAccount,
-        primaryBankIfsc,
-        initialOpeningBal,
-        isCompleted: true,
-        stepCompleted: 4,
-      },
-      create: {
-        tenantId,
-        industryPack,
-        usePresetup,
-        primaryBankName,
-        primaryBankAccount,
-        primaryBankIfsc,
-        initialOpeningBal,
-        isCompleted: true,
-        stepCompleted: 4,
-      },
+      update: savedConfig,
+      create: { tenantId, ...savedConfig },
     });
 
     return reply.send({
@@ -322,16 +320,14 @@ export async function applyStarterKitHandler(
         message: 'Starter pack and tenant configuration successfully activated!',
       },
     });
-  } catch (err: any) {
-    return reply.status(500).send({ success: false, error: err.message });
-  }
+  });
 }
 
-export async function getOnboardingStatusHandler(
+export function getOnboardingStatusHandler(
   req: FastifyRequest<{ Querystring: { tenantId?: string } }>,
   reply: FastifyReply
 ) {
-  try {
+  return runHandler(reply, async () => {
     const tenantId = req.query?.tenantId || 'tenant-default-01';
     const config = await prisma.tenantOnboardingConfig.findUnique({
       where: { tenantId },
@@ -347,7 +343,5 @@ export async function getOnboardingStatusHandler(
         industryPack: 'MANUFACTURING',
       },
     });
-  } catch (err: any) {
-    return reply.status(500).send({ success: false, error: err.message });
-  }
+  });
 }

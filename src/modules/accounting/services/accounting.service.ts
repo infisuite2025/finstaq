@@ -325,31 +325,12 @@ export class AccountingService {
   }
 
   private static async createCopiedLedger(tenantId: string, id: string, groupId: string, raw: any) {
-    const amounts = this.ledgerAmounts(raw);
+    const data = { id, tenantId, groupId, name: raw.name, ...this.ledgerAmounts(raw) };
     try {
-      await defaultPrisma.ledger.create({
-        data: {
-          id,
-          tenantId,
-          groupId,
-          name: raw.name,
-          code: raw.code || null,
-          ...amounts,
-          gstIn: raw.gstIn || null,
-          stateCode: raw.stateCode || null,
-        },
-      });
+      await defaultPrisma.ledger.create({ data: { ...data, code: raw.code || null, gstIn: raw.gstIn || null, stateCode: raw.stateCode || null } });
     } catch (error) {
       if (!(error instanceof Error)) throw error;
-      await defaultPrisma.ledger.create({
-        data: {
-          id,
-          tenantId,
-          groupId,
-          name: raw.name,
-          ...amounts,
-        },
-      });
+      await defaultPrisma.ledger.create({ data });
     }
   }
 

@@ -7,6 +7,7 @@ import {
   ThreeWayMatchStatus,
 } from '@prisma/client';
 import { prisma as defaultPrisma } from '../../../core/database/prisma';
+import { readTenantValue, writeTenantValue } from '../../../core/database/tenant-kv';
 import { AppError, NotFoundError } from '../../../core/errors/app-error';
 import { AuditLoggerService } from '../../../core/audit/audit-logger';
 
@@ -930,19 +931,11 @@ export class PurchaseService {
     ];
   }
 
-  public static async getOperationsState(tenantId: string, prismaClient: PrismaClient = defaultPrisma) {
-    const row = await prismaClient.keyValueStore.findUnique({
-      where: { tenantId_key: { tenantId, key: 'purchase_operations' } },
-    });
-    return row?.value ?? null;
+  public static getOperationsState(tenantId: string, prismaClient: PrismaClient = defaultPrisma) {
+    return readTenantValue(tenantId, 'purchase_operations', prismaClient);
   }
 
-  public static async saveOperationsState(tenantId: string, value: unknown, prismaClient: PrismaClient = defaultPrisma) {
-    await prismaClient.keyValueStore.upsert({
-      where: { tenantId_key: { tenantId, key: 'purchase_operations' } },
-      create: { tenantId, key: 'purchase_operations', value: value as object },
-      update: { value: value as object },
-    });
-    return { saved: true };
+  public static saveOperationsState(tenantId: string, value: unknown, prismaClient: PrismaClient = defaultPrisma) {
+    return writeTenantValue(tenantId, 'purchase_operations', value, prismaClient);
   }
 }

@@ -56,6 +56,30 @@ export class UnbalancedVoucherError extends AppError {
   }
 }
 
+function sendApiError(
+  reply: FastifyReply,
+  request: FastifyRequest,
+  statusCode: number,
+  code: string,
+  message: string,
+  details?: unknown
+) {
+  return reply.status(statusCode).send({
+    success: false,
+    error: details === undefined ? { code, message } : { code, message, details },
+    timestamp: new Date().toISOString(),
+    path: request.url,
+  });
+}
+
+const PRISMA_ERRORS: Record<string, [number, string, string]> = {
+  P2002: [409, 'CONFLICT', 'A record with the specified identifier or unique field already exists.'],
+  P2025: [404, 'NOT_FOUND', 'The requested record was not found or has been removed.'],
+  P2003: [400, 'FOREIGN_KEY_VIOLATION', 'Invalid relational reference provided. Related entity does not exist.'],
+  P2014: [400, 'RELATION_VIOLATION', 'The requested change violates a required relational dependency.'],
+  P2000: [400, 'VALUE_OUT_OF_RANGE', 'Provided input value exceeds allowable system limits.'],
+};
+
 export function globalErrorHandler(
   error: FastifyError,
   request: FastifyRequest,
@@ -64,132 +88,27 @@ export function globalErrorHandler(
   request.log.error(error);
 
   if (error instanceof AppError) {
-    return reply.status(error.statusCode).send({
-      success: false,
-      error: {
-        code: error.code,
-        message: error.message,
-        details: error.details,
-      },
-      timestamp: new Date().toISOString(),
-      path: request.url,
-    });
+    return sendApiError(reply, request, error.statusCode, error.code, error.message, error.details);
   }
 
   // Fastify Schema Validation Error
   if ('validation' in error && error.validation) {
-    return reply.status(400).send({
-      success: false,
-      error: {
-        code: 'BAD_REQUEST',
-        message: 'Invalid request payload or query parameters',
-        details: error.validation,
-      },
-      timestamp: new Date().toISOString(),
-      path: request.url,
-    });
+    return sendApiError(reply, request, 400, 'BAD_REQUEST', 'Invalid request payload or query parameters', error.validation);
   }
 
   // Prisma Error Masking (OWASP: Prevent Database Schema & Column Leakage)
   if (error.name === 'PrismaClientKnownRequestError' || error.code?.startsWith?.('P')) {
-    switch (error.code) {
-      case 'P2002': {
-        // Unique constraint violation
-        return reply.status(409).send({
-          success: false,
-          error: {
-            code: 'CONFLICT',
-            message: 'A record with the specified identifier or unique field already exists.',
-          },
-          timestamp: new Date().toISOString(),
-          path: request.url,
-        });
-      }
-      case 'P2025': {
-        // Record not found
-        return reply.status(404).send({
-          success: false,
-          error: {
-            code: 'NOT_FOUND',
-            message: 'The requested record was not found or has been removed.',
-          },
-          timestamp: new Date().toISOString(),
-          path: request.url,
-        });
-      }
-      case 'P2003': {
-        // Foreign key constraint failed
-        return reply.status(400).send({
-          success: false,
-          error: {
-            code: 'FOREIGN_KEY_VIOLATION',
-            message: 'Invalid relational reference provided. Related entity does not exist.',
-          },
-          timestamp: new Date().toISOString(),
-          path: request.url,
-        });
-      }
-      case 'P2014': {
-        // Required relation violation
-        return reply.status(400).send({
-          success: false,
-          error: {
-            code: 'RELATION_VIOLATION',
-            message: 'The requested change violates a required relational dependency.',
-          },
-          timestamp: new Date().toISOString(),
-          path: request.url,
-        });
-      }
-      case 'P2000': {
-        // Value out of range
-        return reply.status(400).send({
-          success: false,
-          error: {
-            code: 'VALUE_OUT_OF_RANGE',
-            message: 'Provided input value exceeds allowable system limits.',
-          },
-          timestamp: new Date().toISOString(),
-          path: request.url,
-        });
-      }
-      default: {
-        return reply.status(400).send({
-          success: false,
-          error: {
-            code: 'DATABASE_OPERATION_ERROR',
-            message: 'Unable to complete database operation due to data constraints.',
-          },
-          timestamp: new Date().toISOString(),
-          path: request.url,
-        });
-      }
-    }
+    const mapped = PRISMA_ERRORS[error.code] || [400, 'DATABASE_OPERATION_ERROR', 'Unable to complete database operation due to data constraints.'];
+    return sendApiError(reply, request, mapped[0], mapped[1], mapped[2]);
   }
 
-  // Prisma Client Validation Error (e.g. invalid type passed into Prisma)
   if (error.name === 'PrismaClientValidationError') {
-    return reply.status(400).send({
-      success: false,
-      error: {
-        code: 'VALIDATION_ERROR',
-        message: 'Invalid data format provided for entity fields.',
-      },
-      timestamp: new Date().toISOString(),
-      path: request.url,
-    });
+    return sendApiError(reply, request, 400, 'VALIDATION_ERROR', 'Invalid data format provided for entity fields.');
   }
 
   // Fallback 500 error (completely masked in production, sanitized in dev)
   const statusCode = (error as FastifyError).statusCode || 500;
-  return reply.status(statusCode).send({
-    success: false,
-    error: {
-      code: 'INTERNAL_SERVER_ERROR',
-      message: process.env.NODE_ENV === 'production' ? 'An unexpected internal server error occurred' : error.message,
-    },
-    timestamp: new Date().toISOString(),
-    path: request.url,
-  });
+  const message = process.env.NODE_ENV === 'production' ? 'An unexpected internal server error occurred' : error.message;
+  return sendApiError(reply, request, statusCode, 'INTERNAL_SERVER_ERROR', message);
 }
 

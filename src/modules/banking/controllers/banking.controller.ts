@@ -1,9 +1,13 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { bankingService, BankStatementItem, ReconcileTransactionInput } from '../services/banking.service';
 
+function tenantOf(req: FastifyRequest) {
+  return ((req as any).tenantId || req.headers['x-tenant-id'] || 'tenant-default-01') as string;
+}
+
 export class BankingController {
   async getBankLedgers(req: FastifyRequest, reply: FastifyReply) {
-    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
+    const tenantId = tenantOf(req);
     const ledgers = await bankingService.getBankLedgers(tenantId);
     return reply.send({ success: true, data: ledgers });
   }
@@ -19,7 +23,7 @@ export class BankingController {
       openingBalance?: number;
     }
   }>, reply: FastifyReply) {
-    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
+    const tenantId = tenantOf(req);
     const result = await bankingService.createBankLedger(tenantId, req.body);
     return reply.send(result);
   }
@@ -32,7 +36,7 @@ export class BankingController {
       syncFrequency?: string;
     }
   }>, reply: FastifyReply) {
-    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
+    const tenantId = tenantOf(req);
     const result = await bankingService.linkBankFeed(tenantId, req.body);
     return reply.send(result);
   }
@@ -40,7 +44,7 @@ export class BankingController {
   async syncFeed(req: FastifyRequest<{
     Body: { ledgerId: string }
   }>, reply: FastifyReply) {
-    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
+    const tenantId = tenantOf(req);
     const { ledgerId } = req.body;
     if (!ledgerId) return reply.status(400).send({ error: 'ledgerId is required' });
     const result = await bankingService.syncBankFeed(tenantId, ledgerId);
@@ -50,7 +54,7 @@ export class BankingController {
   async getBankTransactions(req: FastifyRequest<{
     Querystring: { ledgerId?: string; startDate?: string; endDate?: string }
   }>, reply: FastifyReply) {
-    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
+    const tenantId = tenantOf(req);
     const { ledgerId, startDate, endDate } = req.query;
 
     let targetLedgerId: string = ledgerId || '';
@@ -66,7 +70,7 @@ export class BankingController {
   async uploadStatement(req: FastifyRequest<{
     Body: { ledgerId: string; statement: BankStatementItem[]; fileName?: string }
   }>, reply: FastifyReply) {
-    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
+    const tenantId = tenantOf(req);
     const { ledgerId, statement, fileName } = req.body;
 
     if (!ledgerId || !Array.isArray(statement)) {
@@ -80,7 +84,7 @@ export class BankingController {
   async getStoredStatement(req: FastifyRequest<{
     Querystring: { ledgerId?: string }
   }>, reply: FastifyReply) {
-    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
+    const tenantId = tenantOf(req);
     const { ledgerId } = req.query;
 
     let targetLedgerId: string = ledgerId || '';
@@ -96,7 +100,7 @@ export class BankingController {
   async getStatementBatches(req: FastifyRequest<{
     Querystring: { ledgerId?: string }
   }>, reply: FastifyReply) {
-    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
+    const tenantId = tenantOf(req);
     const { ledgerId } = req.query;
     let targetLedgerId: string = ledgerId || 'ldg_hdfc_01';
     const data = await bankingService.getStatementBatches(tenantId, targetLedgerId);
@@ -106,7 +110,7 @@ export class BankingController {
   async autoReconcile(req: FastifyRequest<{
     Body: { ledgerId: string }
   }>, reply: FastifyReply) {
-    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
+    const tenantId = tenantOf(req);
     const { ledgerId } = req.body;
 
     if (!ledgerId) {
@@ -127,7 +131,7 @@ export class BankingController {
   async getBrsReport(req: FastifyRequest<{
     Querystring: { ledgerId?: string; asOfDate?: string; statementBalance?: string }
   }>, reply: FastifyReply) {
-    const tenantId = (req as any).tenantId || req.headers['x-tenant-id'] as string || 'tenant-default-01';
+    const tenantId = tenantOf(req);
     const { ledgerId, asOfDate, statementBalance } = req.query;
 
     let targetLedgerId: string = ledgerId || '';
