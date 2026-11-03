@@ -4,7 +4,7 @@ on:
     branches: main
     paths-ignore:
       - "client/**"
-      - ".github/workflows/prod-frontend"
+      - ".github/workflows/prod-frontend.yml"
     
 permissions:
   contents: read
