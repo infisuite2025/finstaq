@@ -1,27 +1,33 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { prisma } from '../../../core/database/prisma';
 
-// GSTIN State Map (First 2 digits)
-const GSTIN_STATE_MAP: Record<string, { name: string; zone: string; ewayThreshold: number }> = {
-  '01': { name: 'Jammu & Kashmir', zone: 'North', ewayThreshold: 50000 },
-  '02': { name: 'Himachal Pradesh', zone: 'North', ewayThreshold: 50000 },
-  '03': { name: 'Punjab', zone: 'North', ewayThreshold: 50000 },
-  '04': { name: 'Chandigarh', zone: 'North', ewayThreshold: 50000 },
-  '05': { name: 'Uttarakhand', zone: 'North', ewayThreshold: 50000 },
-  '06': { name: 'Haryana', zone: 'North', ewayThreshold: 50000 },
-  '07': { name: 'Delhi', zone: 'North', ewayThreshold: 100000 },
-  '08': { name: 'Rajasthan', zone: 'North', ewayThreshold: 50000 },
-  '09': { name: 'Uttar Pradesh', zone: 'North', ewayThreshold: 50000 },
-  '10': { name: 'Bihar', zone: 'East', ewayThreshold: 50000 },
-  '19': { name: 'West Bengal', zone: 'East', ewayThreshold: 100000 },
-  '24': { name: 'Gujarat', zone: 'West', ewayThreshold: 100000 },
-  '27': { name: 'Maharashtra', zone: 'West', ewayThreshold: 100000 },
-  '29': { name: 'Karnataka', zone: 'South', ewayThreshold: 50000 },
-  '32': { name: 'Kerala', zone: 'South', ewayThreshold: 50000 },
-  '33': { name: 'Tamil Nadu', zone: 'South', ewayThreshold: 100000 },
-  '36': { name: 'Telangana', zone: 'South', ewayThreshold: 50000 },
-  '37': { name: 'Andhra Pradesh', zone: 'South', ewayThreshold: 50000 },
-};
+const GSTIN_STATE_ROWS = `
+01|Jammu & Kashmir|North|50000
+02|Himachal Pradesh|North|50000
+03|Punjab|North|50000
+04|Chandigarh|North|50000
+05|Uttarakhand|North|50000
+06|Haryana|North|50000
+07|Delhi|North|100000
+08|Rajasthan|North|50000
+09|Uttar Pradesh|North|50000
+10|Bihar|East|50000
+19|West Bengal|East|100000
+24|Gujarat|West|100000
+27|Maharashtra|West|100000
+29|Karnataka|South|50000
+32|Kerala|South|50000
+33|Tamil Nadu|South|100000
+36|Telangana|South|50000
+37|Andhra Pradesh|South|50000
+`.trim();
+
+const GSTIN_STATE_MAP: Record<string, { name: string; zone: string; ewayThreshold: number }> = Object.fromEntries(
+  GSTIN_STATE_ROWS.split('\n').map((row) => {
+    const [code, name, zone, threshold] = row.split('|');
+    return [code, { name, zone, ewayThreshold: Number(threshold) }];
+  })
+);
 
 export interface IndustryStarterPack {
   id: string;
@@ -35,144 +41,100 @@ export interface IndustryStarterPack {
   sampleItems: { name: string; sku: string; hsn: string; uom: string; rate: number }[];
 }
 
-export const INDUSTRY_STARTER_PACKS: IndustryStarterPack[] = [
-  {
-    id: 'MANUFACTURING',
-    name: 'Manufacturing & Discrete Assembly',
-    description: 'BOM management, raw material stores, WIP production journals, plant & machinery depreciation, and Job Work Form ITC-04 compliance.',
-    badge: 'Heavy & Light Industry',
-    icon: 'Factory',
-    recommendedFor: 'Auto-components, industrial fabrication, chemicals, machinery, plastic molding',
-    features: [
-      'Multi-tier Bills of Materials (BOM)',
-      'Raw Material & Finished Goods Godowns',
-      'Factory Overhead & Direct Labor Accounts',
-      'Job Work Inward / Outward Subcontracting',
-      'FIFO Batch & Lot-wise Stock Costing',
-    ],
-    sampleLedgers: [
-      { name: 'Raw Materials Inventory', group: 'Current Assets', nature: 'ASSET' },
-      { name: 'Work-in-Progress (WIP) Account', group: 'Current Assets', nature: 'ASSET' },
-      { name: 'Finished Goods Inventory', group: 'Current Assets', nature: 'ASSET' },
-      { name: 'Factory Power & Fuel Expense', group: 'Direct Expenses', nature: 'EXPENSE' },
-      { name: 'Direct Factory Labor Wages', group: 'Direct Expenses', nature: 'EXPENSE' },
-      { name: 'Plant, Machinery & Equipment', group: 'Fixed Assets', nature: 'ASSET' },
-      { name: 'Job Work Outward Expense', group: 'Direct Expenses', nature: 'EXPENSE' },
-    ],
-    sampleItems: [
-      { name: 'Deep Groove Ball Bearing 6205-ZZ', sku: 'BRG-6205', hsn: '84821010', uom: 'NOS', rate: 480 },
-      { name: 'Alloy Steel Forging Rod EN8D (50mm)', sku: 'STL-EN8', hsn: '72283000', uom: 'MT', rate: 50000 },
-      { name: 'High-Precision CNC Flange Assembly M24', sku: 'FLG-M24', hsn: '84818090', uom: 'NOS', rate: 8500 },
-    ],
-  },
-  {
-    id: 'TRADING_WHOLESALE',
-    name: 'Trading & Wholesale Distribution',
-    description: 'Wholesale sales registers, multi-godown stock transfers, purchase bill booking, debtor ageing, and automated bill-by-bill reconciliation.',
-    badge: 'B2B & Distribution',
-    icon: 'Boxes',
-    recommendedFor: 'FMCG distributors, hardware merchants, pharma stockists, electrical traders',
-    features: [
-      'Multi-Location Godowns (Main / Transit / Regional)',
-      'Open Bill-by-Bill Customer Ageing (0-30, 31-60, 60+)',
-      'Sales Orders to Delivery Challan Workflow',
-      'Vendor Rate Contracts & Price Lists',
-      'GST E-Way Bill 1-Click Payload Preparation',
-    ],
-    sampleLedgers: [
-      { name: 'Stock-in-Trade (Wholesale)', group: 'Current Assets', nature: 'ASSET' },
-      { name: 'Domestic Wholesale Sales A/c', group: 'Sales Accounts', nature: 'INCOME' },
-      { name: 'Inward Goods Purchase A/c', group: 'Purchase Accounts', nature: 'EXPENSE' },
-      { name: 'Freight Inward Logistics', group: 'Direct Expenses', nature: 'EXPENSE' },
-      { name: 'Godown Rent & Maintenance', group: 'Indirect Expenses', nature: 'EXPENSE' },
-      { name: 'Trade Discounts & Rebates Allowed', group: 'Indirect Expenses', nature: 'EXPENSE' },
-    ],
-    sampleItems: [
-      { name: 'Industrial Servo Hydraulic Oil 68 (200L)', sku: 'OIL-HYD-68', hsn: '27101990', uom: 'LTR', rate: 220 },
-      { name: 'Corrugated Master Packaging Boxes 7-Ply', sku: 'BOX-7PLY', hsn: '48191010', uom: 'BOX', rate: 45 },
-    ],
-  },
-  {
-    id: 'SOFTWARE_SAAS',
-    name: 'Software, Tech & SaaS Enterprises',
-    description: 'Recurring subscription MRR, deferred revenue recognition, AWS/GCP cloud expenses, developer compensation, and AS 11 Foreign Exchange management.',
-    badge: 'SaaS & Digital Tech',
-    icon: 'Laptop',
-    recommendedFor: 'SaaS platforms, IT exporters, AI startups, cloud consultancies',
-    features: [
-      'Recurring Subscription & Deferred Revenue Sched III',
-      'Export of Services with Zero-Rated GST / LUT',
-      'Multi-Currency Invoicing & Real-time FX Gain/Loss',
-      'Cloud Hosting & Infra Expense Sub-allocation',
-      'EPFO / ESIC / Professional Tax Payroll Integration',
-    ],
-    sampleLedgers: [
-      { name: 'SaaS Subscription Revenue (Domestic)', group: 'Sales Accounts', nature: 'INCOME' },
-      { name: 'Export Software Development Services (LUT)', group: 'Sales Accounts', nature: 'INCOME' },
-      { name: 'AWS Cloud Infrastructure & Server Hosting', group: 'Indirect Expenses', nature: 'EXPENSE' },
-      { name: 'Software Developer Salaries & Incentives', group: 'Indirect Expenses', nature: 'EXPENSE' },
-      { name: 'Foreign Exchange Fluctuation Gain/Loss', group: 'Direct Incomes', nature: 'INCOME' },
-      { name: 'Deferred Subscription Revenue Liability', group: 'Current Liabilities', nature: 'LIABILITY' },
-    ],
-    sampleItems: [
-      { name: 'Enterprise Cloud SaaS License (Annual)', sku: 'SAAS-ENT-YR', hsn: '998313', uom: 'NOS', rate: 120000 },
-      { name: 'AI Custom Model Fine-Tuning & Integration', sku: 'SVC-AI-DEV', hsn: '998314', uom: 'HRS', rate: 3500 },
-    ],
-  },
-  {
-    id: 'SERVICES_EPC',
-    name: 'Consulting, EPC & Project Contracting',
-    description: 'Cost center job-costing, milestone billing, contractor TDS u/s 194C, professional TDS u/s 194J, and reimbursable expense tracking.',
-    badge: 'EPC & Professional',
-    icon: 'Layers',
-    recommendedFor: 'Architects, EPC contractors, legal firms, management consultancies',
-    features: [
-      'Cost Center & Project-wise P&L Breakup',
-      'Milestone Progress Billing with Retention Money',
-      'Statutory Form 26Q TDS Deductions (194C, 194J, 194I)',
-      'Subcontractor Work Orders & Measurement Books',
-      'Client Escrow & Advance Ledger Accounts',
-    ],
-    sampleLedgers: [
-      { name: 'Professional & Technical Services Revenue', group: 'Sales Accounts', nature: 'INCOME' },
-      { name: 'Sub-Contractor Processing Charges', group: 'Direct Expenses', nature: 'EXPENSE' },
-      { name: 'Site Mobilization & Travel Expenses', group: 'Indirect Expenses', nature: 'EXPENSE' },
-      { name: 'TDS Deducted by Clients (Asset)', group: 'Current Assets', nature: 'ASSET' },
-      { name: 'TDS Payable u/s 194J (Professional)', group: 'Duties & Taxes', nature: 'LIABILITY' },
-      { name: 'Retention Money Held by Customers', group: 'Current Assets', nature: 'ASSET' },
-    ],
-    sampleItems: [
-      { name: 'Turnkey EPC Project Management Consultation', sku: 'SVC-EPC-MGT', hsn: '998331', uom: 'NOS', rate: 250000 },
-      { name: 'Civil & Structural Design Verification Service', sku: 'SVC-STR-ENG', hsn: '998332', uom: 'NOS', rate: 75000 },
-    ],
-  },
-  {
-    id: 'RETAIL_ECOMMERCE',
-    name: 'Retail, D2C & Omnichannel E-Commerce',
-    description: 'High-volume point-of-sale receipting, dynamic NPCI UPI QR settlements, inventory SKUs with barcode mapping, and consumer return credits.',
-    badge: 'Retail & D2C',
-    icon: 'ShoppingBag',
-    recommendedFor: 'Supermarkets, apparel chains, D2C brands, electronics retailers',
-    features: [
-      'Instant NPCI Dynamic UPI QR Codes',
-      'SKU Master with HSN Barcode Compatibility',
-      'Payment Gateway Settlement Reconciler',
-      'Point of Sale (POS) Fast Voucher Entry',
-      'Credit Note Reversals for Customer Returns',
-    ],
-    sampleLedgers: [
-      { name: 'Retail Counter Cash Sales A/c', group: 'Sales Accounts', nature: 'INCOME' },
-      { name: 'E-Commerce Online Portal Sales A/c', group: 'Sales Accounts', nature: 'INCOME' },
-      { name: 'Payment Gateway Charges (Razorpay/Stripe)', group: 'Indirect Expenses', nature: 'EXPENSE' },
-      { name: 'D2C Courier Logistics & Shipping Cost', group: 'Selling & Distribution', nature: 'EXPENSE' },
-      { name: 'UPI Collections Clearing Ledger', group: 'Bank Accounts', nature: 'ASSET' },
-    ],
-    sampleItems: [
-      { name: 'Premium Cotton Apparel Crew Neck Tee', sku: 'APP-CTN-TEE', hsn: '61091000', uom: 'PCS', rate: 999 },
-      { name: 'Stainless Steel Insulated Thermal Flask (1L)', sku: 'HOM-FLSK-1L', hsn: '73239390', uom: 'NOS', rate: 1450 },
-    ],
-  },
-];
+const STARTER_PACK_ROWS = `
+P|MANUFACTURING|Manufacturing & Discrete Assembly|BOM management, raw material stores, WIP production journals, plant & machinery depreciation, and Job Work Form ITC-04 compliance.|Heavy & Light Industry|Factory|Auto-components, industrial fabrication, chemicals, machinery, plastic molding
+F|Multi-tier Bills of Materials (BOM)
+F|Raw Material & Finished Goods Godowns
+F|Factory Overhead & Direct Labor Accounts
+F|Job Work Inward / Outward Subcontracting
+F|FIFO Batch & Lot-wise Stock Costing
+L|Raw Materials Inventory|Current Assets|ASSET
+L|Work-in-Progress (WIP) Account|Current Assets|ASSET
+L|Finished Goods Inventory|Current Assets|ASSET
+L|Factory Power & Fuel Expense|Direct Expenses|EXPENSE
+L|Direct Factory Labor Wages|Direct Expenses|EXPENSE
+L|Plant, Machinery & Equipment|Fixed Assets|ASSET
+L|Job Work Outward Expense|Direct Expenses|EXPENSE
+I|Deep Groove Ball Bearing 6205-ZZ|BRG-6205|84821010|NOS|480
+I|Alloy Steel Forging Rod EN8D (50mm)|STL-EN8|72283000|MT|50000
+I|High-Precision CNC Flange Assembly M24|FLG-M24|84818090|NOS|8500
+P|TRADING_WHOLESALE|Trading & Wholesale Distribution|Wholesale sales registers, multi-godown stock transfers, purchase bill booking, debtor ageing, and automated bill-by-bill reconciliation.|B2B & Distribution|Boxes|FMCG distributors, hardware merchants, pharma stockists, electrical traders
+F|Multi-Location Godowns (Main / Transit / Regional)
+F|Open Bill-by-Bill Customer Ageing (0-30, 31-60, 60+)
+F|Sales Orders to Delivery Challan Workflow
+F|Vendor Rate Contracts & Price Lists
+F|GST E-Way Bill 1-Click Payload Preparation
+L|Stock-in-Trade (Wholesale)|Current Assets|ASSET
+L|Domestic Wholesale Sales A/c|Sales Accounts|INCOME
+L|Inward Goods Purchase A/c|Purchase Accounts|EXPENSE
+L|Freight Inward Logistics|Direct Expenses|EXPENSE
+L|Godown Rent & Maintenance|Indirect Expenses|EXPENSE
+L|Trade Discounts & Rebates Allowed|Indirect Expenses|EXPENSE
+I|Industrial Servo Hydraulic Oil 68 (200L)|OIL-HYD-68|27101990|LTR|220
+I|Corrugated Master Packaging Boxes 7-Ply|BOX-7PLY|48191010|BOX|45
+P|SOFTWARE_SAAS|Software, Tech & SaaS Enterprises|Recurring subscription MRR, deferred revenue recognition, AWS/GCP cloud expenses, developer compensation, and AS 11 Foreign Exchange management.|SaaS & Digital Tech|Laptop|SaaS platforms, IT exporters, AI startups, cloud consultancies
+F|Recurring Subscription & Deferred Revenue Sched III
+F|Export of Services with Zero-Rated GST / LUT
+F|Multi-Currency Invoicing & Real-time FX Gain/Loss
+F|Cloud Hosting & Infra Expense Sub-allocation
+F|EPFO / ESIC / Professional Tax Payroll Integration
+L|SaaS Subscription Revenue (Domestic)|Sales Accounts|INCOME
+L|Export Software Development Services (LUT)|Sales Accounts|INCOME
+L|AWS Cloud Infrastructure & Server Hosting|Indirect Expenses|EXPENSE
+L|Software Developer Salaries & Incentives|Indirect Expenses|EXPENSE
+L|Foreign Exchange Fluctuation Gain/Loss|Direct Incomes|INCOME
+L|Deferred Subscription Revenue Liability|Current Liabilities|LIABILITY
+I|Enterprise Cloud SaaS License (Annual)|SAAS-ENT-YR|998313|NOS|120000
+I|AI Custom Model Fine-Tuning & Integration|SVC-AI-DEV|998314|HRS|3500
+P|SERVICES_EPC|Consulting, EPC & Project Contracting|Cost center job-costing, milestone billing, contractor TDS u/s 194C, professional TDS u/s 194J, and reimbursable expense tracking.|EPC & Professional|Layers|Architects, EPC contractors, legal firms, management consultancies
+F|Cost Center & Project-wise P&L Breakup
+F|Milestone Progress Billing with Retention Money
+F|Statutory Form 26Q TDS Deductions (194C, 194J, 194I)
+F|Subcontractor Work Orders & Measurement Books
+F|Client Escrow & Advance Ledger Accounts
+L|Professional & Technical Services Revenue|Sales Accounts|INCOME
+L|Sub-Contractor Processing Charges|Direct Expenses|EXPENSE
+L|Site Mobilization & Travel Expenses|Indirect Expenses|EXPENSE
+L|TDS Deducted by Clients (Asset)|Current Assets|ASSET
+L|TDS Payable u/s 194J (Professional)|Duties & Taxes|LIABILITY
+L|Retention Money Held by Customers|Current Assets|ASSET
+I|Turnkey EPC Project Management Consultation|SVC-EPC-MGT|998331|NOS|250000
+I|Civil & Structural Design Verification Service|SVC-STR-ENG|998332|NOS|75000
+P|RETAIL_ECOMMERCE|Retail, D2C & Omnichannel E-Commerce|High-volume point-of-sale receipting, dynamic NPCI UPI QR settlements, inventory SKUs with barcode mapping, and consumer return credits.|Retail & D2C|ShoppingBag|Supermarkets, apparel chains, D2C brands, electronics retailers
+F|Instant NPCI Dynamic UPI QR Codes
+F|SKU Master with HSN Barcode Compatibility
+F|Payment Gateway Settlement Reconciler
+F|Point of Sale (POS) Fast Voucher Entry
+F|Credit Note Reversals for Customer Returns
+L|Retail Counter Cash Sales A/c|Sales Accounts|INCOME
+L|E-Commerce Online Portal Sales A/c|Sales Accounts|INCOME
+L|Payment Gateway Charges (Razorpay/Stripe)|Indirect Expenses|EXPENSE
+L|D2C Courier Logistics & Shipping Cost|Selling & Distribution|EXPENSE
+L|UPI Collections Clearing Ledger|Bank Accounts|ASSET
+I|Premium Cotton Apparel Crew Neck Tee|APP-CTN-TEE|61091000|PCS|999
+I|Stainless Steel Insulated Thermal Flask (1L)|HOM-FLSK-1L|73239390|NOS|1450
+`.trim();
+
+function loadStarterPacks(source: string): IndustryStarterPack[] {
+  const packs: IndustryStarterPack[] = [];
+  let current: IndustryStarterPack | null = null;
+  for (const line of source.split('\n')) {
+    const [kind, ...parts] = line.split('|');
+    if (kind === 'P') {
+      current = { id: parts[0], name: parts[1], description: parts[2], badge: parts[3], icon: parts[4], recommendedFor: parts[5], features: [], sampleLedgers: [], sampleItems: [] };
+      packs.push(current);
+    } else if (current && kind === 'F') {
+      current.features.push(parts[0]);
+    } else if (current && kind === 'L') {
+      current.sampleLedgers.push({ name: parts[0], group: parts[1], nature: parts[2] });
+    } else if (current && kind === 'I') {
+      current.sampleItems.push({ name: parts[0], sku: parts[1], hsn: parts[2], uom: parts[3], rate: Number(parts[4]) });
+    }
+  }
+  return packs;
+}
+
+export const INDUSTRY_STARTER_PACKS: IndustryStarterPack[] = loadStarterPacks(STARTER_PACK_ROWS);
 
 function serverError(reply: FastifyReply, err: unknown) {
   const message = err instanceof Error ? err.message : 'Request failed';
