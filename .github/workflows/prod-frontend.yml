@@ -4,6 +4,7 @@ on:
     branches: main
     paths:
       - "client/**"
+      - ".github/workflows/prod-frontend.yml"
       
 defaults:
   run:
