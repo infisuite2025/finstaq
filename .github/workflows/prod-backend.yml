@@ -4,6 +4,7 @@ on:
     branches: main
     paths-ignore:
       - "client/**"
+      - ".github/workflows/prod-frontend.yml"
     
 permissions:
   contents: read
@@ -125,5 +126,6 @@ jobs:
             # image tag changing
             cd /home/ubuntu/applications/finstaq
             sed -E -i "s/(^[[:blank:]]*image.*finstaq-backend:)(.*)/\1${{ env.SHORT_SHA }}/" docker-compose.yml || echo 'image tag not changed'
-            docker compose pull || echo 'pull failed'
-            docker compose down && docker compose up -d && echo 'deployed successfully'  
+            docker compose pull backend
+            docker compose up -d --force-recreate backend
+            echo 'deployed successfully'
