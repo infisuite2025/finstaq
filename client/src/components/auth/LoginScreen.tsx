@@ -128,6 +128,14 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
     e.preventDefault();
     setError(null);
 
+    if (!subdomain.trim()) {
+      setError('Company code is required');
+      return;
+    }
+    if (!tenantGstin.trim()) {
+      setError('GSTIN is required');
+      return;
+    }
     if (!email.trim() || !email.includes('@')) {
       setError('Please enter a valid business email address');
       return;
@@ -146,7 +154,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
         body: JSON.stringify({
           email: email.trim(),
           password,
-          subdomain: selectedRole === 'SUPER_ADMIN' ? 'admin' : subdomain.trim(),
+          subdomain: subdomain.trim(),
+          gstin: tenantGstin.trim(),
         }),
       });
       const data = await res.json();
@@ -379,6 +388,33 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Company code
+                </label>
+                <input
+                  type="text"
+                  autoComplete="off"
+                  value={subdomain}
+                  onChange={(e) => setSubdomain(e.target.value)}
+                  placeholder="apex"
+                  disabled={isSubdomainLocked}
+                  className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none disabled:opacity-70"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  Company GSTIN
+                </label>
+                <input
+                  type="text"
+                  autoComplete="off"
+                  value={tenantGstin}
+                  onChange={(e) => setTenantGstin(e.target.value)}
+                  placeholder="27AABCF1234F1Z5"
+                  className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none"
+                />
+              </div>
               {/* Email / Username */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
@@ -536,6 +572,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
                   </>
                 )}
               </button>
+              <p className="text-center text-xs text-slate-500 pt-3">
+                By signing in, you agree to our{' '}
+                <a href="/privacy.html" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">Privacy Policy</a>
+              </p>
             </form>
 
             {/* Microsoft sign-in is hidden until an app registration exists.

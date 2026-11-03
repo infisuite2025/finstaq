@@ -5,8 +5,8 @@ import { createWorkspaceUser, listWorkspaceUsers, loginWithPassword } from './au
 
 export async function authRoutes(fastify: FastifyInstance) {
   fastify.post('/auth/login', async (request, reply) => {
-    const body = (request.body || {}) as { email?: string; password?: string; subdomain?: string };
-    const session = await loginWithPassword(body.email || '', body.password || '', body.subdomain);
+    const body = (request.body || {}) as { email?: string; password?: string; subdomain?: string; gstin?: string };
+    const session = await loginWithPassword(body.email || '', body.password || '', body.subdomain, body.gstin);
     const token = await reply.jwtSign({
       userId: session.userId,
       tenantId: session.tenantId,

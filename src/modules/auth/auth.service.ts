@@ -93,13 +93,20 @@ export interface LoginResult {
   suspendedReason?: string;
 }
 
-export async function loginWithPassword(emailRaw: string, password: string, subdomainRaw?: string): Promise<LoginResult> {
+export async function loginWithPassword(emailRaw: string, password: string, subdomainRaw?: string, gstinRaw?: string): Promise<LoginResult> {
   const email = emailRaw.trim().toLowerCase();
+  const subdomain = (subdomainRaw || '').trim().toLowerCase();
+  const gstin = (gstinRaw || '').trim().toUpperCase();
   if (!email.includes('@')) throw new ValidationError('Enter a valid email address');
   if (!password || password.length < 6) throw new ValidationError('Password must be at least 6 characters');
+  if (!subdomain) throw new ValidationError('Company code is required');
+  if (!gstin) throw new ValidationError('GSTIN is required');
 
   if (email === 'superadmin@finstaq.com') {
     if (password !== DEMO_PASSWORD) throw new UnauthorizedError('Email or password is incorrect');
+    if (subdomain !== 'admin' || gstin !== 'PLATFORM_SUPER_ADMIN') {
+      throw new UnauthorizedError('This user does not belong to that workspace');
+    }
     return {
       email,
       role: 'SUPER_ADMIN',
@@ -125,12 +132,15 @@ export async function loginWithPassword(emailRaw: string, password: string, subd
 
   const linked = await superAdminService.getTenantById(user.tenantId);
   const expectedWorkspace = EMAIL_WORKSPACE[email] || linked?.subdomain;
-  const subdomain = (subdomainRaw || expectedWorkspace || 'apex').trim().toLowerCase();
   if (expectedWorkspace && subdomain !== expectedWorkspace) {
     throw new UnauthorizedError('This user does not belong to that workspace');
   }
 
   const workspace = await superAdminService.getTenantBySubdomain(subdomain);
+  const expectedGstin = (workspace?.gstin || '').trim().toUpperCase();
+  if (!workspace || !expectedGstin || gstin !== expectedGstin) {
+    throw new UnauthorizedError('GSTIN does not match this company');
+  }
   return {
     email: user.email,
     role: user.role,

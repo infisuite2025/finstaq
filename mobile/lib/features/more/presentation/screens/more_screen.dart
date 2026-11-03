@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/colors.dart';
+import '../../../../screens/privacy_policy_screen.dart';
 import 'api_module_screen.dart';
 
 class MoreScreen extends StatelessWidget {
@@ -24,8 +25,49 @@ class MoreScreen extends StatelessWidget {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: modules.length,
+        itemCount: modules.length + 1,
         itemBuilder: (context, index) {
+          if (index == modules.length) {
+            return InkWell(
+              borderRadius: BorderRadius.circular(18),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen()));
+              },
+              child: Container(
+                margin: const EdgeInsets.only(top: 4),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: isDark ? FinstaqColors.darkCard : Colors.white,
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(color: isDark ? FinstaqColors.darkBorder : FinstaqColors.lightBorder),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: FinstaqColors.primaryBlue.withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: const Icon(Icons.shield_outlined, color: FinstaqColors.primaryBlue, size: 24),
+                    ),
+                    const SizedBox(width: 14),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Privacy Policy', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 14)),
+                          SizedBox(height: 2),
+                          Text('How this app stores company and login data', style: TextStyle(fontSize: 11, color: Colors.grey)),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.chevron_right, color: Colors.grey, size: 20),
+                  ],
+                ),
+              ),
+            );
+          }
           final m = modules[index];
           final color = m['color'] as Color;
 

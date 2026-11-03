@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../app.dart';
+import 'privacy_policy_screen.dart';
 import '../services/api_service.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -148,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    validator: (v) => null,
+                    validator: (v) => v == null || v.trim().isEmpty ? 'Company code is required' : null,
                   ),
                   const SizedBox(height: 16),
 
@@ -167,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    validator: (v) => null,
+                    validator: (v) => v == null || v.trim().isEmpty ? 'GSTIN is required' : null,
                   ),
                   const SizedBox(height: 16),
 
@@ -243,6 +244,36 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.white,
                           ),
                         ),
+                  ),
+                  const SizedBox(height: 22),
+                  Center(
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        const Text(
+                          'By signing in, you agree to our ',
+                          style: TextStyle(color: Color(0xFF94A3B8), fontSize: 12, height: 1.4),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen()),
+                            );
+                          },
+                          child: const Text(
+                            'Privacy Policy',
+                            style: TextStyle(
+                              color: Color(0xFF93C5FD),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              decoration: TextDecoration.underline,
+                              decorationColor: Color(0xFF93C5FD),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

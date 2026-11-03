@@ -132,6 +132,7 @@ class ApiService {
             'email': email.trim(),
             'password': password,
             'subdomain': subdomain.trim(),
+            'gstin': tenantId.trim(),
           }),
         )
         .timeout(const Duration(seconds: 20));
