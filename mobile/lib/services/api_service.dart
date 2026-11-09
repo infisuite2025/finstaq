@@ -14,14 +14,21 @@ class ApiService {
 
   static String? _authToken;
   static String? _tenantId;
+  static String? _tenantName;
   static String? _userId;
   static String _role = 'OWNER';
   static bool _loggedIn = false;
+
+  static String get role => _role;
+  static String get tenantName =>
+      (_tenantName == null || _tenantName!.trim().isEmpty) ? 'Infisuite Finance' : _tenantName!.trim();
+  static bool get isSuperAdmin => _role == 'SUPER_ADMIN';
 
   static Future<void> initialize() async {
     final prefs = await SharedPreferences.getInstance();
     _authToken = prefs.getString('auth_token');
     _tenantId = prefs.getString('tenant_id');
+    _tenantName = prefs.getString('tenant_name');
     _userId = prefs.getString('user_email');
     _role = prefs.getString('user_role') ?? 'OWNER';
     _loggedIn = prefs.getBool('logged_in') ?? false;
@@ -120,7 +127,7 @@ class ApiService {
     await _findServer();
     if (!await _serverReachable()) {
       throw ApiException(
-        'Cannot reach the Infisuite Finance server. The phone must be on the same Wi-Fi as this PC, or use USB with adb reverse.',
+        'Cannot reach the Infisuite Finance server. Check your internet connection and try again.',
       );
     }
 
@@ -144,6 +151,7 @@ class ApiService {
 
     _authToken = data['token']?.toString();
     _tenantId = data['tenantId']?.toString() ?? tenantId.trim();
+    _tenantName = data['tenantName']?.toString();
     _userId = data['userId']?.toString() ?? email.trim();
     _role = data['role']?.toString() ?? role;
     _loggedIn = true;
@@ -151,6 +159,11 @@ class ApiService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('logged_in', true);
     await prefs.setString('tenant_id', _tenantId!);
+    if (_tenantName != null && _tenantName!.trim().isNotEmpty) {
+      await prefs.setString('tenant_name', _tenantName!.trim());
+    } else {
+      await prefs.remove('tenant_name');
+    }
     await prefs.setString('user_email', email.trim());
     await prefs.setString('user_role', _role);
     if (_authToken != null) await prefs.setString('auth_token', _authToken!);
@@ -162,11 +175,14 @@ class ApiService {
   static Future<void> logout() async {
     _authToken = null;
     _tenantId = null;
+    _tenantName = null;
     _userId = null;
+    _role = 'OWNER';
     _loggedIn = false;
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('auth_token');
     await prefs.remove('tenant_id');
+    await prefs.remove('tenant_name');
     await prefs.remove('user_email');
     await prefs.remove('user_role');
     await prefs.setBool('logged_in', false);
@@ -182,11 +198,12 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return DashboardSummary.fromJson(data['data']);
+        final payload = data is Map && data['data'] is Map ? data['data'] as Map<String, dynamic> : null;
+        if (payload != null) return DashboardSummary.fromJson(payload);
       }
-      return DashboardSummary.mock();
+      return DashboardSummary.empty();
     } catch (_) {
-      return DashboardSummary.mock();
+      return DashboardSummary.empty();
     }
   }
 
@@ -208,25 +225,13 @@ class ApiService {
       final response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode == 201 || response.statusCode == 200) {
-        return jsonDecode(response.body);
+        return jsonDecode(response.body) as Map<String, dynamic>;
       }
+      throw ApiException('Upload failed (${response.statusCode}). The bill was not saved.');
     } catch (e) {
-      // Return simulated success response when backend offline in mobile dev
+      if (e is ApiException) rethrow;
+      throw ApiException('Upload failed. The bill was not saved.');
     }
-
-    return {
-      'success': true,
-      'data': {
-        'draftId': 'doc_mob_${DateTime.now().millisecondsSinceEpoch}',
-        'status': 'PENDING_REVIEW',
-        'parsedData': {
-          'vendorName': 'Tata Steel BSL Ltd',
-          'poNumber': 'PO-MOB-8812',
-          'totalAmount': 18500.0,
-          'overallConfidence': 0.96,
-        }
-      }
-    };
   }
 
   /// Submits a quick mobile sales receipt/order voucher

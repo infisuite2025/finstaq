@@ -150,12 +150,24 @@ class _PulseScreenState extends State<PulseScreen> {
               ),
             ),
             const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Apex Industries Ltd.', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800)),
-                Text('FY 2026-27 • Live Core', style: TextStyle(fontSize: 11, color: isDark ? FinstaqColors.darkTextSecondary : FinstaqColors.lightTextSecondary)),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    ApiService.tenantName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
+                  ),
+                  Text(
+                    'FY 2026-27 • Live Core',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 11, color: isDark ? FinstaqColors.darkTextSecondary : FinstaqColors.lightTextSecondary),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _errorMessage = e is ApiException
             ? e.message
-            : 'Cannot reach the Infisuite Finance server. Check Wi-Fi or USB debugging, then try again.';
+            : 'Cannot reach the Infisuite Finance server. Check your internet connection and try again.';
       });
     } finally {
       if (mounted) {

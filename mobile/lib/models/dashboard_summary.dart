@@ -29,15 +29,15 @@ class DashboardSummary {
     );
   }
 
-  factory DashboardSummary.mock() {
+  factory DashboardSummary.empty() {
     return DashboardSummary(
-      cashBalance: 48500.0,
-      bankBalance: 342000.0,
-      pendingReceivables: 185000.0,
-      pendingPayables: 64200.0,
-      todaySales: 78500.0,
-      monthSales: 1420000.0,
-      pendingBillsCount: 3,
+      cashBalance: 0,
+      bankBalance: 0,
+      pendingReceivables: 0,
+      pendingPayables: 0,
+      todaySales: 0,
+      monthSales: 0,
+      pendingBillsCount: 0,
     );
   }
 }

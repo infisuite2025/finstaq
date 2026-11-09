@@ -34,19 +34,37 @@ class MainMobileNavigation extends StatefulWidget {
   State<MainMobileNavigation> createState() => _MainMobileNavigationState();
 }
 
+class _BooksRefresh extends ChangeNotifier {
+  void bump() => notifyListeners();
+}
+
 class _MainMobileNavigationState extends State<MainMobileNavigation> {
   int _currentIndex = 0;
   final UpiTabBus _upiTab = UpiTabBus();
+  final _BooksRefresh _booksRefresh = _BooksRefresh();
+  DateTime _holdNavUntil = DateTime.fromMillisecondsSinceEpoch(0);
 
   late final List<Widget> _screens = [
     PulseScreen(onOpenUpi: (tab) {
       _upiTab.open(tab);
-      setState(() => _currentIndex = 2);
+      _selectTab(2);
     }),
-    const BooksScreen(),
+    BooksScreen(refreshTick: _booksRefresh),
     UpiHubScreen(tabRequest: _upiTab),
     const MoreScreen(),
   ];
+
+  void _selectTab(int index) {
+    if (DateTime.now().isBefore(_holdNavUntil)) return;
+    setState(() => _currentIndex = index);
+    if (index == 1) _booksRefresh.bump();
+  }
+
+  void _openBooksAfterPost() {
+    _holdNavUntil = DateTime.now().add(const Duration(milliseconds: 500));
+    setState(() => _currentIndex = 1);
+    _booksRefresh.bump();
+  }
 
   void _openQuickActions() {
     showModalBottomSheet(
@@ -71,14 +89,16 @@ class _MainMobileNavigationState extends State<MainMobileNavigation> {
             return;
           }
           if (actionId == 'quick_invoice' || actionId == 'quick_expense') {
-            Navigator.push(
+            Navigator.push<bool>(
               context,
               MaterialPageRoute(
                 builder: (_) => QuickVoucherScreen(
                   defaultType: actionId == 'quick_expense' ? 'PAYMENT' : 'SALES',
                 ),
               ),
-            );
+            ).then((posted) {
+              if (posted == true) _openBooksAfterPost();
+            });
             return;
           }
           if (actionId == 'stock_scan') {
@@ -109,6 +129,7 @@ class _MainMobileNavigationState extends State<MainMobileNavigation> {
 
   @override
   void dispose() {
+    _booksRefresh.dispose();
     _upiTab.dispose();
     super.dispose();
   }
@@ -140,23 +161,23 @@ class _MainMobileNavigationState extends State<MainMobileNavigation> {
             IconButton(
               tooltip: 'Pulse',
               icon: Icon(Icons.home_outlined, color: _currentIndex == 0 ? const Color(0xFF2563EB) : Colors.grey),
-              onPressed: () => setState(() => _currentIndex = 0),
+              onPressed: () => _selectTab(0),
             ),
             IconButton(
               tooltip: 'Books',
               icon: Icon(Icons.receipt_long_outlined, color: _currentIndex == 1 ? const Color(0xFF2563EB) : Colors.grey),
-              onPressed: () => setState(() => _currentIndex = 1),
+              onPressed: () => _selectTab(1),
             ),
             const SizedBox(width: 48), // Space for central FAB
             IconButton(
               tooltip: 'UPI',
               icon: Icon(Icons.qr_code_scanner, color: _currentIndex == 2 ? const Color(0xFF2563EB) : Colors.grey),
-              onPressed: () => setState(() => _currentIndex = 2),
+              onPressed: () => _selectTab(2),
             ),
             IconButton(
               tooltip: 'More',
               icon: Icon(Icons.widgets_outlined, color: _currentIndex == 3 ? const Color(0xFF2563EB) : Colors.grey),
-              onPressed: () => setState(() => _currentIndex = 3),
+              onPressed: () => _selectTab(3),
             ),
           ],
         ),

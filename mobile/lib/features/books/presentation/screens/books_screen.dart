@@ -5,7 +5,9 @@ import '../../../../core/widgets/finstaq_pill_tabs.dart';
 import '../../../../services/api_service.dart';
 
 class BooksScreen extends StatefulWidget {
-  const BooksScreen({Key? key}) : super(key: key);
+  final Listenable? refreshTick;
+
+  const BooksScreen({Key? key, this.refreshTick}) : super(key: key);
 
   @override
   State<BooksScreen> createState() => _BooksScreenState();
@@ -29,11 +31,22 @@ class _BooksScreenState extends State<BooksScreen> {
   @override
   void initState() {
     super.initState();
+    widget.refreshTick?.addListener(_load);
     _load();
   }
 
   @override
+  void didUpdateWidget(covariant BooksScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.refreshTick != widget.refreshTick) {
+      oldWidget.refreshTick?.removeListener(_load);
+      widget.refreshTick?.addListener(_load);
+    }
+  }
+
+  @override
   void dispose() {
+    widget.refreshTick?.removeListener(_load);
     _searchController.dispose();
     super.dispose();
   }
@@ -47,10 +60,12 @@ class _BooksScreenState extends State<BooksScreen> {
       const path = '/accounting/vouchers?limit=50';
       final data = await ApiService.getData(path);
       final list = data is Map ? data['vouchers'] : null;
+      final rows = list is List
+          ? list.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList()
+          : <Map<String, dynamic>>[];
+      rows.sort((a, b) => _postedAt(b).compareTo(_postedAt(a)));
       setState(() {
-        _vouchers = list is List
-            ? list.whereType<Map>().map((e) => Map<String, dynamic>.from(e)).toList()
-            : [];
+        _vouchers = rows;
         _loading = false;
       });
     } catch (e) {
@@ -90,6 +105,24 @@ class _BooksScreenState extends State<BooksScreen> {
         );
       },
     );
+  }
+
+  String _cardTitle(String narration, String ledgerName, String type) {
+    final title = narration.replaceAll(RegExp(r'\s+via mobile$', caseSensitive: false), '').trim();
+    if (title.isNotEmpty) return title;
+    return ledgerName.isEmpty ? type : ledgerName;
+  }
+
+  DateTime _postedAt(Map<String, dynamic> voucher) {
+    final created = DateTime.tryParse(voucher['createdAt']?.toString() ?? '');
+    if (created != null) return created;
+    final number = voucher['voucherNumber']?.toString() ?? '';
+    final stamp = RegExp(r'(\d{10,})').firstMatch(number);
+    if (stamp != null) {
+      final millis = int.tryParse(stamp.group(1)!);
+      if (millis != null) return DateTime.fromMillisecondsSinceEpoch(millis);
+    }
+    return DateTime.tryParse(voucher['date']?.toString() ?? '') ?? DateTime.fromMillisecondsSinceEpoch(0);
   }
 
   bool _matches(Map<String, dynamic> voucher, String query) {
@@ -199,9 +232,11 @@ class _BooksScreenState extends State<BooksScreen> {
                               final isSale = type == 'SALES' || type == 'RECEIPT';
                               final amount = (v['totalDebit'] as num?)?.toDouble() ?? 0;
                               final items = v['items'];
-                              final party = items is List && items.isNotEmpty && items.first is Map
+                              final narration = (v['narration'] ?? '').toString().trim();
+                              final ledgerName = items is List && items.isNotEmpty && items.first is Map
                                   ? (items.first['ledgerName'] ?? '').toString()
-                                  : (v['narration'] ?? type).toString();
+                                  : '';
+                              final party = _cardTitle(narration, ledgerName, type);
 
                               return Material(
                                 color: Colors.transparent,

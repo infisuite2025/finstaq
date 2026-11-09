@@ -66,7 +66,7 @@ class _QuickVoucherScreenState extends State<QuickVoucherScreen> {
         'voucherNumber': 'MOB-${DateTime.now().millisecondsSinceEpoch}',
         'date': DateTime.now().toIso8601String().split('T')[0],
         'narration': _narrationController.text.trim().isEmpty
-            ? '${_partyController.text.trim()} via mobile'
+            ? _partyController.text.trim()
             : _narrationController.text.trim(),
         'items': [
           {
@@ -91,7 +91,7 @@ class _QuickVoucherScreenState extends State<QuickVoucherScreen> {
         ),
       );
 
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error saving voucher: $e')),
