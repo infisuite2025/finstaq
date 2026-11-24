@@ -252,7 +252,6 @@ export function CostCenterWorkspace() {
   const [categories, setCategories] = useState<CostCategory[]>(DEFAULT_CATEGORIES);
   const [costCenters, setCostCenters] = useState<CostCenter[]>(DEFAULT_COST_CENTERS);
   const [report, setReport] = useState<CostCenterReport>(DEFAULT_REPORT);
-  const [, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Modals
@@ -279,7 +278,6 @@ export function CostCenterWorkspace() {
 
   const fetchData = async () => {
     try {
-      setLoading(true);
       const [catRes, ccRes, repRes] = await Promise.all([
         fetch('/api/v1/cost-centers/categories', { headers: getAuthHeaders() }),
         fetch('/api/v1/cost-centers', { headers: getAuthHeaders() }),
@@ -342,7 +340,6 @@ export function CostCenterWorkspace() {
       setCostCenters(DEFAULT_COST_CENTERS);
       setReport(DEFAULT_REPORT);
     } finally {
-      setLoading(false);
     }
   };
 
@@ -385,6 +382,7 @@ export function CostCenterWorkspace() {
       setIsNewCatModalOpen(false);
       setNewCatForm({ name: '', code: '', description: '' });
     } catch (err) {
+      console.error(err);
       setCategories(prev => [...prev, newCat]);
       toast.success(`Category '${newCatForm.name}' created successfully!`);
       setIsNewCatModalOpen(false);
@@ -433,6 +431,7 @@ export function CostCenterWorkspace() {
       setIsNewCenterModalOpen(false);
       setNewCenterForm({ categoryId: 'cat-dept', name: '', code: '', managerName: '', annualBudget: '' });
     } catch (err) {
+      console.error(err);
       setCostCenters(prev => [...prev, newCC]);
       toast.success(`Cost Center '${newCenterForm.name}' created successfully!`);
       setIsNewCenterModalOpen(false);
@@ -525,7 +524,7 @@ export function CostCenterWorkspace() {
         })
       });
     } catch (e) {
-      console.log('Allocation recorded locally');
+      console.log('Allocation recorded locally', e);
     }
 
     toast.success(`Allocated ${formatINR(amt)} to ${targetCC?.name || 'Cost Center'}!`);
@@ -542,7 +541,7 @@ export function CostCenterWorkspace() {
       const filteredCCs = cat.costCenters.filter(cc => 
         cc.costCenterName.toLowerCase().includes(q) ||
         cc.costCenterCode.toLowerCase().includes(q) ||
-        (cc.managerName && cc.managerName.toLowerCase().includes(q)) ||
+        cc.managerName?.toLowerCase().includes(q) ||
         cc.transactions.some(tx => tx.ledgerName.toLowerCase().includes(q) || tx.voucherNumber.toLowerCase().includes(q))
       );
 

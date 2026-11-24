@@ -228,7 +228,7 @@ export function StorageVaultWorkspace() {
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      a.remove();
       toast.success(`Downloaded: ${file.originalName}`);
     } catch (err) {
       console.error('Download error', err);
@@ -318,7 +318,7 @@ export function StorageVaultWorkspace() {
         searchQuery === '' ||
         f.originalName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         f.checksumSha256.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (f.uploadedBy && f.uploadedBy.toLowerCase().includes(searchQuery.toLowerCase()));
+        f.uploadedBy?.toLowerCase().includes(searchQuery.toLowerCase()));
 
       const matchesCat = categoryFilter === 'all' || f.category === categoryFilter;
       return matchesSearch && matchesCat;

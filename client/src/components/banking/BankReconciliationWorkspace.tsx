@@ -371,6 +371,7 @@ export function BankReconciliationWorkspace() {
         toast.error(data.message || 'Sync failed');
       }
     } catch (err) {
+      console.error(err);
       toast.error('Direct Bank Feed sync failed');
     } finally {
       setIsSyncingFeed(false);
@@ -427,15 +428,12 @@ export function BankReconciliationWorkspace() {
     if (!file) return;
 
     setUploadedFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const content = event.target?.result as string;
+    void file.text().then((content) => {
       if (content) {
         setCsvText(content);
         toast.success(`Loaded file '${file.name}' (${(file.size / 1024).toFixed(1)} KB)`);
       }
-    };
-    reader.readAsText(file);
+    });
   };
 
   // Add Bank Ledger Handler
@@ -460,6 +458,7 @@ export function BankReconciliationWorkspace() {
         setSelectedLedgerId(data.data.id);
       }
     } catch (err) {
+      console.error(err);
       toast.error('Failed to create bank account');
     }
   };
@@ -485,6 +484,7 @@ export function BankReconciliationWorkspace() {
         fetchBankLedgers();
       }
     } catch (err) {
+      console.error(err);
       toast.error('Failed to link bank feed');
     }
   };

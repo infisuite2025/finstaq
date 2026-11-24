@@ -709,7 +709,7 @@ export const AuditTrailWorkspace: React.FC = () => {
                 <div className="p-4 rounded-xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900">
                   <h4 className="text-xs font-bold text-rose-700 dark:text-rose-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-rose-500" />
-                    Previous Value (Before)
+                    <span>Previous Value (Before)</span>
                   </h4>
                   <pre className="text-xs font-mono text-slate-700 dark:text-slate-300 whitespace-pre-wrap overflow-x-auto leading-relaxed">
                     {JSON.stringify(activeDiffLog.diffJson?.before || {}, null, 2)}
@@ -720,7 +720,7 @@ export const AuditTrailWorkspace: React.FC = () => {
                 <div className="p-4 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900">
                   <h4 className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                    New Value (After Modification)
+                    <span>New Value (After Modification)</span>
                   </h4>
                   <pre className="text-xs font-mono text-slate-700 dark:text-slate-300 whitespace-pre-wrap overflow-x-auto leading-relaxed">
                     {JSON.stringify(activeDiffLog.diffJson?.after || {}, null, 2)}

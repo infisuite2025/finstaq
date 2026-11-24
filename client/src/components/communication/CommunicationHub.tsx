@@ -13,7 +13,6 @@ import {
   FileText,
   Check,
   Search,
-  Filter,
   ArrowRight,
   Zap,
   CheckCheck
@@ -161,6 +160,38 @@ const DEFAULT_FALLBACK_LOGS: CommLog[] = [
   },
 ];
 
+type CommChannel = 'whatsapp' | 'sms' | 'email' | 'in_app';
+type CommStatus = 'queued' | 'sent' | 'delivered' | 'read' | 'failed';
+
+function toCommChannel(raw: string | undefined): CommChannel {
+  const channel = (raw || 'whatsapp').toLowerCase();
+  if (channel === 'in_app' || channel === 'inapp') return 'in_app';
+  if (channel === 'email') return 'email';
+  if (channel === 'sms') return 'sms';
+  return 'whatsapp';
+}
+
+function toCommStatus(raw: string | undefined): CommStatus {
+  const status = (raw || 'sent').toLowerCase();
+  if (status === 'read') return 'read';
+  if (status === 'delivered') return 'delivered';
+  if (status === 'failed') return 'failed';
+  if (status === 'queued') return 'queued';
+  return 'sent';
+}
+
+function recipientFieldLabel(channel: string): string {
+  if (channel === 'email') return 'Email Address';
+  if (channel === 'in_app') return 'User ID / Email';
+  return 'Mobile Number with Country Code';
+}
+
+function recipientPlaceholder(channel: string): string {
+  if (channel === 'email') return 'finance@customer.com';
+  if (channel === 'in_app') return 'admin@apex.finstaq.com';
+  return '+91 98765 43210';
+}
+
 export const CommunicationHub: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'send' | 'logs' | 'templates'>('send');
   const [channel, setChannel] = useState<'whatsapp' | 'sms' | 'email' | 'in_app'>('whatsapp');
@@ -182,11 +213,7 @@ export const CommunicationHub: React.FC = () => {
   const { confirm } = useConfirm();
 
   const normalizeTemplate = (t: any): CommTemplate => {
-    const rawChannel = (t.channel || 'whatsapp').toLowerCase();
-    const validChannel: 'whatsapp' | 'sms' | 'email' | 'in_app' = 
-      rawChannel === 'in_app' || rawChannel === 'inapp' ? 'in_app' :
-      rawChannel === 'email' ? 'email' :
-      rawChannel === 'sms' ? 'sms' : 'whatsapp';
+    const validChannel = toCommChannel(t.channel);
 
     return {
       id: t.id,
@@ -201,18 +228,8 @@ export const CommunicationHub: React.FC = () => {
   };
 
   const normalizeLog = (l: any): CommLog => {
-    const rawChannel = (l.channel || 'whatsapp').toLowerCase();
-    const validChannel: 'whatsapp' | 'sms' | 'email' | 'in_app' = 
-      rawChannel === 'in_app' || rawChannel === 'inapp' ? 'in_app' :
-      rawChannel === 'email' ? 'email' :
-      rawChannel === 'sms' ? 'sms' : 'whatsapp';
-
-    const rawStatus = (l.status || 'sent').toLowerCase();
-    const validStatus: 'queued' | 'sent' | 'delivered' | 'read' | 'failed' = 
-      rawStatus === 'read' ? 'read' :
-      rawStatus === 'delivered' ? 'delivered' :
-      rawStatus === 'failed' ? 'failed' :
-      rawStatus === 'queued' ? 'queued' : 'sent';
+    const validChannel = toCommChannel(l.channel);
+    const validStatus = toCommStatus(l.status);
 
     return {
       id: l.id,
@@ -424,9 +441,9 @@ export const CommunicationHub: React.FC = () => {
       return (
         searchTemplate === '' ||
         t.name.toLowerCase().includes(q) ||
-        (t.subject && t.subject.toLowerCase().includes(q)) ||
-        (t.body && t.body.toLowerCase().includes(q)) ||
-        (t.category && t.category.toLowerCase().includes(q)) ||
+        t.subject?.toLowerCase().includes(q) ||
+        t.body?.toLowerCase().includes(q) ||
+        t.category?.toLowerCase().includes(q) ||
         t.channel.toLowerCase().includes(q)
       );
     });
@@ -600,13 +617,13 @@ export const CommunicationHub: React.FC = () => {
               {/* Recipient */}
               <div>
                 <label htmlFor="comm-recipient" className="finstaq-label">
-                  Recipient ({channel === 'email' ? 'Email Address' : channel === 'in_app' ? 'User ID / Email' : 'Mobile Number with Country Code'})
+                  Recipient ({recipientFieldLabel(channel)})
                 </label>
                 <input
                   id="comm-recipient"
                   type={channel === 'email' ? 'email' : 'text'}
                   required
-                  placeholder={channel === 'email' ? 'finance@customer.com' : channel === 'in_app' ? 'admin@apex.finstaq.com' : '+91 98765 43210'}
+                  placeholder={recipientPlaceholder(channel)}
                   value={recipient}
                   onChange={(e) => setRecipient(e.target.value)}
                   className="finstaq-input"

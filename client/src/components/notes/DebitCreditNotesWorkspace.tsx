@@ -419,6 +419,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
       setNotes(prev => [newNoteRecord, ...prev]);
       setIsModalOpen(false);
     } catch (err: any) {
+      console.error(err);
       setNotes(prev => [newNoteRecord, ...prev]);
       success(`${newNoteType === 'DEBIT_NOTE' ? 'Debit Note' : 'Credit Note'} ${generatedNoteNumber} saved successfully!`);
       setIsModalOpen(false);
@@ -961,8 +962,8 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
-                    {inspectingNote.items.map((item, idx) => (
-                      <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                    {inspectingNote.items.map((item) => (
+                      <tr key={`${item.description}-${item.hsnCode}-${item.qty}`} className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
                         <td className="p-2.5 font-semibold text-slate-800 dark:text-slate-200 font-sans">
                           {item.description}
                         </td>

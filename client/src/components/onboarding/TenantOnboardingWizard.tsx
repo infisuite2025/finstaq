@@ -145,6 +145,12 @@ const INDUSTRY_PACKS = [
   },
 ];
 
+function stepCircleClass(currentStep: number, stepNum: number): string {
+  if (currentStep === stepNum) return 'bg-emerald-600 text-white shadow-md ring-2 ring-emerald-400/50';
+  if (currentStep > stepNum) return 'bg-emerald-500 text-white';
+  return 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400';
+}
+
 export const TenantOnboardingWizard: React.FC<TenantOnboardingWizardProps> = ({
   isOpen,
   onClose,
@@ -221,6 +227,7 @@ export const TenantOnboardingWizard: React.FC<TenantOnboardingWizardProps> = ({
         error(json.error || 'Failed to activate tenant');
       }
     } catch (err: any) {
+      console.error(err);
       success('Tenant environment successfully configured!');
       onComplete?.();
       onClose();
@@ -275,13 +282,7 @@ export const TenantOnboardingWizard: React.FC<TenantOnboardingWizardProps> = ({
             {steps.map((step) => (
               <div key={step.num} className="flex items-center space-x-2">
                 <div
-                  className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-black transition-all ${
-                    currentStep === step.num
-                      ? 'bg-emerald-600 text-white shadow-md ring-2 ring-emerald-400/50'
-                      : currentStep > step.num
-                      ? 'bg-emerald-500 text-white'
-                      : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'
-                  }`}
+                  className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-black transition-all ${stepCircleClass(currentStep, step.num)}`}
                 >
                   {currentStep > step.num ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : step.num}
                 </div>
@@ -479,8 +480,8 @@ export const TenantOnboardingWizard: React.FC<TenantOnboardingWizardProps> = ({
 
                         <div className="mt-3 space-y-1 bg-slate-50 dark:bg-slate-800/50 p-2.5 rounded-xl text-[11px] text-slate-700 dark:text-slate-300">
                           <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Key Features:</div>
-                          {pack.features.slice(0, 3).map((f, fIdx) => (
-                            <div key={fIdx} className="flex items-center space-x-1.5 truncate">
+                          {pack.features.slice(0, 3).map((f) => (
+                            <div key={f} className="flex items-center space-x-1.5 truncate">
                               <Check className="w-3 h-3 text-emerald-500 shrink-0" />
                               <span className="truncate">{f}</span>
                             </div>

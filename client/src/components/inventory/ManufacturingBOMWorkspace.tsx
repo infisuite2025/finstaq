@@ -237,7 +237,7 @@ export function ManufacturingBOMWorkspace() {
         if (!selectedBomId) setSelectedBomId(data.data[0].id);
       }
     } catch (err) {
-      console.warn('Using default BOMs');
+      console.warn('Using default BOMs', err);
     }
   };
 
@@ -249,7 +249,7 @@ export function ManufacturingBOMWorkspace() {
         setWarehouses(data.data);
       }
     } catch (err) {
-      console.warn('Using default warehouses');
+      console.warn('Using default warehouses', err);
     }
   };
 
@@ -261,7 +261,7 @@ export function ManufacturingBOMWorkspace() {
         setStockItems(data.data);
       }
     } catch (err) {
-      console.warn('Using default stock items');
+      console.warn('Using default stock items', err);
     }
   };
 
@@ -273,7 +273,7 @@ export function ManufacturingBOMWorkspace() {
         setManufacturingHistory(data.data);
       }
     } catch (err) {
-      console.warn('Using default history');
+      console.warn('Using default history', err);
     }
   };
 
@@ -283,7 +283,7 @@ export function ManufacturingBOMWorkspace() {
       const data = await res.json();
       if (data.success && data.data) setStockMatrix(data.data);
     } catch (err) {
-      console.warn('Using default stock matrix');
+      console.warn('Using default stock matrix', err);
     }
   };
 
@@ -293,7 +293,7 @@ export function ManufacturingBOMWorkspace() {
       const data = await res.json();
       if (data.success && data.data) setStockAging(data.data);
     } catch (err) {
-      console.warn('Using default stock aging');
+      console.warn('Using default stock aging', err);
     }
   };
 
@@ -355,6 +355,7 @@ export function ManufacturingBOMWorkspace() {
         }
       }
     } catch (err) {
+      console.error(err);
       toast.error('Error executing production order');
     } finally {
       setIsLoading(false);
@@ -419,7 +420,7 @@ export function ManufacturingBOMWorkspace() {
         body: JSON.stringify(newBom),
       });
     } catch (e) {
-      console.warn('Saved BOM locally');
+      console.warn('Saved BOM locally', e);
     }
 
     setBoms([newBom, ...boms]);
@@ -586,7 +587,7 @@ export function ManufacturingBOMWorkspace() {
     link.setAttribute('download', `finstaq_manufacturing_${activeTab}_report.csv`);
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    link.remove();
     toast.success('Report exported to CSV successfully');
   };
 
@@ -731,8 +732,8 @@ export function ManufacturingBOMWorkspace() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                      {bom.components.map((c, idx) => (
-                        <tr key={idx} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
+                      {bom.components.map((c) => (
+                        <tr key={`${c.itemSku}-${c.itemName}`} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
                           <td className="py-2.5 px-4 font-medium text-slate-900 dark:text-white">
                             {c.itemName} <span className="font-mono text-slate-400 text-[11px]">({c.itemSku})</span>
                           </td>
