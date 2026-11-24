@@ -318,7 +318,7 @@ export function StorageVaultWorkspace() {
         searchQuery === '' ||
         f.originalName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         f.checksumSha256.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        f.uploadedBy?.toLowerCase().includes(searchQuery.toLowerCase()));
+        f.uploadedBy?.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesCat = categoryFilter === 'all' || f.category === categoryFilter;
       return matchesSearch && matchesCat;
