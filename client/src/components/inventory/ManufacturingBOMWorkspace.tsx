@@ -211,9 +211,9 @@ export function ManufacturingBOMWorkspace() {
   const [newBomName, setNewBomName] = useState<string>('');
   const [newFinishedItemId, setNewFinishedItemId] = useState<string>('item-004');
   const [newBatchSize, setNewBatchSize] = useState<number>(1);
-  const [newComponents, setNewComponents] = useState<Array<{ itemId: string; quantityPerBatch: number; wastagePercent: number }>>([
-    { itemId: 'item-001', quantityPerBatch: 0.5, wastagePercent: 2 },
-    { itemId: 'item-002', quantityPerBatch: 2, wastagePercent: 0 },
+  const [newComponents, setNewComponents] = useState<Array<{ lineKey: string; itemId: string; quantityPerBatch: number; wastagePercent: number }>>([
+    { lineKey: 'bom-line-1', itemId: 'item-001', quantityPerBatch: 0.5, wastagePercent: 2 },
+    { lineKey: 'bom-line-2', itemId: 'item-002', quantityPerBatch: 2, wastagePercent: 0 },
   ]);
   const [newLaborCost, setNewLaborCost] = useState<number>(5000);
   const [newOverheadCost, setNewOverheadCost] = useState<number>(3000);
@@ -1086,7 +1086,7 @@ export function ManufacturingBOMWorkspace() {
                   </h4>
                   <button
                     type="button"
-                    onClick={() => setNewComponents([...newComponents, { itemId: stockItems[0]?.id || 'item-001', quantityPerBatch: 1, wastagePercent: 0 }])}
+                    onClick={() => setNewComponents([...newComponents, { lineKey: `bom-line-${crypto.randomUUID()}`, itemId: stockItems[0]?.id || 'item-001', quantityPerBatch: 1, wastagePercent: 0 }])}
                     className="px-2.5 py-1 text-xs font-semibold bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 rounded-lg hover:bg-indigo-100 transition-colors flex items-center gap-1 cursor-pointer"
                   >
                     <Plus className="w-3.5 h-3.5" />
@@ -1096,7 +1096,7 @@ export function ManufacturingBOMWorkspace() {
 
                 <div className="space-y-2 max-h-48 overflow-y-auto p-1">
                   {newComponents.map((comp, idx) => (
-                    <div key={idx} className="flex items-center gap-2 p-2 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <div key={comp.lineKey} className="flex items-center gap-2 p-2 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700">
                       <select
                         value={comp.itemId}
                         onChange={(e) => {
@@ -1249,8 +1249,8 @@ export function ManufacturingBOMWorkspace() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
-                      {selectedRunForView.consumedComponents.map((c, i) => (
-                        <tr key={i}>
+                      {selectedRunForView.consumedComponents.map((c) => (
+                        <tr key={`${c.itemName}-${c.quantityConsumed}-${c.unitCost}-${c.totalCost}`}>
                           <td className="py-2 px-3 font-sans font-medium">{c.itemName}</td>
                           <td className="py-2 px-3 text-center">{c.quantityConsumed} {c.uom}</td>
                           <td className="py-2 px-3 text-right">₹{c.unitCost.toLocaleString('en-IN')}</td>

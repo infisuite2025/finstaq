@@ -208,6 +208,38 @@ const INITIAL_TEMPLATES: ChequePrintTemplate[] = [
   },
 ];
 
+function applyChequeBooks(booksData: { success?: boolean; data?: { id: string }[] }, bookId: string, setBooks: (rows: any[]) => void, setIssueForm: (updater: (prev: any) => any) => void) {
+  if (!booksData.success || !booksData.data || booksData.data.length === 0) return;
+  setBooks(Array.isArray(booksData.data) ? booksData.data : []);
+  if (!bookId) {
+    setIssueForm((prev) => ({ ...prev, bookId: booksData.data![0].id }));
+  }
+}
+
+function applyChequeLeaves(
+  chequesData: { success?: boolean; data?: any[] },
+  setCheques: (rows: any[]) => void,
+  setSamplePayee: (v: string) => void,
+  setSampleAmount: (v: string) => void,
+  setSampleDate: (v: string) => void,
+  setSampleCrossed: (v: boolean) => void,
+) {
+  if (!chequesData.success || !chequesData.data || chequesData.data.length === 0) return;
+  const list = Array.isArray(chequesData.data) ? chequesData.data : [];
+  setCheques(list);
+  const first = list[0];
+  if (first?.payeeName) setSamplePayee(String(first.payeeName));
+  if (first?.amount != null) setSampleAmount(String(first.amount));
+  if (first?.issueDate) setSampleDate(String(first.issueDate).slice(0, 10));
+  if (typeof first?.isCrossed === 'boolean') setSampleCrossed(first.isCrossed);
+}
+
+function applyChequeTemplates(tmplData: { success?: boolean; data?: any[] }, setTemplates: (rows: any[]) => void, setSelectedTemplate: (row: any) => void) {
+  if (!tmplData.success || !tmplData.data || tmplData.data.length === 0) return;
+  setTemplates(Array.isArray(tmplData.data) ? tmplData.data : []);
+  setSelectedTemplate(tmplData.data[0]);
+}
+
 export function ChequeManagementWorkspace() {
   const { getAuthHeaders } = useAuth();
   const toast = useToast();
@@ -275,25 +307,9 @@ export function ChequeManagementWorkspace() {
         tmplRes.json(),
       ]);
 
-      if (booksData.success && booksData.data && booksData.data.length > 0) {
-        setBooks(Array.isArray(booksData.data) ? booksData.data : []);
-        if (!issueForm.bookId) {
-          setIssueForm((prev) => ({ ...prev, bookId: booksData.data[0].id }));
-        }
-      }
-      if (chequesData.success && chequesData.data && chequesData.data.length > 0) {
-        const list = Array.isArray(chequesData.data) ? chequesData.data : [];
-        setCheques(list);
-        const first = list[0];
-        if (first?.payeeName) setSamplePayee(String(first.payeeName));
-        if (first?.amount != null) setSampleAmount(String(first.amount));
-        if (first?.issueDate) setSampleDate(String(first.issueDate).slice(0, 10));
-        if (typeof first?.isCrossed === 'boolean') setSampleCrossed(first.isCrossed);
-      }
-      if (tmplData.success && tmplData.data && tmplData.data.length > 0) {
-        setTemplates(Array.isArray(tmplData.data) ? tmplData.data : []);
-        setSelectedTemplate(tmplData.data[0]);
-      }
+      applyChequeBooks(booksData, issueForm.bookId, setBooks, setIssueForm);
+      applyChequeLeaves(chequesData, setCheques, setSamplePayee, setSampleAmount, setSampleDate, setSampleCrossed);
+      applyChequeTemplates(tmplData, setTemplates, setSelectedTemplate);
     } catch (err) {
       console.log('Using initial cheque datasets');
     }

@@ -245,6 +245,91 @@ const DEFAULT_REPORT: CostCenterReport = {
   ],
 };
 
+function liveCostCenterReport(data: { categories?: unknown[] } | unknown[]): CostCenterReport {
+  const cats = Array.isArray(data) ? data : (data.categories || []);
+  if (cats.length === 0) return DEFAULT_REPORT;
+  const totalRevenue = cats.reduce((sum: number, c: any) => sum + (c.totalRevenue || 0), 0);
+  const totalExpense = cats.reduce((sum: number, c: any) => sum + (c.totalExpense || 0), 0);
+  if (totalRevenue === 0 && totalExpense === 0) return DEFAULT_REPORT;
+  return {
+    reportDate: new Date().toISOString().split('T')[0],
+    financialYear: 'FY 2026-2027',
+    totalRevenue,
+    totalExpense,
+    netOperatingProfit: totalRevenue - totalExpense,
+    categories: cats.map((c: any) => ({
+      ...c,
+      costCenters: (c.costCenters || []).map((cc: any) => ({
+        ...cc,
+        budgetUtilizationPercent: cc.annualBudget > 0 ? Number(((cc.totalExpense / cc.annualBudget) * 100).toFixed(1)) : 0,
+        transactions: cc.transactions || [],
+      })),
+    })),
+  };
+}
+
+function reportWithAllocation(
+  prev: CostCenterReport,
+  costCenterId: string,
+  entryType: 'EXPENSE' | 'REVENUE',
+  amt: number,
+  newTx: CostCenterTransaction,
+): CostCenterReport {
+  const updatedCats = prev.categories.map((cat) => allocatedCategory(cat, costCenterId, entryType, amt, newTx));
+  const totalRev = updatedCats.reduce((s, c) => s + c.totalRevenue, 0);
+  const totalExp = updatedCats.reduce((s, c) => s + c.totalExpense, 0);
+  return {
+    ...prev,
+    totalRevenue: totalRev,
+    totalExpense: totalExp,
+    netOperatingProfit: totalRev - totalExp,
+    categories: updatedCats,
+  };
+}
+
+function allocatedCategory(
+  cat: CategorySummary,
+  costCenterId: string,
+  entryType: 'EXPENSE' | 'REVENUE',
+  amt: number,
+  newTx: CostCenterTransaction,
+): CategorySummary {
+  let catRevenue = cat.totalRevenue;
+  let catExpense = cat.totalExpense;
+  const updatedCenters = cat.costCenters.map((cc) => allocatedCenter(cc, costCenterId, entryType, amt, newTx));
+  if (entryType === 'REVENUE') catRevenue += amt;
+  if (entryType === 'EXPENSE') catExpense += amt;
+  return {
+    ...cat,
+    totalRevenue: catRevenue,
+    totalExpense: catExpense,
+    netContribution: catRevenue - catExpense,
+    costCenters: updatedCenters,
+  };
+}
+
+function allocatedCenter(
+  cc: CostCenterSummary,
+  costCenterId: string,
+  entryType: 'EXPENSE' | 'REVENUE',
+  amt: number,
+  newTx: CostCenterTransaction,
+): CostCenterSummary {
+  if (cc.costCenterId !== costCenterId && cc.costCenterCode !== costCenterId) return cc;
+  const newRev = entryType === 'REVENUE' ? cc.totalRevenue + amt : cc.totalRevenue;
+  const newExp = entryType === 'EXPENSE' ? cc.totalExpense + amt : cc.totalExpense;
+  const budget = cc.annualBudget || 2500000;
+  return {
+    ...cc,
+    totalRevenue: newRev,
+    totalExpense: newExp,
+    netContribution: newRev - newExp,
+    budgetUtilizationPercent: Number(((newExp / budget) * 100).toFixed(1)),
+    transactionCount: cc.transactionCount + 1,
+    transactions: [newTx, ...cc.transactions],
+  };
+}
+
 export function CostCenterWorkspace() {
   const { getAuthHeaders } = useAuth();
   const toast = useToast();
@@ -302,44 +387,12 @@ export function CostCenterWorkspace() {
         setCostCenters(DEFAULT_COST_CENTERS);
       }
 
-      if (repData.success && repData.data) {
-        const cats = Array.isArray(repData.data) ? repData.data : (repData.data.categories || []);
-        if (cats.length > 0) {
-          const totalRevenue = cats.reduce((sum: number, c: any) => sum + (c.totalRevenue || 0), 0);
-          const totalExpense = cats.reduce((sum: number, c: any) => sum + (c.totalExpense || 0), 0);
-          
-          // If live database report has zero metrics, fall back gracefully to default rich report
-          if (totalRevenue === 0 && totalExpense === 0) {
-            setReport(DEFAULT_REPORT);
-          } else {
-            setReport({
-              reportDate: new Date().toISOString().split('T')[0],
-              financialYear: 'FY 2026-2027',
-              totalRevenue,
-              totalExpense,
-              netOperatingProfit: totalRevenue - totalExpense,
-              categories: cats.map((c: any) => ({
-                ...c,
-                costCenters: (c.costCenters || []).map((cc: any) => ({
-                  ...cc,
-                  budgetUtilizationPercent: cc.annualBudget > 0 ? Number(((cc.totalExpense / cc.annualBudget) * 100).toFixed(1)) : 0,
-                  transactions: cc.transactions || [],
-                }))
-              })),
-            });
-          }
-        } else {
-          setReport(DEFAULT_REPORT);
-        }
-      } else {
-        setReport(DEFAULT_REPORT);
-      }
+      setReport(repData.success && repData.data ? liveCostCenterReport(repData.data) : DEFAULT_REPORT);
     } catch (err) {
       console.log('Using default cost center matrix data:', err);
       setCategories(DEFAULT_CATEGORIES);
       setCostCenters(DEFAULT_COST_CENTERS);
       setReport(DEFAULT_REPORT);
-    } finally {
     }
   };
 
@@ -457,53 +510,7 @@ export function CostCenterWorkspace() {
       amount: amt,
     };
 
-    // Update live report state
-    setReport(prev => {
-      const updatedCats = prev.categories.map(cat => {
-        let catRevenue = cat.totalRevenue;
-        let catExpense = cat.totalExpense;
-
-        const updatedCenters = cat.costCenters.map(cc => {
-          if (cc.costCenterId === allocateForm.costCenterId || cc.costCenterCode === allocateForm.costCenterId) {
-            const newRev = allocateForm.type === 'REVENUE' ? cc.totalRevenue + amt : cc.totalRevenue;
-            const newExp = allocateForm.type === 'EXPENSE' ? cc.totalExpense + amt : cc.totalExpense;
-            const budget = cc.annualBudget || 2500000;
-            return {
-              ...cc,
-              totalRevenue: newRev,
-              totalExpense: newExp,
-              netContribution: newRev - newExp,
-              budgetUtilizationPercent: Number(((newExp / budget) * 100).toFixed(1)),
-              transactionCount: cc.transactionCount + 1,
-              transactions: [newTx, ...cc.transactions],
-            };
-          }
-          return cc;
-        });
-
-        if (allocateForm.type === 'REVENUE') catRevenue += amt;
-        if (allocateForm.type === 'EXPENSE') catExpense += amt;
-
-        return {
-          ...cat,
-          totalRevenue: catRevenue,
-          totalExpense: catExpense,
-          netContribution: catRevenue - catExpense,
-          costCenters: updatedCenters,
-        };
-      });
-
-      const totalRev = updatedCats.reduce((s, c) => s + c.totalRevenue, 0);
-      const totalExp = updatedCats.reduce((s, c) => s + c.totalExpense, 0);
-
-      return {
-        ...prev,
-        totalRevenue: totalRev,
-        totalExpense: totalExp,
-        netOperatingProfit: totalRev - totalExp,
-        categories: updatedCats,
-      };
-    });
+    setReport((prev) => reportWithAllocation(prev, allocateForm.costCenterId, allocateForm.type, amt, newTx));
 
     try {
       await fetch('/api/v1/cost-centers/allocate', {

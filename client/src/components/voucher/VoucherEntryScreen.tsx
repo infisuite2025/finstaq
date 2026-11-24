@@ -170,6 +170,99 @@ export const formatBalance = (val?: number | string | null, nature?: string): st
   return `₹ ${safeNum.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${tag}`;
 };
 
+function voucherTypeBadgeClass(type: string): string {
+  switch (type) {
+    case 'RECEIPT':
+      return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300';
+    case 'PAYMENT':
+      return 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300';
+    case 'JOURNAL':
+      return 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300';
+    case 'CONTRA':
+      return 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300';
+    case 'SALES':
+      return 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300';
+    default:
+      return 'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300';
+  }
+}
+
+function voucherEntryModeLabel(voucherType: string, entryMode: string, isSingleEntryMode: boolean): string {
+  if (voucherType === 'SALES' || voucherType === 'PURCHASE') {
+    return entryMode === 'ITEM_INVOICE' ? 'ITEM INVOICE' : 'AS VOUCHER';
+  }
+  return isSingleEntryMode ? 'SINGLE-ENTRY' : 'DOUBLE-ENTRY';
+}
+
+function additionalChargeTaxLabel(isInterstate: boolean, ac: { igstAmount: number; cgstAmount: number; sgstAmount: number }): string {
+  const taxName = isInterstate ? 'IGST' : 'CGST+SGST';
+  const taxAmount = isInterstate ? ac.igstAmount : ac.cgstAmount + ac.sgstAmount;
+  return `${taxName}: ₹${taxAmount.toFixed(2)}`;
+}
+
+function applyFetchedLedgers(
+  json: { data: { groups?: { id: string; name?: string; nature?: string }[]; ledgers: { id: string; name: string; currentBalance?: number; groupId?: string; group?: { name?: string; nature?: string } }[] } },
+  setLedgers: (rows: LedgerOption[]) => void,
+  setBankingAccountLedgerId: (updater: (prev: string) => string) => void,
+  setPartyLedgerId: (updater: (prev: string) => string) => void,
+  setSalesLedgerId: (updater: (prev: string) => string) => void,
+  setSingleEntryParticulars: (updater: (prev: any[]) => any[]) => void,
+  setDrCrItems: (updater: (prev: any[]) => any[]) => void,
+) {
+  const groups = Array.isArray(json.data.groups) ? json.data.groups : [];
+  const groupById = new Map<string, { name?: string; nature?: string }>(
+    groups.map((g) => [g.id, g]),
+  );
+  const mappedLedgers: LedgerOption[] = json.data.ledgers.map((l) => ledgerOptionFromMaster(l, groupById));
+  setLedgers(mappedLedgers);
+  const bankCash = mappedLedgers.find(l => /bank|cash/i.test(l.groupName || '') || /bank|cash/i.test(l.name || ''));
+  if (bankCash) {
+    setBankingAccountLedgerId(prev => (mappedLedgers.some(l => l.id === prev) ? prev : bankCash.id));
+  }
+  const debtorCreditor = mappedLedgers.find(l => l.groupName?.toLowerCase().includes('debtor') || l.groupName?.toLowerCase().includes('creditor'));
+  if (debtorCreditor) {
+    setPartyLedgerId(prev => (mappedLedgers.some(l => l.id === prev) ? prev : debtorCreditor.id));
+  }
+  const spLedger = mappedLedgers.find(l => l.groupName?.toLowerCase().includes('sales') || l.groupName?.toLowerCase().includes('purchase'));
+  if (spLedger) {
+    setSalesLedgerId(prev => (mappedLedgers.some(l => l.id === prev) ? prev : spLedger.id));
+  }
+  setSingleEntryParticulars(prev => prev.map(p => particularWithLedger(p, mappedLedgers, debtorCreditor)));
+  setDrCrItems(prev => prev.map((it, idx) => drCrItemWithLedger(it, idx, mappedLedgers, bankCash, debtorCreditor)));
+}
+
+function ledgerOptionFromMaster(
+  l: { id: string; name: string; currentBalance?: number; groupId?: string; group?: { name?: string; nature?: string } },
+  groupById: Map<string, { name?: string; nature?: string }>,
+): LedgerOption {
+  const group = l.groupId ? groupById.get(l.groupId) : undefined;
+  return {
+    id: l.id,
+    name: l.name,
+    currentBalance: Number(l.currentBalance || 0),
+    groupName: group?.name || l.group?.name || 'General Ledger',
+    nature: (group?.nature || l.group?.nature || 'ASSET') as LedgerOption['nature'],
+  };
+}
+
+function particularWithLedger(p: any, mappedLedgers: LedgerOption[], debtorCreditor?: LedgerOption) {
+  const matched = mappedLedgers.find(l => l.id === p.ledgerId) || debtorCreditor || mappedLedgers[0];
+  return {
+    ...p,
+    ledgerId: matched.id,
+    curBalance: matched.currentBalance,
+  };
+}
+
+function drCrItemWithLedger(it: any, idx: number, mappedLedgers: LedgerOption[], bankCash?: LedgerOption, debtorCreditor?: LedgerOption) {
+  const targetLedger = idx === 0 ? (bankCash || mappedLedgers[0]) : (debtorCreditor || mappedLedgers[1] || mappedLedgers[0]);
+  const existing = mappedLedgers.find(l => l.id === it.ledgerId);
+  return {
+    ...it,
+    ledgerId: existing ? existing.id : targetLedger.id,
+  };
+}
+
 export const VoucherEntryScreen: React.FC = () => {
   const { getAuthHeaders } = useAuth();
   // Screen Tabs: 'entry' vs 'register'
@@ -315,55 +408,7 @@ export const VoucherEntryScreen: React.FC = () => {
         if (res.ok) {
           const json = await res.json();
           if (isMounted && json.data && json.data.ledgers && json.data.ledgers.length > 0) {
-            const groups = Array.isArray(json.data.groups) ? json.data.groups : [];
-            const groupById = new Map<string, { name?: string; nature?: string }>(
-              groups.map((g: { id: string; name?: string; nature?: string }) => [g.id, g]),
-            );
-            const mappedLedgers: LedgerOption[] = json.data.ledgers.map((l: { id: string; name: string; currentBalance?: number; groupId?: string; group?: { name?: string; nature?: string } }) => {
-              const group = l.groupId ? groupById.get(l.groupId) : undefined;
-              return {
-                id: l.id,
-                name: l.name,
-                currentBalance: Number(l.currentBalance || 0),
-                groupName: group?.name || l.group?.name || 'General Ledger',
-                nature: group?.nature || l.group?.nature || 'ASSET',
-              };
-            });
-            setLedgers(mappedLedgers);
-
-            // Auto-align active selected ledgers if default IDs aren't in fetched list
-            const bankCash = mappedLedgers.find(l => /bank|cash/i.test(l.groupName || '') || /bank|cash/i.test(l.name || ''));
-            if (bankCash) {
-              setBankingAccountLedgerId(prev => (mappedLedgers.some(l => l.id === prev) ? prev : bankCash.id));
-            }
-            const debtorCreditor = mappedLedgers.find(l => l.groupName?.toLowerCase().includes('debtor') || l.groupName?.toLowerCase().includes('creditor'));
-            if (debtorCreditor) {
-              setPartyLedgerId(prev => (mappedLedgers.some(l => l.id === prev) ? prev : debtorCreditor.id));
-            }
-            const spLedger = mappedLedgers.find(l => l.groupName?.toLowerCase().includes('sales') || l.groupName?.toLowerCase().includes('purchase'));
-            if (spLedger) {
-              setSalesLedgerId(prev => (mappedLedgers.some(l => l.id === prev) ? prev : spLedger.id));
-            }
-
-            // Sync particulars
-            setSingleEntryParticulars(prev => prev.map(p => {
-              const matched = mappedLedgers.find(l => l.id === p.ledgerId) || debtorCreditor || mappedLedgers[0];
-              return {
-                ...p,
-                ledgerId: matched.id,
-                curBalance: matched.currentBalance,
-              };
-            }));
-
-            // Sync drCrItems
-            setDrCrItems(prev => prev.map((it, idx) => {
-              const targetLedger = idx === 0 ? (bankCash || mappedLedgers[0]) : (debtorCreditor || mappedLedgers[1] || mappedLedgers[0]);
-              const existing = mappedLedgers.find(l => l.id === it.ledgerId);
-              return {
-                ...it,
-                ledgerId: existing ? existing.id : targetLedger.id,
-              };
-            }));
+            applyFetchedLedgers(json, setLedgers, setBankingAccountLedgerId, setPartyLedgerId, setSalesLedgerId, setSingleEntryParticulars, setDrCrItems);
           }
         }
       } catch (err) {
@@ -1666,7 +1711,7 @@ export const VoucherEntryScreen: React.FC = () => {
                         </div>
                         {Number(ac.amount) > 0 && (
                           <div className="flex justify-between items-center text-[10px] text-slate-500 pt-1 border-t border-slate-100 dark:border-slate-800">
-                            <span>{isInterstate ? 'IGST' : 'CGST+SGST'}: ₹{(isInterstate ? ac.igstAmount : (ac.cgstAmount + ac.sgstAmount)).toFixed(2)}</span>
+                            <span>{additionalChargeTaxLabel(isInterstate, ac)}</span>
                             <span className="font-bold text-slate-700 dark:text-slate-300">Total: ₹{ac.totalAmount.toFixed(2)}</span>
                           </div>
                         )}
@@ -1810,11 +1855,7 @@ export const VoucherEntryScreen: React.FC = () => {
                     </label><input id="voucherent-voucher-type-19"
                       type="text"
                       readOnly
-                      value={`${voucherType} (${
-                        voucherType === 'SALES' || voucherType === 'PURCHASE'
-                          ? entryMode === 'ITEM_INVOICE' ? 'ITEM INVOICE' : 'AS VOUCHER'
-                          : isSingleEntryMode ? 'SINGLE-ENTRY' : 'DOUBLE-ENTRY'
-                      })`}
+                      value={`${voucherType} (${voucherEntryModeLabel(voucherType, entryMode, isSingleEntryMode)})`}
                       className="w-full bg-slate-100 dark:bg-slate-950 border border-emerald-400/60 dark:border-emerald-500/60 rounded-xl px-3.5 py-2.5 text-indigo-600 font-bold font-mono text-xs cursor-not-allowed"
                     />
                   </div>
@@ -2384,14 +2425,7 @@ export const VoucherEntryScreen: React.FC = () => {
                           </button>
                         </td>
                         <td className="p-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${
-                            vch.type === 'RECEIPT' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300' :
-                            vch.type === 'PAYMENT' ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300' :
-                            vch.type === 'JOURNAL' ? 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300' :
-                            vch.type === 'CONTRA' ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300' :
-                            vch.type === 'SALES' ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300' :
-                            'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300'
-                          }`}>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${voucherTypeBadgeClass(vch.type)}`}>
                             {vch.type}
                           </span>
                         </td>
@@ -2513,13 +2547,13 @@ export const VoucherEntryScreen: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
-                    {inspectingVoucher.items?.map((it, idx) => {
+                    {inspectingVoucher.items?.map((it) => {
                       const legName = ledgers.find((l) => l.id === it.ledgerId)?.name || it.ledgerName || 'General Account';
                       const isDr = it.type === 'Dr';
                       const amt = Number(it.amount);
 
                       return (
-                        <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                        <tr key={`${it.ledgerId || legName}-${it.type}-${amt}`} className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
                           <td className={`p-2.5 font-bold ${isDr ? 'text-blue-600' : 'text-emerald-600'}`}>
                             {it.type}
                           </td>
@@ -2635,8 +2669,8 @@ export const VoucherEntryScreen: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
-                  {(singleEntryParticulars[activeBillModalIndex]?.billAllocations || []).map((b, bIdx) => (
-                    <tr key={bIdx} className="hover:bg-slate-50/50">
+                  {(singleEntryParticulars[activeBillModalIndex]?.billAllocations || []).map((b) => (
+                    <tr key={`${b.type}-${b.refNo}-${b.dueDate}-${b.amount}`} className="hover:bg-slate-50/50">
                       <td className="p-3 font-bold text-indigo-600 dark:text-indigo-400">{b.type}</td>
                       <td className="p-3 font-semibold text-slate-900 dark:text-white">{b.refNo}</td>
                       <td className="p-3 text-slate-600 dark:text-slate-300">{b.dueDate}</td>

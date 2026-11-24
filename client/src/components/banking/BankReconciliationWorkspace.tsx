@@ -43,6 +43,18 @@ interface BankLedger {
   lastSyncedAt?: string | null;
 }
 
+function bankLinkButtonClass(linked?: boolean): string {
+  if (linked) return 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100';
+  return 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100';
+}
+
+function bankFilterButtonClass(active: boolean, tone: 'amber' | 'emerald' | 'blue'): string {
+  if (!active) return 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700';
+  if (tone === 'amber') return 'bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-300';
+  if (tone === 'emerald') return 'bg-emerald-100 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-300';
+  return 'bg-blue-100 text-blue-900 dark:bg-blue-900/40 dark:text-blue-300';
+}
+
 interface BankTransaction {
   id: string;
   voucherId: string;
@@ -585,11 +597,7 @@ export function BankReconciliationWorkspace() {
             type="button"
             onClick={() => setIsLinkBankModalOpen(true)}
             title="Connect Direct Bank API Feed"
-            className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
-              selectedLedger?.isLinked
-                ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100'
-                : 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100'
-            }`}
+            className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${bankLinkButtonClass(selectedLedger?.isLinked)}`}
           >
             <Link2 className="w-4 h-4" />
             <span>{selectedLedger?.isLinked ? 'Linked (Config)' : 'Link with Bank'}</span>
@@ -756,33 +764,21 @@ export function BankReconciliationWorkspace() {
               <button
                 type="button"
                 onClick={() => setFilterType('UNRECONCILED')}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer transition-all ${
-                  filterType === 'UNRECONCILED'
-                    ? 'bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-300'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
-                }`}
+                className={`px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer transition-all ${bankFilterButtonClass(filterType === 'UNRECONCILED', 'amber')}`}
               >
                 Unreconciled ({unreconciledCount})
               </button>
               <button
                 type="button"
                 onClick={() => setFilterType('RECONCILED')}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer transition-all ${
-                  filterType === 'RECONCILED'
-                    ? 'bg-emerald-100 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-300'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
-                }`}
+                className={`px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer transition-all ${bankFilterButtonClass(filterType === 'RECONCILED', 'emerald')}`}
               >
                 Reconciled ({reconciledCount})
               </button>
               <button
                 type="button"
                 onClick={() => setFilterType('ALL')}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer transition-all ${
-                  filterType === 'ALL'
-                    ? 'bg-blue-100 text-blue-900 dark:bg-blue-900/40 dark:text-blue-300'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
-                }`}
+                className={`px-3 py-1.5 text-xs font-semibold rounded-lg cursor-pointer transition-all ${bankFilterButtonClass(filterType === 'ALL', 'blue')}`}
               >
                 All Entries ({transactions.length})
               </button>

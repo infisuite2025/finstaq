@@ -194,6 +194,10 @@ const INITIAL_SAMPLE_NOTES: DebitCreditNote[] = [
   }
 ];
 
+function debitCreditFieldsMissing(partyName: string, originalInvoiceNumber: string, itemDescription: string, itemQty: number, itemRate: number) {
+  return !partyName || !originalInvoiceNumber || !itemDescription || itemQty <= 0 || itemRate <= 0;
+}
+
 export const DebitCreditNotesWorkspace: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'all' | 'debit' | 'credit'>('all');
   const [notes, setNotes] = useState<DebitCreditNote[]>(INITIAL_SAMPLE_NOTES);
@@ -328,7 +332,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
 
   const handleCreateNote = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!partyName || !originalInvoiceNumber || !itemDescription || itemQty <= 0 || itemRate <= 0) {
+    if (debitCreditFieldsMissing(partyName, originalInvoiceNumber, itemDescription, itemQty, itemRate)) {
       warning('Please fill in all required document fields');
       return;
     }

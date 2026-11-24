@@ -2123,6 +2123,10 @@ const INITIAL_HELP_TOPICS: EnterpriseHelpTopic[] = [
   }
 ];
 
+function withUpdatedTenant<T extends { id: string }>(tenantId: string, data: object) {
+  return (rows: T[]) => rows.map((row) => (row.id === tenantId ? { ...row, ...data } : row));
+}
+
 export const SuperAdminHub: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'tenants' | 'billing' | 'genie-cms' | 'storage-quotas'>('genie-cms');
   const [metrics, setMetrics] = useState<PlatformMetrics | null>({
@@ -2882,7 +2886,7 @@ export const SuperAdminHub: React.FC = () => {
                                 alert(json?.error || 'Could not update tenant status');
                                 return;
                               }
-                              setTenants((prev) => prev.map((row) => (row.id === t.id ? { ...row, ...json.data } : row)));
+                              setTenants(withUpdatedTenant(t.id, json.data));
                             }}
                             className="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer"
                           >

@@ -12,6 +12,90 @@ interface HotkeyOptions {
   isModalOpen: boolean;
 }
 
+function handleAltCreateShortcuts(e: KeyboardEvent, options: HotkeyOptions): boolean {
+  if (e.altKey && (e.key === 'c' || e.key === 'C')) {
+    e.preventDefault();
+    e.stopPropagation();
+    options.onQuickCreate();
+    return true;
+  }
+  if (e.altKey && !e.ctrlKey && (e.key === 'a' || e.key === 'A') && options.onAddRow) {
+    e.preventDefault();
+    e.stopPropagation();
+    options.onAddRow();
+    return true;
+  }
+  return false;
+}
+
+function handleAltTabShortcuts(e: KeyboardEvent, options: HotkeyOptions): boolean {
+  if (e.altKey && (e.key === 'v' || e.key === 'V') && options.onSwitchTab) {
+    e.preventDefault();
+    e.stopPropagation();
+    options.onSwitchTab('entry');
+    return true;
+  }
+  if (e.altKey && (e.key === 'd' || e.key === 'D') && options.onSwitchTab) {
+    e.preventDefault();
+    e.stopPropagation();
+    options.onSwitchTab('register');
+    return true;
+  }
+  return false;
+}
+
+function handleSaveModeEscape(e: KeyboardEvent, options: HotkeyOptions): boolean {
+  if (e.ctrlKey && !e.altKey && (e.key === 'a' || e.key === 'A')) {
+    e.preventDefault();
+    e.stopPropagation();
+    options.onSave();
+    return true;
+  }
+  if (e.ctrlKey && (e.key === 'h' || e.key === 'H') && options.onToggleMode) {
+    e.preventDefault();
+    e.stopPropagation();
+    options.onToggleMode();
+    return true;
+  }
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    options.onEscape();
+    return true;
+  }
+  return false;
+}
+
+function handleVoucherFunctionKey(e: KeyboardEvent, onSwitchType: (type: VoucherType) => void) {
+  switch (e.key) {
+    case 'F4':
+      e.preventDefault();
+      onSwitchType('CONTRA');
+      break;
+    case 'F5':
+      e.preventDefault();
+      onSwitchType('PAYMENT');
+      break;
+    case 'F6':
+      e.preventDefault();
+      onSwitchType('RECEIPT');
+      break;
+    case 'F7':
+      e.preventDefault();
+      onSwitchType('JOURNAL');
+      break;
+    case 'F8':
+      e.preventDefault();
+      onSwitchType('SALES');
+      break;
+    case 'F9':
+      e.preventDefault();
+      onSwitchType('PURCHASE');
+      break;
+    default:
+      break;
+  }
+}
+
 export function useVoucherHotkeys({
   onSave,
   onQuickCreate,
@@ -57,101 +141,11 @@ export function useVoucherHotkeys({
    */
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // 1. Alt + C: Inline Quick Create (Ledger/Item)
-      if (e.altKey && (e.key === 'c' || e.key === 'C')) {
-        e.preventDefault();
-        e.stopPropagation();
-        onQuickCreate();
-        return;
-      }
-
-      // 2. Alt + A: Add Row / Line
-      if (e.altKey && !e.ctrlKey && (e.key === 'a' || e.key === 'A')) {
-        if (onAddRow) {
-          e.preventDefault();
-          e.stopPropagation();
-          onAddRow();
-          return;
-        }
-      }
-
-      // 3. Ctrl + A: Save / Accept Voucher
-      if (e.ctrlKey && !e.altKey && (e.key === 'a' || e.key === 'A')) {
-        e.preventDefault();
-        e.stopPropagation();
-        onSave();
-        return;
-      }
-
-      // 4. Alt + V: Switch to Voucher Entry Tab
-      if (e.altKey && (e.key === 'v' || e.key === 'V')) {
-        if (onSwitchTab) {
-          e.preventDefault();
-          e.stopPropagation();
-          onSwitchTab('entry');
-          return;
-        }
-      }
-
-      // 5. Alt + D: Switch to Day Book / Register Tab
-      if (e.altKey && (e.key === 'd' || e.key === 'D')) {
-        if (onSwitchTab) {
-          e.preventDefault();
-          e.stopPropagation();
-          onSwitchTab('register');
-          return;
-        }
-      }
-
-      // 6. Ctrl + H: Toggle Entry Mode
-      if (e.ctrlKey && (e.key === 'h' || e.key === 'H')) {
-        if (onToggleMode) {
-          e.preventDefault();
-          e.stopPropagation();
-          onToggleMode();
-          return;
-        }
-      }
-
-      // 7. Escape: Close Modal or Exit
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        onEscape();
-        return;
-      }
-
-      // If modal is open, don't trigger voucher type function keys
+      const options = { onSave, onQuickCreate, onEscape, onSwitchType, onAddRow, onSwitchTab, onToggleMode, isModalOpen };
+      if (handleAltCreateShortcuts(e, options) || handleAltTabShortcuts(e, options)) return;
+      if (handleSaveModeEscape(e, options)) return;
       if (isModalOpen) return;
-
-      // 8. Standard Function Key Shortcuts (F4 - F9)
-      switch (e.key) {
-        case 'F4':
-          e.preventDefault();
-          onSwitchType('CONTRA');
-          break;
-        case 'F5':
-          e.preventDefault();
-          onSwitchType('PAYMENT');
-          break;
-        case 'F6':
-          e.preventDefault();
-          onSwitchType('RECEIPT');
-          break;
-        case 'F7':
-          e.preventDefault();
-          onSwitchType('JOURNAL');
-          break;
-        case 'F8':
-          e.preventDefault();
-          onSwitchType('SALES');
-          break;
-        case 'F9':
-          e.preventDefault();
-          onSwitchType('PURCHASE');
-          break;
-      }
-
-      // 9. Enter field navigation
+      handleVoucherFunctionKey(e, onSwitchType);
       handleEnterNavigation(e);
     };
 

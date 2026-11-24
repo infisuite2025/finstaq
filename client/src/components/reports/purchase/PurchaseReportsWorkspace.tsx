@@ -21,6 +21,31 @@ import {
 } from 'lucide-react';
 import { UniversalReportPrintModal, ReportPrintData } from '../../common/UniversalReportPrintModal';
 
+function purchaseReportEndpoint(tab: ReportTab, query: string): string {
+  switch (tab) {
+    case 'register':
+      return `/api/v1/purchase/reports/register?${query}`;
+    case 'po_outstanding':
+      return `/api/v1/purchase/reports/po-outstanding`;
+    case 'grn_rejections':
+      return `/api/v1/purchase/reports/grn-rejections?${query}`;
+    case 'bills_pending':
+      return `/api/v1/purchase/reports/bills-pending`;
+    case 'vendor_spend':
+      return `/api/v1/purchase/reports/vendor-spend?${query}`;
+    case 'item_summary':
+      return `/api/v1/purchase/reports/item-summary?${query}`;
+    case 'three_way_variance':
+      return `/api/v1/purchase/reports/three-way-variance`;
+    case 'vendor_aging':
+      return `/api/v1/purchase/reports/vendor-aging`;
+    case 'itc_summary':
+      return `/api/v1/purchase/reports/itc-summary?${query}`;
+    default:
+      return '';
+  }
+}
+
 type ReportTab =
   | 'register'
   | 'po_outstanding'
@@ -31,6 +56,82 @@ type ReportTab =
   | 'three_way_variance'
   | 'vendor_aging'
   | 'itc_summary';
+
+function fillPurchaseRegisterPrint(pData: ReportPrintData, currentData: any) {
+  pData.reportTitle = 'PURCHASE REGISTER (BILLS & AP INVOICES)';
+  pData.subtitle = 'Detailed Purchase Daybook with GST & Tax Breakdown';
+  pData.summaryCards = [
+    { label: 'Total Invoiced Value', value: currentData.summary?.totalGross || currentData.summary?.grandTotal || 528600, format: 'currency' },
+    { label: 'Total Taxable Value', value: currentData.summary?.totalTaxable || 435000, format: 'currency' },
+    { label: 'Total CGST + SGST', value: (currentData.summary?.totalCgst || currentData.summary?.totalCGST || 39150) + (currentData.summary?.totalSgst || currentData.summary?.totalSGST || 39150), format: 'currency' },
+    { label: 'Total IGST', value: currentData.summary?.totalIgst || currentData.summary?.totalIGST || 15300, format: 'currency' },
+  ];
+  pData.columns = [
+    { header: 'Date', accessor: 'billDate' },
+    { header: 'Bill #', accessor: 'billNumber' },
+    { header: 'Vendor / Creditor', accessor: 'vendorName' },
+    { header: 'Vendor GSTIN', accessor: 'vendorGstin' },
+    { header: 'Status', accessor: 'status' },
+    { header: 'Taxable (₹)', accessor: 'taxableAmount', align: 'right', format: 'currency' },
+    { header: 'Tax Amount (₹)', accessor: 'taxAmount', align: 'right', format: 'currency' },
+    { header: 'Total (₹)', accessor: 'totalAmount', align: 'right', format: 'currency' },
+  ];
+  const rawBills = currentData.bills || currentData.transactions || [];
+  pData.rows = rawBills.map((b: any) => ({
+    billDate: b.billDate || b.date,
+    billNumber: b.billNumber || b.voucherNumber,
+    vendorName: b.vendorName || b.supplierName,
+    vendorGstin: b.vendorGstin || b.gstIn || '—',
+    status: b.status || 'VERIFIED',
+    taxableAmount: b.taxableAmount || 0,
+    taxAmount: b.taxAmount !== undefined ? b.taxAmount : ((b.cgstAmount || 0) + (b.sgstAmount || 0) + (b.igstAmount || 0)),
+    totalAmount: b.totalAmount || b.grandTotal || 0,
+  }));
+}
+
+function purchasePoPrintRow(o: any, it: any) {
+  return {
+    poNumber: o.poNumber,
+    orderDate: o.orderDate,
+    vendorName: o.supplierName || o.vendorName,
+    itemDescription: it.description,
+    orderedQty: it.orderedQty,
+    receivedQty: it.receivedQty,
+    balanceQty: it.balanceQty,
+    rate: it.unitPrice || it.rate,
+    pendingAmount: it.balanceAmount || (it.balanceQty * (it.unitPrice || 0)),
+    isOverdue: o.isOverdue,
+  };
+}
+
+function fillPurchasePoPrint(pData: ReportPrintData, currentData: any) {
+  pData.reportTitle = 'PURCHASE ORDER (PO) FULFILLMENT & PENDING STATUS';
+  pData.subtitle = 'Pending Open Orders vs Inward Deliveries';
+  pData.summaryCards = [
+    { label: 'Total Open Orders', value: currentData.summary?.totalOrders || 3, format: 'text' },
+    { label: 'Committed Value', value: currentData.summary?.totalCommittedAmount || currentData.summary?.totalCommittedValue || 1163500, format: 'currency' },
+    { label: 'Pending Balance', value: currentData.summary?.totalPendingAmount || currentData.summary?.totalPendingValue || 435500, format: 'currency' },
+    { label: 'Overdue Orders', value: currentData.summary?.overdueCount || currentData.summary?.overdueOrdersCount || 0, format: 'text' },
+  ];
+  pData.columns = [
+    { header: 'PO Number', accessor: 'poNumber' },
+    { header: 'Order Date', accessor: 'orderDate' },
+    { header: 'Vendor', accessor: 'vendorName' },
+    { header: 'Item Description', accessor: 'itemDescription' },
+    { header: 'Ordered Qty', accessor: 'orderedQty', align: 'right' },
+    { header: 'Received Qty', accessor: 'receivedQty', align: 'right' },
+    { header: 'Pending Qty', accessor: 'balanceQty', align: 'right' },
+    { header: 'Rate (₹)', accessor: 'rate', align: 'right', format: 'currency' },
+    { header: 'Pending Value (₹)', accessor: 'pendingAmount', align: 'right', format: 'currency' },
+  ];
+  if (currentData.lines) {
+    pData.rows = currentData.lines;
+  } else if (currentData.orders) {
+    pData.rows = currentData.orders.flatMap((o: any) => (o.items || []).map((it: any) => purchasePoPrintRow(o, it)));
+  } else {
+    pData.rows = [];
+  }
+}
 
 // Embedded default fallback datasets for instant rendering
 const FALLBACK_DATA: Record<ReportTab, any> = {
@@ -142,75 +243,9 @@ export function PurchaseReportsWorkspace() {
     };
 
     if (activeTab === 'register') {
-      pData.reportTitle = 'PURCHASE REGISTER (BILLS & AP INVOICES)';
-      pData.subtitle = 'Detailed Purchase Daybook with GST & Tax Breakdown';
-      pData.summaryCards = [
-        { label: 'Total Invoiced Value', value: currentData.summary?.totalGross || currentData.summary?.grandTotal || 528600, format: 'currency' },
-        { label: 'Total Taxable Value', value: currentData.summary?.totalTaxable || 435000, format: 'currency' },
-        { label: 'Total CGST + SGST', value: (currentData.summary?.totalCgst || currentData.summary?.totalCGST || 39150) + (currentData.summary?.totalSgst || currentData.summary?.totalSGST || 39150), format: 'currency' },
-        { label: 'Total IGST', value: currentData.summary?.totalIgst || currentData.summary?.totalIGST || 15300, format: 'currency' },
-      ];
-      pData.columns = [
-        { header: 'Date', accessor: 'billDate' },
-        { header: 'Bill #', accessor: 'billNumber' },
-        { header: 'Vendor / Creditor', accessor: 'vendorName' },
-        { header: 'Vendor GSTIN', accessor: 'vendorGstin' },
-        { header: 'Status', accessor: 'status' },
-        { header: 'Taxable (₹)', accessor: 'taxableAmount', align: 'right', format: 'currency' },
-        { header: 'Tax Amount (₹)', accessor: 'taxAmount', align: 'right', format: 'currency' },
-        { header: 'Total (₹)', accessor: 'totalAmount', align: 'right', format: 'currency' },
-      ];
-      const rawBills = currentData.bills || currentData.transactions || [];
-      pData.rows = rawBills.map((b: any) => ({
-        billDate: b.billDate || b.date,
-        billNumber: b.billNumber || b.voucherNumber,
-        vendorName: b.vendorName || b.supplierName,
-        vendorGstin: b.vendorGstin || b.gstIn || '—',
-        status: b.status || 'VERIFIED',
-        taxableAmount: b.taxableAmount || 0,
-        taxAmount: b.taxAmount !== undefined ? b.taxAmount : ((b.cgstAmount || 0) + (b.sgstAmount || 0) + (b.igstAmount || 0)),
-        totalAmount: b.totalAmount || b.grandTotal || 0,
-      }));
+      fillPurchaseRegisterPrint(pData, currentData);
     } else if (activeTab === 'po_outstanding') {
-      pData.reportTitle = 'PURCHASE ORDER (PO) FULFILLMENT & PENDING STATUS';
-      pData.subtitle = 'Pending Open Orders vs Inward Deliveries';
-      pData.summaryCards = [
-        { label: 'Total Open Orders', value: currentData.summary?.totalOrders || 3, format: 'text' },
-        { label: 'Committed Value', value: currentData.summary?.totalCommittedAmount || currentData.summary?.totalCommittedValue || 1163500, format: 'currency' },
-        { label: 'Pending Balance', value: currentData.summary?.totalPendingAmount || currentData.summary?.totalPendingValue || 435500, format: 'currency' },
-        { label: 'Overdue Orders', value: currentData.summary?.overdueCount || currentData.summary?.overdueOrdersCount || 0, format: 'text' },
-      ];
-      pData.columns = [
-        { header: 'PO Number', accessor: 'poNumber' },
-        { header: 'Order Date', accessor: 'orderDate' },
-        { header: 'Vendor', accessor: 'vendorName' },
-        { header: 'Item Description', accessor: 'itemDescription' },
-        { header: 'Ordered Qty', accessor: 'orderedQty', align: 'right' },
-        { header: 'Received Qty', accessor: 'receivedQty', align: 'right' },
-        { header: 'Pending Qty', accessor: 'balanceQty', align: 'right' },
-        { header: 'Rate (₹)', accessor: 'rate', align: 'right', format: 'currency' },
-        { header: 'Pending Value (₹)', accessor: 'pendingAmount', align: 'right', format: 'currency' },
-      ];
-      if (currentData.lines) {
-        pData.rows = currentData.lines;
-      } else if (currentData.orders) {
-        pData.rows = currentData.orders.flatMap((o: any) =>
-          (o.items || []).map((it: any) => ({
-            poNumber: o.poNumber,
-            orderDate: o.orderDate,
-            vendorName: o.supplierName || o.vendorName,
-            itemDescription: it.description,
-            orderedQty: it.orderedQty,
-            receivedQty: it.receivedQty,
-            balanceQty: it.balanceQty,
-            rate: it.unitPrice || it.rate,
-            pendingAmount: it.balanceAmount || (it.balanceQty * (it.unitPrice || 0)),
-            isOverdue: o.isOverdue,
-          }))
-        );
-      } else {
-        pData.rows = [];
-      }
+      fillPurchasePoPrint(pData, currentData);
     } else if (activeTab === 'grn_rejections') {
       pData.reportTitle = 'GOODS RECEIPT & QC REJECTION AUDIT';
       pData.subtitle = 'Inward Material Quality Inspection & Rejection Log';
@@ -424,40 +459,11 @@ export function PurchaseReportsWorkspace() {
     setIsLoading(true);
     try {
       const token = localStorage.getItem('token') || '';
-      let endpoint = '';
       const params = new URLSearchParams();
       if (startDate) params.append('startDate', startDate);
       if (endDate) params.append('endDate', endDate);
 
-      switch (tab) {
-        case 'register':
-          endpoint = `/api/v1/purchase/reports/register?${params.toString()}`;
-          break;
-        case 'po_outstanding':
-          endpoint = `/api/v1/purchase/reports/po-outstanding`;
-          break;
-        case 'grn_rejections':
-          endpoint = `/api/v1/purchase/reports/grn-rejections?${params.toString()}`;
-          break;
-        case 'bills_pending':
-          endpoint = `/api/v1/purchase/reports/bills-pending`;
-          break;
-        case 'vendor_spend':
-          endpoint = `/api/v1/purchase/reports/vendor-spend?${params.toString()}`;
-          break;
-        case 'item_summary':
-          endpoint = `/api/v1/purchase/reports/item-summary?${params.toString()}`;
-          break;
-        case 'three_way_variance':
-          endpoint = `/api/v1/purchase/reports/three-way-variance`;
-          break;
-        case 'vendor_aging':
-          endpoint = `/api/v1/purchase/reports/vendor-aging`;
-          break;
-        case 'itc_summary':
-          endpoint = `/api/v1/purchase/reports/itc-summary?${params.toString()}`;
-          break;
-      }
+      const endpoint = purchaseReportEndpoint(tab, params.toString());
 
       const res = await fetch(endpoint, {
         headers: {

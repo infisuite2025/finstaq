@@ -61,6 +61,45 @@ const WAREHOUSES = [
   { id: 'wh-03', name: 'Consumables & Spares Store - Bhosari (WH-BHO-03)' },
 ];
 
+function purchaseReturnLineFromGrn(
+  gItem: { description: string; rejectedQty: number; receivedQty: number; rejectionReason?: string; batchNumber?: string },
+  parentPo: PurchaseOrder | undefined,
+  grn: GoodsReceiptNote,
+  isInterState: boolean | undefined,
+): PurchaseReturnItemData {
+  const matchingPoItem = parentPo?.items?.find((pi) => pi.description === gItem.description);
+  const qty = gItem.rejectedQty > 0 ? gItem.rejectedQty : Math.min(gItem.receivedQty, 5);
+  const unitPrice = matchingPoItem?.unitPrice || 4500;
+  const gstRate = matchingPoItem?.taxRatePercent || 18;
+  const taxable = qty * unitPrice;
+  let cgst = 0;
+  let sgst = 0;
+  let igst = 0;
+  if (isInterState) {
+    igst = (taxable * gstRate) / 100;
+  } else {
+    cgst = (taxable * gstRate) / 200;
+    sgst = (taxable * gstRate) / 200;
+  }
+  return {
+    description: gItem.description,
+    hsnCode: matchingPoItem?.hsnCode || '7318',
+    quantity: qty,
+    maxAllowed: gItem.receivedQty,
+    unitPrice,
+    taxableAmount: taxable,
+    gstRatePercent: gstRate,
+    cgstAmount: cgst,
+    sgstAmount: sgst,
+    igstAmount: igst,
+    totalAmount: taxable + cgst + sgst + igst,
+    reason: gItem.rejectionReason || 'Defective / QA non-compliance',
+    batchNumber: gItem.batchNumber || 'BATCH-2026-Q3',
+    poNumber: parentPo?.poNumber || grn.po?.poNumber || 'PO-2026-0045',
+    grnNumber: grn.grnNumber,
+  };
+}
+
 export function CreatePurchaseReturnModal({
   isOpen,
   onClose,
@@ -161,39 +200,7 @@ export function CreatePurchaseReturnModal({
     chosenGrns.forEach((grn) => {
       const parentPo = purchaseOrders.find((p) => p.id === grn.poId);
       grn.items.forEach((gItem) => {
-        const matchingPoItem = parentPo?.items?.find((pi) => pi.description === gItem.description);
-        const qty = gItem.rejectedQty > 0 ? gItem.rejectedQty : Math.min(gItem.receivedQty, 5);
-        const unitPrice = matchingPoItem?.unitPrice || 4500;
-        const gstRate = matchingPoItem?.taxRatePercent || 18;
-        const taxable = qty * unitPrice;
-        let cgst = 0;
-        let sgst = 0;
-        let igst = 0;
-
-        if (isInterState) {
-          igst = (taxable * gstRate) / 100;
-        } else {
-          cgst = (taxable * gstRate) / 200;
-          sgst = (taxable * gstRate) / 200;
-        }
-
-        populatedItems.push({
-          description: gItem.description,
-          hsnCode: matchingPoItem?.hsnCode || '7318',
-          quantity: qty,
-          maxAllowed: gItem.receivedQty,
-          unitPrice,
-          taxableAmount: taxable,
-          gstRatePercent: gstRate,
-          cgstAmount: cgst,
-          sgstAmount: sgst,
-          igstAmount: igst,
-          totalAmount: taxable + cgst + sgst + igst,
-          reason: gItem.rejectionReason || 'Defective / QA non-compliance',
-          batchNumber: gItem.batchNumber || 'BATCH-2026-Q3',
-          poNumber: parentPo?.poNumber || grn.po?.poNumber || 'PO-2026-0045',
-          grnNumber: grn.grnNumber,
-        });
+        populatedItems.push(purchaseReturnLineFromGrn(gItem, parentPo, grn, isInterState));
       });
     });
 
