@@ -273,7 +273,7 @@ export class StorageVaultService {
     const tenantFiles = await this.getTenantMetadata(tenantId);
     const usedBytes = tenantFiles.reduce((sum, f) => sum + f.sizeBytes, 0);
     const usedGB = usedBytes / (1024 * 1024 * 1024);
-    const usedPercentage = Math.min(100, parseFloat(((usedBytes / totalAllocatedBytes) * 100).toFixed(2)));
+    const usedPercentage = Math.min(100, Number.parseFloat(((usedBytes / totalAllocatedBytes) * 100).toFixed(2)));
 
     const availableBytes = Math.max(0, totalAllocatedBytes - usedBytes);
 
@@ -309,7 +309,7 @@ export class StorageVaultService {
       sizeBytes: data.size,
       sizeFormatted: this.formatBytes(data.size),
       fileCount: data.count,
-      percentOfTotal: usedBytes > 0 ? parseFloat(((data.size / usedBytes) * 100).toFixed(1)) : 0,
+      percentOfTotal: usedBytes > 0 ? Number.parseFloat(((data.size / usedBytes) * 100).toFixed(1)) : 0,
     }));
 
     return {
@@ -317,7 +317,7 @@ export class StorageVaultService {
       allocatedGB: totalAllocatedGB,
       allocatedBytes: totalAllocatedBytes,
       usedBytes,
-      usedGB: parseFloat(usedGB.toFixed(3)),
+      usedGB: Number.parseFloat(usedGB.toFixed(3)),
       usedFormatted: this.formatBytes(usedBytes),
       availableBytes,
       availableFormatted: this.formatBytes(availableBytes),

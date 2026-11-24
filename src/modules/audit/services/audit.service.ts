@@ -1,4 +1,5 @@
 import { AuditAction } from '@prisma/client';
+import { randomBytes } from 'crypto';
 import { prisma } from '../../../core/database/prisma';
 
 export interface AuditDiff {
@@ -423,7 +424,7 @@ export class AuditService {
     const diff = this.computeDiff(params.before, params.after);
 
     const log: DataChangeLog = {
-      id: 'aud-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
+      id: 'aud-' + Date.now() + '-' + randomBytes(2).toString('hex'),
       tenantId: params.tenantId,
       userId: params.userId || 'usr_owner_001',
       userName: params.userName || 'Authorized User',
@@ -479,7 +480,7 @@ export class AuditService {
     details?: string;
   }): Promise<SessionActivityLog> {
     const log: SessionActivityLog = {
-      id: 'ses-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
+      id: 'ses-' + Date.now() + '-' + randomBytes(2).toString('hex'),
       tenantId: params.tenantId,
       userId: params.userId,
       userEmail: params.userEmail,

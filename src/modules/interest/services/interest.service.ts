@@ -1,3 +1,5 @@
+import { randomInt } from 'crypto';
+
 export interface OverdueBill {
   id: string;
   billNumber: string;
@@ -91,7 +93,7 @@ export class InterestService {
   }): { debitNoteNumber: string; voucherId: string; journalEntry: any } {
     const isCustomer = params.partyType === 'CUSTOMER';
     const notePrefix = isCustomer ? 'DN/INT' : 'CN/INT';
-    const noteNumber = `${notePrefix}/${new Date().getFullYear()}/${Math.floor(1000 + Math.random() * 9000)}`;
+    const noteNumber = `${notePrefix}/${new Date().getFullYear()}/${randomInt(1000, 10000)}`;
 
     const journalEntry = {
       debitLedger: isCustomer ? `Customer - ${params.partyName}` : 'Interest Expense A/c (Overdue Vendor Bills)',

@@ -86,7 +86,8 @@ export class SalesService {
     const itemsData = dto.items.map((item) => {
       const qty = Number(item.quantity) || 0;
       const price = Number(item.unitPrice) || 0;
-      const rate = Number(item.taxRatePercent) ?? 18.0;
+      const parsedRate = Number(item.taxRatePercent);
+      const rate = Number.isFinite(parsedRate) ? parsedRate : 18;
 
       const taxable = qty * price;
       const tax = (taxable * rate) / 100;

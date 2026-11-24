@@ -73,8 +73,8 @@ export class PayrollController {
     };
     const records = await PayrollService.getAttendanceRegister(
       tenantId,
-      parseInt(String(month)),
-      parseInt(String(year))
+      Number.parseInt(String(month), 10),
+      Number.parseInt(String(year), 10)
     );
     return reply.send({ success: true, data: records });
   }
@@ -93,8 +93,8 @@ export class PayrollController {
     };
     const preview = await PayrollService.previewPayroll(
       tenantId,
-      parseInt(String(month)),
-      parseInt(String(year))
+      Number.parseInt(String(month), 10),
+      Number.parseInt(String(year), 10)
     );
     return reply.send({ success: true, data: preview });
   }

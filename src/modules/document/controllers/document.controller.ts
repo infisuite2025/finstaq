@@ -38,7 +38,7 @@ function isValidDocumentSignature(buf: Buffer): boolean {
 }
 
 function sanitizeFilename(raw: string): string {
-  return raw.replace(/[/\\?%*:|"<>]/g, '_').replace(/\0/g, '').slice(0, 150);
+  return raw.replaceAll(/[/\\?%*:|"<>]/g, '_').replaceAll('\0', '').slice(0, 150);
 }
 
 export class DocumentController {

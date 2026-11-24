@@ -141,7 +141,7 @@ export class BankingController {
     }
     const targetAsOfDate = asOfDate || new Date().toISOString().split('T')[0];
 
-    const stmtBal = statementBalance ? parseFloat(statementBalance) : undefined;
+    const stmtBal = statementBalance ? Number.parseFloat(statementBalance) : undefined;
     const report = await bankingService.generateBrsReport(tenantId, targetLedgerId, targetAsOfDate, stmtBal);
     return reply.send({ success: true, data: report });
   }

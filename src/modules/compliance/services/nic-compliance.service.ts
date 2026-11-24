@@ -112,7 +112,7 @@ export class NicComplianceService {
             itemNo: idx + 1,
             productName: item.description,
             productDesc: item.description,
-            hsnCode: parseInt(item.hsnCode || '84713010') || 84713010,
+            hsnCode: Number.parseInt(item.hsnCode || '84713010', 10) || 84713010,
             quantity: Number(item.quantity),
             qtyUnit: 'NOS',
             taxableAmount: taxable,
@@ -222,7 +222,7 @@ export class NicComplianceService {
     };
 
     // Generate E-Way Bill Number Simulation
-    const ewbNumber = `EWB${Math.floor(100000000000 + Math.random() * 900000000000)}`;
+    const ewbNumber = `EWB${crypto.randomInt(100000000000, 1000000000000)}`;
     const record = {
       id: `ewb_${Date.now()}`,
       type: 'EWAY_BILL',
@@ -418,7 +418,7 @@ export class NicComplianceService {
       tenantId,
       docNo: input.docNumber,
       irn: irnHash,
-      ackNo: Math.floor(100000000000000 + Math.random() * 900000000000000),
+      ackNo: crypto.randomInt(100000000000000, 1000000000000000),
       ackDate: new Date().toISOString(),
       signedQrCode,
       status: 'ACTIVE_GENERATED',

@@ -1,3 +1,4 @@
+import { randomInt } from 'crypto';
 import { VoucherType } from '@prisma/client';
 import { prisma } from '../../../core/database/prisma';
 
@@ -160,7 +161,7 @@ export class VoucherSeriesService {
     }
 
     const newSeries: VoucherSeriesConfig = {
-      id: `series-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      id: `series-${Date.now()}-${randomInt(0, 1000)}`,
       tenantId,
       voucherType: (payload.voucherType || 'JOURNAL') as VoucherType,
       seriesName: payload.seriesName || 'Custom Series',

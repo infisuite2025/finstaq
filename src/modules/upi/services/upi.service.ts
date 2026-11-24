@@ -1,3 +1,4 @@
+import { randomInt } from 'crypto';
 import { prisma } from '../../../core/database/prisma';
 
 export interface UpiQrRequest {
@@ -250,7 +251,7 @@ export class UpiService {
   }): Promise<{ transaction: UpiTransaction; receiptVoucherNumber: string }> {
     const list = await this.getTransactions(tenantId);
     const txnRef = params.transactionRef || `FIN-UPI-${Date.now().toString().slice(-6)}`;
-    const rrn = `4${Math.floor(10000000000 + Math.random() * 90000000000)}`;
+    const rrn = `4${randomInt(10000000000, 100000000000)}`;
     const voucherNo = `RCPT/UPI/${new Date().getFullYear()}/${(list.length + 1).toString().padStart(4, '0')}`;
 
     const newTxn: UpiTransaction = {
@@ -292,7 +293,7 @@ export class UpiService {
   }): Promise<{ transaction: UpiTransaction; paymentVoucherNumber: string }> {
     const list = await this.getTransactions(tenantId);
     const txnRef = `FIN-PAYOUT-${Date.now().toString().slice(-6)}`;
-    const rrn = `4${Math.floor(10000000000 + Math.random() * 90000000000)}`;
+    const rrn = `4${randomInt(10000000000, 100000000000)}`;
     const voucherNo = `PMT/UPI/${new Date().getFullYear()}/${(list.length + 1).toString().padStart(4, '0')}`;
 
     const newTxn: UpiTransaction = {

@@ -129,8 +129,8 @@ export class AccountingController {
       startDate: query.startDate,
       endDate: query.endDate,
       search: query.search,
-      page: query.page ? parseInt(query.page, 10) : 1,
-      limit: query.limit ? parseInt(query.limit, 10) : 50,
+      page: query.page ? Number.parseInt(query.page, 10) : 1,
+      limit: query.limit ? Number.parseInt(query.limit, 10) : 50,
     });
 
     return reply.send({

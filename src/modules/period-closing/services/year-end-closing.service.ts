@@ -19,6 +19,7 @@ import {
 import { FinancialYearService } from './financial-year.service';
 import { AuditService } from '../../audit/services/audit.service';
 import { AppError } from '../../../core/errors/app-error';
+import { randomInt } from 'crypto';
 import { prisma } from '../../../core/database/prisma';
 
 
@@ -546,7 +547,7 @@ export class YearEndClosingService {
       id: entry.id,
       tenantId: params.tenantId,
       financialYearCode: params.financialYearCode,
-      voucherNumber: `JV-AUDIT-ADJ-${Math.floor(1000 + Math.random() * 9000)}`,
+      voucherNumber: `JV-AUDIT-ADJ-${randomInt(1000, 10000)}`,
       date: new Date().toISOString(),
       ledgerId: params.ledgerId,
       ledgerCode: 'UNKNOWN',

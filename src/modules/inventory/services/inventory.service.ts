@@ -1,3 +1,4 @@
+import { randomInt } from 'crypto';
 import { prisma } from '../../../core/database/prisma';
 import { AuditService } from '../../audit/services/audit.service';
 
@@ -556,7 +557,7 @@ export class InventoryService {
     const run: ManufacturingJournalRun = {
       id: `mfg_${Date.now()}`,
       tenantId,
-      journalNumber: `MFG/${new Date().getFullYear()}/${Math.floor(1000 + Math.random() * 9000)}`,
+      journalNumber: `MFG/${new Date().getFullYear()}/${randomInt(1000, 10000)}`,
       productionDate: params.productionDate || new Date().toISOString().split('T')[0],
       bomId: bom.id,
       bomCode: bom.bomCode,
@@ -725,7 +726,7 @@ export class InventoryService {
     const stn: StockTransferNote = {
       id: `stn_${Date.now()}`,
       tenantId,
-      stnNumber: `STN/${new Date().getFullYear()}/${Math.floor(1000 + Math.random() * 9000)}`,
+      stnNumber: `STN/${new Date().getFullYear()}/${randomInt(1000, 10000)}`,
       transferDate: payload.transferDate || new Date().toISOString().split('T')[0],
       fromWarehouseId: fromWh.id,
       fromWarehouseName: fromWh.name,
@@ -789,7 +790,7 @@ export class InventoryService {
     const adj: StockAdjustment = {
       id: `adj_${Date.now()}`,
       tenantId,
-      adjustmentNumber: `ADJ/${new Date().getFullYear()}/${Math.floor(1000 + Math.random() * 9000)}`,
+      adjustmentNumber: `ADJ/${new Date().getFullYear()}/${randomInt(1000, 10000)}`,
       adjustmentDate: payload.adjustmentDate || new Date().toISOString().split('T')[0],
       warehouseId: wh.id,
       warehouseName: wh.name,

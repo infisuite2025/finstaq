@@ -17,7 +17,7 @@ export class FuzzyMatcher {
     if (m === 0) return n;
     if (n === 0) return m;
 
-    const d: number[][] = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+    const d: number[][] = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
 
     for (let i = 0; i <= m; i++) d[i][0] = i;
     for (let j = 0; j <= n; j++) d[0][j] = j;

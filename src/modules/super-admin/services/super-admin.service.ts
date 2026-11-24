@@ -1,3 +1,4 @@
+import { randomInt } from 'crypto';
 import { prisma } from '../../../core/database/prisma';
 import {
   TenantAccount,
@@ -396,7 +397,7 @@ class SuperAdminService {
 
     const invoice: SubscriptionInvoice = {
       id: invId,
-      invoiceNumber: `FSQ/${new Date().getFullYear()}/${Math.floor(1000 + Math.random() * 9000)}`,
+      invoiceNumber: `FSQ/${new Date().getFullYear()}/${randomInt(1000, 10000)}`,
       tenantId: tenant.id,
       tenantName: tenant.name,
       subdomain: tenant.subdomain,

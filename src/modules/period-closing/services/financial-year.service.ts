@@ -140,7 +140,7 @@ export class FinancialYearService {
       { seq: 12, name: 'March', start: '-03-01', end: '-03-31', yrOffset: 1 },
     ];
   
-    const startYear = parseInt(params.startDate.split('-')[0], 10);
+    const startYear = Number.parseInt(params.startDate.split('-')[0], 10);
     const periodsToCreate = months.map(m => {
        const year = startYear + m.yrOffset;
        const startStr = `${year}${m.start}`;
@@ -149,7 +149,7 @@ export class FinancialYearService {
           financialYearId: fy.id,
           periodNumber: m.seq,
           periodName: m.name,
-          month: parseInt(m.start.split('-')[1], 10),
+          month: Number.parseInt(m.start.split('-')[1], 10),
           year: year,
           startDate: new Date(startStr),
           endDate: new Date(endStr),

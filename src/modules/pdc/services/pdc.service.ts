@@ -1,3 +1,4 @@
+import { randomInt } from 'crypto';
 import { prisma } from '../../../core/database/prisma';
 
 export interface PostDatedCheque {
@@ -123,7 +124,7 @@ export class PdcService {
     }
 
     const prefix = item.voucherType === 'PDC_RECEIPT' ? 'RCPT' : item.voucherType === 'PDC_PAYMENT' ? 'PMT' : 'JV';
-    const voucherNumber = `${prefix}/AUTO/${new Date().getFullYear()}/${Math.floor(1000 + Math.random() * 9000)}`;
+    const voucherNumber = `${prefix}/AUTO/${new Date().getFullYear()}/${randomInt(1000, 10000)}`;
 
     item.status = 'CLEARED_ACTIVE';
     item.promotedVoucherNumber = voucherNumber;

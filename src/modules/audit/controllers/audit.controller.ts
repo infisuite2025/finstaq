@@ -27,8 +27,8 @@ export class AuditController {
       search: query.search,
       dateFrom: query.dateFrom,
       dateTo: query.dateTo,
-      limit: query.limit ? parseInt(query.limit, 10) : 50,
-      offset: query.offset ? parseInt(query.offset, 10) : 0,
+      limit: query.limit ? Number.parseInt(query.limit, 10) : 50,
+      offset: query.offset ? Number.parseInt(query.offset, 10) : 0,
     });
     return reply.send({ success: true, data: result });
   }
@@ -48,8 +48,8 @@ export class AuditController {
       eventType: query.eventType,
       userEmail: query.userEmail,
       search: query.search,
-      limit: query.limit ? parseInt(query.limit, 10) : 50,
-      offset: query.offset ? parseInt(query.offset, 10) : 0,
+      limit: query.limit ? Number.parseInt(query.limit, 10) : 50,
+      offset: query.offset ? Number.parseInt(query.offset, 10) : 0,
     });
     return reply.send({ success: true, data: result });
   }

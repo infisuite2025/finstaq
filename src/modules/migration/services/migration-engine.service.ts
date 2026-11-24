@@ -5,6 +5,7 @@ import {
   SanityRuleCheck,
 } from '../types/migration.types';
 
+import { randomInt } from 'crypto';
 import { prisma } from '../../../core/database/prisma';
 
 const MIGRATION_KEY_PREFIX = 'migration_job_';
@@ -204,7 +205,7 @@ export class MigrationEngineService {
       throw new Error('Migration dataset job not found');
     }
 
-    const certificateId = `MIG-CERT-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const certificateId = `MIG-CERT-${Date.now()}-${randomInt(1000, 10000)}`;
 
     return {
       jobId,

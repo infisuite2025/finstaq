@@ -6,6 +6,7 @@ import { AccountingService } from './modules/accounting/services/accounting.serv
 import { FuzzyMatcher } from './modules/document/services/fuzzy-matcher';
 import { AiDocumentExtractorService } from './modules/document/services/ai-extractor.service';
 import { GroupNature, UserRole, VoucherType } from '@prisma/client';
+import { randomBytes } from 'crypto';
 
 interface TestResult {
   page: string;
@@ -57,10 +58,10 @@ async function runQATestSuite() {
   console.log('--- TESTING PAGE 1: Authentication & Access Control ---');
 
   // Test 1.1: Password Hashing & Verification with Argon2id
-  const rawPassword = 'SecurePassword!2026';
+  const rawPassword = randomBytes(18).toString('base64url');
   const hashedPassword = await PasswordService.hash(rawPassword);
   const isMatch = await PasswordService.verify(hashedPassword, rawPassword);
-  const isBadMatch = await PasswordService.verify(hashedPassword, 'WrongPassword');
+  const isBadMatch = await PasswordService.verify(hashedPassword, randomBytes(18).toString('base64url'));
   recordResult(
     'Page 1: Login',
     'Argon2id Password Security',

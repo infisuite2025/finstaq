@@ -353,7 +353,7 @@ export class AccountingService {
     const { totalDebit, totalCredit } = this.validateDoubleEntry(dto.items);
 
     const voucherDate = new Date(dto.date);
-    if (isNaN(voucherDate.getTime())) {
+    if (Number.isNaN(voucherDate.getTime())) {
       throw new AppError('Invalid voucher date provided', 400);
     }
 
