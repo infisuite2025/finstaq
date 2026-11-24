@@ -3477,9 +3477,10 @@ export const SuperAdminHub: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Dedicated Subdomain</label>
+                <label htmlFor="tenant-subdomain" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Dedicated Subdomain</label>
                 <div className="flex items-center">
                   <input
+                    id="tenant-subdomain"
                     type="text"
                     required
                     placeholder="bharatdyn"
@@ -3674,11 +3675,12 @@ export const SuperAdminHub: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">
+                <label htmlFor="tenant-storage-gb" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">
                   Allocated Storage Cap (in GB)
                 </label>
                 <div className="flex items-center space-x-2">
                   <input
+                    id="tenant-storage-gb"
                     type="number"
                     min="1"
                     max="10000"
@@ -3698,11 +3700,12 @@ export const SuperAdminHub: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">
+                <label htmlFor="tenant-max-file-mb" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">
                   Max Single File Upload Size (in MB)
                 </label>
                 <div className="flex items-center space-x-2">
                   <input
+                    id="tenant-max-file-mb"
                     type="number"
                     min="1"
                     max="500"

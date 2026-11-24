@@ -804,23 +804,22 @@ export function CreatePurchaseReturnModal({
 
           {/* Financial Totals & Debit note automated switch */}
           <div className="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
-            <label className="flex items-center space-x-3 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={autoCreateDebitNote}
-                onChange={(e) => setAutoCreateDebitNote(e.target.checked)}
-                className="w-4 h-4 rounded text-rose-600 focus:ring-rose-500"
-              />
-              <div>
-                <span className="text-xs font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1.5">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>Auto-Generate Section 34 Debit Note & Accounting Journal</span>
-                </span>
-                <span className="text-[11px] text-slate-500 dark:text-slate-400 block">
-                  Posts Dr Supplier / Cr Purchase Return & Reverses Input Tax Credit ({isInterState ? 'IGST' : 'CGST+SGST'})
-                </span>
-              </div>
-            </label>
+            <div>
+              <label htmlFor="purchase-auto-debit-note" className="flex items-center gap-1.5 cursor-pointer text-xs font-bold text-slate-900 dark:text-slate-100">
+                <input
+                  id="purchase-auto-debit-note"
+                  type="checkbox"
+                  checked={autoCreateDebitNote}
+                  onChange={(e) => setAutoCreateDebitNote(e.target.checked)}
+                  className="w-4 h-4 rounded text-rose-600 focus:ring-rose-500"
+                />
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>Auto-Generate Section 34 Debit Note & Accounting Journal</span>
+              </label>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 block pl-6">
+                Posts Dr Supplier / Cr Purchase Return & Reverses Input Tax Credit ({isInterState ? 'IGST' : 'CGST+SGST'})
+              </span>
+            </div>
 
             <div className="text-right space-y-1 w-full md:w-auto">
               <div className="text-xs text-slate-500">

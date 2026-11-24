@@ -159,8 +159,9 @@ export function VoucherSeriesConfigModal({
             <div className="font-bold text-gray-900 dark:text-white">Add New Numbering Series</div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-gray-600 mb-1">Series Name</label>
+                <label htmlFor="series-name" className="block text-gray-600 mb-1">Series Name</label>
                 <input
+                  id="series-name"
                   type="text"
                   placeholder="e.g. Delhi Branch Sales"
                   value={form.seriesName}
@@ -170,8 +171,9 @@ export function VoucherSeriesConfigModal({
                 />
               </div>
               <div>
-                <label className="block text-gray-600 mb-1">Prefix</label>
+                <label htmlFor="series-prefix" className="block text-gray-600 mb-1">Prefix</label>
                 <input
+                  id="series-prefix"
                   type="text"
                   placeholder="e.g. DEL/26-27/"
                   value={form.prefix}
@@ -183,26 +185,29 @@ export function VoucherSeriesConfigModal({
 
             <div className="grid grid-cols-3 gap-3">
               <div>
-                <label className="block text-gray-600 mb-1">Digits Padding</label>
+                <label htmlFor="series-padding" className="block text-gray-600 mb-1">Digits Padding</label>
                 <input
+                  id="series-padding"
                   type="number"
                   value={form.paddingDigits}
-                  onChange={(e) => setForm({ ...form, padding: parseInt(e.target.value) || 4 })}
+                  onChange={(e) => setForm({ ...form, padding: Number.parseInt(e.target.value, 10) || 4 })}
                   className="w-full p-2 border rounded bg-white dark:bg-gray-800"
                 />
               </div>
               <div>
-                <label className="block text-gray-600 mb-1">Start Number</label>
+                <label htmlFor="series-start" className="block text-gray-600 mb-1">Start Number</label>
                 <input
+                  id="series-start"
                   type="number"
                   value={form.startNumber}
-                  onChange={(e) => setForm({ ...form, startingNumber: parseInt(e.target.value) || 1 })}
+                  onChange={(e) => setForm({ ...form, startingNumber: Number.parseInt(e.target.value, 10) || 1 })}
                   className="w-full p-2 border rounded bg-white dark:bg-gray-800"
                 />
               </div>
               <div>
-                <label className="block text-gray-600 mb-1">Reset Period</label>
+                <label htmlFor="series-reset" className="block text-gray-600 mb-1">Reset Period</label>
                 <select
+                  id="series-reset"
                   value={form.restartFrequency}
                   onChange={(e) => setForm({ ...form, restartFrequency: e.target.value })}
                   className="w-full p-2 border rounded bg-white dark:bg-gray-800"

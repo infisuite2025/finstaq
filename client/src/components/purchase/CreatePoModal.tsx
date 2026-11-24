@@ -116,10 +116,11 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-5">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="po-reference-number" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 PO Reference Number *
               </label>
               <input
+                id="po-reference-number"
                 type="text"
                 value={poNumber}
                 onChange={(e) => setPoNumber(e.target.value)}
@@ -129,10 +130,11 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="po-vendor" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Vendor / Supplier *
               </label>
               <select
+                id="po-vendor"
                 value={vendorLedgerId}
                 onChange={(e) => setVendorLedgerId(e.target.value)}
                 required
@@ -147,10 +149,11 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="po-date" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 PO Date
               </label>
               <input
+                id="po-date"
                 type="date"
                 value={orderDate}
                 onChange={(e) => setOrderDate(e.target.value)}
@@ -160,10 +163,11 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="po-delivery-date" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Expected Delivery Date
               </label>
               <input
+                id="po-delivery-date"
                 type="date"
                 value={expectedDeliveryDate}
                 onChange={(e) => setExpectedDeliveryDate(e.target.value)}
@@ -172,10 +176,11 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
             </div>
 
             <div className="md:col-span-3">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="po-terms" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Terms & Conditions / Remarks
               </label>
               <input
+                id="po-terms"
                 type="text"
                 value={terms}
                 onChange={(e) => setTerms(e.target.value)}
@@ -247,7 +252,7 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
                             type="number"
                             min="1"
                             value={item.quantity}
-                            onChange={(e) => handleUpdateItem(idx, 'quantity', parseFloat(e.target.value) || 0)}
+                            onChange={(e) => handleUpdateItem(idx, 'quantity', Number.parseFloat(e.target.value) || 0)}
                             className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-right font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           />
                         </td>
@@ -257,14 +262,14 @@ export function CreatePoModal({ isOpen, onClose, onSubmit, vendors }: CreatePoMo
                             min="0"
                             step="0.01"
                             value={item.unitPrice}
-                            onChange={(e) => handleUpdateItem(idx, 'unitPrice', parseFloat(e.target.value) || 0)}
+                            onChange={(e) => handleUpdateItem(idx, 'unitPrice', Number.parseFloat(e.target.value) || 0)}
                             className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-right font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           />
                         </td>
                         <td className="p-2.5">
                           <select
                             value={item.taxRatePercent}
-                            onChange={(e) => handleUpdateItem(idx, 'taxRatePercent', parseFloat(e.target.value) || 0)}
+                            onChange={(e) => handleUpdateItem(idx, 'taxRatePercent', Number.parseFloat(e.target.value) || 0)}
                             className="w-full px-2 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-right font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                           >
                             <option value="0">0%</option>

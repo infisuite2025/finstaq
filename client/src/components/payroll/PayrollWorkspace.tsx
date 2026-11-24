@@ -2572,7 +2572,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
             <div className="bg-indigo-50/50 dark:bg-indigo-950/30 p-4 rounded-xl border border-indigo-200 dark:border-indigo-800/60 space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
-                  <label className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider block">
+                  <label htmlFor="payroll-revised-ctc" className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider block">
                     Revised Annual Cost to Company (CTC)
                   </label>
                   <span className="text-[11px] text-gray-500">
@@ -2582,6 +2582,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-bold text-gray-500 font-mono">₹</span>
                   <input
+                    id="payroll-revised-ctc"
                     type="number"
                     step="25000"
                     min="180000"
@@ -2634,7 +2635,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
 
                   {revisedIsPfEligible ? (
                     <div className="space-y-1.5 pt-1">
-                      <label className="text-[10px] text-gray-400 uppercase font-semibold block">EPF Wage Ceiling</label>
+                      <p className="text-[10px] text-gray-400 uppercase font-semibold block">EPF Wage Ceiling</p>
                       <div className="space-y-1">
                         <label className="flex items-center gap-1.5 cursor-pointer text-gray-700 dark:text-gray-300">
                           <input

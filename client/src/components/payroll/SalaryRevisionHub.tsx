@@ -363,9 +363,9 @@ export function SalaryRevisionHub({
 
                 <div>
                   <div className="flex justify-between items-center mb-1">
-                    <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                    <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">
                       Increment Target
-                    </label>
+                    </p>
                     <button
                       type="button"
                       onClick={() => setIsCustomCtcMode(!isCustomCtcMode)}

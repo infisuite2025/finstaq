@@ -392,23 +392,22 @@ export function CreateSalesReturnModal({
 
           {/* Financial Totals & Credit note automated switch */}
           <div className="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
-            <label className="flex items-center space-x-3 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={autoCreateCreditNote}
-                onChange={(e) => setAutoCreateCreditNote(e.target.checked)}
-                className="w-4 h-4 rounded text-amber-600 focus:ring-amber-500"
-              />
-              <span className="block">
-                <span className="text-xs font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1.5">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>Auto-Generate Section 34 Credit Note & Accounting Journal</span>
-                </span>
-                <span className="text-[11px] text-slate-500 dark:text-slate-400 block">
-                  Posts Dr Sales Return / Dr Output GST / Cr Customer Debtor & replenishes stock
-                </span>
+            <div>
+              <label htmlFor="sales-auto-credit-note" className="flex items-center gap-1.5 cursor-pointer text-xs font-bold text-slate-900 dark:text-slate-100">
+                <input
+                  id="sales-auto-credit-note"
+                  type="checkbox"
+                  checked={autoCreateCreditNote}
+                  onChange={(e) => setAutoCreateCreditNote(e.target.checked)}
+                  className="w-4 h-4 rounded text-amber-600 focus:ring-amber-500"
+                />
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>Auto-Generate Section 34 Credit Note & Accounting Journal</span>
+              </label>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 block pl-6">
+                Posts Dr Sales Return / Dr Output GST / Cr Customer Debtor & replenishes stock
               </span>
-            </label>
+            </div>
 
             <div className="text-right space-y-1 w-full md:w-auto">
               <div className="text-xs text-slate-500">

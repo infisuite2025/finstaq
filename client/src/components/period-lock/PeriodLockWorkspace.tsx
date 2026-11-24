@@ -849,7 +849,7 @@ export const PeriodLockWorkspace: React.FC = () => {
                   onChange={(e) => setFutureAllowed(e.target.checked)}
                   className="rounded text-indigo-600 focus:ring-indigo-500 dark:bg-slate-900 dark:border-slate-700"
                 />
-                Allow Future Dating
+                <span>Allow Future Dating</span>
               </label>
               <input
                 id="period-future-days"

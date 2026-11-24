@@ -671,16 +671,18 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
               <div className={`p-4 rounded-3xl border space-y-3.5 ${themeMode === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
                 <div className="text-xs font-black uppercase text-slate-400">Initiate Instant UPI Collect</div>
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400">Customer UPI VPA</label>
+                  <label htmlFor="mobile-upi-vpa" className="text-[10px] font-bold text-slate-400">Customer UPI VPA</label>
                   <input
+                    id="mobile-upi-vpa"
                     type="text"
                     defaultValue="buyer@okhdfcbank"
                     className={`w-full mt-1 p-2.5 rounded-xl border text-xs font-medium outline-none ${themeMode === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400">Amount (INR)</label>
+                  <label htmlFor="mobile-upi-amount" className="text-[10px] font-bold text-slate-400">Amount (INR)</label>
                   <input
+                    id="mobile-upi-amount"
                     type="number"
                     value={upiAmount}
                     onChange={(e) => setUpiAmount(e.target.value)}
@@ -701,8 +703,9 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
               <div className={`p-4 rounded-3xl border space-y-3.5 ${themeMode === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
                 <div className="text-xs font-black uppercase text-slate-400">Vendor Instant UPI Payout</div>
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400">Select Verified Vendor VPA</label>
+                  <label htmlFor="mobile-vendor-vpa" className="text-[10px] font-bold text-slate-400">Select Verified Vendor VPA</label>
                   <select
+                    id="mobile-vendor-vpa"
                     className={`w-full mt-1 p-2.5 rounded-xl border text-xs font-medium outline-none ${themeMode === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}
                   >
                     <option>tatasteel@hdfcbank (Verified Vendor)</option>
@@ -711,8 +714,9 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
                   </select>
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400">Payout Amount (INR)</label>
+                  <label htmlFor="mobile-payout-amount" className="text-[10px] font-bold text-slate-400">Payout Amount (INR)</label>
                   <input
+                    id="mobile-payout-amount"
                     type="number"
                     defaultValue="65000"
                     className={`w-full mt-1 p-2.5 rounded-xl border text-xs font-black outline-none ${themeMode === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-slate-200'}`}

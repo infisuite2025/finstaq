@@ -1873,12 +1873,12 @@ export const VoucherEntryScreen: React.FC = () => {
                 {/* Top Primary Bank / Cash Account Card */}
                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xs space-y-3">
                   <div className="flex flex-wrap justify-between items-center gap-2">
-                    <label className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center space-x-2">
+                    <div className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center space-x-2">
                       <div className="w-6 h-6 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center text-indigo-600">
                         <Building2 className="w-3.5 h-3.5" />
                       </div>
                       <span>Account (Bank / Cash in Hand):</span>
-                    </label>
+                    </div>
                     {(() => {
                       const bankLedger = ledgers.find(l => l.id === bankingAccountLedgerId);
                       return (
