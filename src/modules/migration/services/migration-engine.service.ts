@@ -5,7 +5,7 @@ import {
   SanityRuleCheck,
 } from '../types/migration.types';
 
-import { randomInt } from 'crypto';
+import { randomInt } from 'node:crypto';
 import { prisma } from '../../../core/database/prisma';
 
 const MIGRATION_KEY_PREFIX = 'migration_job_';

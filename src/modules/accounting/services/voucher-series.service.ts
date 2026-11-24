@@ -1,4 +1,4 @@
-import { randomInt } from 'crypto';
+import { randomInt } from 'node:crypto';
 import { VoucherType } from '@prisma/client';
 import { prisma } from '../../../core/database/prisma';
 

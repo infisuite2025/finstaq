@@ -19,7 +19,7 @@ import {
 import { FinancialYearService } from './financial-year.service';
 import { AuditService } from '../../audit/services/audit.service';
 import { AppError } from '../../../core/errors/app-error';
-import { randomInt } from 'crypto';
+import { randomInt } from 'node:crypto';
 import { prisma } from '../../../core/database/prisma';
 
 

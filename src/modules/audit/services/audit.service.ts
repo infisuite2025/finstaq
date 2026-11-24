@@ -1,5 +1,5 @@
 import { AuditAction } from '@prisma/client';
-import { randomBytes } from 'crypto';
+import { randomBytes } from 'node:crypto';
 import { prisma } from '../../../core/database/prisma';
 
 export interface AuditDiff {

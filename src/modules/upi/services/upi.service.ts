@@ -1,4 +1,4 @@
-import { randomInt } from 'crypto';
+import { randomInt } from 'node:crypto';
 import { prisma } from '../../../core/database/prisma';
 
 export interface UpiQrRequest {

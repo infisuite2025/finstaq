@@ -91,7 +91,7 @@ export class NicComplianceService {
         if (so.customerLedger.gstIn) toGstin = so.customerLedger.gstIn;
         if (so.customerLedger.name) toLegalName = so.customerLedger.name;
         if (so.shippingAddress) toAddr = so.shippingAddress;
-        if (so.customerLedger.stateCode) toStateCode = parseInt(so.customerLedger.stateCode) || 29;
+        if (so.customerLedger.stateCode) toStateCode = Number.parseInt(so.customerLedger.stateCode, 10) || 29;
 
         const isInterState = fromStateCode !== toStateCode;
 
