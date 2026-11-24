@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, RotateCcw, Building2, Package, PackagePlus, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { X, RotateCcw, Building2, Package, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { SalesOrder } from '../../types/sales';
 
 export interface SalesReturnItemData {

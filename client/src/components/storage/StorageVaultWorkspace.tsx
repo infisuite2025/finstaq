@@ -22,18 +22,13 @@ import {
   Search,
   Upload,
   Layers,
-  FileCode,
   Archive,
-  Eye,
   FileCheck,
-  Check,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { useConfirm } from '../../context/ConfirmContext';
 import { KPIGrid, KPIScorecard } from '../common/KPIScorecard';
-import { StandardTabs } from '../common/StandardTabs';
-import { UI } from '../../theme/uiTheme';
 
 export interface StoredDocumentMetadata {
   id: string;

@@ -5,7 +5,10 @@ import './index.css';
 
 const originalFetch = window.fetch.bind(window);
 window.fetch = (input: RequestInfo | URL, init?: RequestInit) => {
-  const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+  let url: string;
+  if (typeof input === 'string') url = input;
+  else if (input instanceof URL) url = input.href;
+  else url = input.url;
   if (!url.includes('/api/')) return originalFetch(input, init);
   const token = localStorage.getItem('token');
   if (!token) return originalFetch(input, init);

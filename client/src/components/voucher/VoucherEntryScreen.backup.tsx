@@ -6,7 +6,6 @@ import {
   VoucherLineItem,
   LedgerOption,
   LedgerGroupOption,
-  CalculatedTax,
   VoucherRecord,
   ItemInvoiceLine,
   AdditionalCharge,
@@ -15,21 +14,15 @@ import {
 } from '../../types/voucher';
 import { useVoucherHotkeys } from '../../hooks/useVoucherHotkeys';
 import { QuickCreateLedgerModal } from './QuickCreateLedgerModal';
-import { VoucherSummaryBar } from './VoucherSummaryBar';
-import { TaxBreakdownCard } from './TaxBreakdownCard';
 import { UniversalDocumentPrintModal, PrintDocumentData } from '../common/UniversalDocumentPrintModal';
 import {
   BookOpen,
-  Calendar,
   FileText,
-  Hash,
   Plus,
   Trash2,
   Building2,
   Check,
-  AlertTriangle,
   Printer,
-  Lock,
   ShieldCheck,
   RotateCcw,
   ListFilter,
@@ -38,11 +31,6 @@ import {
   SlidersHorizontal,
   Package,
   Layers,
-  Sparkles,
-  ChevronRight,
-  Boxes,
-  HelpCircle,
-  Keyboard,
   CreditCard,
   Receipt,
   X,
@@ -54,7 +42,6 @@ import {
   AlertCircle,
   ChevronDown,
   Globe,
-  Banknote,
   Clock,
   ArrowRight,
 } from 'lucide-react';

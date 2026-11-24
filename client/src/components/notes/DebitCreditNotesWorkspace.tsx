@@ -8,20 +8,15 @@ import {
   RefreshCw,
   Printer,
   X,
-  Building2,
   CheckCircle2,
   FileText,
   Percent,
   Calendar,
   Eye,
   ShieldCheck,
-  Tag,
-  AlertCircle,
   TrendingDown,
   TrendingUp,
   Receipt,
-  RotateCcw,
-  Sparkles,
   Info,
 } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
@@ -970,8 +965,8 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
-                    {inspectingNote.items.map((item, idx) => (
-                      <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                    {inspectingNote.items.map((item) => (
+                      <tr key={`${item.description}-${item.hsnCode}-${item.qty}`} className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
                         <td className="p-2.5 font-semibold text-slate-800 dark:text-slate-200 font-sans">
                           {item.description}
                         </td>

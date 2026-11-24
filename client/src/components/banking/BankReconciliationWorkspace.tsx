@@ -21,14 +21,9 @@ import {
   Link2,
   Zap,
   Building2,
-  FileText,
-  Check,
   X,
-  Layers,
   History,
   ShieldCheck,
-  ChevronDown,
-  ExternalLink,
 } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 import { StandardTabs } from '../common/StandardTabs';
@@ -378,6 +373,7 @@ export function BankReconciliationWorkspace() {
         toast.error(data.message || 'Sync failed');
       }
     } catch (err) {
+      console.error(err);
       toast.error('Direct Bank Feed sync failed');
     } finally {
       setIsSyncingFeed(false);
@@ -424,25 +420,22 @@ export function BankReconciliationWorkspace() {
         fetchStatementBatches(selectedLedgerId);
       }
     } catch (err) {
+      console.error(err);
       toast.error('Failed to parse bank statement');
     }
   };
 
   // Handle File Input Selection
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setUploadedFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const content = event.target?.result as string;
-      if (content) {
-        setCsvText(content);
-        toast.success(`Loaded file '${file.name}' (${(file.size / 1024).toFixed(1)} KB)`);
-      }
-    };
-    reader.readAsText(file);
+    const content = await file.text();
+    if (content) {
+      setCsvText(content);
+      toast.success(`Loaded file '${file.name}' (${(file.size / 1024).toFixed(1)} KB)`);
+    }
   };
 
   // Add Bank Ledger Handler
@@ -467,6 +460,7 @@ export function BankReconciliationWorkspace() {
         setSelectedLedgerId(data.data.id);
       }
     } catch (err) {
+      console.error(err);
       toast.error('Failed to create bank account');
     }
   };
@@ -492,6 +486,7 @@ export function BankReconciliationWorkspace() {
         fetchBankLedgers();
       }
     } catch (err) {
+      console.error(err);
       toast.error('Failed to link bank feed');
     }
   };

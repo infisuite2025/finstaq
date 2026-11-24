@@ -608,7 +608,7 @@ export function PurchaseDashboard() {
       partyAddress: 'Vendor Works, Industrial Phase II, Pune',
       partyState: ret.vendorLedger?.state || 'Maharashtra (27)',
       items: ret.items.map((it: any) => ({
-        description: `${it.description}${it.poNumber ? ` [PO: ${it.poNumber}]` : ''}${it.grnNumber ? ` [GRN: ${it.grnNumber}]` : ''}`,
+        description: [it.description, it.poNumber ? ` [PO: ${it.poNumber}]` : '', it.grnNumber ? ` [GRN: ${it.grnNumber}]` : ''].join(''),
         hsnCode: it.hsnCode || '7318',
         uom: 'PCS',
         quantity: it.quantity,

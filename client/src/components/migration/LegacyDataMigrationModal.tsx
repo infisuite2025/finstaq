@@ -91,7 +91,7 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
   };
 
   const handleGroupChange = (ledgerIndex: number, newGroup: string) => {
-    if (!dataset || !dataset.ledgers) return;
+    if (!dataset?.ledgers) return;
     const updatedLedgers = [...dataset.ledgers];
     updatedLedgers[ledgerIndex] = {
       ...updatedLedgers[ledgerIndex],
@@ -125,7 +125,7 @@ export const LegacyDataMigrationModal: React.FC<LegacyDataMigrationModalProps> =
     a.download = `${migrationResult.certificateId}_Audit_Certificate.json`;
     document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
+    a.remove();
     URL.revokeObjectURL(url);
   };
 

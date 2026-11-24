@@ -15,16 +15,9 @@ import {
   XCircle,
   X,
   Search,
-  RefreshCw,
-  SlidersHorizontal,
   User,
-  PieChart,
   DollarSign,
-  AlertTriangle,
   Receipt,
-  FileText,
-  Briefcase,
-  Target,
 } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 import { StandardTabs } from '../common/StandardTabs';
@@ -267,15 +260,12 @@ export function CostCenterWorkspace() {
   const [categories, setCategories] = useState<CostCategory[]>(DEFAULT_CATEGORIES);
   const [costCenters, setCostCenters] = useState<CostCenter[]>(DEFAULT_COST_CENTERS);
   const [report, setReport] = useState<CostCenterReport>(DEFAULT_REPORT);
-  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Modals
   const [isNewCatModalOpen, setIsNewCatModalOpen] = useState(false);
   const [isNewCenterModalOpen, setIsNewCenterModalOpen] = useState(false);
   const [isAllocateModalOpen, setIsAllocateModalOpen] = useState(false);
-  const [selectedCostCenterForAllocation, setSelectedCostCenterForAllocation] = useState<string>('');
-
   const [newCatForm, setNewCatForm] = useState({ name: '', code: '', description: '' });
   const [newCenterForm, setNewCenterForm] = useState({
     categoryId: 'cat-dept',

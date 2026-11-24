@@ -25,12 +25,8 @@ import {
   Database,
   EyeOff,
   FileSpreadsheet,
-  Cpu,
   Sparkles,
-  Boxes,
   ArrowRight,
-  RefreshCw,
-  Layers
 } from 'lucide-react';
 
 const INITIAL_CONFIG: TenantConfiguration = {
