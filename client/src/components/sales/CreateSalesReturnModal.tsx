@@ -218,10 +218,9 @@ export function CreateSalesReturnModal({
           {/* Customer and Reference selection */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createsale-customer-debtor-party-1" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Customer / Debtor Party *
-              </label>
-              <select
+              </label><select id="createsale-customer-debtor-party-1"
                 value={customerLedgerId}
                 onChange={(e) => setCustomerLedgerId(e.target.value)}
                 className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -235,10 +234,9 @@ export function CreateSalesReturnModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createsale-original-sales-invoice-reference-2" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Original Sales Invoice Reference *
-              </label>
-              <input
+              </label><input id="createsale-original-sales-invoice-reference-2"
                 type="text"
                 value={originalInvoiceNumber}
                 onChange={(e) => setOriginalInvoiceNumber(e.target.value)}
@@ -251,10 +249,9 @@ export function CreateSalesReturnModal({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createsale-return-inward-date-3" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Return Inward Date *
-              </label>
-              <input
+              </label><input id="createsale-return-inward-date-3"
                 type="date"
                 value={returnDate}
                 onChange={(e) => setReturnDate(e.target.value)}
@@ -263,10 +260,9 @@ export function CreateSalesReturnModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createsale-qc-disposition-verdict-4" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 QC Disposition Verdict *
-              </label>
-              <select
+              </label><select id="createsale-qc-disposition-verdict-4"
                 value={qcDisposition}
                 onChange={(e) => setQcDisposition(e.target.value as any)}
                 className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -278,10 +274,9 @@ export function CreateSalesReturnModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createsale-inward-destination-godown-5" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Inward Destination Godown *
-              </label>
-              <select
+              </label><select id="createsale-inward-destination-godown-5"
                 value={destinationWarehouseId}
                 onChange={(e) => setDestinationWarehouseId(e.target.value)}
                 className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -404,7 +399,7 @@ export function CreateSalesReturnModal({
                 onChange={(e) => setAutoCreateCreditNote(e.target.checked)}
                 className="w-4 h-4 rounded text-amber-600 focus:ring-amber-500"
               />
-              <div>
+              <span className="block">
                 <span className="text-xs font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1.5">
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
                   <span>Auto-Generate Section 34 Credit Note & Accounting Journal</span>
@@ -412,7 +407,7 @@ export function CreateSalesReturnModal({
                 <span className="text-[11px] text-slate-500 dark:text-slate-400 block">
                   Posts Dr Sales Return / Dr Output GST / Cr Customer Debtor & replenishes stock
                 </span>
-              </div>
+              </span>
             </label>
 
             <div className="text-right space-y-1 w-full md:w-auto">
@@ -427,10 +422,9 @@ export function CreateSalesReturnModal({
 
           {/* Remarks */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+            <label htmlFor="createsale-customer-reason-inward-remarks-6" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
               Customer Reason & Inward Remarks
-            </label>
-            <textarea
+            </label><textarea id="createsale-customer-reason-inward-remarks-6"
               rows={2}
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}

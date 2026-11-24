@@ -77,8 +77,7 @@ export const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({ isOpen
           {error && <div className="p-3 text-xs bg-destructive/10 text-destructive border border-destructive/20 rounded-lg">{error}</div>}
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Category Name *</label>
-            <input
+            <label htmlFor="createcate-category-name-1" className="block text-xs font-semibold mb-1">Category Name *</label><input id="createcate-category-name-1"
               type="text"
               required
               placeholder="e.g. Electrical Components, Raw Steel, Packaging"
@@ -90,8 +89,7 @@ export const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({ isOpen
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold mb-1">Category Code</label>
-              <input
+              <label htmlFor="createcate-category-code-2" className="block text-xs font-semibold mb-1">Category Code</label><input id="createcate-category-code-2"
                 type="text"
                 placeholder="e.g. ELEC, STL, PKG"
                 value={code}
@@ -100,8 +98,7 @@ export const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({ isOpen
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">Parent Category</label>
-              <select
+              <label htmlFor="createcate-parent-category-3" className="block text-xs font-semibold mb-1">Parent Category</label><select id="createcate-parent-category-3"
                 value={parentId}
                 onChange={(e) => setParentId(e.target.value)}
                 className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -116,8 +113,7 @@ export const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({ isOpen
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold mb-1">Default HSN Code</label>
-              <input
+              <label htmlFor="createcate-default-hsn-code-4" className="block text-xs font-semibold mb-1">Default HSN Code</label><input id="createcate-default-hsn-code-4"
                 type="text"
                 placeholder="e.g. 8481, 7214"
                 value={defaultHsn}
@@ -126,8 +122,7 @@ export const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({ isOpen
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">Default GST Rate %</label>
-              <select
+              <label htmlFor="createcate-default-gst-rate-5" className="block text-xs font-semibold mb-1">Default GST Rate %</label><select id="createcate-default-gst-rate-5"
                 value={defaultTaxRate}
                 onChange={(e) => setDefaultTaxRate(Number(e.target.value))}
                 className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -142,8 +137,7 @@ export const CreateCategoryModal: React.FC<CreateCategoryModalProps> = ({ isOpen
           </div>
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Description / Notes</label>
-            <textarea
+            <label htmlFor="createcate-description-notes-6" className="block text-xs font-semibold mb-1">Description / Notes</label><textarea id="createcate-description-notes-6"
               rows={2}
               placeholder="Scope, specifications or handling instructions..."
               value={description}

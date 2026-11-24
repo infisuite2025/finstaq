@@ -260,8 +260,9 @@ export function ForexManagementWorkspace() {
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="font-semibold text-slate-700 dark:text-slate-300">Currency</label>
+                <label htmlFor="fx-currency" className="font-semibold text-slate-700 dark:text-slate-300">Currency</label>
                 <select
+                  id="fx-currency"
                   value={calcCurrency}
                   onChange={(e) => setCalcCurrency(e.target.value)}
                   className="w-full mt-1 px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -273,8 +274,9 @@ export function ForexManagementWorkspace() {
               </div>
 
               <div>
-                <label className="font-semibold text-slate-700 dark:text-slate-300">Transaction Nature</label>
+                <label htmlFor="fx-nature" className="font-semibold text-slate-700 dark:text-slate-300">Transaction Nature</label>
                 <select
+                  id="fx-nature"
                   value={calcTxnType}
                   onChange={(e) => setCalcTxnType(e.target.value as any)}
                   className="w-full mt-1 px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -285,8 +287,9 @@ export function ForexManagementWorkspace() {
               </div>
 
               <div>
-                <label className="font-semibold text-slate-700 dark:text-slate-300">Foreign Amount ({calcCurrency})</label>
+                <label htmlFor="fx-amount" className="font-semibold text-slate-700 dark:text-slate-300">Foreign Amount ({calcCurrency})</label>
                 <input
+                  id="fx-amount"
                   type="number"
                   value={calcForeignAmt}
                   onChange={(e) => setCalcForeignAmt(Number(e.target.value))}
@@ -296,8 +299,9 @@ export function ForexManagementWorkspace() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-semibold text-slate-700 dark:text-slate-300">Booking Rate (₹)</label>
+                  <label htmlFor="fx-booking-rate" className="font-semibold text-slate-700 dark:text-slate-300">Booking Rate (₹)</label>
                   <input
+                    id="fx-booking-rate"
                     type="number"
                     step="0.01"
                     value={calcBookingRate}
@@ -306,8 +310,9 @@ export function ForexManagementWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-slate-700 dark:text-slate-300">Settlement Spot Rate (₹)</label>
+                  <label htmlFor="fx-spot-rate" className="font-semibold text-slate-700 dark:text-slate-300">Settlement Spot Rate (₹)</label>
                   <input
+                    id="fx-spot-rate"
                     type="number"
                     step="0.01"
                     value={calcSettlementRate}

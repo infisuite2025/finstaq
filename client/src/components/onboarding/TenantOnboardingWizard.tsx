@@ -325,10 +325,9 @@ export const TenantOnboardingWizard: React.FC<TenantOnboardingWizardProps> = ({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="tenantonbo-company-legal-name-1" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                     Company Legal Name
-                  </label>
-                  <input
+                  </label><input id="tenantonbo-company-legal-name-1"
                     type="text"
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
@@ -338,11 +337,12 @@ export const TenantOnboardingWizard: React.FC<TenantOnboardingWizardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="tenant-gstin" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                     GSTIN (Goods & Services Tax ID)
                   </label>
                   <div className="relative">
                     <input
+                      id="tenant-gstin"
                       type="text"
                       value={gstinInput}
                       onChange={(e) => {
@@ -527,10 +527,9 @@ export const TenantOnboardingWizard: React.FC<TenantOnboardingWizardProps> = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="tenantonbo-primary-bank-name-2" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                     Primary Bank Name
-                  </label>
-                  <select
+                  </label><select id="tenantonbo-primary-bank-name-2"
                     value={bankName}
                     onChange={(e) => setBankName(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -544,10 +543,9 @@ export const TenantOnboardingWizard: React.FC<TenantOnboardingWizardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="tenantonbo-bank-account-number-3" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                     Bank Account Number
-                  </label>
-                  <input
+                  </label><input id="tenantonbo-bank-account-number-3"
                     type="text"
                     value={accountNumber}
                     onChange={(e) => setAccountNumber(e.target.value)}
@@ -556,10 +554,9 @@ export const TenantOnboardingWizard: React.FC<TenantOnboardingWizardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="tenantonbo-bank-ifsc-code-4" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                     Bank IFSC Code
-                  </label>
-                  <input
+                  </label><input id="tenantonbo-bank-ifsc-code-4"
                     type="text"
                     value={ifscCode}
                     onChange={(e) => setIfscCode(e.target.value.toUpperCase())}
@@ -568,10 +565,9 @@ export const TenantOnboardingWizard: React.FC<TenantOnboardingWizardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="tenantonbo-initial-bank-opening-balance-5" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                     Initial Bank Opening Balance (₹)
-                  </label>
-                  <input
+                  </label><input id="tenantonbo-initial-bank-opening-balance-5"
                     type="number"
                     value={openingBalance}
                     onChange={(e) => setOpeningBalance(Number(e.target.value))}

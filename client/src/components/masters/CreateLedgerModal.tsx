@@ -92,8 +92,7 @@ export const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({ isOpen, on
           {error && <div className="p-3 text-xs bg-destructive/10 text-destructive border border-destructive/20 rounded-lg">{error}</div>}
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Ledger Account Name *</label>
-            <input
+            <label htmlFor="createledg-ledger-account-name-1" className="block text-xs font-semibold mb-1">Ledger Account Name *</label><input id="createledg-ledger-account-name-1"
               type="text"
               required
               placeholder="e.g. Printing & Stationery, ICICI Bank Overdraft, Audit Fees"
@@ -105,8 +104,7 @@ export const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({ isOpen, on
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold mb-1">Parent Account Group *</label>
-              <select
+              <label htmlFor="createledg-parent-account-group-2" className="block text-xs font-semibold mb-1">Parent Account Group *</label><select id="createledg-parent-account-group-2"
                 required
                 value={groupId}
                 onChange={(e) => setGroupId(e.target.value)}
@@ -119,8 +117,7 @@ export const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({ isOpen, on
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">Ledger Code</label>
-              <input
+              <label htmlFor="createledg-ledger-code-3" className="block text-xs font-semibold mb-1">Ledger Code</label><input id="createledg-ledger-code-3"
                 type="text"
                 placeholder="e.g. EXP-OFF-01"
                 value={code}
@@ -132,8 +129,7 @@ export const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({ isOpen, on
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold mb-1">Opening Balance (₹)</label>
-              <input
+              <label htmlFor="createledg-opening-balance-4" className="block text-xs font-semibold mb-1">Opening Balance (₹)</label><input id="createledg-opening-balance-4"
                 type="number"
                 step="0.01"
                 value={openingBalance}
@@ -142,8 +138,7 @@ export const CreateLedgerModal: React.FC<CreateLedgerModalProps> = ({ isOpen, on
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">GSTIN (If Applicable)</label>
-              <input
+              <label htmlFor="createledg-gstin-if-applicable-5" className="block text-xs font-semibold mb-1">GSTIN (If Applicable)</label><input id="createledg-gstin-if-applicable-5"
                 type="text"
                 maxLength={15}
                 placeholder="27AABCF1234F1Z5"

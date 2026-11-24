@@ -75,8 +75,7 @@ export const CreatePaymentTermModal: React.FC<CreatePaymentTermModalProps> = ({ 
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold mb-1">Term Code *</label>
-              <input
+              <label htmlFor="createpaym-term-code-1" className="block text-xs font-semibold mb-1">Term Code *</label><input id="createpaym-term-code-1"
                 type="text"
                 required
                 placeholder="e.g. NET30, NET45, IMM"
@@ -86,8 +85,7 @@ export const CreatePaymentTermModal: React.FC<CreatePaymentTermModalProps> = ({ 
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">Credit Days *</label>
-              <input
+              <label htmlFor="createpaym-credit-days-2" className="block text-xs font-semibold mb-1">Credit Days *</label><input id="createpaym-credit-days-2"
                 type="number"
                 min={0}
                 required
@@ -99,8 +97,7 @@ export const CreatePaymentTermModal: React.FC<CreatePaymentTermModalProps> = ({ 
           </div>
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Term Display Name *</label>
-            <input
+            <label htmlFor="createpaym-term-display-name-3" className="block text-xs font-semibold mb-1">Term Display Name *</label><input id="createpaym-term-display-name-3"
               type="text"
               required
               placeholder="e.g. Net 30 Days Standard Credit"
@@ -111,8 +108,7 @@ export const CreatePaymentTermModal: React.FC<CreatePaymentTermModalProps> = ({ 
           </div>
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Description / Contract Clause</label>
-            <input
+            <label htmlFor="createpaym-description-contract-clause-4" className="block text-xs font-semibold mb-1">Description / Contract Clause</label><input id="createpaym-description-contract-clause-4"
               type="text"
               placeholder="e.g. Due within 30 calendar days from invoice date"
               value={description}

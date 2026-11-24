@@ -40,7 +40,7 @@ export function useVoucherHotkeys({
 
     const currentNavIndex = activeEl.getAttribute('data-nav-idx');
     if (currentNavIndex !== null) {
-      const nextIdx = parseInt(currentNavIndex, 10) + 1;
+      const nextIdx = Number.parseInt(currentNavIndex, 10) + 1;
       const nextElement = document.querySelector<HTMLElement>(`[data-nav-idx="${nextIdx}"]`);
 
       if (nextElement) {

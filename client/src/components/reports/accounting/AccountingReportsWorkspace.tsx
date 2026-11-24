@@ -773,7 +773,7 @@ export function AccountingReportsWorkspace() {
       isOpen: true,
       title: `Ledger Account Statement: ${groupName}`,
       groupName,
-      accountCode: 'GL-' + Math.floor(1000 + Math.random() * 9000),
+      accountCode: 'GL-' + (crypto.getRandomValues(new Uint32Array(1))[0] % 9000 + 1000),
       entries: [
         { date: `${startDate}`, voucherNo: `OB-${selectedFY}-001`, voucherType: 'OPENING', particulars: 'Opening Balance b/f', debit: 4500000, credit: 0, balance: 4500000 },
         { date: '2025-06-15', voucherNo: 'PMT-2025-0819', voucherType: 'PAYMENT', particulars: 'By Industrial Automation Equip', debit: 150000, credit: 0, balance: 4650000 },
@@ -1005,10 +1005,10 @@ export function AccountingReportsWorkspace() {
                           </div>
                           <div className="space-y-1 pl-3 text-xs text-slate-600 dark:text-slate-400">
                             {g.subGroups?.map((sg: any, sIdx: number) => (
-                              <div key={sIdx} className="flex justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 py-1 px-2 rounded cursor-pointer" onClick={() => handleDrilldown(sg.name)}>
+                              <button type="button" key={sIdx} className="w-full text-left flex justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 py-1 px-2 rounded cursor-pointer" onClick={() => handleDrilldown(sg.name)}>
                                 <span>{sg.name}</span>
                                 <span className="font-mono">₹{sg.amount.toLocaleString('en-IN')}</span>
-                              </div>
+                              </button>
                             ))}
                           </div>
                         </div>
@@ -1030,10 +1030,10 @@ export function AccountingReportsWorkspace() {
                           </div>
                           <div className="space-y-1 pl-3 text-xs text-slate-600 dark:text-slate-400">
                             {g.subGroups?.map((sg: any, sIdx: number) => (
-                              <div key={sIdx} className="flex justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 py-1 px-2 rounded cursor-pointer" onClick={() => handleDrilldown(sg.name)}>
+                              <button type="button" key={sIdx} className="w-full text-left flex justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 py-1 px-2 rounded cursor-pointer" onClick={() => handleDrilldown(sg.name)}>
                                 <span>{sg.name}</span>
                                 <span className="font-mono">₹{sg.amount.toLocaleString('en-IN')}</span>
-                              </div>
+                              </button>
                             ))}
                           </div>
                         </div>

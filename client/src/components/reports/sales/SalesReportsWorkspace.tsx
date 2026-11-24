@@ -449,7 +449,7 @@ export function SalesReportsWorkspace() {
           </div>
           <div>
             <h1 className="text-base font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-              Sales Department Reports
+              <span>Sales Department Reports</span>
               <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
                 Statutory ERP Standard
               </span>

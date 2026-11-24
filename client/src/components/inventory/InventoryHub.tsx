@@ -263,7 +263,7 @@ export const InventoryHub: React.FC = () => {
           </div>
           <div>
             <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-              Stores & Inventory Management
+              <span>Stores & Inventory Management</span>
               <span className="text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300">
                 Multi-Godown
               </span>
@@ -629,7 +629,7 @@ export const InventoryHub: React.FC = () => {
       {/* Modal: New Inter-Godown Transfer */}
       {isTransferModalOpen && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden" onClick={e => e.stopPropagation()}>
+          <div className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden" >
             <div className="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/40">
               <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <ArrowRightLeft className="w-4 h-4 text-blue-600" />
@@ -643,8 +643,9 @@ export const InventoryHub: React.FC = () => {
             <form onSubmit={handleCreateTransfer} className="p-6 space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Source Godown (From)</label>
+                  <label htmlFor="inv-from" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Source Godown (From)</label>
                   <select
+                    id="inv-from"
                     value={fromWhId}
                     onChange={e => setFromWhId(e.target.value)}
                     required
@@ -654,8 +655,9 @@ export const InventoryHub: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Destination Godown (To)</label>
+                  <label htmlFor="inv-to" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Destination Godown (To)</label>
                   <select
+                    id="inv-to"
                     value={toWhId}
                     onChange={e => setToWhId(e.target.value)}
                     required
@@ -667,8 +669,9 @@ export const InventoryHub: React.FC = () => {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Select Item to Transfer</label>
+                <label htmlFor="inv-item" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Select Item to Transfer</label>
                 <select
+                  id="inv-item"
                   value={selectedTransferItem}
                   onChange={e => setSelectedTransferItem(e.target.value)}
                   required
@@ -685,20 +688,22 @@ export const InventoryHub: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Transfer Quantity</label>
+                  <label htmlFor="inv-qty" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Transfer Quantity</label>
                   <input
+                    id="inv-qty"
                     type="number"
                     step="0.01"
                     min="0.01"
                     required
                     value={transferQty}
-                    onChange={e => setTransferQty(parseFloat(e.target.value))}
+                    onChange={e => setTransferQty(Number.parseFloat(e.target.value))}
                     className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Vehicle / Truck No.</label>
+                  <label htmlFor="inv-vehicle" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Vehicle / Truck No.</label>
                   <input
+                    id="inv-vehicle"
                     type="text"
                     placeholder="MH-04-AB-1234"
                     value={transferVehicle}
@@ -709,8 +714,9 @@ export const InventoryHub: React.FC = () => {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Transfer Remarks</label>
+                <label htmlFor="inv-remarks" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Transfer Remarks</label>
                 <input
+                  id="inv-remarks"
                   type="text"
                   placeholder="e.g. Stock replenishment for production batch"
                   value={transferRemarks}
@@ -742,7 +748,7 @@ export const InventoryHub: React.FC = () => {
       {/* Modal: Physical Stock Audit & Journal */}
       {isAdjModalOpen && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden" onClick={e => e.stopPropagation()}>
+          <div className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden" >
             <div className="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/40">
               <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <ClipboardCheck className="w-4 h-4 text-amber-600" />
@@ -755,8 +761,9 @@ export const InventoryHub: React.FC = () => {
 
             <form onSubmit={handleCreateAdjustment} className="p-6 space-y-4 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Godown to Audit</label>
+                <label htmlFor="inv-audit-wh" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Godown to Audit</label>
                 <select
+                  id="inv-audit-wh"
                   value={adjWhId}
                   onChange={e => setAdjWhId(e.target.value)}
                   required
@@ -767,8 +774,9 @@ export const InventoryHub: React.FC = () => {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Item to Reconcile</label>
+                <label htmlFor="inv-audit-item" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Item to Reconcile</label>
                 <select
+                  id="inv-audit-item"
                   value={selectedAdjItem}
                   onChange={e => {
                     setSelectedAdjItem(e.target.value);
@@ -789,20 +797,22 @@ export const InventoryHub: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Physical Counted Quantity</label>
+                  <label htmlFor="inv-physical" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Physical Counted Quantity</label>
                   <input
+                    id="inv-physical"
                     type="number"
                     step="0.01"
                     min="0"
                     required
                     value={adjPhysicalQty}
-                    onChange={e => setAdjPhysicalQty(parseFloat(e.target.value))}
+                    onChange={e => setAdjPhysicalQty(Number.parseFloat(e.target.value))}
                     className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Reason / Type</label>
+                  <label htmlFor="inv-adj-type" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Reason / Type</label>
                   <select
+                    id="inv-adj-type"
                     value={adjType}
                     onChange={e => setAdjType(e.target.value)}
                     className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -817,8 +827,9 @@ export const InventoryHub: React.FC = () => {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Audit Notes / Explanation</label>
+                <label htmlFor="inv-audit-notes" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Audit Notes / Explanation</label>
                 <input
+                  id="inv-audit-notes"
                   type="text"
                   placeholder="e.g. Discrepancy observed during monthly physical verification"
                   value={adjRemarks}

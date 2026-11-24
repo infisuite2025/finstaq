@@ -296,7 +296,7 @@ export const ApprovalCenter: React.FC = () => {
         body: JSON.stringify({
           tenantId: '27AABCF1234F1Z5',
           docType: simDocType,
-          docNumber: `SIM-${simDocType}-${Math.floor(1000 + Math.random() * 9000)}`,
+          docNumber: `SIM-${simDocType}-${crypto.getRandomValues(new Uint32Array(1))[0] % 9000 + 1000}`,
           docId: `sim-doc-${Date.now()}`,
           amount: Number(simAmount),
           currency: 'INR',
@@ -740,6 +740,7 @@ export const ApprovalCenter: React.FC = () => {
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input
                           type="checkbox"
+                          aria-label={`Enable maker-checker for ${rule.docTitle}`}
                           checked={rule.isEnabled}
                           onChange={() => handleRuleToggle(rule.docType)}
                           className="sr-only peer"
@@ -897,8 +898,9 @@ export const ApprovalCenter: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-5 rounded-xl border border-slate-200">
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Document Type</label>
+              <label htmlFor="sim-doc-type" className="block text-xs font-bold text-slate-700 uppercase mb-1">Document Type</label>
               <select
+                id="sim-doc-type"
                 value={simDocType}
                 onChange={(e) => setSimDocType(e.target.value)}
                 className="w-full px-3 py-2 text-xs border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -912,8 +914,9 @@ export const ApprovalCenter: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Transaction Value (₹)</label>
+              <label htmlFor="sim-amount" className="block text-xs font-bold text-slate-700 uppercase mb-1">Transaction Value (₹)</label>
               <input
+                id="sim-amount"
                 type="number"
                 value={simAmount}
                 onChange={(e) => setSimAmount(Number(e.target.value))}
@@ -922,8 +925,9 @@ export const ApprovalCenter: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Maker (Who creates the entry?)</label>
+              <label htmlFor="sim-maker" className="block text-xs font-bold text-slate-700 uppercase mb-1">Maker (Who creates the entry?)</label>
               <select
+                id="sim-maker"
                 value={simMaker}
                 onChange={(e) => setSimMaker(e.target.value)}
                 className="w-full px-3 py-2 text-xs border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -1043,10 +1047,11 @@ export const ApprovalCenter: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label htmlFor="approval-remarks" className="block text-xs font-bold text-slate-700 mb-1">
                 {actionType === 'APPROVE' ? 'Checker Approval Remarks (Optional)' : 'Reason for Rejection (Mandatory for Audit)'}
               </label>
               <textarea
+                id="approval-remarks"
                 rows={3}
                 value={actionRemarks}
                 onChange={(e) => setActionRemarks(e.target.value)}

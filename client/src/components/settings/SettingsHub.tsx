@@ -269,10 +269,9 @@ export function SettingsHub() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="settingshu-legal-company-name-1" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Legal Company Name
-              </label>
-              <input
+              </label><input id="settingshu-legal-company-name-1"
                 type="text"
                 value={config.tenant.name}
                 onChange={(e) =>
@@ -286,10 +285,9 @@ export function SettingsHub() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="settingshu-gstin-goods-and-services-tax-identif-2" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 GSTIN (Goods and Services Tax Identification Number)
-              </label>
-              <input
+              </label><input id="settingshu-gstin-goods-and-services-tax-identif-2"
                 type="text"
                 value={config.tenant.gstIn}
                 onChange={(e) =>
@@ -303,10 +301,9 @@ export function SettingsHub() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="settingshu-permanent-account-number-pan-3" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Permanent Account Number (PAN)
-              </label>
-              <input
+              </label><input id="settingshu-permanent-account-number-pan-3"
                 type="text"
                 value={config.tenant.taxId}
                 onChange={(e) =>
@@ -320,10 +317,9 @@ export function SettingsHub() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="settingshu-state-state-code-4" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 State & State Code
-              </label>
-              <input
+              </label><input id="settingshu-state-state-code-4"
                 type="text"
                 value={`${config.tenant.stateCode} - ${config.tenant.stateName}`}
                 disabled
@@ -332,10 +328,9 @@ export function SettingsHub() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="settingshu-base-functional-currency-5" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Base Functional Currency
-              </label>
-              <input
+              </label><input id="settingshu-base-functional-currency-5"
                 type="text"
                 value={config.tenant.currency}
                 disabled
@@ -344,10 +339,9 @@ export function SettingsHub() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="settingshu-tenant-isolation-partition-key-6" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Tenant Isolation Partition Key
-              </label>
-              <input
+              </label><input id="settingshu-tenant-isolation-partition-key-6"
                 type="text"
                 value={config.tenant.id}
                 disabled
@@ -367,10 +361,9 @@ export function SettingsHub() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="settingshu-sales-order-so-prefix-7" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Sales Order (SO) Prefix
-              </label>
-              <input
+              </label><input id="settingshu-sales-order-so-prefix-7"
                 type="text"
                 value={config.numberingSeries.salesOrderPrefix}
                 onChange={(e) =>
@@ -384,10 +377,9 @@ export function SettingsHub() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="settingshu-tax-invoice-prefix-8" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Tax Invoice Prefix
-              </label>
-              <input
+              </label><input id="settingshu-tax-invoice-prefix-8"
                 type="text"
                 value={config.numberingSeries.salesInvoicePrefix}
                 onChange={(e) =>
@@ -401,10 +393,9 @@ export function SettingsHub() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="settingshu-delivery-challan-dispatch-prefix-9" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Delivery Challan (Dispatch) Prefix
-              </label>
-              <input
+              </label><input id="settingshu-delivery-challan-dispatch-prefix-9"
                 type="text"
                 value={config.numberingSeries.deliveryChallanPrefix}
                 onChange={(e) =>
@@ -418,10 +409,9 @@ export function SettingsHub() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="settingshu-purchase-order-po-prefix-10" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Purchase Order (PO) Prefix
-              </label>
-              <input
+              </label><input id="settingshu-purchase-order-po-prefix-10"
                 type="text"
                 value={config.numberingSeries.purchaseOrderPrefix}
                 onChange={(e) =>
@@ -435,10 +425,9 @@ export function SettingsHub() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="settingshu-goods-receipt-grn-prefix-11" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Goods Receipt (GRN) Prefix
-              </label>
-              <input
+              </label><input id="settingshu-goods-receipt-grn-prefix-11"
                 type="text"
                 value={config.numberingSeries.grnPrefix}
                 onChange={(e) =>
@@ -452,10 +441,9 @@ export function SettingsHub() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="settingshu-receipt-payment-voucher-prefix-12" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Receipt / Payment Voucher Prefix
-              </label>
-              <input
+              </label><input id="settingshu-receipt-payment-voucher-prefix-12"
                 type="text"
                 value={`${config.numberingSeries.receiptPrefix} / ${config.numberingSeries.paymentPrefix}`}
                 disabled
@@ -714,7 +702,7 @@ export function SettingsHub() {
                       ...config,
                       statutorySettings: {
                         ...config.statutorySettings,
-                        eWayBillThreshold: parseFloat(e.target.value) || 50000,
+                        eWayBillThreshold: Number.parseFloat(e.target.value) || 50000,
                       },
                     })
                   }

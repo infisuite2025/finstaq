@@ -316,10 +316,9 @@ export function SalaryRevisionHub({
             <form onSubmit={handleCreateRevision} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="salaryrevi-select-employee-1" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Select Employee *
-                  </label>
-                  <select
+                  </label><select id="salaryrevi-select-employee-1"
                     value={selectedEmpId}
                     onChange={(e) => {
                       setSelectedEmpId(e.target.value);
@@ -337,10 +336,9 @@ export function SalaryRevisionHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="salaryrevi-revision-reason-type-2" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Revision Reason / Type
-                  </label>
-                  <select
+                  </label><select id="salaryrevi-revision-reason-type-2"
                     value={revisionType}
                     onChange={(e) => setRevisionType(e.target.value as any)}
                     className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -353,10 +351,9 @@ export function SalaryRevisionHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="salaryrevi-current-annual-ctc-3" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Current Annual CTC
-                  </label>
-                  <input
+                  </label><input id="salaryrevi-current-annual-ctc-3"
                     type="text"
                     disabled
                     value={`₹${currentAnnualCtc.toLocaleString('en-IN')}`}
@@ -401,10 +398,9 @@ export function SalaryRevisionHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="salaryrevi-effective-date-supports-retroactive--4" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Effective Date (Supports Retroactive Arrears)
-                  </label>
-                  <input
+                  </label><input id="salaryrevi-effective-date-supports-retroactive--4"
                     type="date"
                     required
                     value={effectiveDate}
@@ -414,10 +410,9 @@ export function SalaryRevisionHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="salaryrevi-new-designation-if-promoted-5" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     New Designation (if promoted)
-                  </label>
-                  <input
+                  </label><input id="salaryrevi-new-designation-if-promoted-5"
                     type="text"
                     placeholder="Leave unchanged or enter new title"
                     value={newDesignation}
@@ -428,10 +423,9 @@ export function SalaryRevisionHub({
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                <label htmlFor="salaryrevi-appraisal-notes-performance-comments-6" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                   Appraisal Notes / Performance Comments (Included in Letter)
-                </label>
-                <textarea
+                </label><textarea id="salaryrevi-appraisal-notes-performance-comments-6"
                   rows={2}
                   value={appraisalComments}
                   onChange={(e) => setAppraisalComments(e.target.value)}

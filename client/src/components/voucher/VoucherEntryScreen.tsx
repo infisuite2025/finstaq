@@ -173,13 +173,13 @@ const VOUCHER_TYPE_BUTTONS: { type: VoucherType; fKey: string; label: string; co
 // Indian numbering currency format helpers
 export const formatINR = (val?: number | string | null, showSymbol = true): string => {
   const num = typeof val === 'number' ? val : Number(val || 0);
-  const safeNum = isNaN(num) ? 0 : num;
+  const safeNum = Number.isNaN(num) ? 0 : num;
   return `${showSymbol ? '₹ ' : ''}${safeNum.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
 export const formatBalance = (val?: number | string | null, nature?: string): string => {
   const num = typeof val === 'number' ? val : Number(val || 0);
-  const safeNum = isNaN(num) ? 0 : num;
+  const safeNum = Number.isNaN(num) ? 0 : num;
   const tag = nature === 'LIABILITY' || nature === 'INCOME' ? 'Cr' : 'Dr';
   return `₹ ${safeNum.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${tag}`;
 };
@@ -492,7 +492,7 @@ export const VoucherEntryScreen: React.FC = () => {
   const handleVoucherTypeChange = (newType: VoucherType) => {
     setVoucherType(newType);
     const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const rand = Math.floor(1000 + Math.random() * 9000);
+    const rand = crypto.getRandomValues(new Uint32Array(1))[0] % 9000 + 1000;
 
     if (newType === 'RECEIPT') {
       setVoucherNumber(`RCPT-${dateStr}-${rand}`);
@@ -1315,11 +1315,10 @@ export const VoucherEntryScreen: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Party / Customer Name */}
                     <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                      <label htmlFor="voucherent-field-1" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
                         <User className="w-3 h-3 inline mr-1 text-emerald-600" />
                         {voucherType === 'SALES' ? 'Customer / Debtor' : 'Vendor / Creditor'} *
-                      </label>
-                      <select
+                      </label><select id="voucherent-field-1"
                         value={partyLedgerId}
                         onChange={(e) => setPartyLedgerId(e.target.value)}
                         className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3.5 py-2.5 text-slate-900 dark:text-white text-xs font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -1334,10 +1333,9 @@ export const VoucherEntryScreen: React.FC = () => {
 
                     {/* Party GSTIN */}
                     <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                      <label htmlFor="voucherent-field-2" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
                         {voucherType === 'SALES' ? 'Customer GSTIN' : 'Vendor GSTIN'} *
-                      </label>
-                      <input
+                      </label><input id="voucherent-field-2"
                         type="text"
                         value={customerGstin}
                         onChange={(e) => {
@@ -1361,10 +1359,9 @@ export const VoucherEntryScreen: React.FC = () => {
 
                     {/* Place of Supply */}
                     <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                      <label htmlFor="voucherent-place-of-supply-3" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
                         Place of Supply *
-                      </label>
-                      <select
+                      </label><select id="voucherent-place-of-supply-3"
                         value={placeOfSupply}
                         onChange={(e) => setPlaceOfSupply(e.target.value)}
                         className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3.5 py-2.5 text-slate-900 dark:text-white text-xs font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -1377,10 +1374,9 @@ export const VoucherEntryScreen: React.FC = () => {
 
                     {/* Sales/Purchase Ledger */}
                     <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                      <label htmlFor="voucherent-field-4" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
                         {voucherType === 'SALES' ? 'Sales Ledger' : 'Purchase Ledger'} *
-                      </label>
-                      <select
+                      </label><select id="voucherent-field-4"
                         value={salesLedgerId}
                         onChange={(e) => setSalesLedgerId(e.target.value)}
                         className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3.5 py-2.5 text-slate-900 dark:text-white text-xs font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -1397,23 +1393,19 @@ export const VoucherEntryScreen: React.FC = () => {
                   {/* Section B: Invoice Numbers + Dates */}
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
                     <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Voucher No.</label>
-                      <input type="text" value={voucherNumber} onChange={(e) => setVoucherNumber(e.target.value)}
+                      <label htmlFor="voucherent-voucher-no-5" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Voucher No.</label><input id="voucherent-voucher-no-5" type="text" value={voucherNumber} onChange={(e) => setVoucherNumber(e.target.value)}
                         className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3.5 py-2 text-slate-900 dark:text-white font-mono text-xs font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all" />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Invoice Date *</label>
-                      <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
+                      <label htmlFor="voucherent-invoice-date-6" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Invoice Date *</label><input id="voucherent-invoice-date-6" type="date" value={date} onChange={(e) => setDate(e.target.value)}
                         className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3.5 py-2 text-slate-900 dark:text-white font-mono text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all" />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Buyer's PO / Ref No.</label>
-                      <input type="text" value={buyerPoNo} onChange={(e) => setBuyerPoNo(e.target.value)} placeholder="PO-2026-XXXX"
+                      <label htmlFor="voucherent-buyer-s-po-ref-no-7" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Buyer's PO / Ref No.</label><input id="voucherent-buyer-s-po-ref-no-7" type="text" value={buyerPoNo} onChange={(e) => setBuyerPoNo(e.target.value)} placeholder="PO-2026-XXXX"
                         className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3.5 py-2 text-slate-900 dark:text-white font-mono text-xs font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all" />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Payment Terms</label>
-                      <select value={paymentTermsDays} onChange={(e) => {
+                      <label htmlFor="voucherent-payment-terms-8" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Payment Terms</label><select id="voucherent-payment-terms-8" value={paymentTermsDays} onChange={(e) => {
                         const days = Number(e.target.value);
                         setPaymentTermsDays(days);
                         const d = new Date(date || Date.now());
@@ -1424,15 +1416,13 @@ export const VoucherEntryScreen: React.FC = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5 flex items-center">
+                      <label htmlFor="voucherent-due-date-9" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5 flex items-center">
                         <Clock className="w-3 h-3 mr-1 text-amber-500" />Due Date
-                      </label>
-                      <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)}
+                      </label><input id="voucherent-due-date-9" type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)}
                         className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3.5 py-2 text-slate-900 dark:text-white font-mono text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all" />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Our Ref No.</label>
-                      <input type="text" value={referenceNumber} onChange={(e) => setReferenceNumber(e.target.value)} placeholder="INV-2026-089"
+                      <label htmlFor="voucherent-our-ref-no-10" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Our Ref No.</label><input id="voucherent-our-ref-no-10" type="text" value={referenceNumber} onChange={(e) => setReferenceNumber(e.target.value)} placeholder="INV-2026-089"
                         className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3.5 py-2 text-slate-900 dark:text-white font-mono text-xs font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all" />
                     </div>
                   </div>
@@ -1448,28 +1438,23 @@ export const VoucherEntryScreen: React.FC = () => {
                     {showDispatchSection && (
                       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mt-3">
                         <div>
-                          <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Dispatch Through</label>
-                          <input type="text" value={dispatchThrough} onChange={(e) => setDispatchThrough(e.target.value)} placeholder="Transport co. name"
+                          <label htmlFor="voucherent-dispatch-through-11" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Dispatch Through</label><input id="voucherent-dispatch-through-11" type="text" value={dispatchThrough} onChange={(e) => setDispatchThrough(e.target.value)} placeholder="Transport co. name"
                             className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3.5 py-2 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all" />
                         </div>
                         <div>
-                          <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Vehicle / LR No.</label>
-                          <input type="text" value={vehicleNo} onChange={(e) => setVehicleNo(e.target.value)} placeholder="MH12AB1234"
+                          <label htmlFor="voucherent-vehicle-lr-no-12" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Vehicle / LR No.</label><input id="voucherent-vehicle-lr-no-12" type="text" value={vehicleNo} onChange={(e) => setVehicleNo(e.target.value)} placeholder="MH12AB1234"
                             className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3.5 py-2 text-xs font-mono text-slate-900 dark:text-white uppercase focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all" />
                         </div>
                         <div>
-                          <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">LR / GR No.</label>
-                          <input type="text" value={lrNo} onChange={(e) => setLrNo(e.target.value)} placeholder="LR-2026-XXXX"
+                          <label htmlFor="voucherent-lr-gr-no-13" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">LR / GR No.</label><input id="voucherent-lr-gr-no-13" type="text" value={lrNo} onChange={(e) => setLrNo(e.target.value)} placeholder="LR-2026-XXXX"
                             className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3.5 py-2 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all" />
                         </div>
                         <div>
-                          <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Destination</label>
-                          <input type="text" value={destination} onChange={(e) => setDestination(e.target.value)} placeholder="City, State"
+                          <label htmlFor="voucherent-destination-14" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Destination</label><input id="voucherent-destination-14" type="text" value={destination} onChange={(e) => setDestination(e.target.value)} placeholder="City, State"
                             className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3.5 py-2 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all" />
                         </div>
                         <div>
-                          <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Dispatch Date</label>
-                          <input type="date" value={dispatchDate} onChange={(e) => setDispatchDate(e.target.value)}
+                          <label htmlFor="voucherent-dispatch-date-15" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Dispatch Date</label><input id="voucherent-dispatch-date-15" type="date" value={dispatchDate} onChange={(e) => setDispatchDate(e.target.value)}
                             className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3.5 py-2 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all" />
                         </div>
                       </div>
@@ -1699,8 +1684,7 @@ export const VoucherEntryScreen: React.FC = () => {
                         <div className="text-[10px] font-bold text-slate-500 uppercase truncate">{ac.label}</div>
                         <div className="grid grid-cols-2 gap-1.5">
                           <div>
-                            <label className="text-[9px] text-slate-400 font-bold block">Amount (₹)</label>
-                            <input
+                            <label htmlFor="voucherent-amount-16" className="text-[9px] text-slate-400 font-bold block">Amount (₹)</label><input id="voucherent-amount-16"
                               type="number"
                               step="any"
                               value={ac.amount}
@@ -1710,8 +1694,7 @@ export const VoucherEntryScreen: React.FC = () => {
                             />
                           </div>
                           <div>
-                            <label className="text-[9px] text-slate-400 font-bold block">GST %</label>
-                            <select
+                            <label htmlFor="voucherent-gst-17" className="text-[9px] text-slate-400 font-bold block">GST %</label><select id="voucherent-gst-17"
                               value={ac.gstPercent}
                               onChange={(e) => updateAdditionalCharge(acIdx, 'gstPercent', Number(e.target.value))}
                               className="w-full bg-white dark:bg-slate-900 border border-emerald-400 dark:border-emerald-500 rounded-lg px-1.5 py-1 text-xs font-mono font-semibold text-blue-600 dark:text-blue-400 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
@@ -1736,10 +1719,9 @@ export const VoucherEntryScreen: React.FC = () => {
                   {/* Left Column: Narration & Commercial Terms */}
                   <div className="lg:col-span-7 space-y-3">
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">
+                      <label htmlFor="voucherent-narration-transaction-purpose-mandat-18" className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">
                         Narration / Transaction Purpose (Mandatory for Audit Trail)
-                      </label>
-                      <textarea
+                      </label><textarea id="voucherent-narration-transaction-purpose-mandat-18"
                         rows={2}
                         value={narration}
                         onChange={(e) => setNarration(e.target.value)}
@@ -1862,10 +1844,9 @@ export const VoucherEntryScreen: React.FC = () => {
                 {/* Standard Header Metadata Grid */}
                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 shadow-xs">
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                    <label htmlFor="voucherent-voucher-type-19" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
                       Voucher Type
-                    </label>
-                    <input
+                    </label><input id="voucherent-voucher-type-19"
                       type="text"
                       readOnly
                       value={`${voucherType} (${
@@ -1878,10 +1859,9 @@ export const VoucherEntryScreen: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                    <label htmlFor="voucherent-voucher-no-20" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
                       Voucher No.
-                    </label>
-                    <input
+                    </label><input id="voucherent-voucher-no-20"
                       type="text"
                       value={voucherNumber}
                       onChange={(e) => setVoucherNumber(e.target.value)}
@@ -1890,10 +1870,9 @@ export const VoucherEntryScreen: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                    <label htmlFor="voucherent-date-21" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
                       Date
-                    </label>
-                    <input
+                    </label><input id="voucherent-date-21"
                       type="date"
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
@@ -1902,10 +1881,9 @@ export const VoucherEntryScreen: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                    <label htmlFor="voucherent-ref-instrument-no-22" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
                       Ref / Instrument No.
-                    </label>
-                    <input
+                    </label><input id="voucherent-ref-instrument-no-22"
                       type="text"
                       value={referenceNumber}
                       onChange={(e) => setReferenceNumber(e.target.value)}
@@ -1915,10 +1893,9 @@ export const VoucherEntryScreen: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                    <label htmlFor="voucherent-party-gstin-optional-23" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
                       Party GSTIN (Optional)
-                    </label>
-                    <input
+                    </label><input id="voucherent-party-gstin-optional-23"
                       type="text"
                       value={customerGstin}
                       onChange={(e) => setCustomerGstin(e.target.value)}
@@ -2074,10 +2051,9 @@ export const VoucherEntryScreen: React.FC = () => {
 
                   {/* Narration Footer */}
                   <div className="p-4 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                    <label htmlFor="voucherent-narration-bank-instrument-reference-24" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
                       Narration / Bank Instrument Reference
-                    </label>
-                    <textarea
+                    </label><textarea id="voucherent-narration-bank-instrument-reference-24"
                       rows={2}
                       value={narration}
                       onChange={(e) => setNarration(e.target.value)}
@@ -2192,10 +2168,9 @@ export const VoucherEntryScreen: React.FC = () => {
                 </div>
 
                 <div className="p-4 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                  <label htmlFor="voucherent-narration-transaction-summary-25" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
                     Narration / Transaction Summary
-                  </label>
-                  <textarea
+                  </label><textarea id="voucherent-narration-transaction-summary-25"
                     rows={2}
                     value={narration}
                     onChange={(e) => setNarration(e.target.value)}
@@ -2760,8 +2735,7 @@ export const VoucherEntryScreen: React.FC = () => {
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Transaction Type</label>
-                <select className="w-full p-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all">
+                <label htmlFor="voucherent-transaction-type-26" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Transaction Type</label><select id="voucherent-transaction-type-26" className="w-full p-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all">
                   <option>e-Fund Transfer / NEFT / RTGS</option>
                   <option>UPI / QR Instant Settlement</option>
                   <option>Cheque (Leaf from Book #100101)</option>
@@ -2770,8 +2744,7 @@ export const VoucherEntryScreen: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Instrument / UTR / Reference No.</label>
-                <input
+                <label htmlFor="voucherent-instrument-utr-reference-no-27" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Instrument / UTR / Reference No.</label><input id="voucherent-instrument-utr-reference-no-27"
                   type="text"
                   defaultValue="UTR-98421045"
                   className="w-full p-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 font-mono font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -2780,16 +2753,14 @@ export const VoucherEntryScreen: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Instrument Date</label>
-                  <input
+                  <label htmlFor="voucherent-instrument-date-28" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Instrument Date</label><input id="voucherent-instrument-date-28"
                     type="date"
                     defaultValue={date}
                     className="w-full p-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 font-mono font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Bank Name</label>
-                  <input
+                  <label htmlFor="voucherent-bank-name-29" className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Bank Name</label><input id="voucherent-bank-name-29"
                     type="text"
                     defaultValue="HDFC Bank Limited"
                     className="w-full p-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"

@@ -87,10 +87,9 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createvend-vendor-supplier-name-1" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Vendor / Supplier Name *
-              </label>
-              <input
+              </label><input id="createvend-vendor-supplier-name-1"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -101,10 +100,9 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createvend-vendor-code-2" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Vendor Code
-              </label>
-              <input
+              </label><input id="createvend-vendor-code-2"
                 type="text"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
@@ -113,10 +111,9 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createvend-gstin-15-digit-3" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 GSTIN (15-Digit)
-              </label>
-              <input
+              </label><input id="createvend-gstin-15-digit-3"
                 type="text"
                 value={gstIn}
                 onChange={(e) => handleGstinChange(e.target.value)}
@@ -127,10 +124,9 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createvend-pan-number-4" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 PAN Number
-              </label>
-              <input
+              </label><input id="createvend-pan-number-4"
                 type="text"
                 value={pan}
                 onChange={(e) => setPan(e.target.value.toUpperCase())}
@@ -141,10 +137,9 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createvend-state-code-5" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 State Code
-              </label>
-              <input
+              </label><input id="createvend-state-code-5"
                 type="text"
                 value={stateCode}
                 onChange={(e) => setStateCode(e.target.value)}
@@ -154,10 +149,9 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createvend-contact-person-6" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Contact Person
-              </label>
-              <input
+              </label><input id="createvend-contact-person-6"
                 type="text"
                 value={contactPerson}
                 onChange={(e) => setContactPerson(e.target.value)}
@@ -167,10 +161,9 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createvend-email-address-7" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Email Address
-              </label>
-              <input
+              </label><input id="createvend-email-address-7"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -180,10 +173,9 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createvend-phone-mobile-8" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Phone / Mobile
-              </label>
-              <input
+              </label><input id="createvend-phone-mobile-8"
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -193,22 +185,20 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createvend-opening-balance-9" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Opening Balance (₹)
-              </label>
-              <input
+              </label><input id="createvend-opening-balance-9"
                 type="number"
                 value={openingBalance}
-                onChange={(e) => setOpeningBalance(parseFloat(e.target.value) || 0)}
+                onChange={(e) => setOpeningBalance(Number.parseFloat(e.target.value) || 0)}
                 className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-right text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createvend-bank-account-number-10" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Bank Account Number
-              </label>
-              <input
+              </label><input id="createvend-bank-account-number-10"
                 type="text"
                 value={bankAccount}
                 onChange={(e) => setBankAccount(e.target.value)}
@@ -218,10 +208,9 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createvend-bank-ifsc-code-11" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Bank IFSC Code
-              </label>
-              <input
+              </label><input id="createvend-bank-ifsc-code-11"
                 type="text"
                 value={ifscCode}
                 onChange={(e) => setIfscCode(e.target.value.toUpperCase())}
@@ -232,10 +221,9 @@ export function CreateVendorModal({ isOpen, onClose, onSubmit }: CreateVendorMod
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createvend-vendor-address-factory-location-12" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Vendor Address & Factory Location
-              </label>
-              <textarea
+              </label><textarea id="createvend-vendor-address-factory-location-12"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Industrial Estate, Factory Shed #14, Bhosari, Pune"

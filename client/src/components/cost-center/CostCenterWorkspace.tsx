@@ -32,7 +32,7 @@ import { KPIScorecard, KPIGrid } from '../common/KPIScorecard';
 
 export const formatINR = (val?: number | string | null, showSymbol = true): string => {
   const num = typeof val === 'number' ? val : Number(val || 0);
-  const safeNum = isNaN(num) ? 0 : num;
+  const safeNum = Number.isNaN(num) ? 0 : num;
   return `${showSymbol ? '₹ ' : ''}${safeNum.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
@@ -424,7 +424,7 @@ export function CostCenterWorkspace() {
       name: newCenterForm.name.trim(),
       code: newCenterForm.code.toUpperCase().trim(),
       managerName: newCenterForm.managerName.trim() || 'Unit Head',
-      annualBudget: parseFloat(newCenterForm.annualBudget) || 0,
+      annualBudget: Number.parseFloat(newCenterForm.annualBudget) || 0,
       isActive: true,
     };
 
@@ -437,7 +437,7 @@ export function CostCenterWorkspace() {
         },
         body: JSON.stringify({
           ...newCenterForm,
-          annualBudget: parseFloat(newCenterForm.annualBudget) || 0,
+          annualBudget: Number.parseFloat(newCenterForm.annualBudget) || 0,
         }),
       });
       const data = await res.json();
@@ -459,7 +459,7 @@ export function CostCenterWorkspace() {
 
   const handleRecordAllocation = async (e: React.FormEvent) => {
     e.preventDefault();
-    const amt = parseFloat(allocateForm.amount) || 0;
+    const amt = Number.parseFloat(allocateForm.amount) || 0;
     if (amt <= 0 || !allocateForm.costCenterId) {
       toast.warning('Please select a Cost Center and enter a valid allocation amount');
       return;
@@ -931,8 +931,9 @@ export function CostCenterWorkspace() {
             
             <form onSubmit={handleCreateCategory} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Category Name *</label>
+                <label htmlFor="cc-cat-name" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Category Name *</label>
                 <input
+                  id="cc-cat-name"
                   type="text"
                   placeholder="e.g. Geographical Divisions"
                   value={newCatForm.name}
@@ -942,8 +943,9 @@ export function CostCenterWorkspace() {
                 />
               </div>
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Category Code *</label>
+                <label htmlFor="cc-cat-code" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Category Code *</label>
                 <input
+                  id="cc-cat-code"
                   type="text"
                   placeholder="e.g. GEO"
                   value={newCatForm.code}
@@ -953,8 +955,9 @@ export function CostCenterWorkspace() {
                 />
               </div>
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Description</label>
+                <label htmlFor="cc-cat-desc" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Description</label>
                 <textarea
+                  id="cc-cat-desc"
                   placeholder="Purpose of this cost allocation category"
                   value={newCatForm.description}
                   onChange={(e) => setNewCatForm({ ...newCatForm, description: e.target.value })}
@@ -995,8 +998,9 @@ export function CostCenterWorkspace() {
 
             <form onSubmit={handleCreateCostCenter} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Parent Category *</label>
+                <label htmlFor="cc-parent" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Parent Category *</label>
                 <select
+                  id="cc-parent"
                   value={newCenterForm.categoryId}
                   onChange={(e) => setNewCenterForm({ ...newCenterForm, categoryId: e.target.value })}
                   className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all cursor-pointer"
@@ -1011,8 +1015,9 @@ export function CostCenterWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Cost Center Name *</label>
+                <label htmlFor="cc-name" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Cost Center Name *</label>
                 <input
+                  id="cc-name"
                   type="text"
                   placeholder="e.g. South Regional Office"
                   value={newCenterForm.name}
@@ -1024,8 +1029,9 @@ export function CostCenterWorkspace() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Code *</label>
+                  <label htmlFor="cc-code" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Code *</label>
                   <input
+                    id="cc-code"
                     type="text"
                     placeholder="e.g. GEO-SOUTH"
                     value={newCenterForm.code}
@@ -1035,8 +1041,9 @@ export function CostCenterWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Annual Budget (₹)</label>
+                  <label htmlFor="cc-budget" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Annual Budget (₹)</label>
                   <input
+                    id="cc-budget"
                     type="number"
                     placeholder="2500000"
                     value={newCenterForm.annualBudget}
@@ -1047,8 +1054,9 @@ export function CostCenterWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Department Head / Manager</label>
+                <label htmlFor="cc-manager" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Department Head / Manager</label>
                 <input
+                  id="cc-manager"
                   type="text"
                   placeholder="e.g. Ramesh Kumar"
                   value={newCenterForm.managerName}
@@ -1090,8 +1098,9 @@ export function CostCenterWorkspace() {
 
             <form onSubmit={handleRecordAllocation} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Target Cost Center *</label>
+                <label htmlFor="cc-target" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Target Cost Center *</label>
                 <select
+                  id="cc-target"
                   value={allocateForm.costCenterId}
                   onChange={(e) => setAllocateForm({ ...allocateForm, costCenterId: e.target.value })}
                   className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all cursor-pointer"
@@ -1107,8 +1116,9 @@ export function CostCenterWorkspace() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Voucher Number *</label>
+                  <label htmlFor="cc-voucher" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Voucher Number *</label>
                   <input
+                    id="cc-voucher"
                     type="text"
                     required
                     value={allocateForm.voucherNumber}
@@ -1117,8 +1127,9 @@ export function CostCenterWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Voucher Date</label>
+                  <label htmlFor="cc-voucher-date" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Voucher Date</label>
                   <input
+                    id="cc-voucher-date"
                     type="date"
                     required
                     value={allocateForm.date}
@@ -1129,8 +1140,9 @@ export function CostCenterWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Ledger / Expense Account Head *</label>
+                <label htmlFor="cc-ledger" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Ledger / Expense Account Head *</label>
                 <input
+                  id="cc-ledger"
                   type="text"
                   required
                   value={allocateForm.ledgerName}
@@ -1142,8 +1154,9 @@ export function CostCenterWorkspace() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Allocation Type</label>
+                  <label htmlFor="cc-alloc-type" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Allocation Type</label>
                   <select
+                    id="cc-alloc-type"
                     value={allocateForm.type}
                     onChange={(e) => setAllocateForm({ ...allocateForm, type: e.target.value as any })}
                     className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all cursor-pointer"
@@ -1153,8 +1166,9 @@ export function CostCenterWorkspace() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Amount (₹) *</label>
+                  <label htmlFor="cc-amount" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Amount (₹) *</label>
                   <input
+                    id="cc-amount"
                     type="number"
                     step="any"
                     min="0.01"

@@ -333,7 +333,7 @@ export function FinancialPeriodHub() {
   // Handle Post Audit Adjustment
   const handlePostAuditAdjustment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!adjForm.amount || isNaN(Number(adjForm.amount)) || Number(adjForm.amount) <= 0) {
+    if (!adjForm.amount || Number.isNaN(Number(adjForm.amount)) || Number(adjForm.amount) <= 0) {
       alert('Please enter a valid positive adjustment amount.');
       return;
     }
@@ -874,7 +874,8 @@ export function FinancialPeriodHub() {
             </div>
             <div className="flex space-x-1">
               {[1, 2, 3, 4, 5, 6].map((s) => (
-                <div
+                <button
+                  type="button"
                   key={s}
                   onClick={() => setWizardStep(s)}
                   className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs cursor-pointer transition-all ${
@@ -886,7 +887,7 @@ export function FinancialPeriodHub() {
                   }`}
                 >
                   {wizardStep > s ? <Check className="w-4 h-4" /> : s}
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -1161,8 +1162,9 @@ export function FinancialPeriodHub() {
 
             <form onSubmit={handlePostAuditAdjustment} className="space-y-4 text-xs">
               <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Target Account / General Ledger</label>
+                <label htmlFor="fy-ledger" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Target Account / General Ledger</label>
                 <select
+                  id="fy-ledger"
                   value={adjForm.ledgerId}
                   onChange={(e) => setAdjForm({ ...adjForm, ledgerId: e.target.value })}
                   className="w-full px-3.5 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl font-semibold bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -1178,8 +1180,9 @@ export function FinancialPeriodHub() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Entry Nature</label>
+                  <label htmlFor="fy-entry-nature" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Entry Nature</label>
                   <select
+                    id="fy-entry-nature"
                     value={adjForm.type}
                     onChange={(e) => setAdjForm({ ...adjForm, type: e.target.value as any })}
                     className="w-full px-3.5 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl font-bold bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -1190,8 +1193,9 @@ export function FinancialPeriodHub() {
                 </div>
 
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Adjustment Amount (₹)</label>
+                  <label htmlFor="fy-adj-amount" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Adjustment Amount (₹)</label>
                   <input
+                    id="fy-adj-amount"
                     type="number"
                     placeholder="e.g. 75000"
                     value={adjForm.amount}
@@ -1202,8 +1206,9 @@ export function FinancialPeriodHub() {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Auditor Workpaper / Report Reference</label>
+                <label htmlFor="fy-auditor-ref" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Auditor Workpaper / Report Reference</label>
                 <input
+                  id="fy-auditor-ref"
                   type="text"
                   placeholder="e.g. STAT-AUDIT/2026/OBS-44"
                   value={adjForm.auditorReference}
@@ -1213,8 +1218,9 @@ export function FinancialPeriodHub() {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Detailed Audit Justification</label>
+                <label htmlFor="fy-justification" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Detailed Audit Justification</label>
                 <textarea
+                  id="fy-justification"
                   rows={3}
                   placeholder="Enter specific audit observation or statutory reason for this prior-period adjustment..."
                   value={adjForm.description}

@@ -83,8 +83,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold mb-1">Warehouse Code *</label>
-              <input
+              <label htmlFor="createware-warehouse-code-1" className="block text-xs font-semibold mb-1">Warehouse Code *</label><input id="createware-warehouse-code-1"
                 type="text"
                 required
                 placeholder="e.g. WH-PUNE-01, WH-YARD-2"
@@ -94,8 +93,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">Warehouse / Godown Name *</label>
-              <input
+              <label htmlFor="createware-warehouse-godown-name-2" className="block text-xs font-semibold mb-1">Warehouse / Godown Name *</label><input id="createware-warehouse-godown-name-2"
                 type="text"
                 required
                 placeholder="e.g. Central Raw Materials Yard"
@@ -107,8 +105,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
           </div>
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Physical Address</label>
-            <input
+            <label htmlFor="createware-physical-address-3" className="block text-xs font-semibold mb-1">Physical Address</label><input id="createware-physical-address-3"
               type="text"
               placeholder="Plot No., Industrial Area, Landmark"
               value={address}
@@ -119,8 +116,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="block text-xs font-semibold mb-1">City</label>
-              <input
+              <label htmlFor="createware-city-4" className="block text-xs font-semibold mb-1">City</label><input id="createware-city-4"
                 type="text"
                 placeholder="e.g. Pune"
                 value={city}
@@ -129,8 +125,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">State</label>
-              <input
+              <label htmlFor="createware-state-5" className="block text-xs font-semibold mb-1">State</label><input id="createware-state-5"
                 type="text"
                 value={state}
                 onChange={(e) => setState(e.target.value)}
@@ -138,8 +133,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">Pincode</label>
-              <input
+              <label htmlFor="createware-pincode-6" className="block text-xs font-semibold mb-1">Pincode</label><input id="createware-pincode-6"
                 type="text"
                 placeholder="411026"
                 value={pincode}
@@ -151,8 +145,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold mb-1">Warehouse In-charge / Supervisor</label>
-              <input
+              <label htmlFor="createware-warehouse-in-charge-supervisor-7" className="block text-xs font-semibold mb-1">Warehouse In-charge / Supervisor</label><input id="createware-warehouse-in-charge-supervisor-7"
                 type="text"
                 placeholder="e.g. Suresh Patil"
                 value={contactPerson}
@@ -161,8 +154,7 @@ export const CreateWarehouseModal: React.FC<CreateWarehouseModalProps> = ({ isOp
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">Contact Phone</label>
-              <input
+              <label htmlFor="createware-contact-phone-8" className="block text-xs font-semibold mb-1">Contact Phone</label><input id="createware-contact-phone-8"
                 type="text"
                 placeholder="+91 98230 11223"
                 value={phone}

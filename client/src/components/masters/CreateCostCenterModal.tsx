@@ -70,8 +70,7 @@ export const CreateCostCenterModal: React.FC<CreateCostCenterModalProps> = ({ is
           {error && <div className="p-3 text-xs bg-destructive/10 text-destructive border border-destructive/20 rounded-lg">{error}</div>}
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Cost Center Code *</label>
-            <input
+            <label htmlFor="createcost-cost-center-code-1" className="block text-xs font-semibold mb-1">Cost Center Code *</label><input id="createcost-cost-center-code-1"
               type="text"
               required
               placeholder="e.g. CC-MANUF-01, CC-MKT-HQ"
@@ -82,8 +81,7 @@ export const CreateCostCenterModal: React.FC<CreateCostCenterModalProps> = ({ is
           </div>
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Cost Center / Project Name *</label>
-            <input
+            <label htmlFor="createcost-cost-center-project-name-2" className="block text-xs font-semibold mb-1">Cost Center / Project Name *</label><input id="createcost-cost-center-project-name-2"
               type="text"
               required
               placeholder="e.g. Heavy Machining Unit 2, Digital Marketing"
@@ -94,8 +92,7 @@ export const CreateCostCenterModal: React.FC<CreateCostCenterModalProps> = ({ is
           </div>
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Category / Department</label>
-            <select
+            <label htmlFor="createcost-category-department-3" className="block text-xs font-semibold mb-1">Category / Department</label><select id="createcost-category-department-3"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"

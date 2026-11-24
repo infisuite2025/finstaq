@@ -400,9 +400,9 @@ export function BankReconciliationWorkspace() {
             date: parts[0],
             narration: parts[1],
             refNumber: parts[2],
-            debit: parseFloat(parts[3]) || 0,
-            credit: parseFloat(parts[4]) || 0,
-            balance: parseFloat(parts[5]) || 0,
+            debit: Number.parseFloat(parts[3]) || 0,
+            credit: Number.parseFloat(parts[4]) || 0,
+            balance: Number.parseFloat(parts[5]) || 0,
           });
         }
       }
@@ -924,17 +924,18 @@ export function BankReconciliationWorkspace() {
             </div>
 
             {/* Drag & Drop File Picker Zone */}
-            <div
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".csv,.xlsx,.xls,.ofx,.txt"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            <button
+              type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 bg-slate-50/60 dark:bg-slate-800/30 hover:bg-blue-50/20 rounded-2xl p-6 text-center cursor-pointer transition-all"
+              className="w-full border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-400 bg-slate-50/60 dark:bg-slate-800/30 hover:bg-blue-50/20 rounded-2xl p-6 text-center cursor-pointer transition-all"
             >
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".csv,.xlsx,.xls,.ofx,.txt"
-                onChange={handleFileSelect}
-                className="hidden"
-              />
               <div className="flex flex-col items-center justify-center space-y-2">
                 <div className="p-3 bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 rounded-full">
                   <UploadCloud className="w-6 h-6" />
@@ -953,14 +954,15 @@ export function BankReconciliationWorkspace() {
                   </span>
                 )}
               </div>
-            </div>
+            </button>
 
             {/* CSV Raw Text Editor & Mapping */}
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label htmlFor="brs-csv-text" className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                 Parsed Statement Rows (Format: Date, Narration, RefNumber, Withdrawal/Debit, Deposit/Credit, Balance):
               </label>
               <textarea
+                id="brs-csv-text"
                 rows={6}
                 value={csvText}
                 onChange={(e) => setCsvText(e.target.value)}
@@ -1172,10 +1174,11 @@ export function BankReconciliationWorkspace() {
             <form onSubmit={handleCreateBankLedger} className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="brs-bank-name" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Bank Name *
                   </label>
                   <select
+                    id="brs-bank-name"
                     value={newBankForm.bankName}
                     onChange={(e) => setNewBankForm({ ...newBankForm, bankName: e.target.value })}
                     className="w-full text-xs px-3 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-medium outline-none"
@@ -1194,10 +1197,11 @@ export function BankReconciliationWorkspace() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="brs-account-type" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Account Type *
                   </label>
                   <select
+                    id="brs-account-type"
                     value={newBankForm.accountType}
                     onChange={(e) => setNewBankForm({ ...newBankForm, accountType: e.target.value })}
                     className="w-full text-xs px-3 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-medium outline-none"
@@ -1212,10 +1216,11 @@ export function BankReconciliationWorkspace() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label htmlFor="brs-ledger-name" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   Account Name / Ledger Label *
                 </label>
                 <input
+                  id="brs-ledger-name"
                   type="text"
                   required
                   value={newBankForm.name}
@@ -1227,10 +1232,11 @@ export function BankReconciliationWorkspace() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="brs-account-no" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Bank Account Number *
                   </label>
                   <input
+                    id="brs-account-no"
                     type="text"
                     required
                     value={newBankForm.bankAccount}
@@ -1241,10 +1247,11 @@ export function BankReconciliationWorkspace() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="brs-ifsc" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     IFSC Code *
                   </label>
                   <input
+                    id="brs-ifsc"
                     type="text"
                     required
                     value={newBankForm.ifscCode}
@@ -1257,10 +1264,11 @@ export function BankReconciliationWorkspace() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="brs-branch" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Branch Name / Location
                   </label>
                   <input
+                    id="brs-branch"
                     type="text"
                     value={newBankForm.branch}
                     onChange={(e) => setNewBankForm({ ...newBankForm, branch: e.target.value })}
@@ -1270,10 +1278,11 @@ export function BankReconciliationWorkspace() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="brs-opening" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Opening Ledger Balance (₹)
                   </label>
                   <input
+                    id="brs-opening"
                     type="number"
                     value={newBankForm.openingBalance}
                     onChange={(e) => setNewBankForm({ ...newBankForm, openingBalance: Number(e.target.value) })}
@@ -1330,10 +1339,11 @@ export function BankReconciliationWorkspace() {
 
             <form onSubmit={handleLinkBankSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label htmlFor="brs-provider" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   Banking Integration Gateway / Provider *
                 </label>
                 <select
+                  id="brs-provider"
                   value={linkBankForm.provider}
                   onChange={(e) => setLinkBankForm({ ...linkBankForm, provider: e.target.value })}
                   className="w-full text-xs px-3 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-medium outline-none"
@@ -1349,10 +1359,11 @@ export function BankReconciliationWorkspace() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="brs-client-id" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     Corporate Client ID / User ID *
                   </label>
                   <input
+                    id="brs-client-id"
                     type="text"
                     required
                     value={linkBankForm.clientId}
@@ -1362,10 +1373,11 @@ export function BankReconciliationWorkspace() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="brs-secret" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                     API Secret / Token Handle
                   </label>
                   <input
+                    id="brs-secret"
                     type="password"
                     value={linkBankForm.secretKey}
                     onChange={(e) => setLinkBankForm({ ...linkBankForm, secretKey: e.target.value })}
@@ -1375,10 +1387,11 @@ export function BankReconciliationWorkspace() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label htmlFor="brs-sync" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   Automatic Sync Frequency
                 </label>
                 <select
+                  id="brs-sync"
                   value={linkBankForm.syncFrequency}
                   onChange={(e) => setLinkBankForm({ ...linkBankForm, syncFrequency: e.target.value })}
                   className="w-full text-xs px-3 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-medium outline-none"

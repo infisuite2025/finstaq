@@ -2344,8 +2344,8 @@ export const SuperAdminHub: React.FC = () => {
     const shortcuts = topicFormData.shortcutsText.split(',').map((s) => s.trim()).filter(Boolean);
     const keywords = topicFormData.keywordsText.split(',').map((s) => s.trim()).filter(Boolean);
 
-    const currentMajor = parseInt(editingTopic.currentLiveVersion.replace('v', '').split('.')[0]) || 1;
-    const currentMinor = parseInt(editingTopic.currentLiveVersion.replace('v', '').split('.')[1]) || 0;
+    const currentMajor = Number.parseInt(editingTopic.currentLiveVersion.replace('v', '').split('.')[0]) || 1;
+    const currentMinor = Number.parseInt(editingTopic.currentLiveVersion.replace('v', '').split('.')[1]) || 0;
     const nextDraftVersion = `v${currentMajor}.${currentMinor + 1} (Draft)`;
 
     const updatedDraft: HelpTopicVersion = {
@@ -2383,8 +2383,8 @@ export const SuperAdminHub: React.FC = () => {
   const handleApproveAndPublish = (topic: EnterpriseHelpTopic) => {
     if (!topic.draftContent) return;
 
-    const currentMajor = parseInt(topic.currentLiveVersion.replace('v', '').split('.')[0]) || 1;
-    const currentMinor = parseInt(topic.currentLiveVersion.replace('v', '').split('.')[1]) || 0;
+    const currentMajor = Number.parseInt(topic.currentLiveVersion.replace('v', '').split('.')[0]) || 1;
+    const currentMinor = Number.parseInt(topic.currentLiveVersion.replace('v', '').split('.')[1]) || 0;
     const newPublishedVersion = `v${currentMajor}.${currentMinor + 1}`;
 
     const newlyPublished: HelpTopicVersion = {
@@ -3136,8 +3136,7 @@ export const SuperAdminHub: React.FC = () => {
 
             <form onSubmit={handleSaveDraft} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Topic Title</label>
-                <input
+                <label htmlFor="superadmin-topic-title-1" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Topic Title</label><input id="superadmin-topic-title-1"
                   type="text"
                   required
                   value={topicFormData.title}
@@ -3148,8 +3147,7 @@ export const SuperAdminHub: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Category / Feature Area</label>
-                  <select
+                  <label htmlFor="superadmin-category-feature-area-2" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Category / Feature Area</label><select id="superadmin-category-feature-area-2"
                     value={topicFormData.category}
                     onChange={(e) => setTopicFormData({ ...topicFormData, category: e.target.value as any })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -3170,8 +3168,7 @@ export const SuperAdminHub: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Take Me There Target Tab</label>
-                  <select
+                  <label htmlFor="superadmin-take-me-there-target-tab-3" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Take Me There Target Tab</label><select id="superadmin-take-me-there-target-tab-3"
                     value={topicFormData.tabTarget}
                     onChange={(e) => setTopicFormData({ ...topicFormData, tabTarget: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -3193,8 +3190,7 @@ export const SuperAdminHub: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Summary (1-2 sentences)</label>
-                <textarea
+                <label htmlFor="superadmin-summary-1-2-sentences-4" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Summary (1-2 sentences)</label><textarea id="superadmin-summary-1-2-sentences-4"
                   rows={2}
                   required
                   value={topicFormData.summary}
@@ -3204,8 +3200,7 @@ export const SuperAdminHub: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Guided Steps (one per line)</label>
-                <textarea
+                <label htmlFor="superadmin-guided-steps-one-per-line-5" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Guided Steps (one per line)</label><textarea id="superadmin-guided-steps-one-per-line-5"
                   rows={5}
                   required
                   value={topicFormData.stepsText}
@@ -3215,10 +3210,9 @@ export const SuperAdminHub: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-amber-700 dark:text-amber-400 font-bold mb-1">
+                <label htmlFor="superadmin-revision-notes-changelog-summary-man-6" className="block text-amber-700 dark:text-amber-400 font-bold mb-1">
                   Revision Notes / Changelog Summary (Mandatory for Review Gate)
-                </label>
-                <input
+                </label><input id="superadmin-revision-notes-changelog-summary-man-6"
                   type="text"
                   required
                   placeholder="e.g. Updated steps to reflect 2026 GST E-Way Bill threshold changes"
@@ -3472,8 +3466,7 @@ export const SuperAdminHub: React.FC = () => {
               setShowAddTenantModal(false);
             }} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Company Legal Name</label>
-                <input
+                <label htmlFor="superadmin-company-legal-name-7" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Company Legal Name</label><input id="superadmin-company-legal-name-7"
                   type="text"
                   required
                   placeholder="e.g. Bharat Dynamics Technologies Pvt Ltd"
@@ -3502,8 +3495,7 @@ export const SuperAdminHub: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Tenant GSTIN</label>
-                  <input
+                  <label htmlFor="superadmin-tenant-gstin-8" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Tenant GSTIN</label><input id="superadmin-tenant-gstin-8"
                     type="text"
                     required
                     placeholder="27AAACB1234F1Z9"
@@ -3514,8 +3506,7 @@ export const SuperAdminHub: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Plan Tier</label>
-                  <select
+                  <label htmlFor="superadmin-plan-tier-9" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Plan Tier</label><select id="superadmin-plan-tier-9"
                     value={newTenant.subscriptionTier}
                     onChange={(e) => setNewTenant({ ...newTenant, subscriptionTier: e.target.value as any })}
                     className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -3529,8 +3520,7 @@ export const SuperAdminHub: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Owner email</label>
-                  <input
+                  <label htmlFor="superadmin-owner-email-10" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Owner email</label><input id="superadmin-owner-email-10"
                     type="email"
                     required
                     placeholder="owner@company.com"
@@ -3540,8 +3530,7 @@ export const SuperAdminHub: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Owner password</label>
-                  <input
+                  <label htmlFor="superadmin-owner-password-11" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Owner password</label><input id="superadmin-owner-password-11"
                     type="password"
                     required
                     minLength={8}
@@ -3580,8 +3569,7 @@ export const SuperAdminHub: React.FC = () => {
             <h3 className="text-base font-bold text-slate-900 dark:text-white">Generate Subscription Invoice</h3>
             <form onSubmit={(e) => { e.preventDefault(); setShowAddInvoiceModal(false); alert('Invoice generated.'); }} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Select Tenant</label>
-                <select
+                <label htmlFor="superadmin-select-tenant-12" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Select Tenant</label><select id="superadmin-select-tenant-12"
                   value={newInvoice.tenantId}
                   onChange={(e) => setNewInvoice({ ...newInvoice, tenantId: e.target.value })}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -3595,8 +3583,7 @@ export const SuperAdminHub: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Base Amount (₹)</label>
-                <input
+                <label htmlFor="superadmin-base-amount-13" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Base Amount (₹)</label><input id="superadmin-base-amount-13"
                   type="number"
                   required
                   value={newInvoice.amount}
@@ -3607,8 +3594,7 @@ export const SuperAdminHub: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Billing Period</label>
-                  <input
+                  <label htmlFor="superadmin-billing-period-14" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Billing Period</label><input id="superadmin-billing-period-14"
                     type="text"
                     required
                     value={newInvoice.billingPeriod}
@@ -3619,8 +3605,7 @@ export const SuperAdminHub: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Due Date</label>
-                  <input
+                  <label htmlFor="superadmin-due-date-15" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Due Date</label><input id="superadmin-due-date-15"
                     type="date"
                     required
                     value={newInvoice.dueDate}
@@ -3737,10 +3722,9 @@ export const SuperAdminHub: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">
+                <label htmlFor="superadmin-storage-backend-driver-16" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">
                   Storage Backend Driver
-                </label>
-                <select
+                </label><select id="superadmin-storage-backend-driver-16"
                   value={storageFormData.storageDriver}
                   onChange={(e) =>
                     setStorageFormData({

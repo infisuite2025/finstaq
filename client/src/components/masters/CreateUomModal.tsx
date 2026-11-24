@@ -74,8 +74,7 @@ export const CreateUomModal: React.FC<CreateUomModalProps> = ({ isOpen, onClose,
           {error && <div className="p-3 text-xs bg-destructive/10 text-destructive border border-destructive/20 rounded-lg">{error}</div>}
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Symbol / Unit Code *</label>
-            <input
+            <label htmlFor="createuomm-symbol-unit-code-1" className="block text-xs font-semibold mb-1">Symbol / Unit Code *</label><input id="createuomm-symbol-unit-code-1"
               type="text"
               required
               placeholder="e.g. NOS, KGS, MTR, PCS, LTR, BOX"
@@ -86,8 +85,7 @@ export const CreateUomModal: React.FC<CreateUomModalProps> = ({ isOpen, onClose,
           </div>
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Formal / Display Name *</label>
-            <input
+            <label htmlFor="createuomm-formal-display-name-2" className="block text-xs font-semibold mb-1">Formal / Display Name *</label><input id="createuomm-formal-display-name-2"
               type="text"
               required
               placeholder="e.g. Numbers, Kilograms, Metres, Litres"
@@ -99,8 +97,7 @@ export const CreateUomModal: React.FC<CreateUomModalProps> = ({ isOpen, onClose,
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold mb-1">GST UQC Code</label>
-              <input
+              <label htmlFor="createuomm-gst-uqc-code-3" className="block text-xs font-semibold mb-1">GST UQC Code</label><input id="createuomm-gst-uqc-code-3"
                 type="text"
                 placeholder="e.g. NOS, KGS, MTR"
                 value={uqc}
@@ -109,8 +106,7 @@ export const CreateUomModal: React.FC<CreateUomModalProps> = ({ isOpen, onClose,
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">Decimal Places</label>
-              <select
+              <label htmlFor="createuomm-decimal-places-4" className="block text-xs font-semibold mb-1">Decimal Places</label><select id="createuomm-decimal-places-4"
                 value={decimalPlaces}
                 onChange={(e) => setDecimalPlaces(Number(e.target.value))}
                 className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"

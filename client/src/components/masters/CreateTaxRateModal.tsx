@@ -86,8 +86,7 @@ export const CreateTaxRateModal: React.FC<CreateTaxRateModalProps> = ({ isOpen, 
           {error && <div className="p-3 text-xs bg-destructive/10 text-destructive border border-destructive/20 rounded-lg">{error}</div>}
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Tax Slab Name *</label>
-            <input
+            <label htmlFor="createtaxr-tax-slab-name-1" className="block text-xs font-semibold mb-1">Tax Slab Name *</label><input id="createtaxr-tax-slab-name-1"
               type="text"
               required
               placeholder="e.g. GST 18% Standard, GST 5% GTA"
@@ -98,8 +97,7 @@ export const CreateTaxRateModal: React.FC<CreateTaxRateModalProps> = ({ isOpen, 
           </div>
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Total Effective GST Rate % *</label>
-            <input
+            <label htmlFor="createtaxr-total-effective-gst-rate-2" className="block text-xs font-semibold mb-1">Total Effective GST Rate % *</label><input id="createtaxr-total-effective-gst-rate-2"
               type="number"
               step="0.01"
               min={0}
@@ -129,8 +127,7 @@ export const CreateTaxRateModal: React.FC<CreateTaxRateModalProps> = ({ isOpen, 
           </div>
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Cess / Compensation Tax % (Optional)</label>
-            <input
+            <label htmlFor="createtaxr-cess-compensation-tax-optional-3" className="block text-xs font-semibold mb-1">Cess / Compensation Tax % (Optional)</label><input id="createtaxr-cess-compensation-tax-optional-3"
               type="number"
               step="0.01"
               min={0}

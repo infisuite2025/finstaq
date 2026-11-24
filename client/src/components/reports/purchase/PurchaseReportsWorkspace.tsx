@@ -648,7 +648,7 @@ export function PurchaseReportsWorkspace() {
           </div>
           <div>
             <h1 className="text-base font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-              Purchase Department Reports
+              <span>Purchase Department Reports</span>
               <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
                 Statutory ERP Standard
               </span>

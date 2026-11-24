@@ -253,7 +253,7 @@ export function BookPurchaseInvoiceModal({
             </div>
             <div>
               <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                Book Purchase Invoice / Vendor Bill
+                <span>Book Purchase Invoice / Vendor Bill</span>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">
                   AP Voucher
                 </span>
@@ -275,10 +275,9 @@ export function BookPurchaseInvoiceModal({
         <form onSubmit={handleSubmit} className="p-6 space-y-5 max-h-[75vh] overflow-y-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="bookpurcha-vendor-sundry-creditor-1" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                 Vendor / Sundry Creditor <span className="text-rose-500">*</span>
-              </label>
-              <select
+              </label><select id="bookpurcha-vendor-sundry-creditor-1"
                 value={vendorLedgerId}
                 onChange={(e) => setVendorLedgerId(e.target.value)}
                 className="w-full text-xs font-semibold px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -298,10 +297,9 @@ export function BookPurchaseInvoiceModal({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="bookpurcha-link-purchase-order-po-2" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                 Link Purchase Order (PO)
-              </label>
-              <select
+              </label><select id="bookpurcha-link-purchase-order-po-2"
                 value={selectedPoId}
                 onChange={(e) => handlePoChange(e.target.value)}
                 className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -317,10 +315,9 @@ export function BookPurchaseInvoiceModal({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="bookpurcha-link-goods-receipt-note-grn-3" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                 Link Goods Receipt Note (GRN)
-              </label>
-              <select
+              </label><select id="bookpurcha-link-goods-receipt-note-grn-3"
                 value={selectedGrnId}
                 onChange={(e) => handleGrnChange(e.target.value)}
                 className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -340,10 +337,9 @@ export function BookPurchaseInvoiceModal({
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="bookpurcha-vendor-bill-invoice-no-4" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                 Vendor Bill / Invoice No <span className="text-rose-500">*</span>
-              </label>
-              <input
+              </label><input id="bookpurcha-vendor-bill-invoice-no-4"
                 type="text"
                 required
                 placeholder="e.g. STARK/2026/8921"
@@ -354,10 +350,9 @@ export function BookPurchaseInvoiceModal({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="bookpurcha-bill-invoice-date-5" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                 Bill / Invoice Date <span className="text-rose-500">*</span>
-              </label>
-              <input
+              </label><input id="bookpurcha-bill-invoice-date-5"
                 type="date"
                 required
                 value={invoiceDate}
@@ -367,10 +362,9 @@ export function BookPurchaseInvoiceModal({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="bookpurcha-due-date-6" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                 Due Date
-              </label>
-              <input
+              </label><input id="bookpurcha-due-date-6"
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
@@ -379,10 +373,9 @@ export function BookPurchaseInvoiceModal({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="bookpurcha-tds-on-purchase-income-tax-7" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                 TDS on Purchase (Income Tax)
-              </label>
-              <select
+              </label><select id="bookpurcha-tds-on-purchase-income-tax-7"
                 value={tdsSection}
                 onChange={(e) => setTdsSection(e.target.value)}
                 className="w-full text-xs font-semibold px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -533,10 +526,9 @@ export function BookPurchaseInvoiceModal({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start pt-2">
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                <label htmlFor="bookpurcha-voucher-narration-remarks-8" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                   Voucher Narration / Remarks
-                </label>
-                <textarea
+                </label><textarea id="bookpurcha-voucher-narration-remarks-8"
                   rows={2}
                   placeholder="e.g. Inward raw material bill booked against GRN & verified for payment approval."
                   value={remarks}

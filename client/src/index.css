@@ -42,7 +42,7 @@
   .top-navbar,
   .no-print,
   button:not(.print-include),
-  .print\\:hidden,
+  [class~="print:hidden"],
   [role="navigation"],
   .fixed.bottom-6,
   .fixed.bottom-20 {

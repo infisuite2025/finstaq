@@ -60,7 +60,7 @@ function convertThreeDigits(num: number): string {
 }
 
 export function numberToIndianWords(amount: number): string {
-  if (!amount || isNaN(amount) || amount === 0) return 'Rupees Zero Only';
+  if (!amount || Number.isNaN(amount) || amount === 0) return 'Rupees Zero Only';
 
   const isNegative = amount < 0;
   const absAmount = Math.abs(amount);

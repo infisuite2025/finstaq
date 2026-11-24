@@ -33,7 +33,7 @@ import { KPIScorecard, KPIGrid } from '../common/KPIScorecard';
 
 export const formatINR = (val?: number | string | null, showSymbol = true): string => {
   const num = typeof val === 'number' ? val : Number(val || 0);
-  const safeNum = isNaN(num) ? 0 : num;
+  const safeNum = Number.isNaN(num) ? 0 : num;
   return `${showSymbol ? '₹ ' : ''}${safeNum.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
@@ -351,7 +351,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
     if (!confirmed) return;
 
     const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const rand = Math.floor(1000 + Math.random() * 9000);
+    const rand = crypto.getRandomValues(new Uint32Array(1))[0] % 9000 + 1000;
     const generatedNoteNumber = newNoteType === 'DEBIT_NOTE' ? `DN-${dateStr.slice(0, 4)}-${rand}` : `CN-${dateStr.slice(0, 4)}-${rand}`;
 
     const newNoteRecord: DebitCreditNote = {
@@ -376,7 +376,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
       totalGstAmount: modalCalculations.totalGst,
       grandTotal: modalCalculations.grandTotal,
       status: 'POSTED',
-      voucherNumber: `JV-${dateStr.slice(0, 4)}-${Math.floor(1000 + Math.random() * 9000)}`,
+      voucherNumber: `JV-${dateStr.slice(0, 4)}-${crypto.getRandomValues(new Uint32Array(1))[0] % 9000 + 1000}`,
       items: [
         {
           id: `item-${Date.now()}`,
@@ -1053,7 +1053,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
       {/* Modal: Create Debit / Credit Note */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden" onClick={e => e.stopPropagation()}>
+          <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
             <div className="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/40">
               <div className="flex items-center gap-2.5">
                 <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-white ${newNoteType === 'DEBIT_NOTE' ? 'bg-amber-600' : 'bg-indigo-600'}`}>
@@ -1074,8 +1074,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
             <form onSubmit={handleCreateNote} className="p-6 space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Party Ledger *</label>
-                  <select
+                  <label htmlFor="debitcredi-party-ledger-1" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Party Ledger *</label><select id="debitcredi-party-ledger-1"
                     value={partyLedgerId}
                     onChange={e => {
                        setPartyLedgerId(e.target.value);
@@ -1102,10 +1101,9 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  <label htmlFor="debitcredi-field-2" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">
                     {newNoteType === 'DEBIT_NOTE' ? 'Vendor / Supplier Name *' : 'Customer Name *'}
-                  </label>
-                  <input
+                  </label><input id="debitcredi-field-2"
                     type="text"
                     required
                     value={partyName}
@@ -1117,8 +1115,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Party GSTIN *</label>
-                  <input
+                  <label htmlFor="debitcredi-party-gstin-3" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Party GSTIN *</label><input id="debitcredi-party-gstin-3"
                     type="text"
                     required
                     value={partyGstin}
@@ -1127,8 +1124,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Registered Address</label>
-                  <input
+                  <label htmlFor="debitcredi-registered-address-4" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Registered Address</label><input id="debitcredi-registered-address-4"
                     type="text"
                     value={partyAddress}
                     onChange={e => setPartyAddress(e.target.value)}
@@ -1139,8 +1135,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Original Tax Invoice / Bill # *</label>
-                  <input
+                  <label htmlFor="debitcredi-original-tax-invoice-bill-5" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Original Tax Invoice / Bill # *</label><input id="debitcredi-original-tax-invoice-bill-5"
                     type="text"
                     required
                     placeholder="e.g. INV-2026-081 or PINV-2026-0891"
@@ -1150,8 +1145,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Original Invoice Date *</label>
-                  <input
+                  <label htmlFor="debitcredi-original-invoice-date-6" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Original Invoice Date *</label><input id="debitcredi-original-invoice-date-6"
                     type="date"
                     required
                     value={originalInvoiceDate}
@@ -1163,8 +1157,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Statutory Reason (Sec 34 GST) *</label>
-                  <select
+                  <label htmlFor="debitcredi-statutory-reason-sec-34-gst-7" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Statutory Reason (Sec 34 GST) *</label><select id="debitcredi-statutory-reason-sec-34-gst-7"
                     value={reason}
                     onChange={e => setReason(e.target.value)}
                     className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-semibold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -1179,7 +1172,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Inter-State Supply (IGST)?</label>
+                  <p className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Inter-State Supply (IGST)?</p>
                   <div className="flex items-center gap-4 mt-2">
                     <label className="flex items-center gap-1.5 cursor-pointer">
                       <input
@@ -1207,8 +1200,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Item Description *</label>
-                  <input
+                  <label htmlFor="debitcredi-item-description-8" className="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Item Description *</label><input id="debitcredi-item-description-8"
                     type="text"
                     required
                     value={itemDescription}
@@ -1220,8 +1212,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
 
                 <div className="grid grid-cols-4 gap-2">
                   <div>
-                    <label className="block font-semibold mb-1 text-slate-600 dark:text-slate-400">HSN Code *</label>
-                    <input
+                    <label htmlFor="debitcredi-hsn-code-9" className="block font-semibold mb-1 text-slate-600 dark:text-slate-400">HSN Code *</label><input id="debitcredi-hsn-code-9"
                       type="text"
                       required
                       value={itemHsn}
@@ -1230,34 +1221,31 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Qty ({itemUom}) *</label>
-                    <input
+                    <label htmlFor="debitcredi-qty-10" className="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Qty ({itemUom}) *</label><input id="debitcredi-qty-10"
                       type="number"
                       step="any"
                       min="0.01"
                       required
                       value={itemQty}
-                      onChange={e => setItemQty(parseFloat(e.target.value) || 0)}
+                      onChange={e => setItemQty(Number.parseFloat(e.target.value) || 0)}
                       className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     />
                   </div>
                   <div>
-                    <label className="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Unit Rate (₹) *</label>
-                    <input
+                    <label htmlFor="debitcredi-unit-rate-11" className="block font-semibold mb-1 text-slate-600 dark:text-slate-400">Unit Rate (₹) *</label><input id="debitcredi-unit-rate-11"
                       type="number"
                       step="any"
                       min="0.01"
                       required
                       value={itemRate}
-                      onChange={e => setItemRate(parseFloat(e.target.value) || 0)}
+                      onChange={e => setItemRate(Number.parseFloat(e.target.value) || 0)}
                       className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     />
                   </div>
                   <div>
-                    <label className="block font-semibold mb-1 text-slate-600 dark:text-slate-400">GST %</label>
-                    <select
+                    <label htmlFor="debitcredi-gst-12" className="block font-semibold mb-1 text-slate-600 dark:text-slate-400">GST %</label><select id="debitcredi-gst-12"
                       value={itemGstRate}
-                      onChange={e => setItemGstRate(parseFloat(e.target.value) || 0)}
+                      onChange={e => setItemGstRate(Number.parseFloat(e.target.value) || 0)}
                       className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     >
                       {[0, 5, 12, 18, 28].map(r => (
@@ -1279,8 +1267,7 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Reason Description / QC Memo</label>
-                <input
+                <label htmlFor="debitcredi-reason-description-qc-memo-13" className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Reason Description / QC Memo</label><input id="debitcredi-reason-description-qc-memo-13"
                   type="text"
                   placeholder="e.g. Quality rejection during inward QC check; material returned"
                   value={reasonDescription}

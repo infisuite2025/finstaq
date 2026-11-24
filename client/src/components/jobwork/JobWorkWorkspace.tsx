@@ -487,8 +487,7 @@ export function JobWorkWorkspace() {
 
             <form onSubmit={handleCreateChallan} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Job Worker Name</label>
-                <input
+                <label htmlFor="jobworkwor-job-worker-name-1" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Job Worker Name</label><input id="jobworkwor-job-worker-name-1"
                   type="text"
                   required
                   value={newChallanForm.jobWorkerName}
@@ -499,8 +498,7 @@ export function JobWorkWorkspace() {
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Job Worker GSTIN</label>
-                  <input
+                  <label htmlFor="jobworkwor-job-worker-gstin-2" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Job Worker GSTIN</label><input id="jobworkwor-job-worker-gstin-2"
                     type="text"
                     required
                     value={newChallanForm.jobWorkerGstin}
@@ -509,8 +507,7 @@ export function JobWorkWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Expected Return Date</label>
-                  <input
+                  <label htmlFor="jobworkwor-expected-return-date-3" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Expected Return Date</label><input id="jobworkwor-expected-return-date-3"
                     type="date"
                     required
                     value={newChallanForm.expectedReturnDate}
@@ -521,8 +518,7 @@ export function JobWorkWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Nature of Processing to be Done</label>
-                <input
+                <label htmlFor="jobworkwor-nature-of-processing-to-be-done-4" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Nature of Processing to be Done</label><input id="jobworkwor-nature-of-processing-to-be-done-4"
                   type="text"
                   required
                   value={newChallanForm.natureOfProcessing}
@@ -532,8 +528,7 @@ export function JobWorkWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Raw Material Description</label>
-                <input
+                <label htmlFor="jobworkwor-raw-material-description-5" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Raw Material Description</label><input id="jobworkwor-raw-material-description-5"
                   type="text"
                   required
                   value={newChallanForm.description}
@@ -544,8 +539,7 @@ export function JobWorkWorkspace() {
 
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Dispatch Qty</label>
-                  <input
+                  <label htmlFor="jobworkwor-dispatch-qty-6" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Dispatch Qty</label><input id="jobworkwor-dispatch-qty-6"
                     type="number"
                     required
                     value={newChallanForm.dispatchQuantity}
@@ -554,8 +548,7 @@ export function JobWorkWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">UOM</label>
-                  <input
+                  <label htmlFor="jobworkwor-uom-7" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">UOM</label><input id="jobworkwor-uom-7"
                     type="text"
                     required
                     value={newChallanForm.uom}
@@ -564,8 +557,7 @@ export function JobWorkWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Unit Rate (₹)</label>
-                  <input
+                  <label htmlFor="jobworkwor-unit-rate-8" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Unit Rate (₹)</label><input id="jobworkwor-unit-rate-8"
                     type="number"
                     required
                     value={newChallanForm.ratePerUnit}
@@ -606,8 +598,7 @@ export function JobWorkWorkspace() {
 
             <form onSubmit={handleRecordReceipt} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Select Outward Challan #</label>
-                <select
+                <label htmlFor="jobworkwor-select-outward-challan-9" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Select Outward Challan #</label><select id="jobworkwor-select-outward-challan-9"
                   value={newReceiptForm.challanNumber}
                   onChange={(e) => setNewReceiptForm({ ...newReceiptForm, challanNumber: e.target.value })}
                   className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -621,8 +612,7 @@ export function JobWorkWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Finished Goods Item Name</label>
-                <input
+                <label htmlFor="jobworkwor-finished-goods-item-name-10" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Finished Goods Item Name</label><input id="jobworkwor-finished-goods-item-name-10"
                   type="text"
                   required
                   value={newReceiptForm.finishedItemName}
@@ -633,8 +623,7 @@ export function JobWorkWorkspace() {
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Quantity Received Back (PCS)</label>
-                  <input
+                  <label htmlFor="jobworkwor-quantity-received-back-pcs-11" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Quantity Received Back (PCS)</label><input id="jobworkwor-quantity-received-back-pcs-11"
                     type="number"
                     required
                     value={newReceiptForm.quantityReceived}
@@ -643,8 +632,7 @@ export function JobWorkWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">RM Consumed (KG)</label>
-                  <input
+                  <label htmlFor="jobworkwor-rm-consumed-kg-12" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">RM Consumed (KG)</label><input id="jobworkwor-rm-consumed-kg-12"
                     type="number"
                     required
                     value={newReceiptForm.rawMaterialConsumedQty}
@@ -656,8 +644,7 @@ export function JobWorkWorkspace() {
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Scrap Recovered (%)</label>
-                  <input
+                  <label htmlFor="jobworkwor-scrap-recovered-13" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Scrap Recovered (%)</label><input id="jobworkwor-scrap-recovered-13"
                     type="number"
                     required
                     value={newReceiptForm.scrapPercentage}
@@ -666,8 +653,7 @@ export function JobWorkWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Job Work Charges (₹)</label>
-                  <input
+                  <label htmlFor="jobworkwor-job-work-charges-14" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Job Work Charges (₹)</label><input id="jobworkwor-job-work-charges-14"
                     type="number"
                     required
                     value={newReceiptForm.jobWorkChargesInr}

@@ -1114,7 +1114,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
           <div className="flex items-center bg-black/30 rounded-xl p-1 border border-white/10 text-xs">
             <select
               value={selectedMonth}
-              onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+              onChange={(e) => setSelectedMonth(Number.parseInt(e.target.value, 10))}
               className="bg-transparent text-white px-2 py-1 outline-none font-semibold cursor-pointer"
             >
               <option value={1} className="text-black">Jan 2026</option>
@@ -1527,7 +1527,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                           min="0"
                           max="30"
                           value={att.lopDays}
-                          onChange={(e) => handleUpdateLop(emp.id, parseInt(e.target.value) || 0)}
+                          onChange={(e) => handleUpdateLop(emp.id, Number.parseInt(e.target.value, 10) || 0)}
                           className="w-16 p-1 border border-emerald-400 dark:border-emerald-500 rounded-lg text-center font-mono font-bold bg-white dark:bg-slate-950 text-rose-600 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         />
                       </td>
@@ -2056,8 +2056,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                 <div className="space-y-3">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">First Name</label>
-                      <input
+                      <label htmlFor="payrollwor-first-name-1" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">First Name</label><input id="payrollwor-first-name-1"
                         type="text"
                         value={newEmpForm.firstName}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, firstName: e.target.value })}
@@ -2067,8 +2066,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Last Name</label>
-                      <input
+                      <label htmlFor="payrollwor-last-name-2" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Last Name</label><input id="payrollwor-last-name-2"
                         type="text"
                         value={newEmpForm.lastName}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, lastName: e.target.value })}
@@ -2081,8 +2079,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
 
                   <div className="grid grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Gender</label>
-                      <select
+                      <label htmlFor="payrollwor-gender-3" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Gender</label><select id="payrollwor-gender-3"
                         value={newEmpForm.gender}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, gender: e.target.value as any })}
                         className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -2093,8 +2090,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       </select>
                     </div>
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Date of Birth</label>
-                      <input
+                      <label htmlFor="payrollwor-date-of-birth-4" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Date of Birth</label><input id="payrollwor-date-of-birth-4"
                         type="date"
                         value={newEmpForm.dateOfBirth}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, dateOfBirth: e.target.value })}
@@ -2103,8 +2099,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Marital Status</label>
-                      <select
+                      <label htmlFor="payrollwor-marital-status-5" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Marital Status</label><select id="payrollwor-marital-status-5"
                         value={newEmpForm.maritalStatus}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, maritalStatus: e.target.value as any })}
                         className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -2119,8 +2114,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
 
                   <div className="grid grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Blood Group</label>
-                      <select
+                      <label htmlFor="payrollwor-blood-group-6" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Blood Group</label><select id="payrollwor-blood-group-6"
                         value={newEmpForm.bloodGroup}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, bloodGroup: e.target.value })}
                         className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -2136,8 +2130,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       </select>
                     </div>
                     <div className="col-span-2">
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Father / Spouse Name</label>
-                      <input
+                      <label htmlFor="payrollwor-father-spouse-name-7" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Father / Spouse Name</label><input id="payrollwor-father-spouse-name-7"
                         type="text"
                         value={newEmpForm.fatherOrSpouseName}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, fatherOrSpouseName: e.target.value })}
@@ -2149,8 +2142,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
 
                   <div className="grid grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Official Email</label>
-                      <input
+                      <label htmlFor="payrollwor-official-email-8" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Official Email</label><input id="payrollwor-official-email-8"
                         type="email"
                         value={newEmpForm.officialEmail}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, officialEmail: e.target.value })}
@@ -2160,8 +2152,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Personal Email</label>
-                      <input
+                      <label htmlFor="payrollwor-personal-email-9" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Personal Email</label><input id="payrollwor-personal-email-9"
                         type="email"
                         value={newEmpForm.personalEmail}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, personalEmail: e.target.value })}
@@ -2170,8 +2161,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Contact Phone</label>
-                      <input
+                      <label htmlFor="payrollwor-contact-phone-10" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Contact Phone</label><input id="payrollwor-contact-phone-10"
                         type="text"
                         value={newEmpForm.phone}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, phone: e.target.value })}
@@ -2189,8 +2179,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                 <div className="space-y-3">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Department</label>
-                      <select
+                      <label htmlFor="payrollwor-department-11" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Department</label><select id="payrollwor-department-11"
                         value={newEmpForm.department}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, department: e.target.value })}
                         className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -2202,8 +2191,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       </select>
                     </div>
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Designation / Role</label>
-                      <input
+                      <label htmlFor="payrollwor-designation-role-12" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Designation / Role</label><input id="payrollwor-designation-role-12"
                         type="text"
                         value={newEmpForm.designation}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, designation: e.target.value })}
@@ -2216,8 +2204,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Reporting Manager</label>
-                      <input
+                      <label htmlFor="payrollwor-reporting-manager-13" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Reporting Manager</label><input id="payrollwor-reporting-manager-13"
                         type="text"
                         value={newEmpForm.reportingManagerName}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, reportingManagerName: e.target.value })}
@@ -2226,8 +2213,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Date of Joining</label>
-                      <input
+                      <label htmlFor="payrollwor-date-of-joining-14" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Date of Joining</label><input id="payrollwor-date-of-joining-14"
                         type="date"
                         value={newEmpForm.dateOfJoining}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, dateOfJoining: e.target.value })}
@@ -2239,8 +2225,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
 
                   <div className="grid grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Employment Type</label>
-                      <select
+                      <label htmlFor="payrollwor-employment-type-15" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Employment Type</label><select id="payrollwor-employment-type-15"
                         value={newEmpForm.employmentType}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, employmentType: e.target.value as any })}
                         className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -2252,8 +2237,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       </select>
                     </div>
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Work Location</label>
-                      <input
+                      <label htmlFor="payrollwor-work-location-16" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Work Location</label><input id="payrollwor-work-location-16"
                         type="text"
                         value={newEmpForm.workLocation}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, workLocation: e.target.value })}
@@ -2261,11 +2245,10 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Notice Period (Days)</label>
-                      <input
+                      <label htmlFor="payrollwor-notice-period-days-17" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Notice Period (Days)</label><input id="payrollwor-notice-period-days-17"
                         type="number"
                         value={newEmpForm.noticePeriodDays}
-                        onChange={(e) => setNewEmpForm({ ...newEmpForm, noticePeriodDays: parseInt(e.target.value) || 60 })}
+                        onChange={(e) => setNewEmpForm({ ...newEmpForm, noticePeriodDays: Number.parseInt(e.target.value, 10) || 60 })}
                         className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                       />
                     </div>
@@ -2283,8 +2266,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                     </span>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-gray-600 dark:text-gray-300 mb-1">Highest Degree</label>
-                        <input
+                        <label htmlFor="payrollwor-highest-degree-18" className="block text-gray-600 dark:text-gray-300 mb-1">Highest Degree</label><input id="payrollwor-highest-degree-18"
                           type="text"
                           value={newEmpForm.qualification}
                           onChange={(e) => setNewEmpForm({ ...newEmpForm, qualification: e.target.value })}
@@ -2293,8 +2275,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         />
                       </div>
                       <div>
-                        <label className="block text-gray-600 dark:text-gray-300 mb-1">University / College</label>
-                        <input
+                        <label htmlFor="payrollwor-university-college-19" className="block text-gray-600 dark:text-gray-300 mb-1">University / College</label><input id="payrollwor-university-college-19"
                           type="text"
                           value={newEmpForm.institution}
                           onChange={(e) => setNewEmpForm({ ...newEmpForm, institution: e.target.value })}
@@ -2305,17 +2286,15 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-gray-600 dark:text-gray-300 mb-1">Year of Passing</label>
-                        <input
+                        <label htmlFor="payrollwor-year-of-passing-20" className="block text-gray-600 dark:text-gray-300 mb-1">Year of Passing</label><input id="payrollwor-year-of-passing-20"
                           type="number"
                           value={newEmpForm.yearOfPassing}
-                          onChange={(e) => setNewEmpForm({ ...newEmpForm, yearOfPassing: parseInt(e.target.value) || 2020 })}
+                          onChange={(e) => setNewEmpForm({ ...newEmpForm, yearOfPassing: Number.parseInt(e.target.value, 10) || 2020 })}
                           className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         />
                       </div>
                       <div>
-                        <label className="block text-gray-600 dark:text-gray-300 mb-1">Certifications (comma separated)</label>
-                        <input
+                        <label htmlFor="payrollwor-certifications-comma-separated-21" className="block text-gray-600 dark:text-gray-300 mb-1">Certifications (comma separated)</label><input id="payrollwor-certifications-comma-separated-21"
                           type="text"
                           value={newEmpForm.certifications}
                           onChange={(e) => setNewEmpForm({ ...newEmpForm, certifications: e.target.value })}
@@ -2333,18 +2312,16 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                     </span>
                     <div className="grid grid-cols-3 gap-3">
                       <div>
-                        <label className="block text-gray-600 dark:text-gray-300 mb-1">Total Exp (Years)</label>
-                        <input
+                        <label htmlFor="payrollwor-total-exp-years-22" className="block text-gray-600 dark:text-gray-300 mb-1">Total Exp (Years)</label><input id="payrollwor-total-exp-years-22"
                           type="number"
                           step="0.5"
                           value={newEmpForm.totalExperienceYears}
-                          onChange={(e) => setNewEmpForm({ ...newEmpForm, totalExperienceYears: parseFloat(e.target.value) || 0 })}
+                          onChange={(e) => setNewEmpForm({ ...newEmpForm, totalExperienceYears: Number.parseFloat(e.target.value) || 0 })}
                           className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         />
                       </div>
                       <div>
-                        <label className="block text-gray-600 dark:text-gray-300 mb-1">Previous Employer</label>
-                        <input
+                        <label htmlFor="payrollwor-previous-employer-23" className="block text-gray-600 dark:text-gray-300 mb-1">Previous Employer</label><input id="payrollwor-previous-employer-23"
                           type="text"
                           value={newEmpForm.previousEmployer}
                           onChange={(e) => setNewEmpForm({ ...newEmpForm, previousEmployer: e.target.value })}
@@ -2353,11 +2330,10 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                         />
                       </div>
                       <div>
-                        <label className="block text-gray-600 dark:text-gray-300 mb-1">Last Drawn CTC (₹)</label>
-                        <input
+                        <label htmlFor="payrollwor-last-drawn-ctc-24" className="block text-gray-600 dark:text-gray-300 mb-1">Last Drawn CTC (₹)</label><input id="payrollwor-last-drawn-ctc-24"
                           type="number"
                           value={newEmpForm.previousLastDrawnCtc}
-                          onChange={(e) => setNewEmpForm({ ...newEmpForm, previousLastDrawnCtc: parseFloat(e.target.value) || 0 })}
+                          onChange={(e) => setNewEmpForm({ ...newEmpForm, previousLastDrawnCtc: Number.parseFloat(e.target.value) || 0 })}
                           className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         />
                       </div>
@@ -2371,8 +2347,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                 <div className="space-y-3">
                   <div className="grid grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">PAN Number</label>
-                      <input
+                      <label htmlFor="payrollwor-pan-number-25" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">PAN Number</label><input id="payrollwor-pan-number-25"
                         type="text"
                         placeholder="ABCDE1234F"
                         value={newEmpForm.pan}
@@ -2382,8 +2357,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Aadhaar (UIDAI)</label>
-                      <input
+                      <label htmlFor="payrollwor-aadhaar-uidai-26" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Aadhaar (UIDAI)</label><input id="payrollwor-aadhaar-uidai-26"
                         type="text"
                         placeholder="4532 8901 2345"
                         value={newEmpForm.aadhaar}
@@ -2392,8 +2366,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">EPFO UAN</label>
-                      <input
+                      <label htmlFor="payrollwor-epfo-uan-27" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">EPFO UAN</label><input id="payrollwor-epfo-uan-27"
                         type="text"
                         placeholder="100902345678"
                         value={newEmpForm.uan}
@@ -2405,18 +2378,16 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
 
                   <div className="grid grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Monthly CTC (₹)</label>
-                      <input
+                      <label htmlFor="payrollwor-monthly-ctc-28" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Monthly CTC (₹)</label><input id="payrollwor-monthly-ctc-28"
                         type="number"
                         value={newEmpForm.monthlyCtc}
-                        onChange={(e) => setNewEmpForm({ ...newEmpForm, monthlyCtc: parseFloat(e.target.value) || 0 })}
+                        onChange={(e) => setNewEmpForm({ ...newEmpForm, monthlyCtc: Number.parseFloat(e.target.value) || 0 })}
                         className="w-full px-3 py-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 font-mono font-bold text-emerald-600 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Bank Name</label>
-                      <input
+                      <label htmlFor="payrollwor-bank-name-29" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Bank Name</label><input id="payrollwor-bank-name-29"
                         type="text"
                         value={newEmpForm.bankName}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, bankName: e.target.value })}
@@ -2425,8 +2396,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Account Number</label>
-                      <input
+                      <label htmlFor="payrollwor-account-number-30" className="block text-gray-600 dark:text-gray-300 mb-1 font-medium">Account Number</label><input id="payrollwor-account-number-30"
                         type="text"
                         value={newEmpForm.bankAccountNumber}
                         onChange={(e) => setNewEmpForm({ ...newEmpForm, bankAccountNumber: e.target.value })}
@@ -2617,7 +2587,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                     min="180000"
                     max="10000000"
                     value={revisedAnnualCtc}
-                    onChange={(e) => handleCtcSliderChange(parseFloat(e.target.value) || 0)}
+                    onChange={(e) => handleCtcSliderChange(Number.parseFloat(e.target.value) || 0)}
                     className="p-2 border rounded-lg bg-white dark:bg-gray-900 border-indigo-300 dark:border-indigo-700 font-mono font-bold text-base text-gray-900 dark:text-white w-44 text-right shadow-inner"
                   />
                 </div>
@@ -2629,7 +2599,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                 max="5000000"
                 step="25000"
                 value={revisedAnnualCtc}
-                onChange={(e) => handleCtcSliderChange(parseInt(e.target.value) || 300000)}
+                onChange={(e) => handleCtcSliderChange(Number.parseInt(e.target.value, 10) || 300000)}
                 className="w-full h-2 bg-indigo-200 dark:bg-indigo-900 rounded-lg appearance-none cursor-pointer accent-indigo-600"
               />
             </div>
@@ -2743,8 +2713,7 @@ export function PayrollWorkspace({ initialTab = 'overview' }: PayrollWorkspacePr
                   </div>
 
                   <div className="pt-1">
-                    <label className="text-[10px] text-gray-400 uppercase font-semibold block mb-1">State Jurisdiction</label>
-                    <select
+                    <label htmlFor="payrollwor-state-jurisdiction-31" className="text-[10px] text-gray-400 uppercase font-semibold block mb-1">State Jurisdiction</label><select id="payrollwor-state-jurisdiction-31"
                       value={revisedPtState}
                       onChange={(e) => setRevisedPtState(e.target.value)}
                       className="w-full p-1.5 border rounded bg-gray-50 dark:bg-gray-800 text-xs text-gray-900 dark:text-white border-gray-300 dark:border-gray-700"

@@ -314,8 +314,9 @@ export function InterestCalculationWorkspace() {
 
           <div className="space-y-3 text-xs">
             <div>
-              <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Standard Annual Interest Rate (%)</label>
+              <label htmlFor="interest-rate" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Standard Annual Interest Rate (%)</label>
               <input
+                id="interest-rate"
                 type="number"
                 value={defaultRate}
                 onChange={(e) => setDefaultRate(Number(e.target.value))}
@@ -324,8 +325,9 @@ export function InterestCalculationWorkspace() {
             </div>
 
             <div>
-              <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Grace Period Days (Overdue buffer)</label>
+              <label htmlFor="interest-grace" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Grace Period Days (Overdue buffer)</label>
               <input
+                id="interest-grace"
                 type="number"
                 value={graceDays}
                 onChange={(e) => setGraceDays(Number(e.target.value))}

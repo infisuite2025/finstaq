@@ -95,7 +95,7 @@ export function PdcMemorandaWorkspace() {
     e.preventDefault();
     try {
       const prefix = form.voucherType === 'PDC_RECEIPT' ? 'PDC-IN' : form.voucherType === 'PDC_PAYMENT' ? 'PDC-OUT' : 'MEMO';
-      const pdcNumber = `${prefix}-2026-${Math.floor(100 + Math.random() * 900)}`;
+      const pdcNumber = `${prefix}-2026-${crypto.getRandomValues(new Uint32Array(1))[0] % 900 + 100}`;
 
       const res = await fetch('/api/v1/pdc', {
         method: 'POST',
@@ -256,8 +256,7 @@ export function PdcMemorandaWorkspace() {
 
             <form onSubmit={handleCreate} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Voucher Type</label>
-                <select
+                <label htmlFor="pdcmemoran-voucher-type-1" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Voucher Type</label><select id="pdcmemoran-voucher-type-1"
                   value={form.voucherType}
                   onChange={(e) => setForm({ ...form, voucherType: e.target.value as any })}
                   className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
@@ -269,8 +268,7 @@ export function PdcMemorandaWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Party Name</label>
-                <input
+                <label htmlFor="pdcmemoran-party-name-2" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Party Name</label><input id="pdcmemoran-party-name-2"
                   type="text"
                   required
                   value={form.partyName}
@@ -281,8 +279,7 @@ export function PdcMemorandaWorkspace() {
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Cheque / Leaf #</label>
-                  <input
+                  <label htmlFor="pdcmemoran-cheque-leaf-3" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Cheque / Leaf #</label><input id="pdcmemoran-cheque-leaf-3"
                     type="text"
                     required
                     value={form.chequeNumber}
@@ -291,8 +288,7 @@ export function PdcMemorandaWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Maturity Date</label>
-                  <input
+                  <label htmlFor="pdcmemoran-maturity-date-4" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Maturity Date</label><input id="pdcmemoran-maturity-date-4"
                     type="date"
                     required
                     value={form.chequeDate}
@@ -304,8 +300,7 @@ export function PdcMemorandaWorkspace() {
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Bank Name</label>
-                  <input
+                  <label htmlFor="pdcmemoran-bank-name-5" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Bank Name</label><input id="pdcmemoran-bank-name-5"
                     type="text"
                     required
                     value={form.bankName}
@@ -314,8 +309,7 @@ export function PdcMemorandaWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Amount (₹)</label>
-                  <input
+                  <label htmlFor="pdcmemoran-amount-6" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Amount (₹)</label><input id="pdcmemoran-amount-6"
                     type="number"
                     required
                     value={form.amount}
@@ -326,8 +320,7 @@ export function PdcMemorandaWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Narration / Purpose</label>
-                <input
+                <label htmlFor="pdcmemoran-narration-purpose-7" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Narration / Purpose</label><input id="pdcmemoran-narration-purpose-7"
                   type="text"
                   value={form.purposeOrNarration}
                   onChange={(e) => setForm({ ...form, purposeOrNarration: e.target.value })}

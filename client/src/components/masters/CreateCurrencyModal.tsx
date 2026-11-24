@@ -77,8 +77,7 @@ export const CreateCurrencyModal: React.FC<CreateCurrencyModalProps> = ({ isOpen
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold mb-1">Currency Code *</label>
-              <input
+              <label htmlFor="createcurr-currency-code-1" className="block text-xs font-semibold mb-1">Currency Code *</label><input id="createcurr-currency-code-1"
                 type="text"
                 required
                 placeholder="e.g. USD, EUR, GBP, AED"
@@ -88,8 +87,7 @@ export const CreateCurrencyModal: React.FC<CreateCurrencyModalProps> = ({ isOpen
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">Currency Symbol *</label>
-              <input
+              <label htmlFor="createcurr-currency-symbol-2" className="block text-xs font-semibold mb-1">Currency Symbol *</label><input id="createcurr-currency-symbol-2"
                 type="text"
                 required
                 placeholder="e.g. $, €, £, د.إ, ¥"
@@ -101,8 +99,7 @@ export const CreateCurrencyModal: React.FC<CreateCurrencyModalProps> = ({ isOpen
           </div>
 
           <div>
-            <label className="block text-xs font-semibold mb-1">Currency Name *</label>
-            <input
+            <label htmlFor="createcurr-currency-name-3" className="block text-xs font-semibold mb-1">Currency Name *</label><input id="createcurr-currency-name-3"
               type="text"
               required
               placeholder="e.g. US Dollar, Euro, Great British Pound"
@@ -114,8 +111,7 @@ export const CreateCurrencyModal: React.FC<CreateCurrencyModalProps> = ({ isOpen
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold mb-1">Exchange Rate to Base (₹)</label>
-              <input
+              <label htmlFor="createcurr-exchange-rate-to-base-4" className="block text-xs font-semibold mb-1">Exchange Rate to Base (₹)</label><input id="createcurr-exchange-rate-to-base-4"
                 type="number"
                 step="0.0001"
                 min={0}
@@ -126,8 +122,7 @@ export const CreateCurrencyModal: React.FC<CreateCurrencyModalProps> = ({ isOpen
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold mb-1">Decimal Places</label>
-              <select
+              <label htmlFor="createcurr-decimal-places-5" className="block text-xs font-semibold mb-1">Decimal Places</label><select id="createcurr-decimal-places-5"
                 value={decimalPlaces}
                 onChange={(e) => setDecimalPlaces(Number(e.target.value))}
                 className="w-full h-10 px-3.5 text-xs rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"

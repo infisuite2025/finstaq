@@ -343,8 +343,7 @@ export function UpiPaymentsWorkspace() {
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Company Receiving VPA</label>
-                <input
+                <label htmlFor="upipayment-company-receiving-vpa-1" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Company Receiving VPA</label><input id="upipayment-company-receiving-vpa-1"
                   type="text"
                   value={posPayeeVpa}
                   onChange={(e) => setPosPayeeVpa(e.target.value)}
@@ -353,8 +352,7 @@ export function UpiPaymentsWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Bill Amount (₹)</label>
-                <input
+                <label htmlFor="upipayment-bill-amount-2" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Bill Amount (₹)</label><input id="upipayment-bill-amount-2"
                   type="number"
                   value={posAmount}
                   onChange={(e) => setPosAmount(Number(e.target.value))}
@@ -364,8 +362,7 @@ export function UpiPaymentsWorkspace() {
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Invoice Number</label>
-                  <input
+                  <label htmlFor="upipayment-invoice-number-3" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Invoice Number</label><input id="upipayment-invoice-number-3"
                     type="text"
                     value={posInvoiceNumber}
                     onChange={(e) => setPosInvoiceNumber(e.target.value)}
@@ -373,8 +370,7 @@ export function UpiPaymentsWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Customer Name</label>
-                  <input
+                  <label htmlFor="upipayment-customer-name-4" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Customer Name</label><input id="upipayment-customer-name-4"
                     type="text"
                     value={posCustomerName}
                     onChange={(e) => setPosCustomerName(e.target.value)}
@@ -604,8 +600,7 @@ export function UpiPaymentsWorkspace() {
 
             <form onSubmit={handleExecutePayout} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Payee Name</label>
-                <input
+                <label htmlFor="upipayment-payee-name-5" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Payee Name</label><input id="upipayment-payee-name-5"
                   type="text"
                   required
                   value={payoutName}
@@ -615,8 +610,7 @@ export function UpiPaymentsWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Payee UPI VPA</label>
-                <input
+                <label htmlFor="upipayment-payee-upi-vpa-6" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Payee UPI VPA</label><input id="upipayment-payee-upi-vpa-6"
                   type="text"
                   required
                   value={payoutVpa}
@@ -626,8 +620,7 @@ export function UpiPaymentsWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Disbursement Amount (₹)</label>
-                <input
+                <label htmlFor="upipayment-disbursement-amount-7" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Disbursement Amount (₹)</label><input id="upipayment-disbursement-amount-7"
                   type="number"
                   required
                   value={payoutAmount}
@@ -637,8 +630,7 @@ export function UpiPaymentsWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Vendor Bill Reference</label>
-                <input
+                <label htmlFor="upipayment-vendor-bill-reference-8" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Vendor Bill Reference</label><input id="upipayment-vendor-bill-reference-8"
                   type="text"
                   value={payoutBillRef}
                   onChange={(e) => setPayoutBillRef(e.target.value)}
@@ -677,8 +669,7 @@ export function UpiPaymentsWorkspace() {
 
             <form onSubmit={handleCreateVpa} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Party Name</label>
-                <input
+                <label htmlFor="upipayment-party-name-9" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Party Name</label><input id="upipayment-party-name-9"
                   type="text"
                   required
                   placeholder="e.g. Larsen & Toubro Heavy Eng"
@@ -689,8 +680,7 @@ export function UpiPaymentsWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Party Type</label>
-                <select
+                <label htmlFor="upipayment-party-type-10" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Party Type</label><select id="upipayment-party-type-10"
                   value={newVpaPartyType}
                   onChange={(e) => setNewVpaPartyType(e.target.value as any)}
                   className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
@@ -702,8 +692,7 @@ export function UpiPaymentsWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">UPI ID / VPA</label>
-                <input
+                <label htmlFor="upipayment-upi-id-vpa-11" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">UPI ID / VPA</label><input id="upipayment-upi-id-vpa-11"
                   type="text"
                   required
                   placeholder="e.g. larsen.ops@hdfcbank"

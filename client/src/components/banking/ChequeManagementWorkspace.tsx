@@ -377,7 +377,7 @@ export function ChequeManagementWorkspace() {
         },
         body: JSON.stringify({
           ...issueForm,
-          amount: parseFloat(issueForm.amount) || 0,
+          amount: Number.parseFloat(issueForm.amount) || 0,
         }),
       });
       const data = await res.json();
@@ -393,7 +393,7 @@ export function ChequeManagementWorkspace() {
           status: 'ISSUED',
           voucherNumber: issueForm.voucherNumber,
           payeeName: issueForm.payeeName,
-          amount: parseFloat(issueForm.amount) || 0,
+          amount: Number.parseFloat(issueForm.amount) || 0,
           issueDate: issueForm.issueDate,
           isCrossed: issueForm.isCrossed,
           remarks: issueForm.remarks,
@@ -410,7 +410,7 @@ export function ChequeManagementWorkspace() {
         status: 'ISSUED',
         voucherNumber: issueForm.voucherNumber,
         payeeName: issueForm.payeeName,
-        amount: parseFloat(issueForm.amount) || 0,
+        amount: Number.parseFloat(issueForm.amount) || 0,
         issueDate: issueForm.issueDate,
         isCrossed: issueForm.isCrossed,
         remarks: issueForm.remarks,
@@ -429,7 +429,7 @@ export function ChequeManagementWorkspace() {
         payeeName: cheque?.payeeName || samplePayee,
         amountInFigures: cheque?.amount
           ? `₹ ${cheque.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })} /-`
-          : `₹ ${parseFloat(sampleAmount).toLocaleString('en-IN', { minimumFractionDigits: 2 })} /-`,
+          : `₹ ${Number.parseFloat(sampleAmount).toLocaleString('en-IN', { minimumFractionDigits: 2 })} /-`,
         amountInWords: cheque?.amount
           ? `INR ${cheque.amount.toLocaleString('en-IN')} Only`
           : 'INR Three Lakh Seventy Five Thousand Four Hundred Twenty and Fifty Paise Only',
@@ -784,22 +784,24 @@ export function ChequeManagementWorkspace() {
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="text-slate-600 dark:text-slate-400 font-medium block mb-1">Payee Name Position (Top / Left mm)</label>
+                <label htmlFor="chq-payee-top" className="text-slate-600 dark:text-slate-400 font-medium block mb-1">Payee Name Position (Top / Left mm)</label>
                 <div className="grid grid-cols-2 gap-2">
                   <input
+                    id="chq-payee-top"
                     type="number"
                     value={selectedTemplate.payeeTopMm}
                     onChange={(e) =>
-                      setSelectedTemplate({ ...selectedTemplate, payeeTopMm: parseFloat(e.target.value) || 0 })
+                      setSelectedTemplate({ ...selectedTemplate, payeeTopMm: Number.parseFloat(e.target.value) || 0 })
                     }
                     className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     placeholder="Top mm"
                   />
                   <input
+                    aria-label="Payee name left position in millimetres"
                     type="number"
                     value={selectedTemplate.payeeLeftMm}
                     onChange={(e) =>
-                      setSelectedTemplate({ ...selectedTemplate, payeeLeftMm: parseFloat(e.target.value) || 0 })
+                      setSelectedTemplate({ ...selectedTemplate, payeeLeftMm: Number.parseFloat(e.target.value) || 0 })
                     }
                     className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     placeholder="Left mm"
@@ -808,21 +810,23 @@ export function ChequeManagementWorkspace() {
               </div>
 
               <div>
-                <label className="text-slate-600 dark:text-slate-400 font-medium block mb-1">Date Box Position (Top / Left mm)</label>
+                <label htmlFor="chq-date-top" className="text-slate-600 dark:text-slate-400 font-medium block mb-1">Date Box Position (Top / Left mm)</label>
                 <div className="grid grid-cols-2 gap-2">
                   <input
+                    id="chq-date-top"
                     type="number"
                     value={selectedTemplate.dateTopMm}
                     onChange={(e) =>
-                      setSelectedTemplate({ ...selectedTemplate, dateTopMm: parseFloat(e.target.value) || 0 })
+                      setSelectedTemplate({ ...selectedTemplate, dateTopMm: Number.parseFloat(e.target.value) || 0 })
                     }
                     className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                   <input
+                    aria-label="Date box left position in millimetres"
                     type="number"
                     value={selectedTemplate.dateLeftMm}
                     onChange={(e) =>
-                      setSelectedTemplate({ ...selectedTemplate, dateLeftMm: parseFloat(e.target.value) || 0 })
+                      setSelectedTemplate({ ...selectedTemplate, dateLeftMm: Number.parseFloat(e.target.value) || 0 })
                     }
                     className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
@@ -830,21 +834,23 @@ export function ChequeManagementWorkspace() {
               </div>
 
               <div>
-                <label className="text-slate-600 dark:text-slate-400 font-medium block mb-1">Amount in Words Position (Top / Left mm)</label>
+                <label htmlFor="chq-words-top" className="text-slate-600 dark:text-slate-400 font-medium block mb-1">Amount in Words Position (Top / Left mm)</label>
                 <div className="grid grid-cols-2 gap-2">
                   <input
+                    id="chq-words-top"
                     type="number"
                     value={selectedTemplate.amountWordsTopMm}
                     onChange={(e) =>
-                      setSelectedTemplate({ ...selectedTemplate, amountWordsTopMm: parseFloat(e.target.value) || 0 })
+                      setSelectedTemplate({ ...selectedTemplate, amountWordsTopMm: Number.parseFloat(e.target.value) || 0 })
                     }
                     className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                   <input
+                    aria-label="Amount in words left position in millimetres"
                     type="number"
                     value={selectedTemplate.amountWordsLeftMm}
                     onChange={(e) =>
-                      setSelectedTemplate({ ...selectedTemplate, amountWordsLeftMm: parseFloat(e.target.value) || 0 })
+                      setSelectedTemplate({ ...selectedTemplate, amountWordsLeftMm: Number.parseFloat(e.target.value) || 0 })
                     }
                     className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
@@ -852,21 +858,23 @@ export function ChequeManagementWorkspace() {
               </div>
 
               <div>
-                <label className="text-slate-600 dark:text-slate-400 font-medium block mb-1">Amount in Figures Box (Top / Left mm)</label>
+                <label htmlFor="chq-figures-top" className="text-slate-600 dark:text-slate-400 font-medium block mb-1">Amount in Figures Box (Top / Left mm)</label>
                 <div className="grid grid-cols-2 gap-2">
                   <input
+                    id="chq-figures-top"
                     type="number"
                     value={selectedTemplate.amountFiguresTopMm}
                     onChange={(e) =>
-                      setSelectedTemplate({ ...selectedTemplate, amountFiguresTopMm: parseFloat(e.target.value) || 0 })
+                      setSelectedTemplate({ ...selectedTemplate, amountFiguresTopMm: Number.parseFloat(e.target.value) || 0 })
                     }
                     className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
                   <input
+                    aria-label="Amount in figures left position in millimetres"
                     type="number"
                     value={selectedTemplate.amountFiguresLeftMm}
                     onChange={(e) =>
-                      setSelectedTemplate({ ...selectedTemplate, amountFiguresLeftMm: parseFloat(e.target.value) || 0 })
+                      setSelectedTemplate({ ...selectedTemplate, amountFiguresLeftMm: Number.parseFloat(e.target.value) || 0 })
                     }
                     className="p-2 border border-emerald-400 dark:border-emerald-500 rounded-xl bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                   />
@@ -989,8 +997,9 @@ export function ChequeManagementWorkspace() {
 
             <form onSubmit={handleCreateBook} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Bank Ledger / Account</label>
+                <label htmlFor="chq-bank-ledger" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Bank Ledger / Account</label>
                 <input
+                  id="chq-bank-ledger"
                   type="text"
                   value={newBookForm.bankName}
                   onChange={(e) => setNewBookForm({ ...newBookForm, bankName: e.target.value })}
@@ -1001,8 +1010,9 @@ export function ChequeManagementWorkspace() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Book Series Code</label>
+                  <label htmlFor="chq-series" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Book Series Code</label>
                   <input
+                    id="chq-series"
                     type="text"
                     value={newBookForm.bookSeries}
                     onChange={(e) => setNewBookForm({ ...newBookForm, bookSeries: e.target.value })}
@@ -1011,8 +1021,9 @@ export function ChequeManagementWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Account Number</label>
+                  <label htmlFor="chq-account-no" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Account Number</label>
                   <input
+                    id="chq-account-no"
                     type="text"
                     value={newBookForm.accountNumber}
                     onChange={(e) => setNewBookForm({ ...newBookForm, accountNumber: e.target.value })}
@@ -1024,21 +1035,23 @@ export function ChequeManagementWorkspace() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">From Cheque No.</label>
+                  <label htmlFor="chq-from" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">From Cheque No.</label>
                   <input
+                    id="chq-from"
                     type="number"
                     value={newBookForm.fromChequeNo}
-                    onChange={(e) => setNewBookForm({ ...newBookForm, fromChequeNo: parseInt(e.target.value) || 0 })}
+                    onChange={(e) => setNewBookForm({ ...newBookForm, fromChequeNo: Number.parseInt(e.target.value) || 0 })}
                     className="w-full px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl font-mono text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">To Cheque No.</label>
+                  <label htmlFor="chq-to" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">To Cheque No.</label>
                   <input
+                    id="chq-to"
                     type="number"
                     value={newBookForm.toChequeNo}
-                    onChange={(e) => setNewBookForm({ ...newBookForm, toChequeNo: parseInt(e.target.value) || 0 })}
+                    onChange={(e) => setNewBookForm({ ...newBookForm, toChequeNo: Number.parseInt(e.target.value) || 0 })}
                     className="w-full px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl font-mono text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                     required
                   />
@@ -1081,8 +1094,9 @@ export function ChequeManagementWorkspace() {
 
             <form onSubmit={handleIssueCheque} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Select Cheque Book</label>
+                <label htmlFor="chq-book" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Select Cheque Book</label>
                 <select
+                  id="chq-book"
                   value={issueForm.bookId}
                   onChange={(e) => setIssueForm({ ...issueForm, bookId: e.target.value })}
                   className="w-full px-3.5 py-2 bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-bold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -1097,8 +1111,9 @@ export function ChequeManagementWorkspace() {
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Payee Name (Beneficiary)</label>
+                <label htmlFor="chq-payee" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Payee Name (Beneficiary)</label>
                 <input
+                  id="chq-payee"
                   type="text"
                   value={issueForm.payeeName}
                   onChange={(e) => setIssueForm({ ...issueForm, payeeName: e.target.value })}
@@ -1110,8 +1125,9 @@ export function ChequeManagementWorkspace() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Amount (₹)</label>
+                  <label htmlFor="chq-amount" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Amount (₹)</label>
                   <input
+                    id="chq-amount"
                     type="number"
                     step="0.01"
                     value={issueForm.amount}
@@ -1122,8 +1138,9 @@ export function ChequeManagementWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Payment Voucher #</label>
+                  <label htmlFor="chq-voucher" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Payment Voucher #</label>
                   <input
+                    id="chq-voucher"
                     type="text"
                     value={issueForm.voucherNumber}
                     onChange={(e) => setIssueForm({ ...issueForm, voucherNumber: e.target.value })}
@@ -1135,8 +1152,9 @@ export function ChequeManagementWorkspace() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Cheque Issue Date</label>
+                  <label htmlFor="chq-issue-date" className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Cheque Issue Date</label>
                   <input
+                    id="chq-issue-date"
                     type="date"
                     value={issueForm.issueDate}
                     onChange={(e) => setIssueForm({ ...issueForm, issueDate: e.target.value })}

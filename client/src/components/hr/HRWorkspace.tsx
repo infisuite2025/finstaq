@@ -1140,10 +1140,11 @@ export function HRWorkspace({ initialTab = 'directory' }: HRWorkspaceProps) {
 
             <div className="space-y-4 text-xs">
               <div>
-                <label className="block text-gray-700 dark:text-gray-300 font-bold mb-1">
+                <label htmlFor="hr-revised-ctc" className="block text-gray-700 dark:text-gray-300 font-bold mb-1">
                   Target Annual CTC (₹)
                 </label>
                 <input
+                  id="hr-revised-ctc"
                   type="number"
                   value={revisedAnnualCtc}
                   onChange={(e) => handleRecalculateCtc(Number(e.target.value))}
@@ -1210,8 +1211,9 @@ export function HRWorkspace({ initialTab = 'directory' }: HRWorkspaceProps) {
             <form onSubmit={handleCreateEmployee} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-gray-700 dark:text-gray-300 font-bold mb-1">First Name *</label>
+                  <label htmlFor="hr-first-name" className="block text-gray-700 dark:text-gray-300 font-bold mb-1">First Name *</label>
                   <input
+                    id="hr-first-name"
                     type="text"
                     required
                     value={newEmpForm.firstName}
@@ -1221,8 +1223,9 @@ export function HRWorkspace({ initialTab = 'directory' }: HRWorkspaceProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 dark:text-gray-300 font-bold mb-1">Last Name *</label>
+                  <label htmlFor="hr-last-name" className="block text-gray-700 dark:text-gray-300 font-bold mb-1">Last Name *</label>
                   <input
+                    id="hr-last-name"
                     type="text"
                     required
                     value={newEmpForm.lastName}
@@ -1235,8 +1238,9 @@ export function HRWorkspace({ initialTab = 'directory' }: HRWorkspaceProps) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-gray-700 dark:text-gray-300 font-bold mb-1">Official Email *</label>
+                  <label htmlFor="hr-email" className="block text-gray-700 dark:text-gray-300 font-bold mb-1">Official Email *</label>
                   <input
+                    id="hr-email"
                     type="email"
                     required
                     value={newEmpForm.officialEmail}
@@ -1246,8 +1250,9 @@ export function HRWorkspace({ initialTab = 'directory' }: HRWorkspaceProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 dark:text-gray-300 font-bold mb-1">Phone Number *</label>
+                  <label htmlFor="hr-phone" className="block text-gray-700 dark:text-gray-300 font-bold mb-1">Phone Number *</label>
                   <input
+                    id="hr-phone"
                     type="text"
                     required
                     value={newEmpForm.phone}
@@ -1260,8 +1265,9 @@ export function HRWorkspace({ initialTab = 'directory' }: HRWorkspaceProps) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-gray-700 dark:text-gray-300 font-bold mb-1">Department *</label>
+                  <label htmlFor="hr-dept" className="block text-gray-700 dark:text-gray-300 font-bold mb-1">Department *</label>
                   <select
+                    id="hr-dept"
                     value={newEmpForm.department}
                     onChange={(e) => setNewEmpForm({ ...newEmpForm, department: e.target.value })}
                     className={UI.input.text}
@@ -1274,8 +1280,9 @@ export function HRWorkspace({ initialTab = 'directory' }: HRWorkspaceProps) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-gray-700 dark:text-gray-300 font-bold mb-1">Designation *</label>
+                  <label htmlFor="hr-designation" className="block text-gray-700 dark:text-gray-300 font-bold mb-1">Designation *</label>
                   <input
+                    id="hr-designation"
                     type="text"
                     required
                     value={newEmpForm.designation}
@@ -1288,8 +1295,9 @@ export function HRWorkspace({ initialTab = 'directory' }: HRWorkspaceProps) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-gray-700 dark:text-gray-300 font-bold mb-1">Monthly CTC (₹) *</label>
+                  <label htmlFor="hr-ctc" className="block text-gray-700 dark:text-gray-300 font-bold mb-1">Monthly CTC (₹) *</label>
                   <input
+                    id="hr-ctc"
                     type="number"
                     required
                     value={newEmpForm.monthlyCtc}
@@ -1298,8 +1306,9 @@ export function HRWorkspace({ initialTab = 'directory' }: HRWorkspaceProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 dark:text-gray-300 font-bold mb-1">PAN Number *</label>
+                  <label htmlFor="hr-pan" className="block text-gray-700 dark:text-gray-300 font-bold mb-1">PAN Number *</label>
                   <input
+                    id="hr-pan"
                     type="text"
                     required
                     value={newEmpForm.pan}

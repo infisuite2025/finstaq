@@ -61,7 +61,7 @@ export const QuickCreateLedgerModal: React.FC<QuickCreateLedgerModalProps> = ({
         id: 'temp-' + Date.now(),
         name: name.trim(),
         code: code.trim() || undefined,
-        currentBalance: parseFloat(openingBalance) || 0,
+        currentBalance: Number.parseFloat(openingBalance) || 0,
         groupName: selectedGroup?.name || 'Current Assets',
         nature: (selectedGroup?.nature as any) || 'ASSET',
       };
@@ -113,10 +113,9 @@ export const QuickCreateLedgerModal: React.FC<QuickCreateLedgerModalProps> = ({
           )}
 
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">
+            <label htmlFor="quickcreat-ledger-name-1" className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">
               Ledger Name <span className="text-red-500">*</span>
-            </label>
-            <input
+            </label><input id="quickcreat-ledger-name-1"
               ref={nameInputRef}
               type="text"
               required
@@ -129,10 +128,9 @@ export const QuickCreateLedgerModal: React.FC<QuickCreateLedgerModalProps> = ({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">
+              <label htmlFor="quickcreat-parent-group-2" className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">
                 Parent Group <span className="text-red-500">*</span>
-              </label>
-              <select
+              </label><select id="quickcreat-parent-group-2"
                 value={groupId}
                 onChange={(e) => setGroupId(e.target.value)}
                 className="w-full bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl px-3 py-2 text-slate-900 dark:text-white font-medium text-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -146,10 +144,9 @@ export const QuickCreateLedgerModal: React.FC<QuickCreateLedgerModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">
+              <label htmlFor="quickcreat-ledger-code-alias-3" className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">
                 Ledger Code / Alias
-              </label>
-              <input
+              </label><input id="quickcreat-ledger-code-alias-3"
                 type="text"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
@@ -160,10 +157,9 @@ export const QuickCreateLedgerModal: React.FC<QuickCreateLedgerModalProps> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">
+            <label htmlFor="quickcreat-opening-balance-4" className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1">
               Opening Balance (₹)
-            </label>
-            <input
+            </label><input id="quickcreat-opening-balance-4"
               type="number"
               step="any"
               value={openingBalance}

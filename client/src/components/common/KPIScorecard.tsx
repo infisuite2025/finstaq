@@ -136,10 +136,12 @@ export function KPIScorecard({
   // Render footer content
   const hasFooter = footerLeft !== undefined || footerRight !== undefined || footer !== undefined;
 
+  const CardTag = onClick ? 'button' : 'div';
+
   return (
-    <div
-      onClick={onClick}
-      className={`${containerClass} ${onClick ? 'cursor-pointer hover:shadow-md' : ''} ${className}`}
+    <CardTag
+      {...(onClick ? { type: 'button' as const, onClick } : {})}
+      className={`${containerClass} ${onClick ? 'cursor-pointer hover:shadow-md text-left' : ''} ${className}`}
     >
       {/* Top Header */}
       <div className="flex justify-between items-center gap-1.5 min-w-0">
@@ -230,7 +232,7 @@ export function KPIScorecard({
           )}
         </div>
       )}
-    </div>
+    </CardTag>
   );
 }
 

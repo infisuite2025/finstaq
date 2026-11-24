@@ -480,7 +480,7 @@ export function StorageVaultWorkspace() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {stats.categories.map((cat) => (
-              <div
+              <button type="button"
                 key={cat.category}
                 onClick={() => setCategoryFilter(categoryFilter === cat.category ? 'all' : cat.category)}
                 className={`finstaq-card p-3.5 space-y-2 cursor-pointer transition-all hover:border-blue-400 ${
@@ -517,7 +517,7 @@ export function StorageVaultWorkspace() {
                     style={{ width: `${Math.max(3, cat.percentOfTotal)}%` }}
                   />
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -731,8 +731,7 @@ export function StorageVaultWorkspace() {
 
             <form onSubmit={handleFileUpload} className="space-y-4">
               <div>
-                <label className="finstaq-label">Target Module Category</label>
-                <select
+                <label htmlFor="storagevau-target-module-category-1" className="finstaq-label">Target Module Category</label><select id="storagevau-target-module-category-1"
                   value={uploadCategory}
                   onChange={(e) => setUploadCategory(e.target.value as any)}
                   className="finstaq-select"
@@ -746,8 +745,7 @@ export function StorageVaultWorkspace() {
               </div>
 
               <div>
-                <label className="finstaq-label">Select Document (PDF, ZIP, Image, DOCX, CSV)</label>
-                <input
+                <label htmlFor="storagevau-select-document-pdf-zip-image-docx-c-2" className="finstaq-label">Select Document (PDF, ZIP, Image, DOCX, CSV)</label><input id="storagevau-select-document-pdf-zip-image-docx-c-2"
                   ref={fileInputRef}
                   type="file"
                   onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
@@ -828,7 +826,7 @@ export function StorageVaultWorkspace() {
               {STORAGE_PACKS.map((pack) => {
                 const isSelected = selectedPack.id === pack.id;
                 return (
-                  <div
+                  <button type="button"
                     key={pack.id}
                     onClick={() => setSelectedPack(pack)}
                     className={`p-3.5 rounded-xl border transition-all cursor-pointer relative space-y-1.5 ${
@@ -849,7 +847,7 @@ export function StorageVaultWorkspace() {
                       </span>
                     </div>
                     <p className="text-[11px] text-slate-500 leading-snug">{pack.desc}</p>
-                  </div>
+                  </button>
                 );
               })}
             </div>

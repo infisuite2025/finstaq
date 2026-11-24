@@ -72,10 +72,9 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createinve-product-item-description-1" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Product / Item Description *
-              </label>
-              <input
+              </label><input id="createinve-product-item-description-1"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -86,10 +85,9 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createinve-stock-sku-part-number-2" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Stock SKU / Part Number *
-              </label>
-              <input
+              </label><input id="createinve-stock-sku-part-number-2"
                 type="text"
                 value={sku}
                 onChange={(e) => setSku(e.target.value)}
@@ -99,10 +97,9 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createinve-category-3" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Category
-              </label>
-              <input
+              </label><input id="createinve-category-3"
                 type="text"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
@@ -112,10 +109,9 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createinve-hsn-sac-code-4" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 HSN / SAC Code
-              </label>
-              <input
+              </label><input id="createinve-hsn-sac-code-4"
                 type="text"
                 value={hsnCode}
                 onChange={(e) => setHsnCode(e.target.value)}
@@ -125,12 +121,11 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createinve-gst-tax-rate-5" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 GST Tax Rate %
-              </label>
-              <select
+              </label><select id="createinve-gst-tax-rate-5"
                 value={taxRatePercent}
-                onChange={(e) => setTaxRatePercent(parseFloat(e.target.value) || 0)}
+                onChange={(e) => setTaxRatePercent(Number.parseFloat(e.target.value) || 0)}
                 className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               >
                 <option value="0">0% (Nil / Exempt)</option>
@@ -142,10 +137,9 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createinve-unit-of-measurement-uom-6" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Unit of Measurement (UOM)
-              </label>
-              <select
+              </label><select id="createinve-unit-of-measurement-uom-6"
                 value={unit}
                 onChange={(e) => setUnit(e.target.value)}
                 className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -160,53 +154,49 @@ export function CreateInventoryModal({ isOpen, onClose, onSubmit }: CreateInvent
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createinve-opening-stock-quantity-7" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Opening Stock Quantity
-              </label>
-              <input
+              </label><input id="createinve-opening-stock-quantity-7"
                 type="number"
                 min="0"
                 value={openingStockQty}
-                onChange={(e) => setOpeningStockQty(parseFloat(e.target.value) || 0)}
+                onChange={(e) => setOpeningStockQty(Number.parseFloat(e.target.value) || 0)}
                 className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-right text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createinve-reorder-alert-level-8" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Reorder Alert Level
-              </label>
-              <input
+              </label><input id="createinve-reorder-alert-level-8"
                 type="number"
                 min="0"
                 value={reorderLevel}
-                onChange={(e) => setReorderLevel(parseFloat(e.target.value) || 0)}
+                onChange={(e) => setReorderLevel(Number.parseFloat(e.target.value) || 0)}
                 className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-right text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createinve-standard-purchase-cost-9" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Standard Purchase Cost (₹)
-              </label>
-              <input
+              </label><input id="createinve-standard-purchase-cost-9"
                 type="number"
                 min="0"
                 value={standardCost}
-                onChange={(e) => setStandardCost(parseFloat(e.target.value) || 0)}
+                onChange={(e) => setStandardCost(Number.parseFloat(e.target.value) || 0)}
                 className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-right text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createinve-standard-selling-price-10" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Standard Selling Price (₹)
-              </label>
-              <input
+              </label><input id="createinve-standard-selling-price-10"
                 type="number"
                 min="0"
                 value={sellingPrice}
-                onChange={(e) => setSellingPrice(parseFloat(e.target.value) || 0)}
+                onChange={(e) => setSellingPrice(Number.parseFloat(e.target.value) || 0)}
                 className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-right text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>

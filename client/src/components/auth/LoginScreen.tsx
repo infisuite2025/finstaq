@@ -394,10 +394,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                <label htmlFor="login-company-code" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                   Company code
                 </label>
                 <input
+                  id="login-company-code"
                   type="text"
                   autoComplete="off"
                   value={subdomain}
@@ -408,10 +409,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                <label htmlFor="login-gstin" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                   Company GSTIN
                 </label>
                 <input
+                  id="login-gstin"
                   type="text"
                   autoComplete="off"
                   value={tenantGstin}
@@ -422,12 +424,13 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
               </div>
               {/* Email / Username */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                <label htmlFor="login-email" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                   Email or Username
                 </label>
                 <div className="relative flex items-center">
                   <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
                   <input
+                    id="login-email"
                     type="email"
                     autoComplete="off"
                     value={email}
@@ -440,12 +443,13 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, sessio
 
               {/* Password */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                <label htmlFor="login-password" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                   Password
                 </label>
                 <div className="relative flex items-center">
                   <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
                   <input
+                    id="login-password"
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="new-password"
                     value={password}

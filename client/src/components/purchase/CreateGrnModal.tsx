@@ -210,10 +210,9 @@ export function CreateGrnModal({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="creategrnm-grn-reference-1" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 GRN Reference # *
-              </label>
-              <input
+              </label><input id="creategrnm-grn-reference-1"
                 type="text"
                 value={grnNumber}
                 onChange={(e) => {
@@ -226,10 +225,9 @@ export function CreateGrnModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="creategrnm-link-to-purchase-order-po-2" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Link to Purchase Order (PO) *
-              </label>
-              <select
+              </label><select id="creategrnm-link-to-purchase-order-po-2"
                 value={selectedPoId}
                 onChange={(e) => handlePoSelectionChange(e.target.value)}
                 className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -244,10 +242,9 @@ export function CreateGrnModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="creategrnm-supplier-creditor-party-3" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Supplier / Creditor Party *
-              </label>
-              <select
+              </label><select id="creategrnm-supplier-creditor-party-3"
                 value={vendorLedgerId}
                 onChange={(e) => setVendorLedgerId(e.target.value)}
                 disabled={!!selectedPoId}
@@ -264,10 +261,9 @@ export function CreateGrnModal({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="creategrnm-material-received-date-4" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Material Received Date *
-              </label>
-              <input
+              </label><input id="creategrnm-material-received-date-4"
                 type="date"
                 value={receivedDate}
                 onChange={(e) => setReceivedDate(e.target.value)}
@@ -276,10 +272,9 @@ export function CreateGrnModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="creategrnm-vehicle-number-5" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Vehicle Number
-              </label>
-              <input
+              </label><input id="creategrnm-vehicle-number-5"
                 type="text"
                 value={vehicleNumber}
                 onChange={(e) => setVehicleNumber(e.target.value)}
@@ -289,10 +284,9 @@ export function CreateGrnModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="creategrnm-vendor-delivery-challan-6" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Vendor Delivery Challan #
-              </label>
-              <input
+              </label><input id="creategrnm-vendor-delivery-challan-6"
                 type="text"
                 value={challanNumber}
                 onChange={(e) => setChallanNumber(e.target.value)}
@@ -407,10 +401,9 @@ export function CreateGrnModal({
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+            <label htmlFor="creategrnm-qc-inspection-remarks-notes-7" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
               QC Inspection Remarks & Notes
-            </label>
-            <textarea
+            </label><textarea id="creategrnm-qc-inspection-remarks-notes-7"
               rows={2}
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}

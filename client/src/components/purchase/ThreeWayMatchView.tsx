@@ -107,10 +107,9 @@ export function ThreeWayMatchView({
       {/* Selectors */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
-          <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+          <label htmlFor="threewayma-step-1-select-purchase-order-po-1" className="text-xs font-bold text-slate-700 dark:text-slate-300">
             Step 1: Select Purchase Order (PO)
-          </label>
-          <select
+          </label><select id="threewayma-step-1-select-purchase-order-po-1"
             value={selectedPoId}
             onChange={(e) => setSelectedPoId(e.target.value)}
             className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -124,10 +123,9 @@ export function ThreeWayMatchView({
         </div>
 
         <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
-          <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+          <label htmlFor="threewayma-step-2-select-goods-receipt-note-grn-2" className="text-xs font-bold text-slate-700 dark:text-slate-300">
             Step 2: Select Goods Receipt Note (GRN)
-          </label>
-          <select
+          </label><select id="threewayma-step-2-select-goods-receipt-note-grn-2"
             value={selectedGrnId}
             onChange={(e) => setSelectedGrnId(e.target.value)}
             className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-xs font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -233,7 +231,7 @@ export function ThreeWayMatchView({
                 <input
                   type="number"
                   value={invoicedTotal}
-                  onChange={(e) => setInvoicedTotal(parseFloat(e.target.value) || 0)}
+                  onChange={(e) => setInvoicedTotal(Number.parseFloat(e.target.value) || 0)}
                   className="w-28 px-2 py-1 text-right font-mono font-bold border border-emerald-400 dark:border-emerald-500 rounded-lg bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>
@@ -242,7 +240,7 @@ export function ThreeWayMatchView({
                 <input
                   type="number"
                   value={invoicedQty}
-                  onChange={(e) => setInvoicedQty(parseFloat(e.target.value) || 0)}
+                  onChange={(e) => setInvoicedQty(Number.parseFloat(e.target.value) || 0)}
                   className="w-20 px-2 py-1 text-right font-mono font-bold border border-emerald-400 dark:border-emerald-500 rounded-lg bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
                 />
               </div>

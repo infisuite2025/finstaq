@@ -402,11 +402,10 @@ export function CreatePurchaseReturnModal({
           {/* Supplier Selection */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 flex items-center space-x-1.5">
+              <label htmlFor="createpurc-supplier-creditor-party-1" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 flex items-center space-x-1.5">
                 <Building2 className="w-3.5 h-3.5 text-slate-500" />
                 <span>Supplier / Creditor Party *</span>
-              </label>
-              <select
+              </label><select id="createpurc-supplier-creditor-party-1"
                 value={vendorLedgerId}
                 onChange={(e) => setVendorLedgerId(e.target.value)}
                 className="w-full text-xs px-3.5 py-2.5 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -420,10 +419,9 @@ export function CreatePurchaseReturnModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createpurc-original-supplier-bill-invoice-ref-2" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Original Supplier Bill / Invoice Ref *
-              </label>
-              <input
+              </label><input id="createpurc-original-supplier-bill-invoice-ref-2"
                 type="text"
                 value={originalInvoiceNumber}
                 onChange={(e) => setOriginalInvoiceNumber(e.target.value)}
@@ -512,7 +510,7 @@ export function CreatePurchaseReturnModal({
                       const isSelected = selectedGrnIds.includes(g.id);
                       const matchingPo = purchaseOrders.find((p) => p.id === g.poId);
                       return (
-                        <div
+                        <button type="button"
                           key={g.id}
                           onClick={() => toggleGrnSelection(g.id)}
                           className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-start space-x-2.5 ${
@@ -537,7 +535,7 @@ export function CreatePurchaseReturnModal({
                               </div>
                             )}
                           </div>
-                        </div>
+                        </button>
                       );
                     })}
                   </div>
@@ -574,7 +572,7 @@ export function CreatePurchaseReturnModal({
                     {vendorPos.map((p) => {
                       const isSelected = selectedPoIds.includes(p.id);
                       return (
-                        <div
+                        <button type="button"
                           key={p.id}
                           onClick={() => togglePoSelection(p.id)}
                           className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-start space-x-2.5 ${
@@ -597,7 +595,7 @@ export function CreatePurchaseReturnModal({
                               Status: {p.status} ({p.items.length} lines)
                             </div>
                           </div>
-                        </div>
+                        </button>
                       );
                     })}
                   </div>
@@ -635,10 +633,9 @@ export function CreatePurchaseReturnModal({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createpurc-return-outward-date-3" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Return Outward Date *
-              </label>
-              <input
+              </label><input id="createpurc-return-outward-date-3"
                 type="date"
                 value={returnDate}
                 onChange={(e) => setReturnDate(e.target.value)}
@@ -647,10 +644,9 @@ export function CreatePurchaseReturnModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createpurc-primary-rejection-reason-4" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Primary Rejection Reason *
-              </label>
-              <select
+              </label><select id="createpurc-primary-rejection-reason-4"
                 value={reason}
                 onChange={(e) => setReason(e.target.value as any)}
                 className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -664,10 +660,9 @@ export function CreatePurchaseReturnModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createpurc-deduct-from-warehouse-5" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Deduct From Warehouse *
-              </label>
-              <select
+              </label><select id="createpurc-deduct-from-warehouse-5"
                 value={warehouseId}
                 onChange={(e) => setWarehouseId(e.target.value)}
                 className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -839,10 +834,9 @@ export function CreatePurchaseReturnModal({
 
           {/* Remarks */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+            <label htmlFor="createpurc-quality-rejection-notes-narration-6" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
               Quality Rejection Notes / Narration
-            </label>
-            <textarea
+            </label><textarea id="createpurc-quality-rejection-notes-narration-6"
               rows={2}
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}

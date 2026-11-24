@@ -297,8 +297,9 @@ export function StatutoryComplianceHub() {
 
             <div className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Invoice / Document Number</label>
+                <label htmlFor="einv-doc-no" className="text-xs font-semibold text-slate-700 dark:text-slate-300">Invoice / Document Number</label>
                 <input
+                  id="einv-doc-no"
                   type="text"
                   value={einvDocNo}
                   onChange={(e) => setEinvDocNo(e.target.value)}
@@ -307,8 +308,9 @@ export function StatutoryComplianceHub() {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Invoice Date (DD/MM/YYYY)</label>
+                <label htmlFor="einv-doc-date" className="text-xs font-semibold text-slate-700 dark:text-slate-300">Invoice Date (DD/MM/YYYY)</label>
                 <input
+                  id="einv-doc-date"
                   type="text"
                   value={einvDocDate}
                   onChange={(e) => setEinvDocDate(e.target.value)}
@@ -376,8 +378,9 @@ export function StatutoryComplianceHub() {
             <div className="space-y-3 text-xs">
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="text-slate-600 dark:text-slate-400 font-semibold">Document #</label>
+                  <label htmlFor="ewb-doc-no" className="text-slate-600 dark:text-slate-400 font-semibold">Document #</label>
                   <input
+                    id="ewb-doc-no"
                     type="text"
                     value={ewbDocNo}
                     onChange={(e) => setEwbDocNo(e.target.value)}
@@ -385,8 +388,9 @@ export function StatutoryComplianceHub() {
                   />
                 </div>
                 <div>
-                  <label className="text-slate-600 dark:text-slate-400 font-semibold">Vehicle #</label>
+                  <label htmlFor="ewb-vehicle" className="text-slate-600 dark:text-slate-400 font-semibold">Vehicle #</label>
                   <input
+                    id="ewb-vehicle"
                     type="text"
                     value={ewbVehicleNo}
                     onChange={(e) => setEwbVehicleNo(e.target.value)}
@@ -396,8 +400,9 @@ export function StatutoryComplianceHub() {
               </div>
 
               <div>
-                <label className="text-slate-600 dark:text-slate-400 font-semibold">Transporter Name & GSTIN</label>
+                <label htmlFor="ewb-transporter" className="text-slate-600 dark:text-slate-400 font-semibold">Transporter Name & GSTIN</label>
                 <input
+                  id="ewb-transporter"
                   type="text"
                   value={ewbTransporterName}
                   onChange={(e) => setEwbTransporterName(e.target.value)}
@@ -502,8 +507,9 @@ export function StatutoryComplianceHub() {
 
               <div className="space-y-3 text-xs">
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Buyer Name</label>
+                  <label htmlFor="tcs-buyer-name" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Buyer Name</label>
                   <input
+                    id="tcs-buyer-name"
                     type="text"
                     value={tcsBuyerName}
                     onChange={(e) => setTcsBuyerName(e.target.value)}
@@ -512,8 +518,9 @@ export function StatutoryComplianceHub() {
                 </div>
 
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Buyer PAN</label>
+                  <label htmlFor="tcs-buyer-pan" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Buyer PAN</label>
                   <input
+                    id="tcs-buyer-pan"
                     type="text"
                     value={tcsBuyerPan}
                     onChange={(e) => setTcsBuyerPan(e.target.value)}
@@ -522,8 +529,9 @@ export function StatutoryComplianceHub() {
                 </div>
 
                 <div>
-                  <label className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Current Invoice Amount (₹)</label>
+                  <label htmlFor="tcs-invoice-amt" className="block text-slate-600 dark:text-slate-400 font-semibold mb-1">Current Invoice Amount (₹)</label>
                   <input
+                    id="tcs-invoice-amt"
                     type="number"
                     value={tcsCurrentSale}
                     onChange={(e) => setTcsCurrentSale(Number(e.target.value))}

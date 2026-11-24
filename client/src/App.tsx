@@ -171,6 +171,20 @@ function MainWorkspace({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const dataEntryBlocked = new Set<TabType>([
+    'payroll-run',
+    'payroll-loans',
+    'payroll-compliance',
+    'payroll',
+    'financial-periods',
+  ]);
+
+  React.useEffect(() => {
+    if (session.role === 'DATA_ENTRY' && dataEntryBlocked.has(activeTab)) {
+      setActiveTab('analytics');
+    }
+  }, [session.role, activeTab]);
+
   // On Mobile Viewports (< 768px), seamlessly render the Native Mobile App Experience
   if (isMobileScreen && !forceDesktopMode) {
     return (
@@ -293,13 +307,6 @@ function MainWorkspace({
     },
   ];
 
-  const dataEntryBlocked = new Set<TabType>([
-    'payroll-run',
-    'payroll-loans',
-    'payroll-compliance',
-    'payroll',
-    'financial-periods',
-  ]);
   const visibleNavSections = session.role === 'DATA_ENTRY'
     ? navSections
         .map((section) => ({
@@ -308,12 +315,6 @@ function MainWorkspace({
         }))
         .filter((section) => section.items.length > 0)
     : navSections;
-
-  React.useEffect(() => {
-    if (session.role === 'DATA_ENTRY' && dataEntryBlocked.has(activeTab)) {
-      setActiveTab('analytics');
-    }
-  }, [session.role, activeTab]);
 
   const getBreadcrumb = () => {
     switch (activeTab) {

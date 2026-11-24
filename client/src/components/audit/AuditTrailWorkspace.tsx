@@ -283,7 +283,7 @@ export const AuditTrailWorkspace: React.FC = () => {
                 Audit Trail & MCA Edit Log
                 <span className="text-[10px] uppercase font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 flex items-center gap-1">
                   <Lock className="w-3 h-3" />
-                  MCA / GST Compliant
+                  <span>MCA / GST Compliant</span>
                 </span>
               </h1>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">
@@ -607,7 +607,7 @@ export const AuditTrailWorkspace: React.FC = () => {
                     </td>
                     <td className="p-3.5 max-w-xs truncate text-slate-500 text-[11px]" title={ses.userAgent}>
                       <span className="font-semibold text-slate-700 dark:text-slate-300 mr-1">{ses.deviceType}:</span>
-                      {ses.userAgent}
+                      <span>{ses.userAgent}</span>
                     </td>
                     <td className="p-3.5 font-mono text-[11px] text-slate-500 whitespace-nowrap">
                       {ses.ipAddress}
@@ -671,10 +671,7 @@ export const AuditTrailWorkspace: React.FC = () => {
       {/* Visual Diff Modal */}
       {activeDiffLog && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div 
-            className="w-full max-w-3xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 duration-200"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="w-full max-w-3xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 duration-200">
             {/* Modal Header */}
             <div className="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-800/50">
               <div className="flex items-center gap-3">
@@ -733,8 +730,7 @@ export const AuditTrailWorkspace: React.FC = () => {
 
               {activeDiffLog.narration && (
                 <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-800 text-xs">
-                  <span className="font-bold text-slate-700 dark:text-slate-300">Audit Narration / Reason: </span>
-                  <span className="text-slate-600 dark:text-slate-400">{activeDiffLog.narration}</span>
+                  <span className="font-bold text-slate-700 dark:text-slate-300">Audit Narration / Reason: </span><span className="text-slate-600 dark:text-slate-400">{activeDiffLog.narration}</span>
                 </div>
               )}
             </div>

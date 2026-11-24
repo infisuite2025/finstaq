@@ -308,10 +308,9 @@ export function StaffLoansHub({
 
             <form onSubmit={handleCreateLoan} className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                <label htmlFor="staffloans-select-employee-1" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                   Select Employee *
-                </label>
-                <select
+                </label><select id="staffloans-select-employee-1"
                   value={selectedEmpId}
                   onChange={(e) => setSelectedEmpId(e.target.value)}
                   className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -325,10 +324,9 @@ export function StaffLoansHub({
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                <label htmlFor="staffloans-loan-advance-category-2" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                   Loan / Advance Category
-                </label>
-                <select
+                </label><select id="staffloans-loan-advance-category-2"
                   value={loanType}
                   onChange={(e) => setLoanType(e.target.value as any)}
                   className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -342,10 +340,9 @@ export function StaffLoansHub({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="staffloans-principal-amount-3" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Principal Amount (₹) *
-                  </label>
-                  <input
+                  </label><input id="staffloans-principal-amount-3"
                     type="number"
                     step="5000"
                     required
@@ -356,10 +353,9 @@ export function StaffLoansHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="staffloans-repayment-tenure-months-4" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Repayment Tenure (Months)
-                  </label>
-                  <input
+                  </label><input id="staffloans-repayment-tenure-months-4"
                     type="number"
                     min="1"
                     max="24"
@@ -372,10 +368,9 @@ export function StaffLoansHub({
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                <label htmlFor="staffloans-purpose-reason-5" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                   Purpose / Reason
-                </label>
-                <input
+                </label><input id="staffloans-purpose-reason-5"
                   type="text"
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}

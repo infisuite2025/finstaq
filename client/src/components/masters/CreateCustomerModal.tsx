@@ -87,10 +87,9 @@ export function CreateCustomerModal({ isOpen, onClose, onSubmit }: CreateCustome
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createcust-company-customer-trade-name-1" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Company / Customer Trade Name *
-              </label>
-              <input
+              </label><input id="createcust-company-customer-trade-name-1"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -101,10 +100,9 @@ export function CreateCustomerModal({ isOpen, onClose, onSubmit }: CreateCustome
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createcust-customer-code-2" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Customer Code
-              </label>
-              <input
+              </label><input id="createcust-customer-code-2"
                 type="text"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
@@ -113,10 +111,9 @@ export function CreateCustomerModal({ isOpen, onClose, onSubmit }: CreateCustome
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createcust-gstin-15-digit-3" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 GSTIN (15-Digit)
-              </label>
-              <input
+              </label><input id="createcust-gstin-15-digit-3"
                 type="text"
                 value={gstIn}
                 onChange={(e) => handleGstinChange(e.target.value)}
@@ -127,10 +124,9 @@ export function CreateCustomerModal({ isOpen, onClose, onSubmit }: CreateCustome
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createcust-pan-number-4" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 PAN Number
-              </label>
-              <input
+              </label><input id="createcust-pan-number-4"
                 type="text"
                 value={pan}
                 onChange={(e) => setPan(e.target.value.toUpperCase())}
@@ -141,10 +137,9 @@ export function CreateCustomerModal({ isOpen, onClose, onSubmit }: CreateCustome
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createcust-state-code-5" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 State Code
-              </label>
-              <input
+              </label><input id="createcust-state-code-5"
                 type="text"
                 value={stateCode}
                 onChange={(e) => setStateCode(e.target.value)}
@@ -154,10 +149,9 @@ export function CreateCustomerModal({ isOpen, onClose, onSubmit }: CreateCustome
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createcust-contact-person-name-6" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Contact Person Name
-              </label>
-              <input
+              </label><input id="createcust-contact-person-name-6"
                 type="text"
                 value={contactPerson}
                 onChange={(e) => setContactPerson(e.target.value)}
@@ -167,10 +161,9 @@ export function CreateCustomerModal({ isOpen, onClose, onSubmit }: CreateCustome
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createcust-email-address-7" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Email Address
-              </label>
-              <input
+              </label><input id="createcust-email-address-7"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -180,10 +173,9 @@ export function CreateCustomerModal({ isOpen, onClose, onSubmit }: CreateCustome
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createcust-phone-mobile-8" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Phone / Mobile
-              </label>
-              <input
+              </label><input id="createcust-phone-mobile-8"
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -193,46 +185,42 @@ export function CreateCustomerModal({ isOpen, onClose, onSubmit }: CreateCustome
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createcust-opening-balance-9" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Opening Balance (₹)
-              </label>
-              <input
+              </label><input id="createcust-opening-balance-9"
                 type="number"
                 value={openingBalance}
-                onChange={(e) => setOpeningBalance(parseFloat(e.target.value) || 0)}
+                onChange={(e) => setOpeningBalance(Number.parseFloat(e.target.value) || 0)}
                 className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-right text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createcust-credit-period-days-10" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Credit Period (Days)
-              </label>
-              <input
+              </label><input id="createcust-credit-period-days-10"
                 type="number"
                 value={creditPeriodDays}
-                onChange={(e) => setCreditPeriodDays(parseInt(e.target.value) || 0)}
+                onChange={(e) => setCreditPeriodDays(Number.parseInt(e.target.value, 10) || 0)}
                 className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createcust-credit-limit-11" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Credit Limit (₹)
-              </label>
-              <input
+              </label><input id="createcust-credit-limit-11"
                 type="number"
                 value={creditLimit}
-                onChange={(e) => setCreditLimit(parseFloat(e.target.value) || 0)}
+                onChange={(e) => setCreditLimit(Number.parseFloat(e.target.value) || 0)}
                 className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs font-mono text-right text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createcust-billing-registered-office-address-12" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Billing & Registered Office Address
-              </label>
-              <textarea
+              </label><textarea id="createcust-billing-registered-office-address-12"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="Street address, Industrial area, City, Pincode"

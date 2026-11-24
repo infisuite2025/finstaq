@@ -84,10 +84,9 @@ export function GenerateInvoiceModal({
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="generatein-select-sales-order-1" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Select Sales Order *
-              </label>
-              <select
+              </label><select id="generatein-select-sales-order-1"
                 value={selectedSoId}
                 onChange={(e) => setSelectedSoId(e.target.value)}
                 required
@@ -102,10 +101,9 @@ export function GenerateInvoiceModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="generatein-tax-invoice-number-2" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Tax Invoice Number *
-              </label>
-              <input
+              </label><input id="generatein-tax-invoice-number-2"
                 type="text"
                 value={voucherNumber}
                 onChange={(e) => setVoucherNumber(e.target.value)}
@@ -115,10 +113,9 @@ export function GenerateInvoiceModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="generatein-invoice-date-3" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Invoice Date
-              </label>
-              <input
+              </label><input id="generatein-invoice-date-3"
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
@@ -128,10 +125,9 @@ export function GenerateInvoiceModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="generatein-gst-tax-mode-4" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 GST Tax Mode
-              </label>
-              <select
+              </label><select id="generatein-gst-tax-mode-4"
                 value={taxType}
                 onChange={(e) => setTaxType(e.target.value as 'intra' | 'inter')}
                 className="w-full px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-xs text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -142,10 +138,9 @@ export function GenerateInvoiceModal({
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="generatein-invoice-narration-5" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Invoice Narration
-              </label>
-              <input
+              </label><input id="generatein-invoice-narration-5"
                 type="text"
                 value={narration}
                 onChange={(e) => setNarration(e.target.value)}

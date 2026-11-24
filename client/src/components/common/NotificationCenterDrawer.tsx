@@ -117,9 +117,11 @@ export const NotificationCenterDrawer: React.FC = () => {
       {isOpen && (
         <>
           {/* Completely transparent backdrop to detect outside clicks without darkening the page */}
-          <div 
-            className="fixed inset-0 z-[9990] bg-transparent" 
-            onClick={() => setIsOpen(false)} 
+          <button
+            type="button"
+            aria-label="Close notifications"
+            className="fixed inset-0 z-[9990] bg-transparent cursor-default"
+            onClick={() => setIsOpen(false)}
           />
 
           {/* Floating Notification Panel */}
@@ -175,10 +177,11 @@ export const NotificationCenterDrawer: React.FC = () => {
                 </div>
               ) : (
                 notifications.map((n) => (
-                  <div
+                  <button
+                    type="button"
                     key={n.id}
                     onClick={() => !n.read && markAsRead(n.id)}
-                    className={`p-3 rounded-xl border transition-all cursor-pointer relative ${
+                    className={`w-full text-left p-3 rounded-xl border transition-all cursor-pointer relative ${
                       n.read 
                         ? 'bg-slate-50/40 dark:bg-slate-800/20 border-slate-200/60 dark:border-slate-800/60 opacity-75' 
                         : 'bg-white dark:bg-slate-800 border-indigo-200/80 dark:border-indigo-900/50 shadow-sm ring-1 ring-indigo-500/10'
@@ -210,7 +213,7 @@ export const NotificationCenterDrawer: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </button>
                 ))
               )}
             </div>

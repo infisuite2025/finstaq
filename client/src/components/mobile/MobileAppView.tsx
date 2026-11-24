@@ -376,9 +376,9 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
             
             {/* PENDING APPROVALS ALERT BANNER (If any pending) */}
             {pendingApprovals.length > 0 && (
-              <div
+              <button type="button"
                 onClick={() => setActiveBottomNav('approvals')}
-                className="p-3.5 rounded-2xl bg-gradient-to-r from-rose-600 via-rose-500 to-amber-600 text-white shadow-lg shadow-rose-600/20 flex items-center justify-between cursor-pointer active:scale-[0.99] transition transform"
+                className="w-full text-left p-3.5 rounded-2xl bg-gradient-to-r from-rose-600 via-rose-500 to-amber-600 text-white shadow-lg shadow-rose-600/20 flex items-center justify-between cursor-pointer active:scale-[0.99] transition transform"
               >
                 <div className="flex items-center space-x-3">
                   <div className="p-2 rounded-xl bg-white/20 text-white shrink-0 animate-pulse">
@@ -394,13 +394,13 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
                   </div>
                 </div>
                 <ChevronRight className="w-4 h-4 text-white shrink-0" />
-              </div>
+              </button>
             )}
 
             {/* Executive Analytics & BI Radar Banner */}
-            <div
+            <button type="button"
               onClick={() => setIsAnalyticsModalOpen(true)}
-              className="p-4 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-500/30 shadow-xl flex items-center justify-between cursor-pointer active:scale-[0.99] transition transform"
+              className="w-full text-left p-4 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-500/30 shadow-xl flex items-center justify-between cursor-pointer active:scale-[0.99] transition transform"
             >
               <div className="flex items-center space-x-3">
                 <div className="p-2.5 rounded-2xl bg-indigo-600 text-white shadow-md shadow-indigo-500/30 shrink-0">
@@ -416,12 +416,12 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-indigo-400" />
-            </div>
+            </button>
 
             {/* Liquid Cash & Bank Card */}
-            <div
+            <button type="button"
               onClick={() => setIsBankBreakdownOpen(true)}
-              className="p-5 rounded-3xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 text-white shadow-xl shadow-blue-600/25 cursor-pointer active:scale-[0.99] transition transform"
+              className="w-full text-left p-5 rounded-3xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 text-white shadow-xl shadow-blue-600/25 cursor-pointer active:scale-[0.99] transition transform"
             >
               <div className="flex justify-between items-center text-xs text-blue-100 font-bold uppercase tracking-wider">
                 <span>Total Liquid Cash & Bank</span>
@@ -434,14 +434,14 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
                 <span>HDFC: ₹ 84.50 L</span>
                 <span>ICICI: ₹ 58.35 L</span>
               </div>
-            </div>
+            </button>
 
             {/* Overdue Interest Alert Banner */}
-            <div
+            <button type="button"
               onClick={() => setIsInterestModalOpen(true)}
               className={`p-3.5 rounded-2xl border flex items-center justify-between cursor-pointer active:scale-[0.99] transition ${themeMode === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}
             >
-              <div className="flex items-center space-x-3">
+              <div className="w-full text-left flex items-center space-x-3">
                 <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-500 shrink-0">
                   <Percent className="w-4 h-4" />
                 </div>
@@ -453,33 +453,33 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-slate-400" />
-            </div>
+            </button>
 
             {/* Today's UPI Inflow / Outflow Grid */}
             <div className="grid grid-cols-2 gap-3">
-              <div
+              <button type="button"
                 onClick={() => { setActiveBottomNav('upi'); setUpiSubTab('qr'); }}
                 className={`p-3.5 rounded-2xl border cursor-pointer active:scale-[0.99] transition ${themeMode === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}
               >
-                <div className="flex items-center space-x-1.5 text-[11px] font-bold text-emerald-500">
+                <div className="w-full text-left flex items-center space-x-1.5 text-[11px] font-bold text-emerald-500">
                   <ArrowDownLeft className="w-3.5 h-3.5" />
                   <span>UPI INFLOW</span>
                 </div>
                 <div className="text-lg font-black mt-1 text-emerald-600 dark:text-emerald-400">₹ 3,45,000</div>
                 <div className="text-[10px] text-slate-400">12 Collections</div>
-              </div>
+              </button>
 
-              <div
+              <button type="button"
                 onClick={() => { setActiveBottomNav('upi'); setUpiSubTab('payout'); }}
                 className={`p-3.5 rounded-2xl border cursor-pointer active:scale-[0.99] transition ${themeMode === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}
               >
-                <div className="flex items-center space-x-1.5 text-[11px] font-bold text-rose-500">
+                <div className="w-full text-left flex items-center space-x-1.5 text-[11px] font-bold text-rose-500">
                   <ArrowUpRight className="w-3.5 h-3.5" />
                   <span>UPI OUTFLOW</span>
                 </div>
                 <div className="text-lg font-black mt-1 text-rose-600 dark:text-rose-400">₹ 1,82,000</div>
                 <div className="text-[10px] text-slate-400">4 Supplier Payouts</div>
-              </div>
+              </button>
             </div>
 
             {/* 1-Tap Quick Actions Bar */}
@@ -543,12 +543,12 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
               </div>
 
               {voucherList.slice(0, 4).map((v) => (
-                <div
+                <button type="button"
                   key={v.id}
                   onClick={() => setSelectedVoucher(v)}
                   className={`p-3 rounded-2xl border flex items-center justify-between cursor-pointer active:scale-[0.99] transition ${themeMode === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}
                 >
-                  <div className="flex items-center space-x-3">
+                  <div className="w-full text-left flex items-center space-x-3">
                     <div className={`p-2 rounded-xl ${v.type === 'sales' ? 'bg-blue-500/10 text-blue-500' : v.type === 'purchase' ? 'bg-purple-500/10 text-purple-500' : v.type === 'payment' ? 'bg-rose-500/10 text-rose-500' : 'bg-emerald-500/10 text-emerald-500'}`}>
                       <FileText className="w-4 h-4" />
                     </div>
@@ -563,7 +563,7 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
                       {v.status}
                     </span>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -595,12 +595,12 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
             {/* Vouchers Register List */}
             <div className="space-y-2.5 pt-1">
               {filteredVouchers.map((v) => (
-                <div
+                <button type="button"
                   key={v.id}
                   onClick={() => setSelectedVoucher(v)}
                   className={`p-3.5 rounded-2xl border flex items-center justify-between cursor-pointer active:scale-[0.99] transition ${themeMode === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}
                 >
-                  <div className="flex items-center space-x-3">
+                  <div className="w-full text-left flex items-center space-x-3">
                     <div className={`p-2.5 rounded-xl ${v.type === 'sales' ? 'bg-blue-500/10 text-blue-500' : v.type === 'purchase' ? 'bg-purple-500/10 text-purple-500' : v.type === 'payment' ? 'bg-rose-500/10 text-rose-500' : 'bg-emerald-500/10 text-emerald-500'}`}>
                       <FileText className="w-4 h-4" />
                     </div>
@@ -615,7 +615,7 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
                       {v.status}
                     </span>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -642,7 +642,7 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
                 </div>
 
                 <div className="w-full space-y-2">
-                  <div className="text-xl font-black">₹ {parseFloat(upiAmount || '0').toLocaleString('en-IN')}.00</div>
+                  <div className="text-xl font-black">₹ {Number.parseFloat(upiAmount || '0').toLocaleString('en-IN')}.00</div>
                   <div className="text-xs text-slate-400">{upiInvoice} • {upiVpa}</div>
                 </div>
 
@@ -865,11 +865,11 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
         {activeBottomNav === 'more' && (
           <div className="space-y-3">
             <div className="text-xs font-black uppercase text-slate-400 px-1">Governance & Approvals</div>
-            <div
+            <button type="button"
               onClick={() => setActiveBottomNav('approvals')}
               className={`p-3.5 rounded-2xl border flex items-center justify-between cursor-pointer active:scale-[0.99] transition ${themeMode === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}
             >
-              <div className="flex items-center space-x-3">
+              <div className="w-full text-left flex items-center space-x-3">
                 <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-600 shrink-0">
                   <UserCheck className="w-5 h-5" />
                 </div>
@@ -879,16 +879,16 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-slate-400" />
-            </div>
+            </button>
 
             <div className="text-xs font-black uppercase text-slate-400 px-1 pt-2">Compliance & Operations</div>
             
             {/* TCS 206C(1H) Card */}
-            <div
+            <button type="button"
               onClick={() => setIsTcsModalOpen(true)}
               className={`p-3.5 rounded-2xl border flex items-center justify-between cursor-pointer active:scale-[0.99] transition ${themeMode === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}
             >
-              <div className="flex items-center space-x-3">
+              <div className="w-full text-left flex items-center space-x-3">
                 <div className="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-500 shrink-0">
                   <ShieldCheck className="w-5 h-5" />
                 </div>
@@ -898,14 +898,14 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-slate-400" />
-            </div>
+            </button>
 
             {/* PDC & Memoranda Registry */}
-            <div
+            <button type="button"
               onClick={() => setIsPdcModalOpen(true)}
               className={`p-3.5 rounded-2xl border flex items-center justify-between cursor-pointer active:scale-[0.99] transition ${themeMode === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}
             >
-              <div className="flex items-center space-x-3">
+              <div className="w-full text-left flex items-center space-x-3">
                 <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-500 shrink-0">
                   <Clock className="w-5 h-5" />
                 </div>
@@ -915,14 +915,14 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-slate-400" />
-            </div>
+            </button>
 
             {/* Job Work & ITC-04 */}
-            <div
+            <button type="button"
               onClick={() => setIsJobWorkModalOpen(true)}
               className={`p-3.5 rounded-2xl border flex items-center justify-between cursor-pointer active:scale-[0.99] transition ${themeMode === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}
             >
-              <div className="flex items-center space-x-3">
+              <div className="w-full text-left flex items-center space-x-3">
                 <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 shrink-0">
                   <Truck className="w-5 h-5" />
                 </div>
@@ -932,14 +932,14 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-slate-400" />
-            </div>
+            </button>
 
             {/* HR & Indian Payroll */}
-            <div
+            <button type="button"
               onClick={() => setIsPayrollModalOpen(true)}
               className={`p-3.5 rounded-2xl border flex items-center justify-between cursor-pointer active:scale-[0.99] transition ${themeMode === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}
             >
-              <div className="flex items-center space-x-3">
+              <div className="w-full text-left flex items-center space-x-3">
                 <div className="p-2.5 rounded-xl bg-rose-500/10 text-rose-500 shrink-0">
                   <Users className="w-5 h-5" />
                 </div>
@@ -949,16 +949,16 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-slate-400" />
-            </div>
+            </button>
 
             {/* Sign Out Card */}
-            <div
+            <button type="button"
               onClick={onLogout}
               className={`p-3.5 rounded-2xl border flex items-center justify-between cursor-pointer active:scale-[0.99] transition ${themeMode === 'dark' ? 'bg-rose-950/20 border-rose-900/30 text-rose-400' : 'bg-rose-50 border-rose-200 text-rose-600'}`}
             >
-              <div className="text-xs font-black">Sign Out ({session.email})</div>
+              <div className="w-full text-left text-xs font-black">Sign Out ({session.email})</div>
               <ChevronRight className="w-4 h-4" />
-            </div>
+            </button>
           </div>
         )}
       </main>
@@ -1056,7 +1056,7 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
             {/* Notifications List */}
             <div className="flex-1 overflow-y-auto space-y-2.5">
               {notifications.map((n) => (
-                <div
+                <button type="button"
                   key={n.id}
                   onClick={() => {
                     markNotifRead(n.id);
@@ -1081,7 +1081,7 @@ export function MobileAppView({ session, onLogout, onSwitchToDesktop }: MobileAp
                       <ChevronRight className="w-3 h-3" />
                     </div>
                   )}
-                </div>
+                </button>
               ))}
             </div>
           </div>

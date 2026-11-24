@@ -542,7 +542,7 @@ export const CommunicationHub: React.FC = () => {
             <form onSubmit={handleSendMessage} className="space-y-3.5">
               {/* Channel Selector */}
               <div>
-                <label className="finstaq-label">Select Delivery Channel</label>
+                <p className="finstaq-label">Select Delivery Channel</p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                   {[
                     { id: 'whatsapp', label: 'WhatsApp', icon: <Smartphone className="w-4 h-4 text-emerald-500" /> },
@@ -569,8 +569,9 @@ export const CommunicationHub: React.FC = () => {
 
               {/* Template quick-loader */}
               <div>
-                <label className="finstaq-label">Load from Template (Optional)</label>
+                <label htmlFor="comm-template" className="finstaq-label">Load from Template (Optional)</label>
                 <select
+                  id="comm-template"
                   value={selectedTemplateId}
                   onChange={(e) => handleTemplateSelect(e.target.value)}
                   className="finstaq-select"
@@ -586,10 +587,11 @@ export const CommunicationHub: React.FC = () => {
 
               {/* Recipient */}
               <div>
-                <label className="finstaq-label">
+                <label htmlFor="comm-recipient" className="finstaq-label">
                   Recipient ({channel === 'email' ? 'Email Address' : channel === 'in_app' ? 'User ID / Email' : 'Mobile Number with Country Code'})
                 </label>
                 <input
+                  id="comm-recipient"
                   type={channel === 'email' ? 'email' : 'text'}
                   required
                   placeholder={channel === 'email' ? 'finance@customer.com' : channel === 'in_app' ? 'admin@apex.finstaq.com' : '+91 98765 43210'}
@@ -602,8 +604,9 @@ export const CommunicationHub: React.FC = () => {
               {/* Subject (for email / in_app) */}
               {(channel === 'email' || channel === 'in_app') && (
                 <div>
-                  <label className="finstaq-label">Subject Line</label>
+                  <label htmlFor="comm-subject" className="finstaq-label">Subject Line</label>
                   <input
+                    id="comm-subject"
                     type="text"
                     required
                     placeholder="e.g. Tax Invoice #INV-2026-089 Dispatched"
@@ -616,8 +619,9 @@ export const CommunicationHub: React.FC = () => {
 
               {/* Body */}
               <div>
-                <label className="finstaq-label">Message Content / Body</label>
+                <label htmlFor="comm-body" className="finstaq-label">Message Content / Body</label>
                 <textarea
+                  id="comm-body"
                   rows={5}
                   required
                   placeholder="Type message content or use template placeholders like {{partyName}}, {{docNumber}}, {{amount}}..."

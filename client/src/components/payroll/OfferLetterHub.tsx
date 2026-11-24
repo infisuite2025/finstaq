@@ -359,10 +359,9 @@ export function OfferLetterHub({
             <form onSubmit={handleCreateOffer} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="offerlette-candidate-full-name-1" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Candidate Full Name *
-                  </label>
-                  <input
+                  </label><input id="offerlette-candidate-full-name-1"
                     type="text"
                     required
                     placeholder="e.g. Vikramaditya Sharma"
@@ -373,10 +372,9 @@ export function OfferLetterHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="offerlette-candidate-email-2" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Candidate Email *
-                  </label>
-                  <input
+                  </label><input id="offerlette-candidate-email-2"
                     type="email"
                     required
                     placeholder="vikram.sharma@example.com"
@@ -387,10 +385,9 @@ export function OfferLetterHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="offerlette-designation-title-3" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Designation / Title
-                  </label>
-                  <input
+                  </label><input id="offerlette-designation-title-3"
                     type="text"
                     required
                     value={newOffer.designation}
@@ -400,10 +397,9 @@ export function OfferLetterHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="offerlette-department-4" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Department
-                  </label>
-                  <select
+                  </label><select id="offerlette-department-4"
                     value={newOffer.department}
                     onChange={(e) => setNewOffer({ ...newOffer, department: e.target.value })}
                     className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -417,10 +413,9 @@ export function OfferLetterHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="offerlette-annual-ctc-inr-5" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Annual CTC (₹ INR) *
-                  </label>
-                  <input
+                  </label><input id="offerlette-annual-ctc-inr-5"
                     type="number"
                     step="50000"
                     required
@@ -431,10 +426,9 @@ export function OfferLetterHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="offerlette-date-of-joining-6" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Date of Joining
-                  </label>
-                  <input
+                  </label><input id="offerlette-date-of-joining-6"
                     type="date"
                     required
                     value={newOffer.dateOfJoining}
@@ -444,10 +438,9 @@ export function OfferLetterHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="offerlette-work-location-7" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Work Location
-                  </label>
-                  <input
+                  </label><input id="offerlette-work-location-7"
                     type="text"
                     value={newOffer.workLocation}
                     onChange={(e) => setNewOffer({ ...newOffer, workLocation: e.target.value })}
@@ -456,10 +449,9 @@ export function OfferLetterHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="offerlette-reporting-manager-8" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Reporting Manager
-                  </label>
-                  <input
+                  </label><input id="offerlette-reporting-manager-8"
                     type="text"
                     value={newOffer.reportingManager}
                     onChange={(e) => setNewOffer({ ...newOffer, reportingManager: e.target.value })}

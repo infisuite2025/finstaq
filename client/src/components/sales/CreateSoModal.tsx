@@ -121,10 +121,9 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-5">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createsomo-so-reference-number-1" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 SO Reference Number *
-              </label>
-              <input
+              </label><input id="createsomo-so-reference-number-1"
                 type="text"
                 value={soNumber}
                 onChange={(e) => setSoNumber(e.target.value)}
@@ -134,10 +133,9 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createsomo-customer-debtor-ledger-2" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Customer / Debtor Ledger *
-              </label>
-              <select
+              </label><select id="createsomo-customer-debtor-ledger-2"
                 value={customerLedgerId}
                 onChange={(e) => setCustomerLedgerId(e.target.value)}
                 required
@@ -152,10 +150,9 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createsomo-so-date-3" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 SO Date
-              </label>
-              <input
+              </label><input id="createsomo-so-date-3"
                 type="date"
                 value={orderDate}
                 onChange={(e) => setOrderDate(e.target.value)}
@@ -165,10 +162,9 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createsomo-customer-po-ref-4" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Customer PO Ref #
-              </label>
-              <input
+              </label><input id="createsomo-customer-po-ref-4"
                 type="text"
                 value={customerPoReference}
                 onChange={(e) => setCustomerPoReference(e.target.value)}
@@ -177,10 +173,9 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createsomo-delivery-due-date-5" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Delivery Due Date
-              </label>
-              <input
+              </label><input id="createsomo-delivery-due-date-5"
                 type="date"
                 value={deliveryDueDate}
                 onChange={(e) => setDeliveryDueDate(e.target.value)}
@@ -189,10 +184,9 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createsomo-payment-terms-conditions-6" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Payment Terms & Conditions
-              </label>
-              <input
+              </label><input id="createsomo-payment-terms-conditions-6"
                 type="text"
                 value={paymentTerms}
                 onChange={(e) => setPaymentTerms(e.target.value)}
@@ -201,10 +195,9 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
             </div>
 
             <div className="md:col-span-4">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="createsomo-shipping-destination-address-7" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 Shipping Destination Address
-              </label>
-              <input
+              </label><input id="createsomo-shipping-destination-address-7"
                 type="text"
                 value={shippingAddress}
                 onChange={(e) => setShippingAddress(e.target.value)}
@@ -276,7 +269,7 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
                             type="number"
                             min="1"
                             value={item.quantity}
-                            onChange={(e) => handleUpdateItem(idx, 'quantity', parseFloat(e.target.value) || 0)}
+                            onChange={(e) => handleUpdateItem(idx, 'quantity', Number.parseFloat(e.target.value) || 0)}
                             className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs text-right font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                           />
                         </td>
@@ -286,14 +279,14 @@ export function CreateSoModal({ isOpen, onClose, onSubmit, customers }: CreateSo
                             min="0"
                             step="0.01"
                             value={item.unitPrice}
-                            onChange={(e) => handleUpdateItem(idx, 'unitPrice', parseFloat(e.target.value) || 0)}
+                            onChange={(e) => handleUpdateItem(idx, 'unitPrice', Number.parseFloat(e.target.value) || 0)}
                             className="w-full px-2.5 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs text-right font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                           />
                         </td>
                         <td className="p-2.5">
                           <select
                             value={item.taxRatePercent}
-                            onChange={(e) => handleUpdateItem(idx, 'taxRatePercent', parseFloat(e.target.value) || 0)}
+                            onChange={(e) => handleUpdateItem(idx, 'taxRatePercent', Number.parseFloat(e.target.value) || 0)}
                             className="w-full px-2 py-1.5 rounded-lg border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs text-right font-mono focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                           >
                             <option value="0">0%</option>

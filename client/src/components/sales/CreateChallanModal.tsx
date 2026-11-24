@@ -197,10 +197,9 @@ export function CreateChallanModal({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createchal-challan-number-1" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Challan Number *
-              </label>
-              <input
+              </label><input id="createchal-challan-number-1"
                 type="text"
                 value={challanNumber}
                 onChange={(e) => {
@@ -213,10 +212,9 @@ export function CreateChallanModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createchal-link-to-sales-order-so-2" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Link to Sales Order (SO) *
-              </label>
-              <select
+              </label><select id="createchal-link-to-sales-order-so-2"
                 value={selectedSoId}
                 onChange={(e) => handleSoSelectionChange(e.target.value)}
                 className="w-full text-xs px-3.5 py-2 rounded-xl border border-emerald-400 dark:border-emerald-500 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -231,10 +229,9 @@ export function CreateChallanModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createchal-customer-debtor-party-3" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Customer / Debtor Party *
-              </label>
-              <select
+              </label><select id="createchal-customer-debtor-party-3"
                 value={customerLedgerId}
                 onChange={(e) => setCustomerLedgerId(e.target.value)}
                 disabled={!!selectedSoId}
@@ -251,10 +248,9 @@ export function CreateChallanModal({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createchal-dispatch-date-4" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Dispatch Date *
-              </label>
-              <input
+              </label><input id="createchal-dispatch-date-4"
                 type="date"
                 value={dispatchDate}
                 onChange={(e) => setDispatchDate(e.target.value)}
@@ -263,10 +259,9 @@ export function CreateChallanModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createchal-vehicle-number-5" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Vehicle Number
-              </label>
-              <input
+              </label><input id="createchal-vehicle-number-5"
                 type="text"
                 value={vehicleNumber}
                 onChange={(e) => setVehicleNumber(e.target.value)}
@@ -276,10 +271,9 @@ export function CreateChallanModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              <label htmlFor="createchal-transporter-e-way-bill-6" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Transporter & e-Way Bill
-              </label>
-              <input
+              </label><input id="createchal-transporter-e-way-bill-6"
                 type="text"
                 value={transporterName}
                 onChange={(e) => setTransporterName(e.target.value)}
@@ -384,10 +378,9 @@ export function CreateChallanModal({
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+            <label htmlFor="createchal-dispatch-instructions-notes-7" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
               Dispatch Instructions & Notes
-            </label>
-            <textarea
+            </label><textarea id="createchal-dispatch-instructions-notes-7"
               rows={2}
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}

@@ -168,10 +168,11 @@ export const DocumentReviewScreen: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[10px] font-semibold uppercase text-slate-600 dark:text-slate-400 mb-1">
+                <label htmlFor="doc-vendor-name" className="block text-[10px] font-semibold uppercase text-slate-600 dark:text-slate-400 mb-1">
                   Extracted Vendor Name
                 </label>
                 <input
+                  id="doc-vendor-name"
                   type="text"
                   value={vendorName}
                   onChange={(e) => setVendorName(e.target.value)}
@@ -180,10 +181,11 @@ export const DocumentReviewScreen: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] font-semibold uppercase text-slate-600 dark:text-slate-400 mb-1">
+                <label htmlFor="doc-vendor-ledger" className="block text-[10px] font-semibold uppercase text-slate-600 dark:text-slate-400 mb-1">
                   Mapped Vendor Ledger (Sundry Creditor)
                 </label>
                 <select
+                  id="doc-vendor-ledger"
                   value={vendorLedgerId}
                   onChange={(e) => setVendorLedgerId(e.target.value)}
                   className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-xs text-blue-700 dark:text-blue-300 font-semibold focus:border-blue-500"
@@ -200,10 +202,11 @@ export const DocumentReviewScreen: React.FC = () => {
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-xl p-3">
               <div className="flex justify-between items-center mb-1">
-                <label className="text-[10px] font-semibold uppercase text-slate-600 dark:text-slate-400">PO / Bill No.</label>
+                <label htmlFor="doc-po" className="text-[10px] font-semibold uppercase text-slate-600 dark:text-slate-400">PO / Bill No.</label>
                 <ConfidenceBadge score={0.97} />
               </div>
               <input
+                id="doc-po"
                 type="text"
                 value={poNumber}
                 onChange={(e) => setPoNumber(e.target.value)}
@@ -213,10 +216,11 @@ export const DocumentReviewScreen: React.FC = () => {
 
             <div className="bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-xl p-3">
               <div className="flex justify-between items-center mb-1">
-                <label className="text-[10px] font-semibold uppercase text-slate-600 dark:text-slate-400">Invoice Date</label>
+                <label htmlFor="doc-invoice-date" className="text-[10px] font-semibold uppercase text-slate-600 dark:text-slate-400">Invoice Date</label>
                 <ConfidenceBadge score={0.96} />
               </div>
               <input
+                id="doc-invoice-date"
                 type="date"
                 value={invoiceDate}
                 onChange={(e) => setInvoiceDate(e.target.value)}
@@ -226,10 +230,11 @@ export const DocumentReviewScreen: React.FC = () => {
 
             <div className="bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-xl p-3">
               <div className="flex justify-between items-center mb-1">
-                <label className="text-[10px] font-semibold uppercase text-slate-600 dark:text-slate-400">Purchase Voucher #</label>
+                <label htmlFor="doc-voucher" className="text-[10px] font-semibold uppercase text-slate-600 dark:text-slate-400">Purchase Voucher #</label>
                 <span className="text-[10px] font-mono text-slate-400">Auto</span>
               </div>
               <input
+                id="doc-voucher"
                 type="text"
                 value={voucherNumber}
                 onChange={(e) => setVoucherNumber(e.target.value)}
@@ -307,10 +312,11 @@ export const DocumentReviewScreen: React.FC = () => {
 
           {/* Narration */}
           <div>
-            <label className="block text-[10px] font-semibold uppercase text-slate-600 dark:text-slate-400 mb-1">
+            <label htmlFor="doc-narration" className="block text-[10px] font-semibold uppercase text-slate-600 dark:text-slate-400 mb-1">
               Voucher Narration
             </label>
             <input
+              id="doc-narration"
               type="text"
               value={narration}
               onChange={(e) => setNarration(e.target.value)}

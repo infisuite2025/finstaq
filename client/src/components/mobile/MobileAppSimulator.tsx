@@ -173,17 +173,17 @@ export function MobileAppSimulator() {
                   <button onClick={() => setNotifications(prev => prev.map(n => ({...n, read: true})))} className="text-blue-600">Mark Read</button>
                 </div>
                 {notifications.map(n => (
-                  <div
+                  <button type="button"
                     key={n.id}
                     onClick={() => {
                       setIsNotifOpen(false);
                       if (n.title.includes('Payout')) setActiveBottomNav('approvals');
                     }}
-                    className="p-2 rounded-lg bg-white/50 dark:bg-slate-800/50 text-[10px] cursor-pointer"
+                    className="w-full text-left p-2 rounded-lg bg-white/50 dark:bg-slate-800/50 text-[10px] cursor-pointer"
                   >
                     <div className="font-bold">{n.title}</div>
                     <div className="text-slate-500 dark:text-slate-400 text-[9px]">{n.msg}</div>
-                  </div>
+                  </button>
                 ))}
               </div>
             )}
@@ -197,9 +197,9 @@ export function MobileAppSimulator() {
                   
                   {/* Approvals Pending Card */}
                   {pendingApprovals.length > 0 && (
-                    <div
+                    <button type="button"
                       onClick={() => setActiveBottomNav('approvals')}
-                      className="p-3 rounded-2xl bg-gradient-to-r from-rose-600 to-amber-600 text-white shadow-md flex items-center justify-between cursor-pointer"
+                      className="w-full text-left p-3 rounded-2xl bg-gradient-to-r from-rose-600 to-amber-600 text-white shadow-md flex items-center justify-between cursor-pointer"
                     >
                       <div className="flex items-center space-x-2">
                         <UserCheck className="w-4 h-4 text-white" />
@@ -211,7 +211,7 @@ export function MobileAppSimulator() {
                         </div>
                       </div>
                       <ChevronRight className="w-4 h-4" />
-                    </div>
+                    </button>
                   )}
 
                   {/* Liquid Cash Card */}
@@ -303,7 +303,7 @@ export function MobileAppSimulator() {
                         className="w-28 h-28 object-contain"
                       />
                     </div>
-                    <div className="text-sm font-black">₹ {parseFloat(upiAmount || '0').toLocaleString('en-IN')}.00</div>
+                    <div className="text-sm font-black">₹ {Number.parseFloat(upiAmount || '0').toLocaleString('en-IN')}.00</div>
                     <button
                       onClick={() => showToast('✓ Dynamic UPI QR Link Shared')}
                       className="w-full py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs"
@@ -373,14 +373,14 @@ export function MobileAppSimulator() {
                   ].map((m, idx) => {
                     const Icon = m.icon;
                     return (
-                      <div
+                      <button type="button"
                         key={idx}
                         onClick={() => {
                           if (m.label.includes('Approvals')) setActiveBottomNav('approvals');
                         }}
                         className={'p-3 rounded-xl border flex items-center justify-between cursor-pointer ' + (deviceTheme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200')}
                       >
-                        <div className="flex items-center space-x-2.5">
+                        <div className="w-full text-left flex items-center space-x-2.5">
                           <Icon className="w-4 h-4 text-blue-600" />
                           <div>
                             <div className="text-xs font-bold">{m.label}</div>
@@ -388,7 +388,7 @@ export function MobileAppSimulator() {
                           </div>
                         </div>
                         <ChevronRight className="w-4 h-4 text-slate-400" />
-                      </div>
+                      </button>
                     );
                   })}
                 </div>

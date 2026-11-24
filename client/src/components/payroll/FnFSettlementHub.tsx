@@ -392,10 +392,9 @@ export function FnFSettlementHub({
             <form onSubmit={handleCreateSettlement} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="fnfsettlem-select-resigning-employee-1" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Select Resigning Employee *
-                  </label>
-                  <select
+                  </label><select id="fnfsettlem-select-resigning-employee-1"
                     value={selectedEmpId}
                     onChange={(e) => setSelectedEmpId(e.target.value)}
                     className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white font-semibold focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -409,10 +408,9 @@ export function FnFSettlementHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="fnfsettlem-reason-for-separation-2" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Reason for Separation
-                  </label>
-                  <select
+                  </label><select id="fnfsettlem-reason-for-separation-2"
                     value={exitReason}
                     onChange={(e) => setExitReason(e.target.value as any)}
                     className="w-full px-3.5 py-2 text-xs bg-white dark:bg-slate-950 border border-emerald-400 dark:border-emerald-500 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all"
@@ -425,10 +423,9 @@ export function FnFSettlementHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="fnfsettlem-date-of-resignation-3" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Date of Resignation
-                  </label>
-                  <input
+                  </label><input id="fnfsettlem-date-of-resignation-3"
                     type="date"
                     required
                     value={dateOfResignation}
@@ -438,10 +435,9 @@ export function FnFSettlementHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="fnfsettlem-last-working-day-lwd-4" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Last Working Day (LWD)
-                  </label>
-                  <input
+                  </label><input id="fnfsettlem-last-working-day-lwd-4"
                     type="date"
                     required
                     value={lastWorkingDay}
@@ -451,10 +447,9 @@ export function FnFSettlementHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="fnfsettlem-exit-month-days-worked-out-of-30-5" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Exit Month Days Worked (out of 30)
-                  </label>
-                  <input
+                  </label><input id="fnfsettlem-exit-month-days-worked-out-of-30-5"
                     type="number"
                     min="1"
                     max="31"
@@ -465,10 +460,9 @@ export function FnFSettlementHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="fnfsettlem-earned-privilege-leaves-balance-days-6" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Earned / Privilege Leaves Balance (Days)
-                  </label>
-                  <input
+                  </label><input id="fnfsettlem-earned-privilege-leaves-balance-days-6"
                     type="number"
                     min="0"
                     step="0.5"
@@ -479,10 +473,9 @@ export function FnFSettlementHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="fnfsettlem-notice-shortfall-days-to-recover-7" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Notice Shortfall (Days to Recover)
-                  </label>
-                  <input
+                  </label><input id="fnfsettlem-notice-shortfall-days-to-recover-7"
                     type="number"
                     min="0"
                     value={noticeShortfallDays}
@@ -492,10 +485,9 @@ export function FnFSettlementHub({
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
+                  <label htmlFor="fnfsettlem-salary-advance-loan-recovery-8" className="text-xs font-semibold text-gray-700 dark:text-gray-300 block mb-1">
                     Salary Advance / Loan Recovery (₹)
-                  </label>
-                  <input
+                  </label><input id="fnfsettlem-salary-advance-loan-recovery-8"
                     type="number"
                     min="0"
                     value={salaryAdvanceRecovery}
@@ -694,6 +686,7 @@ export function FnFSettlementHub({
                       A. Final Payable Entitlements
                     </div>
                     <table className="w-full text-xs font-mono">
+                      <thead className="sr-only"><tr><th>Entitlement</th><th>Amount</th></tr></thead>
                       <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
                         <tr>
                           <td className="p-2">Exit Month Salary ({selectedRecordForDoc.record.exitMonthDaysWorked} days)</td>
@@ -725,6 +718,7 @@ export function FnFSettlementHub({
                       B. Deductions & Recoveries
                     </div>
                     <table className="w-full text-xs font-mono">
+                      <thead className="sr-only"><tr><th>Deduction</th><th>Amount</th></tr></thead>
                       <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
                         <tr>
                           <td className="p-2">Notice Shortfall Recovery ({selectedRecordForDoc.record.noticePeriodShortfallDays} days)</td>

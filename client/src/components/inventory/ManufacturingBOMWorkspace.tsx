@@ -337,7 +337,7 @@ export function ManufacturingBOMWorkspace() {
           const dstWh = warehouses.find(w => w.id === destWhId);
           const newRun: ManufacturingRun = {
             id: `mfg_${Date.now()}`,
-            journalNumber: `MFG/2026/${Math.floor(1000 + Math.random() * 9000)}`,
+            journalNumber: `MFG/2026/${crypto.getRandomValues(new Uint32Array(1))[0] % 9000 + 1000}`,
             productionDate: new Date().toISOString().split('T')[0],
             bomCode: bom.bomCode,
             finishedItemName: bom.finishedItemName,
@@ -794,8 +794,7 @@ export function ManufacturingBOMWorkspace() {
 
             <div className="space-y-4 text-xs">
               <div>
-                <label className="font-semibold text-slate-700 dark:text-slate-300">Select BOM Recipe</label>
-                <select
+                <label htmlFor="manufactur-select-bom-recipe-1" className="font-semibold text-slate-700 dark:text-slate-300">Select BOM Recipe</label><select id="manufactur-select-bom-recipe-1"
                   value={selectedBomId}
                   onChange={(e) => setSelectedBomId(e.target.value)}
                   className="w-full mt-1 px-3.5 py-2 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 outline-none transition-all"
@@ -809,8 +808,7 @@ export function ManufacturingBOMWorkspace() {
               </div>
 
               <div>
-                <label className="font-semibold text-slate-700 dark:text-slate-300">Quantity to Produce ({selectedBom?.finishedItemUom || 'Units'})</label>
-                <input
+                <label htmlFor="manufactur-quantity-to-produce-2" className="font-semibold text-slate-700 dark:text-slate-300">Quantity to Produce ({selectedBom?.finishedItemUom || 'Units'})</label><input id="manufactur-quantity-to-produce-2"
                   type="number"
                   min="1"
                   value={productionQty}
@@ -821,8 +819,7 @@ export function ManufacturingBOMWorkspace() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-semibold text-slate-700 dark:text-slate-300">Source Godown (Raw Material)</label>
-                  <select
+                  <label htmlFor="manufactur-source-godown-raw-material-3" className="font-semibold text-slate-700 dark:text-slate-300">Source Godown (Raw Material)</label><select id="manufactur-source-godown-raw-material-3"
                     value={sourceWhId}
                     onChange={(e) => setSourceWhId(e.target.value)}
                     className="w-full mt-1 px-3.5 py-2 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 outline-none transition-all"
@@ -834,8 +831,7 @@ export function ManufacturingBOMWorkspace() {
                 </div>
 
                 <div>
-                  <label className="font-semibold text-slate-700 dark:text-slate-300">Destination Godown (FG)</label>
-                  <select
+                  <label htmlFor="manufactur-destination-godown-fg-4" className="font-semibold text-slate-700 dark:text-slate-300">Destination Godown (FG)</label><select id="manufactur-destination-godown-fg-4"
                     value={destWhId}
                     onChange={(e) => setDestWhId(e.target.value)}
                     className="w-full mt-1 px-3.5 py-2 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 outline-none transition-all"
@@ -1046,8 +1042,7 @@ export function ManufacturingBOMWorkspace() {
             <form onSubmit={handleSaveNewBom} className="p-6 space-y-5 text-xs">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="font-semibold text-slate-700 dark:text-slate-300">BOM Reference Code *</label>
-                  <input
+                  <label htmlFor="manufactur-bom-reference-code-5" className="font-semibold text-slate-700 dark:text-slate-300">BOM Reference Code *</label><input id="manufactur-bom-reference-code-5"
                     type="text"
                     required
                     value={newBomCode}
@@ -1056,8 +1051,7 @@ export function ManufacturingBOMWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="font-semibold text-slate-700 dark:text-slate-300">Recipe / Assembly Name *</label>
-                  <input
+                  <label htmlFor="manufactur-recipe-assembly-name-6" className="font-semibold text-slate-700 dark:text-slate-300">Recipe / Assembly Name *</label><input id="manufactur-recipe-assembly-name-6"
                     type="text"
                     required
                     placeholder="e.g. Industrial Control Valve Assembly DN50"
@@ -1070,8 +1064,7 @@ export function ManufacturingBOMWorkspace() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="font-semibold text-slate-700 dark:text-slate-300">Target Finished Item Output *</label>
-                  <select
+                  <label htmlFor="manufactur-target-finished-item-output-7" className="font-semibold text-slate-700 dark:text-slate-300">Target Finished Item Output *</label><select id="manufactur-target-finished-item-output-7"
                     value={newFinishedItemId}
                     onChange={(e) => setNewFinishedItemId(e.target.value)}
                     className="w-full mt-1 px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl"
@@ -1082,8 +1075,7 @@ export function ManufacturingBOMWorkspace() {
                   </select>
                 </div>
                 <div>
-                  <label className="font-semibold text-slate-700 dark:text-slate-300">Standard Batch Size (Units) *</label>
-                  <input
+                  <label htmlFor="manufactur-standard-batch-size-units-8" className="font-semibold text-slate-700 dark:text-slate-300">Standard Batch Size (Units) *</label><input id="manufactur-standard-batch-size-units-8"
                     type="number"
                     min="1"
                     required
@@ -1170,8 +1162,7 @@ export function ManufacturingBOMWorkspace() {
               {/* Overheads Section */}
               <div className="grid grid-cols-3 gap-3 p-3.5 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700">
                 <div>
-                  <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Direct Labor (₹)</label>
-                  <input
+                  <label htmlFor="manufactur-direct-labor-9" className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Direct Labor (₹)</label><input id="manufactur-direct-labor-9"
                     type="number"
                     value={newLaborCost}
                     onChange={(e) => setNewLaborCost(Number(e.target.value))}
@@ -1179,8 +1170,7 @@ export function ManufacturingBOMWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Factory Power & Overheads (₹)</label>
-                  <input
+                  <label htmlFor="manufactur-factory-power-overheads-10" className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Factory Power & Overheads (₹)</label><input id="manufactur-factory-power-overheads-10"
                     type="number"
                     value={newOverheadCost}
                     onChange={(e) => setNewOverheadCost(Number(e.target.value))}
@@ -1188,8 +1178,7 @@ export function ManufacturingBOMWorkspace() {
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">By-Product Scrap Credit (₹)</label>
-                  <input
+                  <label htmlFor="manufactur-by-product-scrap-credit-11" className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">By-Product Scrap Credit (₹)</label><input id="manufactur-by-product-scrap-credit-11"
                     type="number"
                     value={newByProductScrap}
                     onChange={(e) => setNewByProductScrap(Number(e.target.value))}
