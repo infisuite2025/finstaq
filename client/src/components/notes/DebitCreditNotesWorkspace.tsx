@@ -1,24 +1,20 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import {
+import { 
   FileDiff,
   ArrowDownLeft,
   ArrowUpRight,
   Search,
-  Plus,
   RefreshCw,
   Printer,
   X,
   CheckCircle2,
-  FileText,
   Percent,
-  Calendar,
   Eye,
   ShieldCheck,
   TrendingDown,
   TrendingUp,
-  Receipt,
-  Info,
-} from 'lucide-react';
+  Receipt
+ } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 import { useConfirm } from '../../context/ConfirmContext';
 import { useAuth } from '../../context/AuthContext';
@@ -965,8 +961,8 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
-                    {inspectingNote.items.map((item) => (
-                      <tr key={`${item.description}-${item.hsnCode}-${item.qty}`} className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                    {inspectingNote.items.map((item, idx) => (
+                      <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
                         <td className="p-2.5 font-semibold text-slate-800 dark:text-slate-200 font-sans">
                           {item.description}
                         </td>

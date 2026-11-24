@@ -1,29 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import {
+import { 
   Factory,
   Layers,
-  Sparkles,
   Plus,
   Play,
   History,
   Grid,
   Clock,
-  ArrowRight,
-  Boxes,
   Warehouse,
-  CheckCircle2,
-  AlertTriangle,
   FileSpreadsheet,
   Download,
-  Info,
-  ChevronRight,
-  Calculator,
   Printer,
   X,
   Trash2,
-  Eye,
-} from 'lucide-react';
+  Eye
+ } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 import { StandardTabs } from '../common/StandardTabs';
 import { UniversalReportPrintModal, ReportPrintData } from '../common/UniversalReportPrintModal';
@@ -594,7 +586,7 @@ export function ManufacturingBOMWorkspace() {
     link.setAttribute('download', `finstaq_manufacturing_${activeTab}_report.csv`);
     document.body.appendChild(link);
     link.click();
-    link.remove();
+    document.body.removeChild(link);
     toast.success('Report exported to CSV successfully');
   };
 
@@ -1103,7 +1095,7 @@ export function ManufacturingBOMWorkspace() {
 
                 <div className="space-y-2 max-h-48 overflow-y-auto p-1">
                   {newComponents.map((comp, idx) => (
-                    <div key={`${comp.itemId}-${comp.quantityPerBatch}-${comp.wastagePercent}`} className="flex items-center gap-2 p-2 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <div key={idx} className="flex items-center gap-2 p-2 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700">
                       <select
                         value={comp.itemId}
                         onChange={(e) => {
@@ -1256,8 +1248,8 @@ export function ManufacturingBOMWorkspace() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
-                      {selectedRunForView.consumedComponents.map((c) => (
-                        <tr key={`${c.itemName}-${c.quantityConsumed}`}>
+                      {selectedRunForView.consumedComponents.map((c, i) => (
+                        <tr key={i}>
                           <td className="py-2 px-3 font-sans font-medium">{c.itemName}</td>
                           <td className="py-2 px-3 text-center">{c.quantityConsumed} {c.uom}</td>
                           <td className="py-2 px-3 text-right">₹{c.unitCost.toLocaleString('en-IN')}</td>

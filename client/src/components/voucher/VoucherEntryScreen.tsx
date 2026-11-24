@@ -1,6 +1,6 @@
 ﻿import React, { useState, useMemo, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import {
+import { 
   VoucherType,
   EntryType,
   VoucherLineItem,
@@ -10,12 +10,12 @@ import {
   ItemInvoiceLine,
   AdditionalCharge,
   SupplyType,
-  InvoiceTaxSummaryRow,
-} from '../../types/voucher';
+  InvoiceTaxSummaryRow
+ } from '../../types/voucher';
 import { useVoucherHotkeys } from '../../hooks/useVoucherHotkeys';
 import { QuickCreateLedgerModal } from './QuickCreateLedgerModal';
 import { UniversalDocumentPrintModal, PrintDocumentData } from '../common/UniversalDocumentPrintModal';
-import {
+import { 
   BookOpen,
   Calendar,
   FileText,
@@ -40,14 +40,13 @@ import {
   Tag,
   User,
   Info,
-  AlertCircle,
   ChevronDown,
   Globe,
   Clock,
   ArrowRight,
   Search,
-  Eye,
-} from 'lucide-react';
+  Eye
+ } from 'lucide-react';
 
 export interface BillAllocation {
   type: 'Agst Ref' | 'Advance' | 'New Ref' | 'On Account';
@@ -297,26 +296,6 @@ export const VoucherEntryScreen: React.FC = () => {
            l.groupName?.toLowerCase().includes('cash') ||
            l.name?.toLowerCase().includes('bank') ||
            l.name?.toLowerCase().includes('cash')
-    );
-    return filtered.length > 0 ? filtered : ledgers;
-  }, [ledgers]);
-
-  const partyLedgers = useMemo(() => {
-    const filtered = ledgers.filter(
-      l => l.groupName?.toLowerCase().includes('debtor') ||
-           l.groupName?.toLowerCase().includes('creditor') ||
-           l.nature === 'ASSET' ||
-           l.nature === 'LIABILITY'
-    );
-    return filtered.length > 0 ? filtered : ledgers;
-  }, [ledgers]);
-
-  const salesPurchaseLedgers = useMemo(() => {
-    const filtered = ledgers.filter(
-      l => l.groupName?.toLowerCase().includes('sales') ||
-           l.groupName?.toLowerCase().includes('purchase') ||
-           l.nature === 'INCOME' ||
-           l.nature === 'EXPENSE'
     );
     return filtered.length > 0 ? filtered : ledgers;
   }, [ledgers]);
@@ -576,7 +555,6 @@ export const VoucherEntryScreen: React.FC = () => {
     }
   };
 
-
   // ─── Supply Type Auto-Detection from GSTIN ───────────────────────────────────
   // First 2 chars of GSTIN = state code. Compare company vs customer to determine tax type.
   const supplyType: SupplyType = useMemo(() => {
@@ -777,8 +755,6 @@ export const VoucherEntryScreen: React.FC = () => {
     };
     setInvoiceItems((prev) => [...prev, newItem]);
   };
-
-
 
   const handleDeleteInvoiceItem = (idx: number) => {
     if (invoiceItems.length === 1) return;
@@ -1467,7 +1443,6 @@ export const VoucherEntryScreen: React.FC = () => {
                   </div>
                 </div>
 
-
               <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm flex flex-col">
                 <div className="bg-slate-50 dark:bg-slate-800/80 px-4 py-3 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
                   <div className="flex items-center space-x-2">
@@ -1653,7 +1628,6 @@ export const VoucherEntryScreen: React.FC = () => {
                     </div>
                   </div>
                 </div>
-
 
                 {/* Additional Charges Section */}
                 <div className="bg-slate-50/80 dark:bg-slate-900/60 p-4 border-t border-slate-200 dark:border-slate-800">

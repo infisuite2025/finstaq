@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import {
+import { 
   HardDrive,
   ShieldCheck,
   Plus,
-  TrendingUp,
   FileText,
   Landmark,
   Users,
@@ -23,8 +22,8 @@ import {
   Upload,
   Layers,
   Archive,
-  FileCheck,
-} from 'lucide-react';
+  FileCheck
+ } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { useConfirm } from '../../context/ConfirmContext';

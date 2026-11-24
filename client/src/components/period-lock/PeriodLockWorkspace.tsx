@@ -772,10 +772,10 @@ export const PeriodLockWorkspace: React.FC = () => {
                 Short grace period for high-speed clerk data entry to fix daily typing mistakes.
               </p>
               <div>
-                <label htmlFor="period-clerk-backdate" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Max Allowed Backdate (Days)</label>
+                <label htmlFor="lock-clerk-days" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Max Allowed Backdate (Days)</label>
                 <div className="flex items-center gap-2">
                   <input
-                    id="period-clerk-backdate"
+                    id="lock-clerk-days"
                     type="number"
                     value={clerkDays}
                     onChange={(e) => setClerkDays(Number(e.target.value))}
@@ -796,10 +796,10 @@ export const PeriodLockWorkspace: React.FC = () => {
                 Standard window to permit month-end supplier bill reconciliation and adjusting entries.
               </p>
               <div>
-                <label htmlFor="period-accountant-backdate" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Max Allowed Backdate (Days)</label>
+                <label htmlFor="lock-accountant-days" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Max Allowed Backdate (Days)</label>
                 <div className="flex items-center gap-2">
                   <input
-                    id="period-accountant-backdate"
+                    id="lock-accountant-days"
                     type="number"
                     value={accountantDays}
                     onChange={(e) => setAccountantDays(Number(e.target.value))}
@@ -820,10 +820,10 @@ export const PeriodLockWorkspace: React.FC = () => {
                 Full administrative flexibility across any open fiscal month up to the hard books freeze date.
               </p>
               <div>
-                <label htmlFor="period-owner-backdate" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Max Allowed Backdate (Days)</label>
+                <label htmlFor="lock-owner-days" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Max Allowed Backdate (Days)</label>
                 <div className="flex items-center gap-2">
                   <input
-                    id="period-owner-backdate"
+                    id="lock-owner-days"
                     type="number"
                     value={ownerDays}
                     onChange={(e) => setOwnerDays(Number(e.target.value))}

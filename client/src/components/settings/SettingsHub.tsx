@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { TenantConfiguration } from '../../types/masters';
 import { TenantOnboardingWizard } from '../onboarding/TenantOnboardingWizard';
 import { LegacyDataMigrationModal } from '../migration/LegacyDataMigrationModal';
-import {
+import { 
   Settings,
   Building2,
   Hash,
@@ -12,22 +12,11 @@ import {
   Save,
   CheckCircle,
   Key,
-  Globe,
-  Sliders,
-  FileText,
-  UserCheck,
   Lock,
-  Download,
-  Activity,
-  CheckCircle2,
-  AlertTriangle,
-  Server,
   Database,
-  EyeOff,
-  FileSpreadsheet,
   Sparkles,
-  ArrowRight,
-} from 'lucide-react';
+  ArrowRight
+ } from 'lucide-react';
 
 const INITIAL_CONFIG: TenantConfiguration = {
   tenant: {

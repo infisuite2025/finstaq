@@ -1,9 +1,3 @@
-function revenueRangeLabel(timeRange: 'fy' | 'quarter' | 'month'): string {
-  if (timeRange === 'fy') return 'NET REVENUE (YTD)';
-  if (timeRange === 'quarter') return 'NET REVENUE (Q2)';
-  return 'NET REVENUE (MTD)';
-}
-
 import React, { useState, useEffect } from 'react';
 import {
   TrendingUp,
@@ -35,7 +29,7 @@ import {
   Package,
   Truck,
   Eye,
-  Printer,
+  Printer
 } from 'lucide-react';
 import { StandardTabs, TabItem } from '../common/StandardTabs';
 import { KPIScorecard, KPIGrid } from '../common/KPIScorecard';
@@ -321,7 +315,7 @@ export function ExecutiveAnalyticsWorkspace() {
           <KPIGrid columns={4}>
             {/* Total Turnover Run Rate */}
             <KPIScorecard
-              label={revenueRangeLabel(timeRange)}
+              label={timeRange === 'fy' ? 'NET REVENUE (YTD)' : timeRange === 'quarter' ? 'NET REVENUE (Q2)' : 'NET REVENUE (MTD)'}
               value={fromBooks?.revenue ?? currentData.revenue.current}
               trend={fromBooks ? undefined : { direction: 'up', value: currentData.revenue.change }}
               progress={fromBooks ? undefined : { target: currentData.revenue.target, percentage: currentData.revenue.progress, color: 'bg-gradient-to-r from-blue-600 to-indigo-600' }}
@@ -388,8 +382,8 @@ export function ExecutiveAnalyticsWorkspace() {
 
               {/* Visual Simulated Bar Chart with ample top clearance */}
               <div className="h-64 flex items-end justify-between gap-3 pt-8 pb-2 border-b border-slate-200 dark:border-slate-800">
-                {currentData.monthlyTrajectory.map((item) => (
-                  <div key={item.month} className="flex-1 flex flex-col items-center gap-1 h-full justify-end group">
+                {currentData.monthlyTrajectory.map((item, idx) => (
+                  <div key={idx} className="flex-1 flex flex-col items-center gap-1 h-full justify-end group">
                     <div className="text-[11px] font-bold text-slate-600 dark:text-slate-300 group-hover:text-blue-600 font-sans">
                       ₹{item.revenue}L
                     </div>

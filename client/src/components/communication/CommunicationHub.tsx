@@ -1,34 +1,23 @@
-function commChannel(raw: string): 'whatsapp' | 'sms' | 'email' | 'in_app' {
-  const value = (raw || 'whatsapp').toLowerCase();
-  if (value === 'in_app' || value === 'inapp') return 'in_app';
-  if (value === 'email') return 'email';
-  if (value === 'sms') return 'sms';
-  return 'whatsapp';
-}
-
-function commStatus(raw: string): 'queued' | 'sent' | 'delivered' | 'read' | 'failed' {
-  const value = (raw || 'sent').toLowerCase();
-  if (value === 'read') return 'read';
-  if (value === 'delivered') return 'delivered';
-  if (value === 'failed') return 'failed';
-  if (value === 'queued') return 'queued';
-  return 'sent';
-}
-
-function recipientField(channel: string): { label: string; placeholder: string; type: string } {
-  if (channel === 'email') return { label: 'Email Address', placeholder: 'finance@customer.com', type: 'email' };
-  if (channel === 'in_app') return { label: 'User ID / Email', placeholder: 'admin@apex.finstaq.com', type: 'text' };
-  return { label: 'Mobile Number with Country Code', placeholder: '+91 98765 43210', type: 'text' };
-}
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { 
-  Send, MessageSquare, Mail, Smartphone, Bell, CheckCircle2, 
-  Clock, AlertCircle, RefreshCw, FileText, Check, Copy, UserCheck, Search, Filter,
-  ArrowRight, Zap,
+  Send,
+  MessageSquare,
+  Mail,
+  Smartphone,
+  Bell,
+  CheckCircle2,
+  Clock,
+  AlertCircle,
+  RefreshCw,
+  FileText,
+  Check,
+  Search,
+  Filter,
+  ArrowRight,
+  Zap,
   CheckCheck
-} from 'lucide-react';
+ } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 import { useConfirm } from '../../context/ConfirmContext';
 import { KPIGrid, KPIScorecard } from '../common/KPIScorecard';
@@ -193,7 +182,11 @@ export const CommunicationHub: React.FC = () => {
   const { confirm } = useConfirm();
 
   const normalizeTemplate = (t: any): CommTemplate => {
-    const validChannel = commChannel(t.channel);
+    const rawChannel = (t.channel || 'whatsapp').toLowerCase();
+    const validChannel: 'whatsapp' | 'sms' | 'email' | 'in_app' = 
+      rawChannel === 'in_app' || rawChannel === 'inapp' ? 'in_app' :
+      rawChannel === 'email' ? 'email' :
+      rawChannel === 'sms' ? 'sms' : 'whatsapp';
 
     return {
       id: t.id,
@@ -208,8 +201,18 @@ export const CommunicationHub: React.FC = () => {
   };
 
   const normalizeLog = (l: any): CommLog => {
-    const validChannel = commChannel(l.channel);
-    const validStatus = commStatus(l.status);
+    const rawChannel = (l.channel || 'whatsapp').toLowerCase();
+    const validChannel: 'whatsapp' | 'sms' | 'email' | 'in_app' = 
+      rawChannel === 'in_app' || rawChannel === 'inapp' ? 'in_app' :
+      rawChannel === 'email' ? 'email' :
+      rawChannel === 'sms' ? 'sms' : 'whatsapp';
+
+    const rawStatus = (l.status || 'sent').toLowerCase();
+    const validStatus: 'queued' | 'sent' | 'delivered' | 'read' | 'failed' = 
+      rawStatus === 'read' ? 'read' :
+      rawStatus === 'delivered' ? 'delivered' :
+      rawStatus === 'failed' ? 'failed' :
+      rawStatus === 'queued' ? 'queued' : 'sent';
 
     return {
       id: l.id,
@@ -421,9 +424,9 @@ export const CommunicationHub: React.FC = () => {
       return (
         searchTemplate === '' ||
         t.name.toLowerCase().includes(q) ||
-        t.subject?.toLowerCase().includes(q) ||
-        t.body?.toLowerCase().includes(q) ||
-        t.category?.toLowerCase().includes(q) ||
+        (t.subject && t.subject.toLowerCase().includes(q)) ||
+        (t.body && t.body.toLowerCase().includes(q)) ||
+        (t.category && t.category.toLowerCase().includes(q)) ||
         t.channel.toLowerCase().includes(q)
       );
     });
@@ -597,13 +600,13 @@ export const CommunicationHub: React.FC = () => {
               {/* Recipient */}
               <div>
                 <label htmlFor="comm-recipient" className="finstaq-label">
-                  Recipient ({recipientField(channel).label})
+                  Recipient ({channel === 'email' ? 'Email Address' : channel === 'in_app' ? 'User ID / Email' : 'Mobile Number with Country Code'})
                 </label>
                 <input
                   id="comm-recipient"
-                  type={recipientField(channel).type}
+                  type={channel === 'email' ? 'email' : 'text'}
                   required
-                  placeholder={recipientField(channel).placeholder}
+                  placeholder={channel === 'email' ? 'finance@customer.com' : channel === 'in_app' ? 'admin@apex.finstaq.com' : '+91 98765 43210'}
                   value={recipient}
                   onChange={(e) => setRecipient(e.target.value)}
                   className="finstaq-input"

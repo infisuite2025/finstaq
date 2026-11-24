@@ -1,24 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import {
+import { 
   Layers,
   Plus,
-  TrendingUp,
-  TrendingDown,
   ArrowUpRight,
   ArrowDownRight,
   FolderTree,
-  Building2,
-  CheckCircle2,
-  ShieldCheck,
-  FileCheck,
-  XCircle,
   X,
   Search,
   User,
-  DollarSign,
-  Receipt,
-} from 'lucide-react';
+  Receipt
+ } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 import { StandardTabs } from '../common/StandardTabs';
 import { KPIScorecard, KPIGrid } from '../common/KPIScorecard';
@@ -260,6 +252,7 @@ export function CostCenterWorkspace() {
   const [categories, setCategories] = useState<CostCategory[]>(DEFAULT_CATEGORIES);
   const [costCenters, setCostCenters] = useState<CostCenter[]>(DEFAULT_COST_CENTERS);
   const [report, setReport] = useState<CostCenterReport>(DEFAULT_REPORT);
+  const [, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Modals
