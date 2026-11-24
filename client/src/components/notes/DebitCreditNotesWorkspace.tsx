@@ -194,6 +194,16 @@ const INITIAL_SAMPLE_NOTES: DebitCreditNote[] = [
   }
 ];
 
+function noteIssueCopy(noteType: string, invoiceNumber: string) {
+  const isDebit = noteType === 'DEBIT_NOTE';
+  const documentName = isDebit ? 'Debit Note' : 'Credit Note';
+  const titleName = isDebit ? 'Vendor Debit Note' : 'Customer Credit Note';
+  return {
+    title: `Issue ${titleName}`,
+    message: `Are you sure you want to issue this ${documentName} against #${invoiceNumber}? This will automatically post the statutory GST JV.`,
+  };
+}
+
 function debitCreditFieldsMissing(partyName: string, originalInvoiceNumber: string, itemDescription: string, itemQty: number, itemRate: number) {
   return !partyName || !originalInvoiceNumber || !itemDescription || itemQty <= 0 || itemRate <= 0;
 }
@@ -337,9 +347,10 @@ export const DebitCreditNotesWorkspace: React.FC = () => {
       return;
     }
 
+    const issueCopy = noteIssueCopy(newNoteType, originalInvoiceNumber);
     const confirmed = await confirm({
-      title: `Issue ${newNoteType === 'DEBIT_NOTE' ? 'Vendor Debit Note' : 'Customer Credit Note'}`,
-      message: `Are you sure you want to issue this ${newNoteType === 'DEBIT_NOTE' ? 'Debit Note' : 'Credit Note'} against #${originalInvoiceNumber}? This will automatically post the statutory GST JV.`,
+      title: issueCopy.title,
+      message: issueCopy.message,
       type: 'info',
       confirmText: 'Yes, Issue & Post',
     });

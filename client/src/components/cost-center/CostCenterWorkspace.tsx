@@ -308,6 +308,29 @@ function allocatedCategory(
   };
 }
 
+function transactionMatchesQuery(tx: CostCenterTransaction, q: string) {
+  return tx.ledgerName.toLowerCase().includes(q) || tx.voucherNumber.toLowerCase().includes(q);
+}
+
+function costCenterMatchesQuery(cc: CostCenterSummary, q: string) {
+  return cc.costCenterName.toLowerCase().includes(q) ||
+    cc.costCenterCode.toLowerCase().includes(q) ||
+    Boolean(cc.managerName?.toLowerCase().includes(q)) ||
+    cc.transactions.some((tx) => transactionMatchesQuery(tx, q));
+}
+
+function filterCategoryByQuery(cat: CategorySummary, q: string): CategorySummary | null {
+  const matchCat = cat.categoryName.toLowerCase().includes(q) || cat.categoryCode.toLowerCase().includes(q);
+  const filteredCCs = cat.costCenters.filter((cc) => costCenterMatchesQuery(cc, q));
+  if (matchCat || filteredCCs.length > 0) {
+    return {
+      ...cat,
+      costCenters: matchCat && filteredCCs.length === 0 ? cat.costCenters : filteredCCs,
+    };
+  }
+  return null;
+}
+
 function allocatedCenter(
   cc: CostCenterSummary,
   costCenterId: string,
@@ -539,27 +562,20 @@ export function CostCenterWorkspace() {
   };
 
   // Filtered categories & cost centers based on search
+  const openAllocation = (costCenterId: string) => {
+    setAllocateForm((prev) => ({
+      ...prev,
+      costCenterId,
+    }));
+    setIsAllocateModalOpen(true);
+  };
+
   const filteredCategories = useMemo(() => {
     if (!searchQuery.trim()) return report.categories;
     const q = searchQuery.toLowerCase().trim();
-
-    return report.categories.map(cat => {
-      const matchCat = cat.categoryName.toLowerCase().includes(q) || cat.categoryCode.toLowerCase().includes(q);
-      const filteredCCs = cat.costCenters.filter(cc => 
-        cc.costCenterName.toLowerCase().includes(q) ||
-        cc.costCenterCode.toLowerCase().includes(q) ||
-        cc.managerName?.toLowerCase().includes(q) ||
-        cc.transactions.some(tx => tx.ledgerName.toLowerCase().includes(q) || tx.voucherNumber.toLowerCase().includes(q))
-      );
-
-      if (matchCat || filteredCCs.length > 0) {
-        return {
-          ...cat,
-          costCenters: matchCat && filteredCCs.length === 0 ? cat.costCenters : filteredCCs,
-        };
-      }
-      return null;
-    }).filter(Boolean) as CategorySummary[];
+    return report.categories
+      .map((cat) => filterCategoryByQuery(cat, q))
+      .filter((cat): cat is CategorySummary => cat !== null);
   }, [report, searchQuery]);
 
   return (
@@ -588,13 +604,7 @@ export function CostCenterWorkspace() {
         <div className="flex flex-wrap items-center gap-2.5">
           <button
             type="button"
-            onClick={() => {
-              setAllocateForm(prev => ({
-                ...prev,
-                costCenterId: costCenters[0]?.id || 'cc-1',
-              }));
-              setIsAllocateModalOpen(true);
-            }}
+            onClick={() => openAllocation(costCenters[0]?.id || 'cc-1')}
             className="flex items-center gap-1.5 px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-600/20 transition cursor-pointer"
           >
             <Receipt className="w-4 h-4" />
@@ -780,13 +790,7 @@ export function CostCenterWorkspace() {
                           </div>
                           <button
                             type="button"
-                            onClick={() => {
-                              setAllocateForm(prev => ({
-                                ...prev,
-                                costCenterId: cc.costCenterId,
-                              }));
-                              setIsAllocateModalOpen(true);
-                            }}
+                            onClick={() => openAllocation(cc.costCenterId)}
                             className="px-2.5 py-1 text-[11px] font-bold text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/80 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 rounded-lg border border-indigo-200 dark:border-indigo-800 transition cursor-pointer"
                           >
                             + Allocate

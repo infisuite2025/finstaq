@@ -57,6 +57,156 @@ type ReportTab =
   | 'vendor_aging'
   | 'itc_summary';
 
+function registerCsvRows(currentData: any) {
+  const rawBills = currentData.bills || currentData.transactions || [];
+  return rawBills.map((b: any) => ({
+    'Bill Date': b.billDate || b.date,
+    'Bill #': b.billNumber || b.voucherNumber,
+    'Vendor Name': b.vendorName || b.supplierName,
+    'Vendor GSTIN': b.vendorGstin || b.gstIn || '',
+    'Status': b.status || 'VERIFIED',
+    'Taxable (₹)': b.taxableAmount || 0,
+    'Tax Amount (₹)': b.taxAmount !== undefined ? b.taxAmount : ((b.cgstAmount || 0) + (b.sgstAmount || 0) + (b.igstAmount || 0)),
+    'Total Amount (₹)': b.totalAmount || b.grandTotal || 0,
+  }));
+}
+
+function poCsvRows(currentData: any) {
+  if (currentData.lines) {
+    return currentData.lines.map((l: any) => ({
+      'PO #': l.poNumber,
+      'Order Date': l.orderDate,
+      'Vendor Name': l.vendorName,
+      'Item Description': l.itemDescription,
+      'Ordered Qty': l.orderedQty,
+      'Received Qty': l.receivedQty,
+      'Pending Qty': l.balanceQty,
+      'Rate (₹)': l.rate,
+      'Pending Amount (₹)': l.pendingAmount,
+    }));
+  }
+  if (!currentData.orders) return [];
+  return currentData.orders.flatMap((o: any) =>
+    (o.items || []).map((it: any) => ({
+      'PO #': o.poNumber,
+      'Order Date': o.orderDate,
+      'Vendor Name': o.supplierName || o.vendorName,
+      'Item Description': it.description,
+      'Ordered Qty': it.orderedQty,
+      'Received Qty': it.receivedQty,
+      'Pending Qty': it.balanceQty,
+      'Rate (₹)': it.unitPrice || it.rate,
+      'Pending Amount (₹)': it.balanceAmount || (it.balanceQty * (it.unitPrice || 0)),
+    }))
+  );
+}
+
+function grnCsvRows(currentData: any) {
+  if (currentData.rejections) return currentData.rejections;
+  if (!currentData.receipts) return [];
+  return currentData.receipts.flatMap((r: any) =>
+    (r.items || []).map((it: any) => ({
+      'GRN #': r.grnNumber,
+      'Received Date': r.receivedDate,
+      'Challan #': r.deliveryChallanNo || r.challanNumber || '',
+      'Vehicle #': r.vehicleNo || r.vehicleNumber || '',
+      'Item Description': it.description,
+      'Received Qty': it.receivedQty ?? it.quantityReceived,
+      'Accepted Qty': it.acceptedQty ?? it.quantityAccepted,
+      'Rejected Qty': it.rejectedQty ?? it.quantityRejected,
+      'Rejection Reason': it.rejectionReason || 'Accepted in Full',
+      'Batch #': it.batchNumber || 'N/A',
+    }))
+  );
+}
+
+function billsPendingCsvRows(currentData: any) {
+  const rawPending = currentData.pendingBills || currentData.pendingGRNs || [];
+  return rawPending.map((b: any) => ({
+    'GRN #': b.grnNumber,
+    'Received Date': b.receivedDate,
+    'Vendor Name': b.supplierName || b.vendorName,
+    'PO Ref #': b.poNumber || '',
+    'Accepted Qty': b.acceptedQty,
+    'Estimated Accrual (₹)': b.estimatedTotal ?? b.estimatedValue ?? 0,
+  }));
+}
+
+function vendorSpendCsvRows(currentData: any) {
+  return (currentData.vendors || []).map((v: any) => ({
+    'Vendor Name': v.vendorName || v.supplierName,
+    'GSTIN': v.gstin || v.gstIn || '',
+    'Bills Count': v.billCount ?? v.invoiceCount ?? 0,
+    'Taxable Spend (₹)': v.totalTaxable || 0,
+    'Gross Spend (₹)': v.totalGross ?? v.grandTotal ?? 0,
+    'Spend Share (%)': `${v.spendSharePercent ?? v.percentShare ?? 0}%`,
+  }));
+}
+
+function itemSummaryCsvRows(currentData: any) {
+  return (currentData.items || []).map((i: any) => ({
+    'Item Description': i.description || i.itemName,
+    'HSN / SKU': i.hsnCode || i.sku || '',
+    'Total Quantity': i.totalQuantity ?? i.totalQtyPurchased ?? 0,
+    'Last Purchase Price (₹)': i.lastPurchasePrice || 0,
+    'Weighted Avg Cost (₹)': i.weightedAvgCost ?? i.weightedAverageCost ?? 0,
+    'Total Material Spend (₹)': i.totalSpend || 0,
+  }));
+}
+
+function varianceCsvRows(currentData: any) {
+  const rawAudits = currentData.audits || currentData.variances || [];
+  return rawAudits.map((a: any) => ({
+    'Vendor Name': a.vendorName,
+    'PO #': a.poNumber,
+    'GRN #': a.grnNumber,
+    'Status': a.status === 'PERFECT_MATCH' ? 'MATCHED' : (a.status || 'DISCREPANCY'),
+    'PO Amount (₹)': a.poTotalAmount ?? a.poAmount ?? 0,
+    'GRN Amount (₹)': a.grnAcceptedAmount ?? a.grnAmount ?? 0,
+    'Invoice Amount (₹)': a.invoicedTotalAmount ?? a.invoiceAmount ?? 0,
+    'Variance Amount (₹)': a.varianceAmount ?? a.amountVariance ?? 0,
+    'Audit Notes': a.discrepancyNotes || a.notes || '',
+  }));
+}
+
+function agingCsvRows(currentData: any) {
+  const rawCreditors = currentData.creditors || currentData.vendorAging || [];
+  return rawCreditors.map((c: any) => ({
+    'Vendor Name': c.vendorName,
+    'Credit Period (Days)': c.creditPeriodDays ?? 0,
+    '0-30 Days (₹)': c.bucket0To30 ?? c.aging_0_30 ?? 0,
+    '31-60 Days (₹)': c.bucket31To60 ?? c.aging_31_60 ?? 0,
+    '61-90 Days (₹)': c.bucket61To90 ?? c.aging_61_90 ?? 0,
+    '> 90 Days (₹)': c.bucketOver90 ?? c.aging_over_90 ?? 0,
+    'Total Balance (₹)': c.totalPayable ?? c.totalBalance ?? 0,
+  }));
+}
+
+function itcCsvRows(currentData: any) {
+  const rawSlabs = currentData.taxSlabs || currentData.rateWiseBreakdown || [];
+  return rawSlabs.map((s: any) => ({
+    'GST Rate': s.taxRate || `${s.ratePercent ?? s.rate ?? 0}%`,
+    'Taxable Value (₹)': s.taxableValue ?? s.taxable ?? 0,
+    'CGST ITC (₹)': s.eligibleCgst ?? s.cgst ?? 0,
+    'SGST ITC (₹)': s.eligibleSgst ?? s.sgst ?? 0,
+    'IGST ITC (₹)': s.eligibleIgst ?? s.igst ?? 0,
+    'Total ITC (₹)': s.totalItc ?? s.totalTax ?? 0,
+  }));
+}
+
+function purchaseCsvRows(activeTab: ReportTab, currentData: any): any[] {
+  if (activeTab === 'register') return registerCsvRows(currentData);
+  if (activeTab === 'po_outstanding') return poCsvRows(currentData);
+  if (activeTab === 'grn_rejections') return grnCsvRows(currentData);
+  if (activeTab === 'bills_pending') return billsPendingCsvRows(currentData);
+  if (activeTab === 'vendor_spend') return vendorSpendCsvRows(currentData);
+  if (activeTab === 'item_summary') return itemSummaryCsvRows(currentData);
+  if (activeTab === 'three_way_variance') return varianceCsvRows(currentData);
+  if (activeTab === 'vendor_aging') return agingCsvRows(currentData);
+  if (activeTab === 'itc_summary') return itcCsvRows(currentData);
+  return [];
+}
+
 function fillPurchaseRegisterPrint(pData: ReportPrintData, currentData: any) {
   pData.reportTitle = 'PURCHASE REGISTER (BILLS & AP INVOICES)';
   pData.subtitle = 'Detailed Purchase Daybook with GST & Tax Breakdown';
@@ -496,129 +646,7 @@ export function PurchaseReportsWorkspace() {
     csvContent += `"PURCHASE DEPARTMENT REPORT: ${activeTab.replace(/_/g, ' ').toUpperCase()}"\r\n`;
     csvContent += `"Period: ${startDate} to ${endDate}"\r\n\r\n`;
 
-    let rows: any[] = [];
-    if (activeTab === 'register') {
-      const rawBills = currentData.bills || currentData.transactions || [];
-      rows = rawBills.map((b: any) => ({
-        'Bill Date': b.billDate || b.date,
-        'Bill #': b.billNumber || b.voucherNumber,
-        'Vendor Name': b.vendorName || b.supplierName,
-        'Vendor GSTIN': b.vendorGstin || b.gstIn || '',
-        'Status': b.status || 'VERIFIED',
-        'Taxable (₹)': b.taxableAmount || 0,
-        'Tax Amount (₹)': b.taxAmount !== undefined ? b.taxAmount : ((b.cgstAmount || 0) + (b.sgstAmount || 0) + (b.igstAmount || 0)),
-        'Total Amount (₹)': b.totalAmount || b.grandTotal || 0,
-      }));
-    } else if (activeTab === 'po_outstanding') {
-      if (currentData.lines) {
-        rows = currentData.lines.map((l: any) => ({
-          'PO #': l.poNumber,
-          'Order Date': l.orderDate,
-          'Vendor Name': l.vendorName,
-          'Item Description': l.itemDescription,
-          'Ordered Qty': l.orderedQty,
-          'Received Qty': l.receivedQty,
-          'Pending Qty': l.balanceQty,
-          'Rate (₹)': l.rate,
-          'Pending Amount (₹)': l.pendingAmount,
-        }));
-      } else if (currentData.orders) {
-        rows = currentData.orders.flatMap((o: any) =>
-          (o.items || []).map((it: any) => ({
-            'PO #': o.poNumber,
-            'Order Date': o.orderDate,
-            'Vendor Name': o.supplierName || o.vendorName,
-            'Item Description': it.description,
-            'Ordered Qty': it.orderedQty,
-            'Received Qty': it.receivedQty,
-            'Pending Qty': it.balanceQty,
-            'Rate (₹)': it.unitPrice || it.rate,
-            'Pending Amount (₹)': it.balanceAmount || (it.balanceQty * (it.unitPrice || 0)),
-          }))
-        );
-      }
-    } else if (activeTab === 'grn_rejections') {
-      if (currentData.rejections) {
-        rows = currentData.rejections;
-      } else if (currentData.receipts) {
-        rows = currentData.receipts.flatMap((r: any) =>
-          (r.items || []).map((it: any) => ({
-            'GRN #': r.grnNumber,
-            'Received Date': r.receivedDate,
-            'Challan #': r.deliveryChallanNo || r.challanNumber || '',
-            'Vehicle #': r.vehicleNo || r.vehicleNumber || '',
-            'Item Description': it.description,
-            'Received Qty': it.receivedQty ?? it.quantityReceived,
-            'Accepted Qty': it.acceptedQty ?? it.quantityAccepted,
-            'Rejected Qty': it.rejectedQty ?? it.quantityRejected,
-            'Rejection Reason': it.rejectionReason || 'Accepted in Full',
-            'Batch #': it.batchNumber || 'N/A',
-          }))
-        );
-      }
-    } else if (activeTab === 'bills_pending') {
-      const rawPending = currentData.pendingBills || currentData.pendingGRNs || [];
-      rows = rawPending.map((b: any) => ({
-        'GRN #': b.grnNumber,
-        'Received Date': b.receivedDate,
-        'Vendor Name': b.supplierName || b.vendorName,
-        'PO Ref #': b.poNumber || '',
-        'Accepted Qty': b.acceptedQty,
-        'Estimated Accrual (₹)': b.estimatedTotal ?? b.estimatedValue ?? 0,
-      }));
-    } else if (activeTab === 'vendor_spend') {
-      rows = (currentData.vendors || []).map((v: any) => ({
-        'Vendor Name': v.vendorName || v.supplierName,
-        'GSTIN': v.gstin || v.gstIn || '',
-        'Bills Count': v.billCount ?? v.invoiceCount ?? 0,
-        'Taxable Spend (₹)': v.totalTaxable || 0,
-        'Gross Spend (₹)': v.totalGross ?? v.grandTotal ?? 0,
-        'Spend Share (%)': `${v.spendSharePercent ?? v.percentShare ?? 0}%`,
-      }));
-    } else if (activeTab === 'item_summary') {
-      rows = (currentData.items || []).map((i: any) => ({
-        'Item Description': i.description || i.itemName,
-        'HSN / SKU': i.hsnCode || i.sku || '',
-        'Total Quantity': i.totalQuantity ?? i.totalQtyPurchased ?? 0,
-        'Last Purchase Price (₹)': i.lastPurchasePrice || 0,
-        'Weighted Avg Cost (₹)': i.weightedAvgCost ?? i.weightedAverageCost ?? 0,
-        'Total Material Spend (₹)': i.totalSpend || 0,
-      }));
-    } else if (activeTab === 'three_way_variance') {
-      const rawAudits = currentData.audits || currentData.variances || [];
-      rows = rawAudits.map((a: any) => ({
-        'Vendor Name': a.vendorName,
-        'PO #': a.poNumber,
-        'GRN #': a.grnNumber,
-        'Status': a.status === 'PERFECT_MATCH' ? 'MATCHED' : (a.status || 'DISCREPANCY'),
-        'PO Amount (₹)': a.poTotalAmount ?? a.poAmount ?? 0,
-        'GRN Amount (₹)': a.grnAcceptedAmount ?? a.grnAmount ?? 0,
-        'Invoice Amount (₹)': a.invoicedTotalAmount ?? a.invoiceAmount ?? 0,
-        'Variance Amount (₹)': a.varianceAmount ?? a.amountVariance ?? 0,
-        'Audit Notes': a.discrepancyNotes || a.notes || '',
-      }));
-    } else if (activeTab === 'vendor_aging') {
-      const rawCreditors = currentData.creditors || currentData.vendorAging || [];
-      rows = rawCreditors.map((c: any) => ({
-        'Vendor Name': c.vendorName,
-        'Credit Period (Days)': c.creditPeriodDays ?? 0,
-        '0-30 Days (₹)': c.bucket0To30 ?? c.aging_0_30 ?? 0,
-        '31-60 Days (₹)': c.bucket31To60 ?? c.aging_31_60 ?? 0,
-        '61-90 Days (₹)': c.bucket61To90 ?? c.aging_61_90 ?? 0,
-        '> 90 Days (₹)': c.bucketOver90 ?? c.aging_over_90 ?? 0,
-        'Total Balance (₹)': c.totalPayable ?? c.totalBalance ?? 0,
-      }));
-    } else if (activeTab === 'itc_summary') {
-      const rawSlabs = currentData.taxSlabs || currentData.rateWiseBreakdown || [];
-      rows = rawSlabs.map((s: any) => ({
-        'GST Rate': s.taxRate || `${s.ratePercent ?? s.rate ?? 0}%`,
-        'Taxable Value (₹)': s.taxableValue ?? s.taxable ?? 0,
-        'CGST ITC (₹)': s.eligibleCgst ?? s.cgst ?? 0,
-        'SGST ITC (₹)': s.eligibleSgst ?? s.sgst ?? 0,
-        'IGST ITC (₹)': s.eligibleIgst ?? s.igst ?? 0,
-        'Total ITC (₹)': s.totalItc ?? s.totalTax ?? 0,
-      }));
-    }
+    const rows: any[] = purchaseCsvRows(activeTab, currentData);
 
     if (rows.length === 0) return;
 

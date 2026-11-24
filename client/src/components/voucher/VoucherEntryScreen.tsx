@@ -231,6 +231,21 @@ function applyFetchedLedgers(
   setDrCrItems(prev => prev.map((it, idx) => drCrItemWithLedger(it, idx, mappedLedgers, bankCash, debtorCreditor)));
 }
 
+function ledgerById(ledgers: LedgerOption[], id: string) {
+  return ledgers.find((l) => l.id === id);
+}
+
+function ledgerByHints(ledgers: LedgerOption[], hints: string[]) {
+  return ledgers.find((l) => hints.some((h) => l.name.toLowerCase().includes(h)));
+}
+
+function voucherMatchesLedgerQuery(items: { ledgerId?: string; ledgerName?: string }[] | undefined, ledgers: LedgerOption[], query: string) {
+  return items?.some((it) => {
+    const lName = ledgerById(ledgers, it.ledgerId || '')?.name || it.ledgerName || '';
+    return lName.toLowerCase().includes(query);
+  });
+}
+
 function ledgerOptionFromMaster(
   l: { id: string; name: string; currentBalance?: number; groupId?: string; group?: { name?: string; nature?: string } },
   groupById: Map<string, { name?: string; nature?: string }>,
@@ -904,8 +919,8 @@ export const VoucherEntryScreen: React.FC = () => {
 
     if (voucherType === 'SALES' || voucherType === 'PURCHASE') {
       if (entryMode === 'ITEM_INVOICE') {
-        const known = (id: string) => ledgers.find(l => l.id === id);
-        const named = (...hints: string[]) => ledgers.find(l => hints.some(h => l.name.toLowerCase().includes(h)));
+        const known = (id: string) => ledgerById(ledgers, id);
+        const named = (...hints: string[]) => ledgerByHints(ledgers, hints);
         const party = known(partyLedgerId);
         if (!party) {
           throw new Error('Select the vendor again. The current vendor is not a saved ledger.');
@@ -1127,10 +1142,7 @@ export const VoucherEntryScreen: React.FC = () => {
         const matchNarr = v.narration?.toLowerCase().includes(query);
         const matchType = v.type?.toLowerCase().includes(query);
         const matchSource = v.sourceDocumentNumber?.toLowerCase().includes(query);
-        const matchLedger = v.items?.some((it) => {
-          const lName = ledgers.find((l) => l.id === it.ledgerId)?.name || it.ledgerName || '';
-          return lName.toLowerCase().includes(query);
-        });
+        const matchLedger = voucherMatchesLedgerQuery(v.items, ledgers, query);
         const matchAmount = String(v.totalDebit).includes(query) || String(v.totalCredit).includes(query);
         if (!matchNum && !matchNarr && !matchType && !matchSource && !matchLedger && !matchAmount) {
           return false;
